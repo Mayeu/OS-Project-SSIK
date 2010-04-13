@@ -1,5 +1,37 @@
 \chapter{Flow}
 
 \section{System init flow}
+
+\begin{itemize}
+  \item print some informations (OS name, develloper names, system version, etc.)
+  \item allocate and initialize all the needed structures for process management
+  \item spawn the init process
+  \item finish the initialization inside the init process
+  \item init spawn the text scroller process
+  \item make init the supervisor of the text scroller process
+  \item init print that the system is ready
+  \item init spawn a shell
+\end{itemize}
+
 \section{Process creation}
+
+\begin{itemize}
+  \item make a system call (if you are in the user space)
+  \item pass the name of the program
+  \item check if the program exist
+  \item look for availlable space for the process
+  \item allocate the space (if dynamic management is set)
+  \item initialize the PCB with default value and the program
+  \item placing the process in the ready queue
+  \item return to the caller
+\end{itemize}
+
 \section{Message sending}
+
+\begin{itemize}
+  \item make a system call (if you are in the user space)
+  \item pass the message and the process ID to the syscall
+  \item check if the process ID is valid
+  \item add the message to the messages list of the process if there is space in the message list.
+  \item return to the caller
+\end{itemize}
