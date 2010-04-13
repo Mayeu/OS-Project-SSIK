@@ -13,40 +13,40 @@
 \section{Description}
 \subsection{Process}
 
-The process module handle Process creation, modification, information reading, settings supervised and supervision process etc. Also the management of lists of process (push/pop in the list, search in the lists, sorting, etc.)
+The process module handles process creation, modification, information reading, settings supervised and supervision process etc. Also the management of lists of process (push/pop in the list, search in the lists, sorting, etc.)
 
 \subsection{Scheduler}
 
-The scheduler will be in charge to choose and pick the next process to run by following the rule of higher priority first and round robin for egal priority process.
-This module will use the process module to search, read information about the process to be able to choose the next process.
+The scheduler will be in charge of choosing and picking the next process to run by following the rule of higher priority first and round robin for egal priority process.
+This module will use the process module to search and read information about the processes to be able to choose the next process.
 
 \subsection{Error}
 
-This module will provide some facility to print diagnostic and handle error (like the perror())
+This module will provide some facilities to print diagnostics and handle errors (like the perror())
 
 \subsection{Message Handling}
 
-This module will provide function to pass message to different process. It also provie function to create/send/read/destroy message and also managing a list of message.
+This module will provide function to pass message to different processes. It also provides functions to create/send/read/destroy messages and also manage a list of message.
 
 \subsection{System Library}
 
-The system library will provide some basic and usefull function as printf(), getc(), etc. through system call to the kernel. This will also provide an interface to the other module of the kernel for the user.
+The system library will provide some basic and useful functions (e.g. printf(), getc()) through system calls to the kernel. This will also provide an interface to the other modules of the kernel for the user.
 
-This function will only be use by user software, kernel software will use the kernel library.
+This function will only be used by user softwares, kernel software using the kernel library.
 
 \subsection{Kernel Library}
 
-The kernel Library will provide, at least, the same basic and usefull functions as the system library but ``directly'' without syscall. This function will only be called by kernel software.
+The kernel library will provide, at least, the same basic and useful functions as the system library but ''directly'' (i.e. without syscalls). This function will only be called by kernel software.
 
 \subsection{User software}
 
-This module will provide a bunch of user program sure as a shell, curent process information, system information, requirement user program, etc.
+This module will provide a bunch of user program such as a shell, curent process information, system information, requirement user program, etc.
 
 \subsection{Kernel}
 
-The ``kernel module'' will be in charge to setup the basic need of the kernel (default value, list of process, etc.) and launch the init process.
+The ''kernel module'' will be in charge of setting the basic needs of the kernel (default value, list of process, etc.) and launch the init process.
 
-\subsection{Memory management (optionnal)}
+\subsection{Memory management (optional)}
 
-This optionnal module will provide some dynamic memory management function. Without this module all the list (sure as process, message, etc.) will hava a static size.
+This optional module will provide some dynamic memory management functions. Without this module, all the lists (such as process, message, etc.) will have a static size.
 

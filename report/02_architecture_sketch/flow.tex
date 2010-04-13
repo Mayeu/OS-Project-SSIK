@@ -3,7 +3,7 @@
 \section{System init flow}
 
 \begin{itemize}
-  \item print some informations (OS name, develloper names, system version, etc.)
+  \item print some information (OS name, developer names, system version, etc.)
   \item allocate and initialize all the needed structures for process management
   \item spawn the init process
   \item finish the initialization inside the init process
@@ -18,11 +18,11 @@
 \begin{itemize}
   \item make a system call (if you are in the user space)
   \item pass the name of the program
-  \item check if the program exist
-  \item look for availlable space for the process
-  \item allocate the space (if dynamic management is set)
-  \item initialize the PCB with default value and the program
-  \item placing the process in the ready queue
+  \item check if the program exists
+  \item look for available space for the process
+  \item allocate the space (if dynamic memory management is set)
+  \item initialize the PCB with default values and the program
+  \item place the process in the ready queue
   \item return to the caller
 \end{itemize}
 
@@ -34,4 +34,4 @@
   \item check if the process ID is valid
   \item add the message to the messages list of the process if there is space in the message list.
   \item return to the caller
-\end{itemize}
+\end{itemize} 
