@@ -1,0 +1,219 @@
+\chapter{Kernel Structure}
+
+\section{Kernel}
+
+This module hold all the global variable for the kernel, sure as:
+\begin{itemize}
+  \item process list (\verb+pready+, \verb+prunning+, \verb+pwaiting+, \verb+pterminate+)
+  \item \verb+int kerror+ the last kernel error
+  \item \verb+int *error+ a global pointer to the last error. If you are in a user process, the error will be in the PCB, in the kernel this point to te \verb+kerror+ variable
+  \item the list of existing program
+\end{itemize}
+
+This module also start the system and manage exception.
+
+\subsection{kernel.c}
+
+\subsubsection{Declaration}
+
+This file hold the process list:
+\begin{verbatim}
+pls pready
+pls prunning
+pls pwaiting
+pls pterminate
+\end{verbatim}
+
+and the kernel error variable: \verb+int kerror+\\
+
+\subsubsection{Functions}
+
+\noindent\textbf{kinit:} \verb+void kinit ( void )+\\
+\textbf{parameter:} void\\
+\textbf{return:} void\\
+\textbf{job:} first function launched. Print informations, initialize some global variable, and spawn the init process\\
+
+\noindent\textbf{init:} \verb+void init ( void )+\\
+\textbf{parameter:} void\\
+\textbf{return:} void\\
+\textbf{job:} finalize the initialization. Spawn the malta process and a shell\\
+
+\subsection{kexception.c}
+
+Handle the exception and interruption. They are all traped here, and this determine what to do.
+
+\subsection{kprogram.c}
+
+\subsubsection{Declaration}
+
+A program is a structure like this :
+\begin{verbatim}
+typedef struct {
+  char name[20] ;
+  int  adress ;
+  char desc[1024] ;
+} prgm ;
+\end{verbatim}
+
+The \verb+name+ is what you give to the \verb+fourchette+ syscall to spawn a process running this program. \verb+adress+ is the adresse of the first instruction, and \verb+desc+ is a description of the program (print by the help command).\\
+
+You also will found the static list of program.
+
+\subsubsection{Functions}
+
+\noindent\textbf{search:} \verb+prgm* search ( char *name )+\\
+\textbf{parameter:} \verb+*name+ a pointer to a string, wich represent a possible programm name\\
+\textbf{return:} a pointer to the program, or \verb+NULL+ if not found\\
+\textbf{job:} this function will search a program into the program list\\
+
+\noindent\textbf{print\_programs:} \verb+void print_programs ( void )+\\
+\textbf{parameter:} void\\
+\textbf{return:} void\\
+\textbf{job:} print all the program with description\\
+
+\section{Process module}
+
+This module will manage all the process related functions.
+
+\subsection{kprocess.c}
+
+This file manage process individualy.
+
+\subsubsection{Declaration}
+
+A process is reprented by it's PCB :
+\begin{verbatim}
+typedef struct {
+  int  pid
+  char name[20]
+  int  pri
+  int  supervise[NSUPERVISE]
+  int  superviser[NSUPERVISE]
+  save (pc, registre ...)
+  int  error
+} pcb ;
+\end{verbatim}
+
+We also need a structure to safelly pass some info without passing a pointer to the pcb:
+\begin{verbatim}
+typedef struct {
+  int  pid
+  char name[20]
+  int  pri
+  int  supervise[NSUPERVISE]
+  int  superviser[NSUPERVISE]
+  int  error
+} pcbinfo
+\end{verbatim}
+
+\subsubsection{Functions}
+
+\noindent\textbf{create\_p:} \verb+int create\_proc (char *name, pcb *p )+\\
+\textbf{parameter:} \verb+name+ the name of the program to launch, \verb+p+ the pointer to the pcb\\
+\textbf{return:} the pid (>0), or an error (<0)\\
+\textbf{job:} initialize a pcb with all the needed value, add it to the ready queue, and ask for a long term scheduling.\\
+
+\noindent\textbf{rm\_p:} \verb+int rm_p ( pcb *p )+\\
+\textbf{parameter:} \verb+p+ the process to delete \\
+\textbf{return:} an error code\\
+\textbf{job:} deallocate a pcb\\
+
+\noindent\textbf{chg\_pri:} \verb+int chg_ppri ( pcb *p, int pri )+\\
+\textbf{parameter:} \verb+p+ the pcb, \verb+pri+ la nouvelle priorité\\
+\textbf{return:} an error code\\
+\textbf{job:} change the priority of a process\\
+
+\noindent\textbf{get\_pinfo:} \verb+int get\_pinfo ( pcb *p, pcbinfo *pi )+\\
+\textbf{parameter:} \verb+p+ a pointer to the pcb that we need information, \verb+pi+ a pointer to a pcbinfo struct\\
+\textbf{return:} an error code\\
+\textbf{job:} this function copy and give the information of a pcb\\
+
+\noindent\textbf{copy\_p:} \verb+int copy\_p ( pcb *psrc, pcb *pdest )+\\
+\textbf{parameter:} the source pcb and the destination pcb\\
+\textbf{return:} an error code\\
+\textbf{job:} copy a pcb inside an other\\
+
+\noindent\textbf{add\_psupervise:} \verb+int add_psupervise ( pcb *p, int pid )+\\
+\textbf{parameter:} \verb+p+ a pointer to the process, the pid to add\\
+\textbf{return:} an error code\\
+\textbf{job:} add a pid to the supervise list of a process\\
+
+\noindent\textbf{add\_psuperviser:} \verb+int add_psuperviser ( pcb *p, int pid )+\\
+\textbf{parameter:} \verb+p+ a pointer to the process, the pid to add\\
+\textbf{return:} an error code\\
+\textbf{job:} add a pid to the superviser list of a process\\
+
+\noindent\textbf{rm\_psupervise:} \verb+int rm_psupervise ( pcb *p, int pid )+\\
+\textbf{parameter:} \verb+p+ a pointer to the process, the pid to add\\
+\textbf{return:} an error code\\
+\textbf{job:} remove a pid from the supervise list of a process\\
+
+\noindent\textbf{rm\_psuperviser:} \verb+int rm_psuperviser ( pcb *p, int pid )+\\
+\textbf{parameter:} \verb+p+ a pointer to the process, the pid to add\\
+\textbf{return:} an error code\\
+\textbf{job:} remove a pid from the superviser list of a process\\
+
+\subsection{kprocess\_list.c}
+
+Manage a list of process
+
+\subsubsection{Declaration}
+
+\begin{verbatim}
+struct pls {
+  pcb ls[defined\_size]
+  pcb *current
+}
+\end{verbatim}
+
+\subsubsection{Functions}
+
+\noindent\textbf{create\_pls:} \verb+int create_pls ( pls *ls )+\\
+\textbf{parameter:} a pointer to a list\\
+\textbf{return:} an error code\\
+\textbf{job:} initialize a list of pcb\\
+
+\noindent\textbf{rm\_ls:} \verb+int rm_ls ( pls *ls )+\\
+\textbf{parameter:} a pointer to a list\\
+\textbf{return:} an error\\
+\textbf{job:} delete a list of pcb\\
+
+\noindent\textbf{rm\_from\_ls:} \verb+int rm\_from\_ls ( pcb *p, pls *ls)+\\
+\textbf{parameter:} the pcb to remove, and the list where he is\\
+\textbf{return:} an error code\\
+\textbf{job:} delete a pcb from a list and reorder the list\\
+
+\noindent\textbf{empty\_space:} \verb+pcb* empty_space ( pls *ls )+\\
+\textbf{parameter:} a pointer to a list of pcb\\
+\textbf{return:} the first empty pcb\\
+\textbf{job:} return the first empty space in a process list\\
+
+\noindent\textbf{is\_empty:} \verb+bool is_empty ( pcb *p )+\\
+\textbf{parameter:} a pcb\\
+\textbf{return:} a boolean\\
+\textbf{job:} is this pcb empty\\
+
+\noindent\textbf{seach:} \verb+pcb* search ( int pid, pls *ls )+\\
+\textbf{parameter:} a pid and a process list\\
+\textbf{return:} a pcb\\
+\textbf{job:} search for a process in a list\\
+
+\noindent\textbf{seachall:} \verb+pcb* searchall ( int pid )+\\
+\textbf{parameter:} a pid\\
+\textbf{return:} a pcb\\
+\textbf{job:} search for a process in all the lists\\
+
+\noindent\textbf{move:} \verb+int move ( int pid, pls *src, pls *dest )+\\
+\textbf{parameter:} the pid we want to move, the source and dest list\\
+\textbf{return:} an error code\\
+\textbf{job:} move a process from a list to another (will search to ensure that the pcb is in the list)\\
+
+\noindent\textbf{sort:} \verb+int sort ( pls *ls )+\\
+\textbf{parameter:} a process list\\
+\textbf{return:} an error code\\
+\textbf{job:} sort a process list by priority (highest to lowest)\\
+
+\section{I/O}
+
+This module offers facilities to communicate with the serial console and the malta screen. This include structure to wrap them.
+

@@ -1,0 +1,143 @@
+\chapter{Kernel Structure}
+
+\section{Kernel}
+
+link all other module
+start the system
+
+contain the different process list (ready, running, waiting, terminated)
+error*
+kerror
+
+\subsection{kexception.c}
+
+exception handler
+
+\section{Process module}
+
+\subsection{kprocess.c}
+
+manage process individualy
+
+struct pcb {
+ pid
+ name
+ pri
+ ls_supervise
+ ls_superviser
+ message*
+ save (pc, registre \ldots)
+ error
+}
+
+error/pid create\_proc( program\_name, pcb* )
+error rm( pid )
+error chg\_pri( pid, pri ) 
+error kget\_info (pid, pcbinfo* ) fill a pcbinfo  struct with pcb information. This disallow pcb modification by anybody
+error copy ( pcbsrc*, pcbdest* )
+error add\_supervise( pid, pid )
+error rm\_supervise( pid, pid )
+
+\subsection{kprocess\_list.c}
+
+manage a list of process
+
+struct pls {
+ pcb[defined\_size]
+ pcb*
+}
+
+error create( pls* ) 
+error rm\_ls ( pls* )
+error rm\_from\_ls (pcb*, pls* )
+pcb* empty\_space( pls* ) return the first empty position in the list as a pointer
+bool is\_empty ( pcb* ) is this pcb position empty ?
+pcb* search ( pid, pls* ) search a pid in a process list
+pcb* searchall ( pid ) search a pid in a process list
+error move (pid, plssrc*, plsdest* ) move a process from a list to another (will search to ensure that the pcb is in the list
+error sort (pls*) sort a process list by priority (highest to lowest)
+
+\section{Scheduler module}
+
+work in 2 mode
+- highest priority
+- round robin for equal priority
+
+long term scheduling happen when a process terminate or is added to the ready list or go to the waiting list.
+It search for the highest pri among the ready queue and move it to the running queue. If this process have the priority on the process in the running list, all the current running process are moved back to the waiting list.
+
+short term scheduling happen every Xms by a timer interuption. This switch the context to the next running process.
+
+\section{Error module}
+
+module for error, interruption, exception handling
+provide facility for printing error
+
+\subsection{kerror.c}
+
+provide functions to print error to set the error pointer and everything error related
+
+\section{System Library}
+
+\subsection{string.c}
+
+strcpy
+strcpyn
+strcmp
+strcmpn
+strlen
+strchr
+isspace
+
+\subsection{stdio.c}
+
+printf
+getc
+
+\subsection{error.h}
+
+provide all the error code
+SUCCESS
+OUTOMEM
+UNKNPID
+UNKNMID
+INVPRI
+OUTOPID
+OUTOMID
+NULLPTR
+INVEID
+
+\section{Kernel Library}
+
+this module implement all the function in System Library that need a Syscall
+
+\chapter{OS API}
+
+\section{process}
+
+fourchette(name, pri)
+get\_proc\_info( pid )
+kill(pid)
+chgppri( pid, pri )
+sleep()
+wait
+
+\section{Message}
+
+sendmsg
+recvmsg
+
+\section{Error}
+
+perror( char* )
+
+\chapter{User}
+
+ps, malta echo, help
+
+\chapter{Schedule}
+
+1 exeption//I/O \lra system library//error
+2 process//shell//scheduler
+3 message//user
+4 memory
