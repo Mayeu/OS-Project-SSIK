@@ -1,7 +1,7 @@
 \chapter{OS API}
 The API (Application Programming Interface) for user programs in your operating systems.
 
-\section{Functions}
+\section{process.h}
 
 \subsection{fourchette}
 \begin{itemize}
@@ -80,6 +80,7 @@ sleep()  makes  the  current  process  sleep until 'time' milliseconds seconds h
 elapsed.
 \end{itemize}
 
+%CMT ? cp de sleep apparement
 \subsection{wait}
 \begin{itemize}
 \item{parameters}
@@ -95,6 +96,8 @@ elapsed.
 The wait() function suspends execution of its calling process until
 status information is available for a terminated child process.
 \end{itemize}
+
+\section{msg.h}
 
 \subsection{sendmsg}
 \begin{itemize}
@@ -133,6 +136,8 @@ User data can be attached to the message using the user\_data pointer.
 Wait for a message with a priority equals to pri.
 \end{itemize}
 
+\section{error.h}
+
 \subsection{perror}
 \begin{itemize}
 \item{parameters}
@@ -145,6 +150,28 @@ the perror() function writes the last error that occured followed by a newline, 
 the standard output.  If the argument string is non-NULL, this string is prepended
 to the message string and separated from it by a colon and space (``: ''); otherwise,
 only the error message string is printed.
+\end{itemize}
+
+\subsection{gerror}
+\begin{itemize}
+\item{return}
+\begin{description}
+	\item[int] the error code
+\end{description}
+\item{description}
+
+the gerror function return the last error code encountered
+\end{itemize}
+
+\subsection{serror}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int e] an error code
+\end{description}
+\item{description}
+
+the serror function set the error
 \end{itemize}
 
 \section{How is the OS API invoked?}
