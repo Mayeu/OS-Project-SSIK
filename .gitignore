@@ -1,0 +1,10 @@
+.DS_Store
+*.swp
+*.d
+*.dvi
+*.log
+*.ps
+*.fls
+*.out*
+*.aux*
+*.toc*
