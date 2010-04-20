@@ -1,0 +1,47 @@
+\chapter{Project}
+
+The project name, \textbf{SSIK}, standing for: ``Simply \& Stupidly Implemented Kernel'', is the reversed acronym of \textbf{KISS}. \textbf{KISS} is an acronym for the design principle ``keep it simple and stupid''.
+
+With this project we will try to follow this as a main rule.
+
+\section{Folder hierarchie}
+
+\begin{verbatim}
+root
+|- bin/
+|- build/
+|- doc/
+|- include/
+|- Makefile
+|- README
+|- report/
+|- scripts/
+|- src/
+   |- kernel/
+   |- user/
+\end{verbatim}
+
+Description of all the folder:
+\begin{description}
+  \item[bin] contain the final binarie
+  \item[build] contain the object file
+  \item[include] contain the API and system library header file
+  \item[Makefile] the project Makefile. Support many option, see further
+  \item[README] captain obvious prevent me to explain this
+  \item[report] contain project report, such as this document
+  \item[scripts] script folder, mainly for simisc
+  \item[src/kernel] contain the code of the kernel
+  \item[src/user] contain the code of all the user software
+\end{description}
+
+\section{Makefile}
+
+The make file propose this option:
+\begin{description}
+  \item[all] build everything
+  \item[clean] clean every build
+  \item[kernel] only compile the kernel part. But don't link anything
+  \item[user] only compile the user part without the system library. But don't link anything
+  \item[run] build everything and run the system in simisc
+\end{description}
+
