@@ -67,26 +67,16 @@ run:
 doc: kerneldoc userdoc
 
 # Indent everything
-indent: idt_include idt_user_h idt_user idt_kernel_h idt_kernel
-
 # indent option
-IDT_OPT=-gnu -bli0 -npcs -c33 -di16
+IDT_OPT=-gnu -bli0 -npcs -c33 -di16 -nut
 
-idt_include: $(PROJECT_DIR)/include/%.h
-	indent $(IDT_OPT) $<
-
-idt_user_h: $(SRC_USER)/%.h
-	indent $(IDT_OPT) $<
-
-idt_user: $(SRC_USER)/%.c
-	indent $(IDT_OPT) $<
-
-idt_kernel_h: $(SRC_KERNEL)/%.h
-	indent $(IDT_OPT) $<
-
-idt_kernel: $(SRC_KERNEL)/%.c
-	indent $(IDT_OPT) $<
-
+indent:
+	indent $(IDT_OPT) $(PROJECT_DIR)/include/*.h
+	indent $(IDT_OPT) $(SRC_KERNEL)/*.h
+	indent $(IDT_OPT) $(SRC_KERNEL)/*.c
+	indent $(IDT_OPT) $(SRC_USER)/*.h
+	indent $(IDT_OPT) $(SRC_USER)/*.c
+	
 # clean: remove object files and emacs backup files
 clean:
 	rm -f $(BIN)/*.o
