@@ -73,15 +73,15 @@ kinit()
      * using the 'status_reg_t' type defined in 'mips4kc.h'.
      */ 
     and.reg = 0xFFFFFFFF;
-  and.field.exl = 0;		// Normal level (not exception)
-  and.field.erl = 0;		// Error level
-  and.field.um = 0;		// Kernel mode
-  and.field.im = 4;		// Disable all except HW interrupt 0
-  and.field.bev = 0;		// Use normal exception vector (not bootsptrap)
+  and.field.exl = 0;           // Normal level (not exception)
+  and.field.erl = 0;            // Error level
+  and.field.um = 0;             // Kernel mode
+  and.field.im = 4;             // Disable all except HW interrupt 0
+  and.field.bev = 0;            // Use normal exception vector (not bootsptrap)
   or.reg = 0;
-  or.field.ie = 1;		// Enable interrupts
-  or.field.im = 4;		// Enable HW interrupt 0
-  or.field.cu0 = 1;		// Coprocessor 0 usable
+  or.field.ie = 1;             // Enable interrupts
+  or.field.im = 4;              // Enable HW interrupt 0
+  or.field.cu0 = 1;             // Coprocessor 0 usable
   kset_sr(and.reg, or.reg);
   
     /* Generate interrupts when data is received by UART. */ 
@@ -105,7 +105,7 @@ kexception()
   
     /* Make sure interrupt is from external source. */ 
     cause.reg = kget_cause();
-  kdebug_assert(cause.field.exc == 0);	/* External interrupt */
+  kdebug_assert(cause.field.exc == 0); /* External interrupt */
   if (cause.field.ip & 4)
   {
     
@@ -113,22 +113,22 @@ kexception()
       if (tty->lsr.field.dr)
     {
       
-	/* Data ready: add character to buffer */ 
-	ch = tty->rbr;
+        /* Data ready: add character to buffer */ 
+        ch = tty->rbr;
       bfifo_put(&bfifo, ch);
       if (ch == '\r')
       {
-	bfifo_put(&bfifo, '\n');
+        bfifo_put(&bfifo, '\n');
       }
     }
     if (bfifo.length > 0 && tty->lsr.field.thre)
     {
       
-	/* Transmitter idle: transmit buffered character */ 
-	tty->thr = bfifo_get(&bfifo);
+        /* Transmitter idle: transmit buffered character */ 
+        tty->thr = bfifo_get(&bfifo);
       
-	/* Determine if we should be notified when transmitter becomes idle */ 
-	tty->ier.field.etbei = (bfifo.length > 0);
+        /* Determine if we should be notified when transmitter becomes idle */ 
+        tty->ier.field.etbei = (bfifo.length > 0);
     }
     
       /* Acknowledge UART interrupt. */ 

@@ -14,18 +14,18 @@
 #ifndef CP0_REGDEF_H
 #define CP0_REGDEF_H
 
-#define index           $0	/* MMU registers */
+#define index           $0      /* MMU registers */
 #define random          $1
 #define entrylo		$2
 #define	entrylo0	$2
 #define	entrylo1	$3
 #define	pagemask	$5
 #define	entryhi		$10
-#define sr              $12	/* interrupt registers */
+#define sr              $12     /* interrupt registers */
 #define cause           $13
 #define epc             $14
 
-#define count           $9	/* timer registers */
+#define count           $9      /* timer registers */
 #define compare         $11
 
 

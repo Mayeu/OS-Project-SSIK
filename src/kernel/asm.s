@@ -31,7 +31,7 @@ excn_stack:
 	.text
 	.set nomove
 
-	.globl	_start
+	.globl  _start
 	.globl  kget_sr
 	.globl  kset_sr
 	.globl  kget_cause
@@ -40,7 +40,7 @@ excn_stack:
 	.globl  kset_registers
 	.globl  kget_registers
 	.globl  kexception
-	.globl	kdebug_magic_break
+	.globl  kdebug_magic_break
 
 
 # -------------------------------------------------------------------------
