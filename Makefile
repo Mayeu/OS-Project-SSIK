@@ -68,7 +68,7 @@ doc: kerneldoc userdoc
 
 # Indent everything
 # indent option
-IDT_OPT=-gnu -bli0 -npcs -c33 -di16
+IDT_OPT=-gnu -bli0 -npcs -c33 -di16 -nut
 
 indent:
 	indent $(IDT_OPT) $(PROJECT_DIR)/include/*.h
