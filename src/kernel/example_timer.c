@@ -93,8 +93,8 @@ kexception()
   
     /* Make sure that we are here because of a timer interrupt. */ 
     cause.reg = kget_cause();
-  kdebug_assert(cause.field.exc == 0);	/* External interrupt */
-  kdebug_assert(cause.field.ip & 0x80);	/* Timer interrupt */
+  kdebug_assert(cause.field.exc == 0); /* External interrupt */
+  kdebug_assert(cause.field.ip & 0x80);        /* Timer interrupt */
   
     /* Reload timer for another 100 ms (simulated time) */ 
     kload_timer(100 * timer_msec);

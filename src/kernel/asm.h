@@ -1,3 +1,7 @@
+/**
+ * @file asm.h
+ * @brief Some assembly defined function
+ */
 
 #ifndef ASM_H
 #define ASM_H
@@ -36,3 +40,5 @@ void            kinit();
 void            kexception();
 
 #endif /*  */
+
+/* end of file asm.h */
