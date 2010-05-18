@@ -37,7 +37,7 @@ all: indent kernel user link doc
 
 # Kernel building
 kernel: $(OBJS_KERNEL)
-	echo "Kernel compilation\n"
+	@echo "Kernel compilation\n"
 
 $(BIN)/%.o: $(SRC_KERNEL)/%.c
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
@@ -47,14 +47,14 @@ $(BIN)/%.o: $(SRC_KERNEL)/%.s
 
 # User building
 user: $(OBJS_USER)
-		echo "User compilation\n"
+		@echo "User compilation\n"
 
 $(BIN)/%.o: $(SRC_USER)/%.c
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
 
 # link all the binarie
 link: $(BIN)/ssik
-		echo "Binaries linking\n"
+		@echo "Binaries linking\n"
 
 $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER)
 	$(LD) $(ARCH) -o $@ $<
