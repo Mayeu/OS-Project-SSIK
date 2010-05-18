@@ -59,6 +59,10 @@ link: $(BIN)/ssik
 $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER)
 	$(LD) $(ARCH) -o $@ $<
 
+# Run the program
+run:
+	bash $(PROJECT_DIR)/scripts/run.sh $(BIN)/ssik
+
 # Build the kernel doc and user doc
 doc: kerneldoc userdoc
 
