@@ -14,6 +14,7 @@ SRC_USER=$(PROJECT_DIR)/$(SRC)/user
 
 # bin directory
 BIN=bin
+BUILD=build
 
 # GCC prefix
 MIPS_PREFIX=/it/kurs/compsys/mips-devel/bin/mips-idt-elf
@@ -36,27 +37,27 @@ LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 all: indent kernel user link doc
 
 # Kernel building
-kernel: $(OBJS_KERNEL)
+kernel: $(BUILD)/$(OBJS_KERNEL)
 	@echo "Kernel compilation\n"
 
-$(BIN)/%.o: $(SRC_KERNEL)/%.c
+$(BUILD)/%.o: $(SRC_KERNEL)/%.c
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
 
-$(BIN)/%.o: $(SRC_KERNEL)/%.s
+$(BUILD)/%.o: $(SRC_KERNEL)/%.s
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
 
 # User building
-user: $(OBJS_USER)
+user: $(BUILD)/$(OBJS_USER)
 		@echo "User compilation\n"
 
-$(BIN)/%.o: $(SRC_USER)/%.c
+$(BUILD)/%.o: $(SRC_USER)/%.c
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
 
 # link all the binarie
 link: $(BIN)/ssik
 		@echo "Binaries linking\n"
 
-$(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER)
+$(BIN)/ssik: $(BUILD)/$(OBJS_KERNEL) $(BUILD)/$(OBJS_USER)
 	$(LD) $(ARCH) -o $@ $<
 
 # Run the program
