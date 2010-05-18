@@ -1,9 +1,5 @@
 # Makefile
 
-# Object files for the examples
-OBJS_KERNEL= asm.o debug.o syscall.o
-OBJS_USER=
-
 # Project directory
 PROJECT_DIR=.
 
@@ -16,8 +12,12 @@ SRC_USER=$(PROJECT_DIR)/$(SRC)/user
 BIN=bin
 BUILD=build
 
+# Object files for the examples
+OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o)
+OBJS_USER=
+
 # GCC prefix
-MIPS_PREFIX=/it/kurs/compsys/mips-devel/bin/mips-idt-elf
+MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
 
 # gcc flags for the MIPS architecture:
 #  -EL     : Little endian
@@ -28,6 +28,7 @@ ARCH=-EL -G0 -mips32
 
 # Other gcc flags
 CFLAGS	+= -ggdb -Wall -Werror -I$(PROJECT_DIR)/include
+KCFLAGS	+= $(CFLAGS) -I$(PROJECT_DIR)/$(SRC_KERNEL)/include
 
 # Compiler and linker commands
 CC=$(MIPS_PREFIX)-gcc
@@ -37,14 +38,14 @@ LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 all: indent kernel user link doc
 
 # Kernel building
-kernel: $(BUILD)/$(OBJS_KERNEL)
+kernel: $(OBJS_KERNEL)
 	@echo "Kernel compilation\n"
 
 $(BUILD)/%.o: $(SRC_KERNEL)/%.c
-	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
+	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
 
-$(BUILD)/%.o: $(SRC_KERNEL)/%.s
-	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
+$(BUILD)/%.o: $(SRC_KERNEL)/%.S
+	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
 
 # User building
 user: $(BUILD)/$(OBJS_USER)
@@ -57,8 +58,8 @@ $(BUILD)/%.o: $(SRC_USER)/%.c
 link: $(BIN)/ssik
 		@echo "Binaries linking\n"
 
-$(BIN)/ssik: $(BUILD)/$(OBJS_KERNEL) $(BUILD)/$(OBJS_USER)
-	$(LD) $(ARCH) -o $@ $<
+$(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER)
+	$(LD) $(ARCH) -o $@ $^
 
 # Run the program
 run:
@@ -74,6 +75,7 @@ IDT_OPT=-gnu -bli0 -npcs -c33 -di16 -nut
 indent:
 	indent $(IDT_OPT) $(PROJECT_DIR)/include/*.h
 	indent $(IDT_OPT) $(SRC_KERNEL)/*.h
+	indent $(IDT_OPT) $(SRC_KERNEL)/include/*.h
 	indent $(IDT_OPT) $(SRC_KERNEL)/*.c
 	indent $(IDT_OPT) $(SRC_USER)/*.h
 	indent $(IDT_OPT) $(SRC_USER)/*.c

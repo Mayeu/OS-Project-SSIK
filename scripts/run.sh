@@ -11,5 +11,5 @@
 
 HERE=$PWD
 cd $SIMICS
-./simics -fast -e "\$mips_binary=$HERE/$1" -x $HERE/run.simics
+./simics -fast -e "\$mips_binary=$HERE/$1" -x $HERE/scripts/run.simics
 
