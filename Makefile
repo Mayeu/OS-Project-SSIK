@@ -1,7 +1,7 @@
 # Makefile
 
 # Object files for the examples
-OBJS_KERNEL=
+OBJS_KERNEL= asm.o debug.o syscall.o
 OBJS_USER=
 
 # Project directory
