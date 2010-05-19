@@ -1,0 +1,190 @@
+\chapter{OS API}
+The API (Application Programming Interface) for user programs in your operating systems.
+
+\section{process.h}
+
+\subsection{fourchette}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[char *name] program name that will be executed
+	\item[int prio] program name that will be executed
+\end{description}
+\item{return}
+\begin{description}
+	\item[int pid] pid
+\end{description}
+\item{description}
+
+fourchette() creates a child process that differs from the parent process only in its PID and PPID.
+If success, the PID of the child process is returned in the parent's thread of execution,
+and a 0 is returned in the child's thread of execution.
+\end{itemize}
+
+\subsection{get\_proc\_info}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int pid] process pid
+	\item[pcb\_info *res] pcb\_info structure
+\end{description}
+\item{return}
+\begin{description}
+	\item[int error] error returned if something went wrong 
+\end{description}
+\item{description}
+
+get\_proc\_info() fill the pcb\_info structure given in parameter with the pcb information.
+Only not critical information is given to the user.
+\item{structure used : pcb\_info}
+
+This structure is made of:
+\begin{itemize}
+	\item{pid} process id
+	\item{name} process/program name
+	\item{pri} process priority
+	\item{ls\_supervise} list of supervised processes
+	\item{ls\_superviser} list of superviser processes
+\end{itemize}
+\end{itemize}
+
+\subsection{chgpri}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int pid] process pid
+	\item[int prio] process's new priority
+\end{description}
+\item{return}
+\begin{description}
+	\item[int error] error returned if something goes wrong
+\end{description}
+\item{description}
+
+chgpri changes the priority of the process from the old one to the new priority 'prio'.
+\end{itemize}
+
+\subsection{sleep}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int time] sleep for the specified number of milliseconds
+\end{description}
+\item{return}
+\begin{description}
+	\item[void]
+\end{description}
+\item{description}
+
+sleep()  makes  the  current  process  sleep until 'time' milliseconds seconds have
+elapsed.
+\end{itemize}
+
+%CMT ? cp de sleep apparement
+\subsection{wait}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int *status] sleep for the specified number of milliseconds
+\end{description}
+\item{return}
+\begin{description}
+	\item[void]
+\end{description}
+\item{description}
+
+The wait() function suspends execution of its calling process until
+status information is available for a terminated child process.
+\end{itemize}
+
+\section{msg.h}
+
+\subsection{sendmsg}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int msg\_id] message identifier
+	\item[int pid\_sender] pid of the sender
+	\item[int pid\_receiver] pid of the receiver
+	\item[int priority] message priority
+	\item[void *user\_data] user data
+\end{description}
+\item{return}
+\begin{description}
+	\item[int error] error returned if something went wrong 
+\end{description}
+\item{description}
+
+The sendmsg() sends a message from a process to another.
+User data can be attached to the message using the user\_data pointer.
+\end{itemize}
+
+\subsection{recvmsg}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int timeout] the maximum time a process is waiting for a message. 0 means infinite time.
+	\item[int pri] message priority
+	\item[msg *message] message to be send
+\end{description}
+\item{return}
+\begin{description}
+	\item[int error] error returned if something went wrong 
+\end{description}
+\item{description}
+
+Wait for a message with a priority equals to pri.
+\end{itemize}
+
+\section{error.h}
+
+\subsection{perror}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[char *msg] error message to print
+\end{description}
+\item{description}
+
+the perror() function writes the last error that occured followed by a newline, to
+the standard output.  If the argument string is non-NULL, this string is prepended
+to the message string and separated from it by a colon and space (``: ''); otherwise,
+only the error message string is printed.
+\end{itemize}
+
+\subsection{gerror}
+\begin{itemize}
+\item{return}
+\begin{description}
+	\item[int] the error code
+\end{description}
+\item{description}
+
+the gerror function return the last error code encountered
+\end{itemize}
+
+\subsection{serror}
+\begin{itemize}
+\item{parameters}
+\begin{description}
+	\item[int e] an error code
+\end{description}
+\item{description}
+
+the serror function set the error
+\end{itemize}
+
+\section{How is the OS API invoked?}
+The OS API is invoked by system call.
+Implementing system calls requires a control transfer which involves some sort of architecture-specific feature.
+A typical way to implement this is to use trap. Interrupts transfer control to the OS so 
+software simply needs to set up some register with the system call number they want and execute the software interrupt.
+
+\section{How are programs represented?}
+The programs are represented by their address located in the program table.
+The program table is the table which associated the program name with the code location in memory.
+
+\section{How can programs that need to communicate locate each other?}
+To communicate, programs can send messages between each other. To send a message, a program has to know
+the pid of it's target.
+
