@@ -1,0 +1,80 @@
+\chapter{User programs}
+This chapter will describe all the user programs available in our Operating System.
+
+\section{Increment}
+Print the sequence 1, 2, 3, ..., n to the console, each number on a new line.
+
+\section{Fibonacci}
+Prints the Fibonacci number series, each number on a new line.
+Each term of the Fibonacci number series is the sum of the two previous ones.
+It starts with the first two numbers 0 and 1 and goes like this: 0, 1, 1, 2, 3, 5 and so on.
+
+\section{Command shell}
+Shell that allows user to do some operations on the processes.
+It will be able to do at least:
+\begin{itemize}
+	\item{Start processes}
+	\item{Change priority of processes}
+	\item{Obtain information about present processes}
+	\item{Terminate processes}
+	\item{Ouput to the Malta LCD display}
+\end{itemize}
+
+\section{Text Scroller}
+Scrolls text on the Malta board display.
+If the text that must be printed doesn't fit in the Malta LCD display, it will be scrolled
+until it has been completely printed, and then the scrolling will restart at the beginning
+of the text.
+\begin{itemize}
+	\item{The process provide for smooth scrolling even on a highly loaded system}
+	\item{The scroller is a regular user process with high priority}
+	\item{The scroller sleep between updates to the display}
+	\item{The scroller start when the operating system starts}
+\end{itemize}
+
+If the number of characters to be printed is higher than the number of characters the display
+can print, the program will start by printing the first characters, and then will start again,
+starting from the second character, and so one until the last charactere of the text is printed
+first.
+
+\section{Ring}
+User program that demonstrate that message passing communication is working
+\begin{itemize}
+	\item{A program should start a set of other processes, $P_1$ to $P_n$}
+	\item{The processes should be set up in a communications ring, where $P_1$ sends messages to $P_2$, etc. on to $P_n$}
+	\item{The demo will send some messages around the ring and show that they visit all processes along the way}
+\end{itemize}
+
+\section{Dining philosophers}
+User program that demonstrate that process synchronisation is working
+The purpose of this program is for the pilosophers to eat, using shared forks.
+A philosopher can only eat when he has two forks. Otherwise he will have to wait
+for another philosopher to release one of his to start eating.
+
+\section{Process supervision}
+User program that demonstrate that process supervision is working.
+\begin{itemize}
+	\item{Processes can be appointed as supervisors of one or more other processes}
+	\item{When a supervised process terminates, the supervisor is notified}
+	\item{It is possible to differentiate between controlled and uncontrolled termination,
+	  i.e. it is possible for the supervisor to see if a subordinate process has crashed
+	  or if it terminated in good order}
+\end{itemize}
+The demo include a supervisor that restarts its subordinates if they crash.
+
+\section{ps}
+User program that displays the currently-running processes.
+It will look inside the running list.
+
+\section{malta echo}
+
+User program that print a predefined text on the Malta LDC display.
+
+\section{help}
+User program that print the different programms that a user can execute.
+
+\section{Memory management (optional)}
+
+User program that demonstrate that memory management is working.
+
+
