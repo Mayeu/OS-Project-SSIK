@@ -1,2 +1,0 @@
-INPUT = include/
-FILE_PATTERNS = *.h

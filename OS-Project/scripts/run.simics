@@ -1,5 +1,0 @@
-add-directory targets/mips-simple
-run-command-file mips-simple-common.simics
-
-# Avoid printing MALTA info
-malta.log-level 0

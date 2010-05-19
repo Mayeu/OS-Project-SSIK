@@ -18,7 +18,7 @@ separated from it by a colon and space (“: ”); otherwise, only the error message
  *
  * \param error_msg error message to print
  */
-void perror(char *error_msg);
+void            perror(char *error_msg);
 
  /**
  * \fn int gerror(void)
@@ -27,7 +27,7 @@ void perror(char *error_msg);
  * \param void
  * \return the error code
  */
-int gerror(void);
+int             gerror(void);
 
  /**
  * \fn void serror(int e)
@@ -36,6 +36,6 @@ int gerror(void);
  * \param e an error code
  * \return void
  */
-void serror(int e);
+void            serror(int e);
 
 #__ERROR_H

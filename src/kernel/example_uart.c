@@ -51,6 +51,7 @@ bfifo_get(struct bounded_fifo *bfifo)
   }
   return ch;
 }
+
 static struct bounded_fifo bfifo;
 
 /* kinit:

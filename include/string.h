@@ -18,7 +18,7 @@
  * \param dest the destination string
  * \return the error identifier in case of any failure
  */
-int strcpy(char *src, char *dest);
+int             strcpy(char *src, char *dest);
 
  /**
  * \fn int strcpyn(char *src, char *dest, int length)
@@ -29,7 +29,7 @@ int strcpy(char *src, char *dest);
  * \param length the number of characters to copy
  * \return the error identifier in case of any failure
  */
-int strcpyn(char *src, char *dest, int length);
+int             strcpyn(char *src, char *dest, int length);
 
  /**
  * \fn int strcmp(char *str1, char *str2)
@@ -40,7 +40,7 @@ alphabetically.
  * \param str2 the second string
  * \return 0 means str1 = str2, -1 means str1 < str2 and 1 means that str1 > str2
  */
-int strcmp(char *str1, char *str2);
+int             strcmp(char *str1, char *str2);
 
  /**
  * \fn int strcmpn(char *str1, char *str2, int n)
@@ -52,7 +52,7 @@ one of them is the first alphabetically.
  * \param n the number of characters to compare
  * \return 0 means str1 = str2, -1 means str1 < str2 and 1 means that str1 > str2
  */
-int strcmpn(char *str1, char *str2, int n);
+int             strcmpn(char *str1, char *str2, int n);
 
  /**
  * \fn int strlen(char *str)
@@ -61,7 +61,7 @@ int strcmpn(char *str1, char *str2, int n);
  * \param str the string
  * \return the length of the string. -1 if str invalid
  */
-int strlen(char *str);
+int             strlen(char *str);
 
  /**
  * \fn int strchr(char *str, char c, char *res)
@@ -72,7 +72,7 @@ int strlen(char *str);
  * \param res the substring (result)
  * \return the error identifier in case of any failure
  */
-int strchr(char *str, char c, char *res);
+int             strchr(char *str, char c, char *res);
 
  /**
  * \fn bool isspace(char c)
@@ -81,7 +81,7 @@ int strchr(char *str, char c, char *res);
  * \param c the char to evaluate
  * \return true means that c is a space character, false otherwise
  */
-bool isspace(char c);
+bool            isspace(char c);
 
 
 #__STRING_H
