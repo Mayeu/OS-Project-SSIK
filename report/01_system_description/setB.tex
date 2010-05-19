@@ -1,0 +1,99 @@
+\chapter{Requirement Set B}
+
+\section{Message Passing}
+
+Processes in the operating system should communicate using asynchronous message passing.
+
+\paragraph*{MP1: Messages}
+\addcontentsline{toc}{paragraph}{MP1: Messages}
+
+\begin{itemize}
+  \item Messages are unicast, going from one process to precisely one other process.
+  \item  The messages should be able to contain some user data.
+  \item  Messages should be tagged with sender and receiver process identities.
+  \item  Messages should have a type or priority field for filtering by the receiver.
+  \item  It should be possible to pass process identities using messages.
+\end{itemize}
+
+\paragraph*{MP2: Message Queues}
+\addcontentsline{toc}{paragraph}{MP2: Message Queues}
+
+\begin{itemize}
+  \item Each process should have a single message queue for incoming messages.
+  \item   The message queue can have a fixed upper bound on the number of messages stored.
+\end{itemize}
+
+\paragraph*{MP3: Sending Messages}
+\addcontentsline{toc}{paragraph}{MP3: Sending Messages}
+
+\begin{itemize}
+  \item Processes should be able to send messages to other processes.
+  \item  The send should not depend on the state of the other process.
+  \item  The send operation should report an error if the message queue of the receiving process is full.
+  \item  The send operation should never block the sending process.
+\end{itemize}
+
+\paragraph*{MP4: Receiving Messages}
+\addcontentsline{toc}{paragraph}{MP4: Receiving Messages}
+
+\begin{itemize}
+  \item Processes should be able to receive messages from their message queue.
+  \item  The receive operation should be able to filter messages based on the type or priority of the message.
+  \item  The user-defined data specified in the message should be readable by the receiver.
+  \item  The receive operation should block the receiving process if the message queue is empty.
+  \item  It should be possible to specify a time-out for a receive operation, after which a process will resume operation even if no message arrives, and report an error.
+\end{itemize}
+
+\paragraph*{UP5: Ring}
+\addcontentsline{toc}{paragraph}{UP5: Ring}
+
+A user level program that demonstrates process communication.
+
+\begin{itemize}
+  \item A program should start a set of other processes, P1 to Pn.
+  \item  The processes should be set up in a communications ring, where P1 sends messages to P2, etc. on to Pn.
+  \item  The demonstration should send some messages around the ring and show that they visit all processes along the way.
+  \item  The user should only need to start a single process to start the ring demo: the main program should start the other processes involved.
+  \item  The main ring program should return to the shell when done setting up the ring.
+  \item  Timers for when to send messages should be set in such a way that it is possible to observe the processes involved in the ring from the shell.
+\end{itemize}
+
+\paragraph*{UP6: Dining Philosophers}
+\addcontentsline{toc}{paragraph}{UP6: Dining Philosophers}
+
+This demonstrates process synchronization (you will need to work out how to synchronize processes given the message passing paradigm). The dining philosophers program is a program solving a problem with resource sharing as follows. A group of philosophers are sitting around a dining table (formed as a circle). Between each pair of philosophers is one fork. Occasionally, one philosopher wants to eat and to do that he needs two forks. This means that two philosophers sitting next to each other can not eat at the same time. You should implement this with the following in mind:
+
+\begin{itemize}
+  \item Each philosopher is a process of its own with a behavior that is similar to the following:
+	 \begin{verbatim}
+	 think(random())
+	 get one fork
+	 get other fork
+	 eat(random())
+	 drop forks
+	 restart 
+	 \end{verbatim}
+
+  \item Like UP3, the entire setup should be started by a single process.
+  \item Like UP3, the main program should return and make it possible to observe the processes running.
+\end{itemize}
+
+
+\section{Process Supervision}
+
+So far, process lives on its own. Nobody else cares if a process terminates. In most real real-time operating systems, processes can be linked together in order to provide fault detection and tolerance.
+
+\paragraph*{PS1: Provide Process Supervision}
+\addcontentsline{toc}{paragraph}{PS1: Provide Process Supervision}
+
+\begin{itemize}
+  \item Processes can be appointed as supervisors of one or more other processes.
+  \item  When a supervised process terminates, the supervisor is notified.
+  \item  It should be possible to differentiate between controlled and uncontrolled termination, i.e. it should be possible for the supervisor to see if a subordinate process has crashed or if it terminated in good order.
+  \item  To provoke crashes, the semantics of the send operation is changed so that a process terminates if the receiving process has a full message queue.
+\end{itemize}
+
+\paragraph*{UP7: Process Supervision}
+\addcontentsline{toc}{paragraph}{UP7: Process Supervision}
+
+A demo application and application note should describe the mechanism and demonstrate that you have a working implementation of process supervision. The demo should include a supervisor that restarts its subordinates if they crash.
