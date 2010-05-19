@@ -6,14 +6,15 @@
   \item Master is the principal branch
   \item Master should always compile, and should be exempt of obvious bug or malfunction
   \item other may not follow the previous rule
-  \item  always work in an other branch than master. When you want to merge your work with master ensure that:
+  \item  always work in an other branch than the master. When you want to merge your work with the master ensure that:
 	 \begin{itemize}
 		\item your work compile
 		\item your work is well commented
-		\item your master branch is updated with the other master branch
+		\item your master branch is updated with the other master branch (otherwise you can generate conflict)
 	 \end{itemize}
   \item  never merge the master branch IN a devellopment branch (i.e. never type \verb+git merge master+ even if it can save your life !)
   \item  if you want to access the last shiny feature of the master branch in your dev branch, use the rebase function (\verb+git rebase master+)
+  \item  before pushing your master branch online, pull all other master branch, solve conflict if any, and ensure that everything compile. Afer this, you can push your modification
 \end{itemize}
 
 \section{Writing good commit messages}
