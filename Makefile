@@ -46,7 +46,7 @@ $(BUILD)/%.o: $(SRC_KERNEL)/%.c
 
 $(BUILD)/%.o: $(SRC_KERNEL)/%.S
 	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
-
+	
 # User building
 user: $(BUILD)/$(OBJS_USER)
 		@echo "User compilation\n"

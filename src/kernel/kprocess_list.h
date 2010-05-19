@@ -12,16 +12,17 @@
 
 #include "kprocess.h"
 
-#DEFINE MAX_PROC 10						/* max number of processes in a list. */
+#DEFINE MAX_PROC 10             /* max number of processes in a list. */
 
 /**
  * \struct pls
  * \brief List of processes.
  *
  */
-typedef struct  {
-pcb ls[MAX_PROC];						/*!< list of processes. */
-pcb *current;							/*!< the current process in the list. */
+typedef struct
+{
+  pcb             ls[MAX_PROC]; /*!< list of processes. */
+  pcb            *current;      /*!< the current process in the list. */
 } pls;
 
 /**
@@ -31,7 +32,7 @@ pcb *current;							/*!< the current process in the list. */
  * \param ls a pointer to a list
  * \return an error code
  */
-int create_pls(pls *ls);
+int             create_pls(pls * ls);
 
 /**
  * \fn int rm_ls(pls *ls)
@@ -40,7 +41,7 @@ int create_pls(pls *ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-int rm_ls(pls *ls);
+int             rm_ls(pls * ls);
 
 /**
  * \fn int rm_from_ls(pcb *p, pls *ls)
@@ -50,7 +51,7 @@ int rm_ls(pls *ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-int rm_from_ls(pcb *p, pls *ls);
+int             rm_from_ls(pcb * p, pls * ls);
 
 /**
  * \fn pcb* empty_space(pls *ls)
@@ -59,7 +60,7 @@ int rm_from_ls(pcb *p, pls *ls);
  * \param ls a pointer to a list
  * \return the first empty pcb
  */
-pcb* empty_space(pls *ls);
+pcb            *empty_space(pls * ls);
 
 /**
  * \fn bool is_empty(pls *ls)
@@ -68,7 +69,7 @@ pcb* empty_space(pls *ls);
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool is_empty(pcb *p);
+bool            is_empty(pcb * p);
 
 /**
  * \fn pcb* search(int pid, pls *ls)
@@ -78,7 +79,7 @@ bool is_empty(pcb *p);
  * \param ls a pointer to the list
  * \return a pcb
  */
-pcb* search(int pid, pls *ls);
+pcb            *search(int pid, pls * ls);
 
 /**
  * \fn pcb* searchall(int pid)
@@ -87,7 +88,7 @@ pcb* search(int pid, pls *ls);
  * \param pid the pid ot the process to search
  * \return a pcb
  */
-pcb* searchall(int pid);
+pcb            *searchall(int pid);
 
 /**
  * \fn int move(int pid, pls *src, pls *dest)
@@ -99,7 +100,7 @@ pcb* searchall(int pid);
  * \param dest the destination list
  * \return an error code
  */
-int move(int pid, pls *src, pls *dest);
+int             move(int pid, pls * src, pls * dest);
 
 /**
  * \fn int sort(pls *ls)
@@ -108,4 +109,4 @@ int move(int pid, pls *src, pls *dest);
  * \param ls the list to sort
  * \return an error code
  */
-int sort(pls *ls);
+int             sort(pls * ls);

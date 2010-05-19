@@ -11,7 +11,7 @@
 #DEFINE __KPROCESS_H
 
 
-#DEFINE NB_REG 30 						/* number of registers. */
+#DEFINE NB_REG 30               /* number of registers. */
 
 /**
  * \struct pcb
@@ -22,15 +22,15 @@
  */
 typedef struct
 {
-	int pid;						/*!< Process identifier. */
-	char name[20];					/*!< Process name. */
-	int pri;						/*!< Process priority. */
-	int supervise[NSUPERVISE];		/*!< List of supervised processes. */
-	int supervisor[NSUPERVISE];		/*!< List of supervisor processes. */
-	int register[NB_REG];			/*!< Some data that has to be saved between
-											a context switch. */
-	int error;						/*!< Last error the process encountered. */
-} pcb ;
+  int             pid;          /*!< Process identifier. */
+  char            name[20];     /*!< Process name. */
+  int             pri;          /*!< Process priority. */
+  int             supervise[NSUPERVISE];        /*!< List of supervised processes. */
+  int             supervisor[NSUPERVISE];       /*!< List of supervisor processes. */
+  int register[NB_REG];         /*!< Some data that has to be saved between
+                                   a context switch. */
+  int             error;        /*!< Last error the process encountered. */
+} pcb;
 
 /**
  * \struct pcbinfo
@@ -41,14 +41,14 @@ typedef struct
  */
 typedef struct
 {
-	int pid;						/*!< Process identifier. */
-	char name[20];					/*!< Process name. */
-	int pri;						/*!< Process priority. */
-	int supervise[NSUPERVISE];		/*!< List of supervised processes. */
-	int supervisor[NSUPERVISE];		/*!< List of supervisor processes. */
-	int register[N];				/*!< Some data that has to be saved between
-											a context switch. */
-	int error;						/*!< Last error the process encountered. */
+  int             pid;          /*!< Process identifier. */
+  char            name[20];     /*!< Process name. */
+  int             pri;          /*!< Process priority. */
+  int             supervise[NSUPERVISE];        /*!< List of supervised processes. */
+  int             supervisor[NSUPERVISE];       /*!< List of supervisor processes. */
+  int register[N];              /*!< Some data that has to be saved between
+                                   a context switch. */
+  int             error;        /*!< Last error the process encountered. */
 } pcbinfo;
 
  /**
@@ -61,7 +61,7 @@ typedef struct
  * \param p the pointer to the pcb
  * \return the pid of the newly created process(>0), or an error (<0)
  */
-int create_proc(char *name, pcb *p);
+int             create_proc(char *name, pcb * p);
 
  /**
  * \fn int rm_p(pcb *p)
@@ -70,7 +70,7 @@ int create_proc(char *name, pcb *p);
  * \param p the process to delete
  * \return an error code
  */
-int rm_p(pcb *p);
+int             rm_p(pcb * p);
 
  /**
  * \fn int chg_ppri(pcb *p, int pri)
@@ -80,7 +80,7 @@ int rm_p(pcb *p);
  * \param pri the new priority
  * \return an error code
  */
-int chg_ppri(pcb *p, int pri);
+int             chg_ppri(pcb * p, int pri);
 
  /**
  * \fn int get_pinfo(pcb *p, pcbinfo *pi)
@@ -90,9 +90,8 @@ int chg_ppri(pcb *p, int pri);
  * \param pi the pointer to the pcbinfo
  * \return an error code
  */
-int get_pinfo(pcb *p, pcbinfo *pi)
-
-
+int
+get_pinfo(pcb * p, pcbinfo * pi)
  /**
  * \fn int copy_p(pcb *psrc, pcb *pdest)
  * \brief copy a pcb inside an other
@@ -101,7 +100,7 @@ int get_pinfo(pcb *p, pcbinfo *pi)
  * \param pdest the destination pcb
  * \return an error code
  */
-int copy_p(pcb *psrc, pcb *pdest);
+     int             copy_p(pcb * psrc, pcb * pdest);
 
  /**
  * \fn int add_psupervise(pcb *p, int pid)
@@ -111,7 +110,7 @@ int copy_p(pcb *psrc, pcb *pdest);
  * \param pid the pid to add
  * \return an error code
  */
-int add_psupervise(pcb *p, int pid);
+     int             add_psupervise(pcb * p, int pid);
 
  /**
  * \fn int add_psupervisor(pcb *p, int pid)
@@ -121,7 +120,7 @@ int add_psupervise(pcb *p, int pid);
  * \param pid the pid to add
  * \return an error code
  */
-int add_psupervisor(pcb *p, int pid);
+     int             add_psupervisor(pcb * p, int pid);
 
  /**
  * \fn int rm_psupervise(pcb *p, int pid)
@@ -131,7 +130,7 @@ int add_psupervisor(pcb *p, int pid);
  * \param pid the pid to remove
  * \return an error code
  */
-int rm_psupervise(pcb *p, int pid);
+     int             rm_psupervise(pcb * p, int pid);
 
  /**
  * \fn int rm_psuperviser(pcb *p, int pid)
@@ -141,6 +140,6 @@ int rm_psupervise(pcb *p, int pid);
  * \param pid the pid to remove
  * \return an error code
  */
-int rm_psuperviser(pcb *p, int pid);
+     int             rm_psuperviser(pcb * p, int pid);
 
 #ENDIF
