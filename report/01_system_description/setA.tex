@@ -1,0 +1,263 @@
+\chapter{Requirement Set A}
+\label{ch:setA}
+
+\section{Process Handling}
+\label{se:process_handling}
+
+\paragraph*{PH1: Process States}
+\addcontentsline{toc}{paragraph}{PH1: Process States}
+\label{pg:ph1}
+
+\begin{itemize}
+  \item Processes should be possible to block.
+  \item  A blocked process should not be able to run until it is unblocked.
+  \item  It should be possible to delay a process for a specified amount of time.
+  \item  When a process is delayed, it should not be able to execute any code.
+\end{itemize}
+
+\paragraph*{PH2: Process Priorities}
+\addcontentsline{toc}{paragraph}{PH2: Process Priorities}
+\label{pg:ph2}
+
+\begin{itemize}
+  \item Each process should have a priority.
+  \item  The number of priority levels should be at least 30.
+  \item  Priorities should be specified at process start.
+  \item  Priorities should be changeable at run-time.
+\end{itemize}
+
+\paragraph*{PH3: Process Scheduling}
+\addcontentsline{toc}{paragraph}{PH3: Process Scheduling}
+\label{pg:ph3}
+
+Scheduling should be highest-priority first, with preemption. In particular:
+
+\begin{itemize}
+  \item  A higher-priority process should be scheduled in preference to a lower-priority process.
+  \item  Between processes of the same priority, round-robin scheduling should be used.
+  \item  Higher-priority processes should be able to preempt lower-priority processes.
+  \item  There should be a recurring regular check for which process to run, unrelated to whether a particular task has finished its work.
+  \item  A lower priority process should not be allowed to run if there is a higher priority process ready to run. We expect strict highest-priority-first scheduling.
+\end{itemize}
+
+\paragraph*{PH4: Process Identities}
+\addcontentsline{toc}{paragraph}{PH4: Process Identities}
+\label{pg:ph4}
+
+\begin{itemize}
+  \item Each process should have a unique ID that can be used to address the process and perform operations on it.
+  \item  A process may have a human-readable name.
+\end{itemize}
+
+\paragraph*{PH5: Process Creation}
+\addcontentsline{toc}{paragraph}{PH5: Process Creation}
+\label{pg:ph5}
+
+\begin{itemize}
+  \item Processes should be able to create new processes.
+  \item  Processes are created by a spawn operation that starts a new process with a given code to run (see requirement PH7 p.\pageref{pg:ph7}).
+  \item  The spawn operation should return the ID of the created process.
+  \item  If the process spawning fails for some reason, an error should be reported.
+\end{itemize}
+
+\paragraph*{PH6: Process Termination}
+\addcontentsline{toc}{paragraph}{PH6: Process Termination}
+\label{pg:ph6}
+
+\begin{itemize}
+  \item Processes should be able to terminate themselves.
+  \item  Processes should be able to terminate other processes.
+  \item  The operating system should be able to terminate processes.
+\end{itemize}
+
+\paragraph*{PH7: Programs and Processes}
+\addcontentsline{toc}{paragraph}{PH7: Programs and Processes}
+\label{pg:ph7}
+
+\begin{itemize}
+  \item Each process runs the code of a particular program.
+  \item  The program to execute in a process is specified when the process starts.
+  \item  Each program should have an ID that is used to identify it when starting a process.
+  \item  Each program should have a human-readable name associated with it. This might be the same as the ID.
+  \item  There should be a global table of available programs.
+  \item  It should be possible to start every program in multiple simultaneous instances.
+\end{itemize}
+
+\paragraph*{PH8: Process Information}
+\addcontentsline{toc}{paragraph}{PH8: Process Information}
+\label{pg:ph8}
+
+\begin{itemize}
+  \item A process should be able to obtain information about another process.
+  \item  The information should include:
+	 \begin{itemize}
+		\item  Process priority
+		\item  Process name, if such is used
+		\item  Name of the program running in the process
+		\item  Current scheduling state of the process
+	 \end{itemize}
+  \item  This information should be readable by the process requesting it.
+  \item  The information should not be printed directly to the console; if it is to be presented to the user, a program (or function in the shell program) will have to be written for that purpose.
+\end{itemize}
+
+\paragraph*{PH9: Resource Recycling}
+\addcontentsline{toc}{paragraph}{PH9: Resource Recycling}
+\label{pg:ph8}
+
+\begin{itemize}
+  \item When a process is terminated, all resources that it has allocated should be reclaimed.
+  \item  Process IDs should be recycled.
+  \item  The operating system should never ``leak'' memory, if there are dynamically allocated or assigned resources.
+\end{itemize}
+
+\paragraph*{PH10: Process Limitations}
+\addcontentsline{toc}{paragraph}{PH10: Process Limitations}
+\label{pg:ph10}
+
+\begin{itemize}
+  \item There can be a fixed upper limit on the number of processes allowed in the  system.
+  \item  Process IDs should be reused, as per requirement PH9 p.\pageref{pg:ph9}.
+  \item  Any fixed upper limits must be easy to modify, using a \#define o or similar C construct.
+\end{itemize}
+
+\section{Input and Output}
+\label{se:input_output}
+
+\paragraph*{IO1: Text Consoles}
+\addcontentsline{toc}{paragraph}{IO1: Text Consoles}
+\label{pg:io1}
+
+\begin{itemize}
+  \item The system should provide at least one text console for input and output.
+\end{itemize}
+
+\paragraph*{IO2: Interrupt-Driven IO}
+\addcontentsline{toc}{paragraph}{IO2: Interrupt-Driven IO}
+\label{pg:io2}
+
+\begin{itemize}
+  \item Text input and output shall be implemented using interrupt-driven IO on the serial port of the system.
+\end{itemize}
+
+\paragraph*{IO3: Text Output}
+\addcontentsline{toc}{paragraph}{IO3: Text Output}
+\label{pg:io3}
+
+\begin{itemize}
+  \item It should be possible for processes to send text to a console.
+  \item  It should be possible to send coherent messages, i.e. a process should be able to send a text message that is printed uninterrupted on a text console.
+\end{itemize}
+
+\paragraph*{IO4: Text Input}
+\addcontentsline{toc}{paragraph}{IO4: Text Input}
+\label{pg:io4}
+
+\begin{itemize}
+  \item It should be possible for a process to request the user to input text.
+  \item  Text input should be returned as a string to the requesting process.
+\end{itemize}
+
+\paragraph*{IO5: Malta LCD Output}
+\addcontentsline{toc}{paragraph}{IO5: Malta LCD Output}
+\label{pg:io5}
+
+\begin{itemize}
+  \item It should be possible for a process to output text to the Malta LCD display
+\end{itemize}
+
+\section{System Application Programming Interface (API)}
+
+\paragraph*{A1: General}
+\addcontentsline{toc}{paragraph}{A1: General}
+\label{pg:a1}
+
+\begin{itemize}
+  \item The API should be the only way to request services from the operating system kernel.
+\end{itemize}
+
+\paragraph*{A2: Syscall}
+\addcontentsline{toc}{paragraph}{A2: Syscall}
+
+\begin{itemize}
+  \item The MIPS Syscall exception mechanism should be used to implemented the API.
+\end{itemize}
+
+\paragraph*{A3: Documentation}
+\addcontentsline{toc}{paragraph}{A3: Documentation}
+
+\begin{itemize}
+  \item The API should be presented to the user programs as a set of C functions.
+  \item  The API should be documented for the benefit of user programs.
+\end{itemize}
+
+\section{Other}
+
+\paragraph*{O1: No Shared Memory}
+\addcontentsline{toc}{paragraph}{O1: No Shared Memory}
+
+\begin{itemize}
+  \item Processes should never use shared variables or memory to communicate.
+  \item  It is not necessary for the operating system to rigorously enforce this condition.
+\end{itemize}
+
+\paragraph*{O2: Reentrancy}
+\addcontentsline{toc}{paragraph}{O2: Reentrancy}
+
+It should be possible to execute multiple instances of the same program concurrently. In particular, this means that:
+
+\begin{itemize}
+  \item A program cannot use ``static'' variables in C or global variables.
+  \item  Any attempts at using names to identify processes has to allow for the dynamic creation of names.
+\end{itemize}
+
+\paragraph*{O3: Error Handling}
+\addcontentsline{toc}{paragraph}{O3: Error Handling}
+Whenever the operating system cannot complete an operation, it should return an error code to the process trying to perform the operation.
+
+\begin{itemize}
+  \item Error codes should be returned to the calling process as the function result, so that it has the ability to deal with the error.
+  \item  To help debugging programs, the OS may provide the facility to print diagnostic errors to the console automatically.
+\end{itemize}
+
+\section{User Programs}
+
+The system would be no fun without a set of programs to run on it. For demonstration purposes, you should implement a set of simple user programs.
+
+\paragraph*{UP1: Increment}
+\addcontentsline{toc}{paragraph}{UP1: Increment}
+number sequence 1, 2, 3, \ldots., N to the console. Each number should be printed on a separate line.
+
+\paragraph*{UP2: Fibonacci}
+\addcontentsline{toc}{paragraph}{UP2: Fibonacci}
+
+A user level program that prints out the Fibonacci number serie: 1, 1, 2, 3, 5, 8, 11, \ldots\ldots. Max-Fib-Number. Each number should be printed on a separate line.
+
+\paragraph*{UP3: Command Shell}
+\addcontentsline{toc}{paragraph}{UP3: Command Shell}
+
+The system should have a command shell that can do at least the following:
+
+\begin{itemize}
+  \item Start processes. For example, it shall be possible to start another interpreter.
+  \item  Change priority of processes.
+  \item  Obtain information about present processes.
+  \item  Terminate processes.
+  \item  Ouput to the Malta LCD display
+  \item  It should be possible to have more than one shell running simultaneously.
+  \item  The command shell should not be special-treated by the operating system in any way.
+  \item  The command shell has to handle ``backspace'' functionality when entering commands.
+  \item  The command shell should not use CPU time when waiting for input.
+\end{itemize}
+
+\paragraph*{UP4: Text Scroller}
+\addcontentsline{toc}{paragraph}{UP4: Text Scroller}
+
+There should be a scroller background process that scrolls text on the Malta board LCD display.
+
+\begin{itemize}
+  \item The text can be varied or fixed, depending on the level of ambition.
+  \item  The process should provide for smooth scrolling even on a highly loaded system.
+  \item  The scroller should be a regular user process with high priority.
+  \item  The scroller should sleep between updates to the display.
+  \item  The scroller should start when the operating system starts.
+\end{itemize}
