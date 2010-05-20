@@ -12,6 +12,9 @@ typedef signed char int8_t;
 typedef signed short int16_t;
 typedef signed int int32_t;
 
+enum
+{ FALSE, TRUE } bool;
+
 #endif /*  */
 
 /* end of file types.h */

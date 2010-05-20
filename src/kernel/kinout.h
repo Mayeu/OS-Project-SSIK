@@ -13,16 +13,14 @@
  * @param an uint32_t to print
  * @return void
  */
-static void
-kmaltaprint(uint32_t word);
+static void     kmaltaprint(uint32_t word);
 
 /**
  * @brief Print a string on the tty
  * @param the string
  * @return void
  */
-static void
-kprint(char print_array[]);
+static void     kprint(char print_array[]);
 
 #endif
 
