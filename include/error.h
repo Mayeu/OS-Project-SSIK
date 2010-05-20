@@ -3,11 +3,11 @@
  * \brief Error functions
  * \author Adrien Forest
  * \version 0.1
- * \date 25 Avril 2010
+ * \date 21 Mai 2010
  */
 
-#IFNDEF __ERROR_H
-#DEFINE __ERROR_H
+#ifndef __ERROR_H
+#define __ERROR_H
 
  /**
  * \fn void perror(char *error_msg)
@@ -37,4 +37,4 @@ int             gerror(void);
  */
 void            serror(int e);
 
-#__ERROR_H
+#endif //__ERROR_H
