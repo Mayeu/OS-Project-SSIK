@@ -4,7 +4,6 @@
  * \author Adrien Forest
  * \version 0.1
  * \date 24 Avril 2010
- *
  */
 
 #IFNDEF __STRING_H
