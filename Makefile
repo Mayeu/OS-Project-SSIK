@@ -62,9 +62,6 @@ $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER)
 run: link
 	bash $(PROJECT_DIR)/scripts/run.sh $(BIN)/ssik
 
-# Build the kernel doc and user doc
-doc: kerneldoc userdoc
-
 # Indent everything
 # indent option
 IDT_OPT=-gnu -bli0 -npcs -c33 -di16 -nut
@@ -77,6 +74,17 @@ indent:
 	indent $(IDT_OPT) $(SRC_USER)/*.h
 	indent $(IDT_OPT) $(SRC_USER)/*.c
 	
+# Build the kernel doc and user doc
+doc: doc_kernel doc_user
+
+doc_kernel:
+	mkdir -p doc/kernel
+	doxygen doc_conf_kernel
+
+doc_user:
+	mkdir -p doc/user
+	doxygen doc_conf_user
+
 # clean: remove object files and emacs backup files
 clean:
-	rm -f $(BUILD)/*.o $(BIN)/ssik
+	rm -rf $(BUILD)/*.o $(BIN)/ssik doc/*
