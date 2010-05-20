@@ -7,11 +7,11 @@
  *
  */
 
-#IFNDEF __KPROCESS_H
-#DEFINE __KPROCESS_H
+#ifndef __KPROCESS_H
+#define __KPROCESS_H
 
 
-#DEFINE NB_REG 30               /* number of registers. */
+#define NB_REG 30               /* number of registers. */
 
 /**
  * \struct pcb
@@ -142,4 +142,4 @@ get_pinfo(pcb * p, pcbinfo * pi)
  */
      int             rm_psuperviser(pcb * p, int pid);
 
-#ENDIF
+#endif

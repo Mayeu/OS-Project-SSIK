@@ -7,12 +7,12 @@
  *
  */
 
-#IFNDEF __KPROCESS_LIST_H
-#DEFINE __KPROCESS_LIST_H
+#ifndef __KPROCESS_LIST_H
+#define __KPROCESS_LIST_H
 
 #include "kprocess.h"
 
-#DEFINE MAX_PROC 10             /* max number of processes in a list. */
+#define MAX_PROC 10             /* max number of processes in a list. */
 
 /**
  * \struct pls
@@ -110,3 +110,5 @@ int             move(int pid, pls * src, pls * dest);
  * \return an error code
  */
 int             sort(pls * ls);
+
+#endif
