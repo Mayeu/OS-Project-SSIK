@@ -1,2 +1,3 @@
 INPUT = src/kernel/
 FILE_PATTERNS = *.h
+OUTPUT_DIRECTORY = doc/kernel
