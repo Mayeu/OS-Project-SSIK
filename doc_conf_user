@@ -1,2 +1,3 @@
 INPUT = include/
 FILE_PATTERNS = *.h
+OUTPUT_DIRECTORY = doc/user
