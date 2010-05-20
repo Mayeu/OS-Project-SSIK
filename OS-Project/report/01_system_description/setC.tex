@@ -1,0 +1,17 @@
+\chapter{Requirement Set C}
+
+We want to try to implement the Dynamic Memory Management as an optional part of the project.
+
+\paragraph*{EC3: Dynamic Memory Management (5 pts)}
+\addcontentsline{toc}{paragraph}{EC3: Dynamic Memory Management (5 pts)}
+
+In the basic specification, it is allowed to have a fixed limit on the number of processes in the system, as well as fixed-length message queues. It is also not at all necessary to provide dynamic memory allocation as a service to user processes. In this extra credit requirement, you should remove these limits. In particular:
+
+\begin{itemize}
+  \item There should be a kernel module responsible for dynamically allocating memory for various purposes.
+  \item  There should no longer be a compile-time fixed upper bound on the number of processes in the system, process control blocks should be allocated dynamically.
+  \item  Message queues should be dynamic in size, allocating space only as needed.
+  \item  Out-of-memory situations have to be gracefully handled.
+  \item  A demonstration application should be written that demonstrates creation of processes and/or messages until memory runs out.
+  \item  A demonstration application should be written that demonstrates the use of dynamic memory allocation in a process.
+\end{itemize}
