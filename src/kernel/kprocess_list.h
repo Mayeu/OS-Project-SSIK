@@ -32,7 +32,7 @@ typedef struct
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             create_pls(pls * ls);
+uint8_t         create_pls(pls * ls);
 
 /**
  * \fn int rm_pls(pls *ls)
@@ -41,7 +41,7 @@ uint8_t             create_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_pls(pls * ls);
+uint8_t         rm_pls(pls * ls);
 
 /**
  * \fn int rm_from_pls(pcb *p, pls *ls)
@@ -51,7 +51,7 @@ uint8_t             rm_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_from_pls(pcb * p, pls * ls);
+uint8_t         rm_from_pls(pcb * p, pls * ls);
 
 /**
  * \fn pcb* empty_space(pls *ls)
@@ -100,7 +100,7 @@ pcb            *searchall(uint8_t pid);
  * \param dest the destination list
  * \return an error code
  */
-uint8_t             move(uint8_t pid, pls * src, pls * dest);
+uint8_t         move(uint8_t pid, pls * src, pls * dest);
 
 /**
  * \fn int sort(pls *ls)
@@ -109,8 +109,8 @@ uint8_t             move(uint8_t pid, pls * src, pls * dest);
  * \param ls the list to sort
  * \return an error code
  */
-uint8_t             sort(pls * ls);
+uint8_t         sort(pls * ls);
 
-pcb *first(pls *ls);
+pcb            *first(pls * ls);
 
 #endif

@@ -15,8 +15,11 @@ typedef signed int int32_t;
 #ifndef __BOOL_TYPES_
 #define __BOOL_TYPES_
 
-enum
-{ FALSE, TRUE } bool;
+typedef enum
+{
+  FALSE,
+  TRUE
+} bool;
 
 #endif /* __BOOL_TYPES_  */
 

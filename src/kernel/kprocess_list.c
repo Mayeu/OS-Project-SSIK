@@ -16,7 +16,8 @@
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             create_pls(pls * ls)
+uint8_t
+create_pls(pls * ls)
 {
 
 }
@@ -28,7 +29,8 @@ uint8_t             create_pls(pls * ls)
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_pls(pls * ls)
+uint8_t
+rm_pls(pls * ls)
 {
 
 }
@@ -41,7 +43,8 @@ uint8_t             rm_pls(pls * ls)
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_from_pls(pcb * p, pls * ls)
+uint8_t
+rm_from_pls(pcb * p, pls * ls)
 {
 
 }
@@ -53,7 +56,8 @@ uint8_t             rm_from_pls(pcb * p, pls * ls)
  * \param ls a pointer to a list
  * \return the first empty pcb
  */
-pcb            *empty_space(pls * ls)
+pcb            *
+empty_space(pls * ls)
 {
 
 }
@@ -65,7 +69,8 @@ pcb            *empty_space(pls * ls)
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool            is_empty(pcb * p)
+bool
+is_empty(pcb * p)
 {
 
 }
@@ -78,7 +83,8 @@ bool            is_empty(pcb * p)
  * \param ls a pointer to the list
  * \return a pcb
  */
-pcb            *search(uint8_t pid, pls * ls)
+pcb            *
+search(uint8_t pid, pls * ls)
 {
 
 }
@@ -90,7 +96,8 @@ pcb            *search(uint8_t pid, pls * ls)
  * \param pid the pid ot the process to search
  * \return a pcb
  */
-pcb            *searchall(uint8_t pid)
+pcb            *
+searchall(uint8_t pid)
 {
 
 }
@@ -105,7 +112,8 @@ pcb            *searchall(uint8_t pid)
  * \param dest the destination list
  * \return an error code
  */
-uint8_t             move(uint8_t pid, pls * src, pls * dest)
+uint8_t
+move(uint8_t pid, pls * src, pls * dest)
 {
 
 }
@@ -117,7 +125,8 @@ uint8_t             move(uint8_t pid, pls * src, pls * dest)
  * \param ls the list to sort
  * \return an error code
  */
-uint8_t             sort(pls * ls)
+uint8_t
+sort(pls * ls)
 {
 
 }
