@@ -38,8 +38,7 @@ LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 all: indent kernel user link doc
 
 # Kernel building
-kernel: $(OBJS_KERNEL)
-	@echo "Kernel compilation\n"
+kernel: $(OBJS_KERNEL) indent
 
 $(BUILD)/%.o: $(SRC_KERNEL)/%.c
 	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
@@ -48,21 +47,19 @@ $(BUILD)/%.o: $(SRC_KERNEL)/%.S
 	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
 	
 # User building
-user: $(BUILD)/$(OBJS_USER)
-		@echo "User compilation\n"
+user: $(BUILD)/$(OBJS_USER) kernel
 
 $(BUILD)/%.o: $(SRC_USER)/%.c
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
 
 # link all the binarie
-link: $(BIN)/ssik
-		@echo "Binaries linking\n"
+link: $(BIN)/ssik indent kernel user
 
 $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER)
 	$(LD) $(ARCH) -o $@ $^
 
 # Run the program
-run:
+run: link
 	bash $(PROJECT_DIR)/scripts/run.sh $(BIN)/ssik
 
 # Build the kernel doc and user doc
@@ -82,4 +79,4 @@ indent:
 	
 # clean: remove object files and emacs backup files
 clean:
-	rm -f $(BIN)/*.o
+	rm -f $(BUILD)/*.o $(BIN)/ssik
