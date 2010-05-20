@@ -1,29 +1,13 @@
 /**
- * \file kprocess_list.h
- * \brief Process list management functions
+ * \file kprocess_list.c
+ * \brief Process list management functions (definitions)
  * \author Christophe Carasco
  * \version 0.1
- * \date 19 Avril 2010
+ * \date 20 mai 2010
  *
  */
 
-#ifndef __KPROCESS_LIST_H
-#define __KPROCESS_LIST_H
-
-#include "kprocess.h"
-
-#define MAX_PROC 10             /* max number of processes in a list. */
-
-/**
- * \struct pls
- * \brief List of processes.
- *
- */
-typedef struct
-{
-  pcb             ls[MAX_PROC]; /*!< list of processes. */
-  pcb            *current;      /*!< the current process in the list. */
-} pls;
+#include "kprocess_list.h"
 
 /**
  * \fn int create_pls(pls *ls)
@@ -32,7 +16,10 @@ typedef struct
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             create_pls(pls * ls);
+uint8_t             create_pls(pls * ls)
+{
+
+}
 
 /**
  * \fn int rm_pls(pls *ls)
@@ -41,7 +28,10 @@ uint8_t             create_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_pls(pls * ls);
+uint8_t             rm_pls(pls * ls)
+{
+
+}
 
 /**
  * \fn int rm_from_pls(pcb *p, pls *ls)
@@ -51,7 +41,10 @@ uint8_t             rm_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_from_pls(pcb * p, pls * ls);
+uint8_t             rm_from_pls(pcb * p, pls * ls)
+{
+
+}
 
 /**
  * \fn pcb* empty_space(pls *ls)
@@ -60,7 +53,10 @@ uint8_t             rm_from_pls(pcb * p, pls * ls);
  * \param ls a pointer to a list
  * \return the first empty pcb
  */
-pcb            *empty_space(pls * ls);
+pcb            *empty_space(pls * ls)
+{
+
+}
 
 /**
  * \fn bool is_empty(pls *ls)
@@ -69,7 +65,10 @@ pcb            *empty_space(pls * ls);
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool            is_empty(pcb * p);
+bool            is_empty(pcb * p)
+{
+
+}
 
 /**
  * \fn pcb* search(int pid, pls *ls)
@@ -79,7 +78,10 @@ bool            is_empty(pcb * p);
  * \param ls a pointer to the list
  * \return a pcb
  */
-pcb            *search(uint8_t pid, pls * ls);
+pcb            *search(uint8_t pid, pls * ls)
+{
+
+}
 
 /**
  * \fn pcb* searchall(int pid)
@@ -88,7 +90,10 @@ pcb            *search(uint8_t pid, pls * ls);
  * \param pid the pid ot the process to search
  * \return a pcb
  */
-pcb            *searchall(uint8_t pid);
+pcb            *searchall(uint8_t pid)
+{
+
+}
 
 /**
  * \fn int move(int pid, pls *src, pls *dest)
@@ -100,7 +105,10 @@ pcb            *searchall(uint8_t pid);
  * \param dest the destination list
  * \return an error code
  */
-uint8_t             move(uint8_t pid, pls * src, pls * dest);
+uint8_t             move(uint8_t pid, pls * src, pls * dest)
+{
+
+}
 
 /**
  * \fn int sort(pls *ls)
@@ -109,8 +117,7 @@ uint8_t             move(uint8_t pid, pls * src, pls * dest);
  * \param ls the list to sort
  * \return an error code
  */
-uint8_t             sort(pls * ls);
+uint8_t             sort(pls * ls)
+{
 
-pcb *first(pls *ls);
-
-#endif
+}
