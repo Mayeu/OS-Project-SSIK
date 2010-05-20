@@ -12,4 +12,4 @@ enum
 
 #endif /* __BOOL_TYPES_  */
 
-#endif /* __BOOL_H*/
+#endif /* __BOOL_H */
