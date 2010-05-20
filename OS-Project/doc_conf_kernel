@@ -1,2 +1,0 @@
-INPUT = src/kernel/
-FILE_PATTERNS = *.h
