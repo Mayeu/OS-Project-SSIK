@@ -69,7 +69,7 @@ pcb            *empty_space(pls * ls);
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool            is_empty(pcb * p);
+bool            is_empty(pls * ls);
 
 /**
  * \fn pcb* search(int pid, pls *ls)
@@ -111,6 +111,13 @@ uint8_t             move(uint8_t pid, pls * src, pls * dest);
  */
 uint8_t             sort(pls * ls);
 
-pcb *first(pls *ls);
+/**
+ * \fn int16_t first(pls *ls)
+ * \brief return the pid of the first pcb in the list.
+ *
+ * \param ls the list
+ * \return the pid or an error code
+ */
+int16_t 			first(pls *ls);
 
 #endif
