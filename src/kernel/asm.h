@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "registers.h"
+#include "kernel.h"
 
 /* Timer 67MHz (?) */
 static const int timer_usec = 67;
@@ -22,14 +23,6 @@ void            kload_timer(uint32_t timer_value);
 void            kset_registers(registers_t * regs);
 registers_t    *kget_registers();
 void            kdebug_magic_break();
-
-/*
- * kinit is called at startup, contains application-specific
- * system initialisation.
- * Applications should make sure that 'kset_registers' is
- * called, to that the exception handler can save registers.
- */
-void            kinit();
 
 /*
  * kexception is called when an exception occurs, after registers

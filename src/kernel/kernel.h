@@ -42,3 +42,17 @@ int32_t kerror;
  * @brief Global pointer to the current pcb error
  */
 int32_t *perror
+
+/*
+ * Functions
+ */
+
+/**
+ * @brief is called at startup, contains application-specific
+ * system initialisation.
+ *
+ * Applications should make sure that 'kset_registers' is
+ * called, to that the exception handler can save registers.
+ */
+void            kinit();
+
