@@ -12,7 +12,9 @@
  #include "kernel.h"
 
  /* Privates functions */
- bool is_already_supervised(pcb *p, uint8_t pid);
+bool is_already_supervised(pcb *p, uint8_t pid);
+int32_t search_psupervised(pcb *p, int8_t pid);
+int8_t get_next_pid(uint8_t *npid);
  
 /**
  * initialize a pcb with all the needed value, add it to
@@ -26,16 +28,20 @@ uint8_t create_proc(char *name, pcb * p)
 
 	if(p = empty_space(&pready))
 	{
-		p->pid = get_next_pid();
-		strcpy(name, p->name);		/** TODO: check the program exists */
-		p->pri = BAS_PRI;
-		p->supervisor = prunning.first();
-		//p->registers = ;			/** TODO: init the registers */
-		p->wait = 0;
-		p->error = SUCCESS;
-		p->empty = FALSE;
+		if(get_next_pid(&p->pid) == OMGROXX)
+		{
+			strcpy(name, p->name);		/** TODO: check the program exists */
+			p->pri = BAS_PRI;
+			p->supervisor = first(&prunning);
+			//p->registers = ;			/** TODO: init the registers */
+			p->wait = 0;
+			p->error = OMGROXX;
+			p->empty = FALSE;
 
-		return p.pid;
+			return p.pid;
+		}
+		else
+			return OUTOPID;
 	}
 	else
 		/* No free space */
@@ -51,7 +57,7 @@ uint8_t rm_p(pcb * p)
     return NULLPTR;
 
   p->empty = TRUE;
-  return SUCCESS;
+  return OMGROXX;
 }
 
 /**
@@ -65,7 +71,7 @@ uint8_t chg_ppri(pcb * p, uint8_t pri)
     return INVARG;
 
   p->pri = pri;
-  return SUCCESS;
+  return OMGROXX;
 }
 
 /**
@@ -84,6 +90,7 @@ uint8_t get_pinfo(pcb * p, pcbinfo * pi)
 	pi->supervisor = p->supervisor;
 	pi->wait = p->wait;
 	pi->empty = p->empty;
+	return OMGROXX;
 }
 
 /**
@@ -104,6 +111,7 @@ uint8_t copy_p(pcb * psrc, pcb * pdest)
 	pdest->wait = psrc->wait;
 	pdest->error = psrc->error;
 	pdest->empty = psrc->empty;
+	return OMGROXX;
 }
 
 /**
@@ -115,10 +123,33 @@ uint8_t add_psupervised(pcb * p, uint8_t pid)
 		return NULLPTR;
 	if(!is_already_supervised(p, pid))
 	{
-		
+		/* look for the first empty (pid = -1) position */
+		int pos = search_psupervised(p, -1);
+		if(pos != -1)
+		{
+			p->supervised[pos] = pid;
+			return OMGROXX;
+		}
+		else
+			return FAILNOOB;
 	}
-		
-	
+}
+
+/**
+ * remove a pid from the supervised list of a process
+ */
+uint8_t rm_psupervised(pcb * p, uint8_t pid)
+{
+	if(p == NULL)
+		return NULLPTR;
+	int pos = search_psupervised(p, pid);
+	if(pos != -1)
+	{
+		p->supervised[pos] = -1;
+		return OMGROXX;
+	}
+	else
+		return INVARG;
 }
 
 /**
@@ -128,17 +159,10 @@ uint8_t chg_psupervisor(pcb * p, uint8_t pid)
 {
 	if(p == NULL)
 		return NULLPTR;
+		
 	p->supervisor = pid;
-	return SUCCESS;
+	return OMGROXX;
 }
-
- /**
- * add a pid to the supervisor list of a process;
- */
-// uint8_t add_psupervisor(pcb * p, uint8_t pid)
-// {
-
-// }
 
 /**
  * remove the pid from the supervisor a process.
@@ -149,21 +173,56 @@ uint8_t rm_psupervisor(pcb * p, uint8_t pid)
 		return NULLPTR;
 
 	p->supervisor = -1;
+	return OMGROXX;
 }
 
-
-
-/**
- * remove a pid from the supervised list of a process
+ /**
+ * add a pid to the supervisor list of a process;
  */
-// uint8_t rm_psupervised(pcb * p, uint8_t pid)
+// uint8_t add_psupervisor(pcb * p, uint8_t pid)
 // {
 // }
+
+/**
+ * Return whether the pcb is empty or not.
+ */
+bool is_empty(pcb *pcb)
+{
+	if(pcb == NULL)
+		FALSE;
+	return pcb->empty;
+}
 
 
 /** Functions private to this file */
 bool is_already_supervised(pcb *p, uint8_t pid)
 {
-
+	if(search_psupervised(p, pid) == -1)
+		return FALSE;
+	return TRUE;
 }
 
+int32_t search_psupervised(pcb *p, int8_t pid)
+{
+	uint32_t i = 0;
+	
+	while(i < NSUPERVISED)
+	{
+		if(p->supervised[i] == pid)
+			return i;
+	}
+	return -1;
+}
+
+int8_t get_next_pid(uint8_t *npid)
+{
+	int init = next_pid;
+	while(searchall(next_pid) == NULL)
+	{
+		next_pid++;
+		if(next_pid == init)
+			return OUTOPID;
+	}
+	*npid = next_pid;
+	return OMGROXX;
+}
