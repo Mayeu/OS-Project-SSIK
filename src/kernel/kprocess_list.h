@@ -32,26 +32,26 @@ typedef struct
  * \param ls a pointer to a list
  * \return an error code
  */
-int             create_pls(pls * ls);
+uint8_t             create_pls(pls * ls);
 
 /**
- * \fn int rm_ls(pls *ls)
+ * \fn int rm_pls(pls *ls)
  * \brief delete a list of pcb
  *
  * \param ls a pointer to a list
  * \return an error code
  */
-int             rm_ls(pls * ls);
+uint8_t             rm_pls(pls * ls);
 
 /**
- * \fn int rm_from_ls(pcb *p, pls *ls)
+ * \fn int rm_from_pls(pcb *p, pls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
  * \param p the pcb to remove
  * \param ls a pointer to a list
  * \return an error code
  */
-int             rm_from_ls(pcb * p, pls * ls);
+uint8_t             rm_from_pls(pcb * p, pls * ls);
 
 /**
  * \fn pcb* empty_space(pls *ls)
@@ -100,7 +100,7 @@ pcb            *searchall(int pid);
  * \param dest the destination list
  * \return an error code
  */
-int             move(int pid, pls * src, pls * dest);
+uint8_t             move(int pid, pls * src, pls * dest);
 
 /**
  * \fn int sort(pls *ls)
@@ -109,4 +109,4 @@ int             move(int pid, pls * src, pls * dest);
  * \param ls the list to sort
  * \return an error code
  */
-int             sort(pls * ls);
+uint8_t             sort(pls * ls);
