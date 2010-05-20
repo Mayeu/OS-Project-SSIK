@@ -5,9 +5,12 @@
  * @date
  */
 
+#ifndef __KERNEL_H
+#define __KERNEL_H
+
 #include <types.h>
 
-#include "kprocess.h"
+#include "kprocess_list.h"
 
 /*
  * global variable
@@ -16,37 +19,35 @@
 /**
  * @brief List of ready process
  */
-pls pready;
+pls             pready;
 
 /**
  * @brief List of running process
  */
-pls prunning;
+pls             prunning;
 
 /**
  * @brief List of waiting process
  */
-pls pwaiting;
+pls             pwaiting;
 
 /**
  * @brief List of terminate process
  */
-pls pterminate;
+pls             pterminate;
 
 /**
  * @brief Kernel last error. Default to success
  */
-int32_t kerror;
+int32_t         kerror;
 
 /**
  * @brief Global pointer to the current pcb error
  */
-int32_t *perror
-
+int32_t        *perror
 /*
  * Functions
  */
-
 /**
  * @brief is called at startup, contains application-specific
  * system initialisation.
@@ -56,3 +57,4 @@ int32_t *perror
  */
 void            kinit();
 
+#endif
