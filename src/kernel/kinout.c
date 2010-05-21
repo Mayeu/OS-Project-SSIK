@@ -38,7 +38,7 @@ kprint_char(char c)
 void
 kprint(char *text)
 {
-  while (*text == '\0')
+  while (*text != '\0')
   {
     if (*text == '\n')
       kprint_char('\r');
