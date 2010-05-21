@@ -114,4 +114,15 @@ char           *itos(int value, char *str);
  */
 int             stoi(char *str);
 
+
+ /**
+ * \fn char *trim(char *str)
+ * \brief Remove all the non-usefull spaces
+ *
+ * \param str the string to clean
+ * \return A pointer to the resulting null-terminated string, same as parameter str
+ */
+char           *trim(char *str);
+
+
 #endif //__STRING_H
