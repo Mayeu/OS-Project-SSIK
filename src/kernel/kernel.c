@@ -21,7 +21,7 @@ static registers_t regs;
 void
 kinit()
 {
-  char            hello[] = "Hello World\nHello SSIK\n", str[] = "<>\n";
+  char            hello[] = "Hello World";
 
   /* Set UART word length ('3' meaning 8 bits).
    * Do this early to enable debug printouts (e.g. kdebug_print).
@@ -29,8 +29,7 @@ kinit()
   tty->lcr.field.wls = 3;
 
   /* example of call to a print function */
-  kprint(hello);
-  kprint(str);
+  kprintln(hello);
 
   /* Setup storage-area for saving registers on exception. */
   kset_registers(&regs);
