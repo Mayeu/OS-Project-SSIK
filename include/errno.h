@@ -12,7 +12,7 @@
 
 enum
 {
-  SUCCESS,                      // No error occured
+  OMGROXX,                      // No error occured
   FAILNOOB,                     // General error
   OUTOMEM,                      // Out of memory
   UNKNPID,                      // Unknown pid (process identifier)
