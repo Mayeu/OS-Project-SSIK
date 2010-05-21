@@ -6,4 +6,3 @@
 
 #endif /* __NULL_TYPES_ */
 
-
