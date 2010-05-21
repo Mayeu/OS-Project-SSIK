@@ -100,7 +100,7 @@ pcb            *searchall(uint8_t pid);
  * \param dest the destination list
  * \return an error code
  */
-uint8_t             move(uint8_t pid, pls * src, pls * dest);
+uint8_t         move(uint8_t pid, pls * src, pls * dest);
 
 /**
  * \fn int sort(pls *ls)
@@ -109,7 +109,7 @@ uint8_t             move(uint8_t pid, pls * src, pls * dest);
  * \param ls the list to sort
  * \return an error code
  */
-uint8_t             sort(pls * ls);
+uint8_t         sort(pls * ls);
 
 /**
  * \fn int16_t first(pls *ls)
@@ -118,6 +118,6 @@ uint8_t             sort(pls * ls);
  * \param ls the list
  * \return the pid or an error code
  */
-int16_t 			first(pls *ls);
+int16_t         first(pls * ls);
 
 #endif

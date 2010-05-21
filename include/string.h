@@ -72,7 +72,7 @@ int             strlen(char *str);
  * \param c the character to find
  * \return a pointer to the first occurrence of character in str
  */
-char*             strchr(char *str, char c);
+char           *strchr(char *str, char c);
 
  /**
  * \fn char *strcat(char *destination, char *source)
@@ -82,7 +82,7 @@ char*             strchr(char *str, char c);
  * \param src the string that will be append to the dst string
  * \return the address of the dst string
  */
-char*            strcat(char *dst, char *src);
+char           *strcat(char *dst, char *src);
 
  /**
  * \fn bool isspace(char c)
@@ -102,7 +102,7 @@ bool            isspace(char c);
  * \param str the array in memory where to store the resulting null-terminated string
  * \return A pointer to the resulting null-terminated string, same as parameter str
  */
-char*            itos(int value, char *str);
+char           *itos(int value, char *str);
 
  /**
  * \fn int stoi(char *str)
@@ -112,6 +112,6 @@ char*            itos(int value, char *str);
  * \param str the string beginning with the representation of an integral number
  * \return On success, the function returns the converted integral number as an int value.
  */
-int            stoi(char *str);
+int             stoi(char *str);
 
 #__STRING_H

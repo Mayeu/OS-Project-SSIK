@@ -13,20 +13,23 @@
 output. If the argument string is non-NULL, this string is prepended to the message string and
 separated from it by a colon and space (“: ”); otherwise, only the error message string is printed.
  */
-void perror(char *error_msg)
+void
+perror(char *error_msg)
 {
 }
 
  /**
  * the gerror() function return the last error code encountered.
  */
-int gerror(void)
+int
+gerror(void)
 {
 }
 
  /**
  * \brief the serror() function set the error
  */
-void serror(int e)
+void
+serror(int e)
 {
 }

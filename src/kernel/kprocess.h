@@ -19,7 +19,7 @@
 #define BAS_PRI 15
 #define NSUPERVISED 40
 
-uint8_t next_pid = 0;
+uint8_t         next_pid = 0;
 
 /**
  * \struct pcb
@@ -33,10 +33,10 @@ typedef struct
   uint8_t         pid;          /*!< Process identifier. */
   char            name[20];     /*!< Process name. */
   uint8_t         pri;          /*!< Process priority. */
-  int16_t         supervised[NSUPERVISED];        /*!< List of supervised processes. */
-  int16_t         supervisor;       /*!< supervisor. */
-  registers_t     registers;         /*!< Some data that has to be saved between
-                                       a context switch. */
+  int16_t         supervised[NSUPERVISED];      /*!< List of supervised processes. */
+  int16_t         supervisor;   /*!< supervisor. */
+  registers_t     registers;    /*!< Some data that has to be saved between
+                                   a context switch. */
   uint32_t        wait;
   uint8_t         error;        /*!< Last error the process encountered. */
   bool            empty;
@@ -95,7 +95,7 @@ uint8_t         rm_p(pcb * p);
  * \return an error code
  */
 
-uint8_t chg_ppri(pcb * p, uint8_t pri);
+uint8_t         chg_ppri(pcb * p, uint8_t pri);
 
 /**
  * \fn int get_pinfo(pcb *p, pcbinfo *pi)
@@ -115,7 +115,7 @@ uint8_t         get_pinfo(pcb * p, pcbinfo * pi);
  * \param pdest the destination pcb
  * \return an error code
  */
-	uint8_t             copy_p(pcb * psrc, pcb * pdest);
+uint8_t         copy_p(pcb * psrc, pcb * pdest);
 /**
  * \fn int add_psupervise(pcb *p, int pid)
  * \brief add a pid to the supervise list of a process
@@ -124,7 +124,7 @@ uint8_t         get_pinfo(pcb * p, pcbinfo * pi);
  * \param pid the pid to add
  * \return an error code
  */
-	uint8_t             add_psupervised(pcb * p, uint8_t pid);
+uint8_t         add_psupervised(pcb * p, uint8_t pid);
 
  /**
  * \fn int rm_psupervised(pcb *p, int pid)
@@ -134,8 +134,8 @@ uint8_t         get_pinfo(pcb * p, pcbinfo * pi);
  * \param pid the pid to remove
  * \return an error code
  */
-	uint8_t             rm_psupervised(pcb * p, uint8_t pid);
-	
+uint8_t         rm_psupervised(pcb * p, uint8_t pid);
+
 /**
  * \fn int chg_psupervisor(pcb *p, int pid)
  * \brief change the pid of the process supervisor
@@ -144,7 +144,7 @@ uint8_t         get_pinfo(pcb * p, pcbinfo * pi);
  * \param pid the pid to add
  * \return an error code
  */
-uint8_t             chg_psupervisor(pcb * p, uint8_t pid);
+uint8_t         chg_psupervisor(pcb * p, uint8_t pid);
 
  /**
  * \fn int rm_psuperviser(pcb *p, int pid)
@@ -154,7 +154,7 @@ uint8_t             chg_psupervisor(pcb * p, uint8_t pid);
  * \param pid the pid to remove
  * \return an error code
  */
-uint8_t             rm_psupervisor(pcb * p, uint8_t pid);
+uint8_t         rm_psupervisor(pcb * p, uint8_t pid);
 
 
 /**
@@ -164,6 +164,6 @@ uint8_t             rm_psupervisor(pcb * p, uint8_t pid);
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool is_empty(pcb *pcb);
+bool            is_empty(pcb * pcb);
 
 #endif

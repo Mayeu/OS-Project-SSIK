@@ -19,7 +19,7 @@ variable perror.
  *
  * \param error_msg error message to print
  */
-void kperror(char *error_msg);
+void            kperror(char *error_msg);
 
  /**
  * \fn int kgerror(void)
@@ -27,7 +27,7 @@ void kperror(char *error_msg);
  *
  * \return the error number
  */
-uint8_t kgerror(void);
+uint8_t         kgerror(void);
 
  /**
  * \fn void kserror(int32_t e)
@@ -35,6 +35,6 @@ uint8_t kgerror(void);
  *
  * \param e the error number to set
  */
-void kserror(uint8_t e);
+void            kserror(uint8_t e);
 
-#endif __KERROR_H
+#endif  /* __KERROR_H */

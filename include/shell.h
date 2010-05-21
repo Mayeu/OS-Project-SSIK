@@ -9,9 +9,10 @@
 #ifndef __ERROR_H
 #define __ERROR_H
 
-void shell(char *input)
+void
+shell(char *input)
 {
-	
+
 }
 
 #endif //__ERROR_H

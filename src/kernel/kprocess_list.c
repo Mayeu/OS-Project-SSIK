@@ -16,13 +16,14 @@
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             create_pls(pls * ls)
+uint8_t
+create_pls(pls * ls)
 {
-	if(ls == NULL)
-		return NULLPTR;
-	
-	ls->current = NULL;
-	return OMGROXX;
+  if (ls == NULL)
+    return NULLPTR;
+
+  ls->current = NULL;
+  return OMGROXX;
 }
 
 /**
@@ -32,16 +33,17 @@ uint8_t             create_pls(pls * ls)
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_pls(pls * ls)
+uint8_t
+rm_pls(pls * ls)
 {
-	int i;
-	if(ls == NULL)
-		return NULLPTR;
-		
-	for(i=0 , i<MAX_PROC ; i++)
-		rm_p(&ls[i]);
-	current = NULL;
-	return OMGROXX;
+  int             i;
+  if (ls == NULL)
+    return NULLPTR;
+
+  for (i = 0, i < MAX_PROC; i++)
+    rm_p(&ls[i]);
+  current = NULL;
+  return OMGROXX;
 }
 
 /**
@@ -52,16 +54,17 @@ uint8_t             rm_pls(pls * ls)
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_from_pls(pcb * p, pls * ls)
+uint8_t
+rm_from_pls(pcb * p, pls * ls)
 {
-	pcb *to_rm;
-	if(p == NULL || ls == NULL)
-		return NULLPTR;
-	if(to_rm = search(p->pid, ls) == NULL)
-		return FAILNOOB;
+  pcb            *to_rm;
+  if (p == NULL || ls == NULL)
+    return NULLPTR;
+  if (to_rm = search(p->pid, ls) == NULL)
+    return FAILNOOB;
 
-	to_rm->empty = TRUE;
-	return OMGROXX;
+  to_rm->empty = TRUE;
+  return OMGROXX;
 }
 
 /**
@@ -71,17 +74,18 @@ uint8_t             rm_from_pls(pcb * p, pls * ls)
  * \param ls a pointer to a list
  * \return the first empty pcb or NULL if no empty pcb
  */
-pcb            *empty_space(pls * ls)
+pcb            *
+empty_space(pls * ls)
 {
-	int i = 0;
-	if(ls == NULL)
-		return NULL;
-	while(ls[i]->empty == FALSE && i<MAX_PROC)
-		i++;
-	if(i == MAX_PROC)
-		return NULL;
-	else
-		return &ls[i];
+  int             i = 0;
+  if (ls == NULL)
+    return NULL;
+  while (ls[i]->empty == FALSE && i < MAX_PROC)
+    i++;
+  if (i == MAX_PROC)
+    return NULL;
+  else
+    return &ls[i];
 }
 
 /**
@@ -91,20 +95,17 @@ pcb            *empty_space(pls * ls)
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool            is_empty(pls * ls)
+bool
+is_empty(pls * ls)
 {
-	int i;
-	if(ls == NULL)
-		return FALSE;
+  int             i;
+  if (ls == NULL)
+    return FALSE;
 
-	while(i<MAX_PROC)
-	{
-		if(!is_empty(&ls[i])
-			return FALSE;
-		i++;
-	}
-	return TRUE;
-}
+  while (i < MAX_PROC)
+  {
+  if (!is_empty(&ls[i]) return FALSE; i++;}
+      return TRUE;}
 
 /**
  * \fn pcb* search(int pid, pls *ls)
@@ -114,17 +115,12 @@ bool            is_empty(pls * ls)
  * \param ls a pointer to the list
  * \return a pcb
  */
-pcb            *search(uint8_t pid, pls * ls)
-{
-	int i = 0;
-	while(i < MAX_PROC)
-	{
-		if(ls->ls[i].pid == pid)
-			return &ls->ls[i];
-		i++;
-	}
-	return NULL;
-}
+      pcb * search(uint8_t pid, pls * ls)
+      {
+      int i = 0; while (i < MAX_PROC)
+      {
+      if (ls->ls[i].pid == pid) return &ls->ls[i]; i++;}
+      return NULL;}
 
 /**
  * \fn pcb* searchall(int pid)
@@ -133,19 +129,16 @@ pcb            *search(uint8_t pid, pls * ls)
  * \param pid the pid ot the process to search
  * \return a pcb
  */
-pcb            *searchall(uint8_t pid)
-{
-	pcb *t;
-	if(t = search(pid, pready) != NULL)
-		return t;
-	if(t = search(pid, prunning) == NULL)
-		return t;
-	if(t = search(pid, pwaiting) == NULL)
-		return t;
-	if(t = search(pid, pterminate) == NULL)
-		return t;
-	return NULL;
-}
+      pcb * searchall(uint8_t pid)
+      {
+      pcb * t;
+      if (t = search(pid, pready) != NULL)
+      return t;
+      if (t = search(pid, prunning) == NULL)
+      return t;
+      if (t = search(pid, pwaiting) == NULL)
+      return t;
+      if (t = search(pid, pterminate) == NULL) return t; return NULL;}
 
 /**
  * \fn int move(int pid, pls *src, pls *dest)
@@ -157,18 +150,15 @@ pcb            *searchall(uint8_t pid)
  * \param dest the destination list
  * \return an error code
  */
-uint8_t             move(uint8_t pid, pls * src, pls * dest)
-{
-	pcb *src_space, *dest_space;
-	if(src == NULL || dest == NULL)
-		return NULLPTR;
-	if((src_space = search(pid, src)) == NULL)
-		return FAILNOOB;
-	if((dest_space = empty_space(dest)) == NULL)
-		return OUTOMEM;
-	
-	return copy(src_space, dest_space);
-}
+      uint8_t move(uint8_t pid, pls * src, pls * dest)
+      {
+      pcb * src_space, *dest_space;
+      if (src == NULL || dest == NULL)
+      return NULLPTR;
+      if ((src_space = search(pid, src)) == NULL)
+      return FAILNOOB;
+      if ((dest_space = empty_space(dest)) == NULL)
+      return OUTOMEM; return copy(src_space, dest_space);}
 
 /**
  * \fn int sort(pls *ls)
@@ -177,35 +167,23 @@ uint8_t             move(uint8_t pid, pls * src, pls * dest)
  * \param ls the list to sort
  * \return an error code
  */
-uint8_t             sort(pls * ls)
-{
-    bool ordered = FALSE;
-	int i;
-	int size = MAX_PROC;
-	pcb tmp;
-    while(!ordered)
-    {
-        ordered = true;
-        for(i=0 ; i<size ; i++)
-            if(tab[i] > tab[i+1])
-            {
-                // Swap the two pcb
-				copy_p(&(ls->ls[i]), &tmp);
-				copy_p(&(ls->ls[i+1]), &(ls->ls[i]));
-				copy_p(&tmp, &(ls->ls[i+1]));
-				
-                ordered = false;
-            }
-        size--;
-    }
-}
+      uint8_t sort(pls * ls)
+      {
+      bool ordered = FALSE;
+      int i; int size = MAX_PROC; pcb tmp; while (!ordered)
+      {
+      ordered = true; for (i = 0; i < size; i++) if (tab[i] > tab[i + 1])
+      {
+      // Swap the two pcb
+      copy_p(&(ls->ls[i]), &tmp);
+      copy_p(&(ls->ls[i + 1]), &(ls->ls[i]));
+      copy_p(&tmp, &(ls->ls[i + 1])); ordered = false;}
+      size--;}
+      }
 
 /**
  * return the pid of the first pcb in the list.
  */
-int16_t 			first(pls *ls)
-{
-	if(ls == NULL)
-		return NULLPTR;
-	return ls->ls[0].pid;
-}
+      int16_t first(pls * ls)
+      {
+      if (ls == NULL) return NULLPTR; return ls->ls[0].pid;}
