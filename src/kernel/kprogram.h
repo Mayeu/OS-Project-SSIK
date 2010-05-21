@@ -21,7 +21,7 @@
 typedef struct
 {
   char            name[20];     /*!< name of the program */
-  void           *f(int argv, char *argc);      /*!< adresse of the main function */
+  uint32_t        address;      /*!< adresse of the main function */
   char            desc[1024];   /*!< A description of the program */
 } prgm;
 
@@ -35,7 +35,7 @@ typedef struct
  * programm name
  * @return: a pointer to the program, or NULL if not found
  */
-prgm           *search(char *name);
+prgm           *search_prgm(char *name);
 
 /**
  * @brief Print all the program with description
