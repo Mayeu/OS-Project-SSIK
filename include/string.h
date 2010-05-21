@@ -4,11 +4,12 @@
  * \author Adrien Forest
  * \version 0.1
  * \date 24 Avril 2010
- *
  */
 
 #IFNDEF __STRING_H
 #DEFINE __STRING_H
+
+#include <bool.h>
 
  /**
  * \fn int strcpy(char *src, char *dest)
@@ -64,15 +65,24 @@ int             strcmpn(char *str1, char *str2, int n);
 int             strlen(char *str);
 
  /**
- * \fn int strchr(char *str, char c, char *res)
- * \brief res is a pointer to the first occurrence of character c in the string str.
+ * \fn char* strchr(char *str, char c)
+ * \brief Returns a pointer to the first occurrence of character in the C string str.
  *
  * \param str the string
  * \param c the character to find
- * \param res the substring (result)
- * \return the error identifier in case of any failure
+ * \return a pointer to the first occurrence of character in str
  */
-int             strchr(char *str, char c, char *res);
+char*             strchr(char *str, char c);
+
+ /**
+ * \fn char *strcat(char *destination, char *source)
+ * \brief Appends a copy of the source string to the destination string.
+ *
+ * \param dst the string where will be append the src string
+ * \param src the string that will be append to the dst string
+ * \return the address of the dst string
+ */
+char*            strcat(char *dst, char *src);
 
  /**
  * \fn bool isspace(char c)
@@ -83,5 +93,25 @@ int             strchr(char *str, char c, char *res);
  */
 bool            isspace(char c);
 
+ /**
+ * \fn char* itos(int value, char *str)
+ * \brief Converts an integer value to a null-terminated string using the specified 
+ base and stores the result in the array given by str parameter.
+ *
+ * \param value the value to be converted to a string
+ * \param str the array in memory where to store the resulting null-terminated string
+ * \return A pointer to the resulting null-terminated string, same as parameter str
+ */
+char*            itos(int value, char *str);
+
+ /**
+ * \fn int stoi(char *str)
+ * \brief Parses the C string str interpreting its content as an integral
+ number, which is returned as an int value.
+ *
+ * \param str the string beginning with the representation of an integral number
+ * \return On success, the function returns the converted integral number as an int value.
+ */
+int            stoi(char *str);
 
 #__STRING_H

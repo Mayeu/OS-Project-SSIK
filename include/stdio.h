@@ -4,7 +4,6 @@
  * \author Adrien Forest
  * \version 0.1
  * \date 24 Avril 2010
- *
  */
 
 #IFNDEF __STDIO_H
@@ -17,7 +16,7 @@
  * \param str the string to print
  * \return the error identifier in case of any failure
  */
-int             printf(char *str);
+int             print(char *str);
 
  /**
  * \fn int fprintf(int out, char *str)
@@ -27,7 +26,7 @@ int             printf(char *str);
  * \param str the string to print
  * \return the error identifier in case of any failure
  */
-int             fprintf(int out, char *str);
+int             fprint(int out, char *str);
 
  /**
  * \fn char getc(void)
@@ -49,6 +48,6 @@ been readen or either a newline or a the End-of-File is reached, whichever comes
  * \param num the number of characters to be rade
  * \return the error identifier in case of any failure
  */
-int             fgets(char *str, int num);
+int             gets(char *str, int num);
 
 #__STDIO_H
