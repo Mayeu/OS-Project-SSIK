@@ -6,8 +6,8 @@
  * \date 24 Avril 2010
  */
 
-#IFNDEF __STRING_H
-#DEFINE __STRING_H
+#ifndef __STRING_H
+#define __STRING_H
 
 #include <bool.h>
 
@@ -114,4 +114,4 @@ char           *itos(int value, char *str);
  */
 int             stoi(char *str);
 
-#__STRING_H
+#endif //__STRING_H
