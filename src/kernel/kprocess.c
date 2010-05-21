@@ -12,6 +12,7 @@
 #include "kprocess.h"
 #include "kprocess_list.h"
 #include "kernel.h"
+#include "kprogram.h"
 
 static uint32_t next_pid = 0;
 
@@ -26,18 +27,39 @@ int32_t         get_next_pid(uint32_t * npid);
  * the ready queue, and ask for a long term scheduling.
  */
 uint32_t
-create_proc(char *name, pcb * p)
+create_proc(char *name, uint32_t prio, int32_t params[4])
 {
+  int             i;
+  prgm           *prog;
+  pcb            *p;
   if (name == NULL || p == NULL)
     return NULLPTR;
-  p = empty_space(&pready);
+  if (prio > MAX_PRI || prio < MIN_PRI)
+    return INVARG;
+  if (params == NULL)
+    return NULLPTR;
+  p = empty_space(&pready);     // search for an empty pcb in the ready queue
   if (p != NULL)
   {
     if (get_next_pid(&p->pid) == OMGROXX)
     {
-      strcpy(name, p->name);                            /** TODO: check the program exists */
-      p->pri = BAS_PRI;
-      p->supervisor = first(&prunning);
+      prog = search_prgm(name); // search for the specified program
+      if (prog == NULL)
+        return INVARG;
+
+      p->pri = prio;
+      p->supervisor = first(&prunning); /* The supervisor is the process that has requested 
+                                         * The create_proc function and then it is the
+                                         * process that is currently running.
+                                         */
+      for (i = 0; i < NSUPERVISED; i++)
+        p->supervised[i] = -1;
+      strcpy(name, p->name);
+      // init the program counter to the program address
+      p->registers.epc_reg = prog->address;
+      // init the parameters
+      for (i = 0; i < 4; i++)
+        p->registers.a_reg[i] = params[i];
       //p->registers = ;                      /** TODO: init the registers */
       p->wait = 0;
       p->error = OMGROXX;
@@ -51,7 +73,6 @@ create_proc(char *name, pcb * p)
   else
     /* No free space */
     return OUTOMEM;
-
 }
 
 /**
