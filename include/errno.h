@@ -7,8 +7,8 @@
  *
  */
 
-#IFNDEF __ERRNO_H
-#DEFINE __ERRNO_H
+#ifndef __ERRNO_H
+#define __ERRNO_H
 
 enum
 {
@@ -25,4 +25,4 @@ enum
   INVEID                        // Invalid ID
 };
 
-#__ERRNO_H
+#endif //__ERRNO_H
