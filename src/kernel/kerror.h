@@ -37,4 +37,4 @@ uint8_t         kgerror(void);
  */
 void            kserror(uint8_t e);
 
-#endif  /* __KERROR_H */
+#endif /* __KERROR_H */
