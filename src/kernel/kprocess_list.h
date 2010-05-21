@@ -10,6 +10,7 @@
 #ifndef __KPROCESS_LIST_H
 #define __KPROCESS_LIST_H
 
+#include <stdlib.h>
 #include "kprocess.h"
 
 #define MAX_PROC 10             /* max number of processes in a list. */
