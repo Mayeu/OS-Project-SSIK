@@ -13,4 +13,4 @@ void coquille(void);
 
 void split_input(char *str);
 
-#endif //__COQUILLEL_H
+#endif //__COQUILLE_H

@@ -9,6 +9,7 @@
 #include <coquille.h>
 #include <string.h>
 #include <stdio.h>
+#include <process.h>
 
 #define MAX_ARG 5
 
@@ -16,6 +17,7 @@ char command_arg[MAX_ARG][20];
 
 void coquille(void)
 {
+	int res;
 	char prompt_line[255];
 	char buffer[255];
 
@@ -29,31 +31,47 @@ void coquille(void)
 		fgets(buffer, 255);
 
 		// split the string
-		split_input(buffer, command_arg);
+		res = split_input(buffer, command_arg);
+
+		if (res != -1)
+		{
+			// fourchette
+		}
 
 	}
 
 }
 
-char* skipwhite(char* s)
+int split_arg(char *str, char data[MAX_ARG][20])
 {
-	while (isspace(*s)) s++;
-	return s;
-}
+    int i=0, cpt=0;
+    char *next;
+    str = trim(str);
 
-
-void split_arg(char *str, char data[MAX_ARG][20])
-{
-    int i=0;
-    char *next = skipwhite(str);
-
-    while ((next = strchr(str, ' ')) && (i < MAX_ARG-1))
+    while (*str != '\0')
     {
-        strcpyn(str, data[i++], next-str);
-        str += next-str;
-        str = skipwhite(str);
+        next = strchr(str, ' ');
+        if (next != NULL)
+        {
+            if (i < MAX_ARG)
+            {
+                strcpyn(str, data[i], next-str);
+                cpt++;
+            }
+            str = next;
+            str++;
+        }
+        else{
+            next = strchr(str, '\0');
+            if (i < MAX_ARG)
+            {
+                strcpy(str, data[i]);
+                cpt++;
+            }
+            str = next;
+        }
+        i++;
     }
 
-    next = strchr(str, '\0');
-    strcpy(str, data[i]);
+    return (i <= MAX_ARG) ? cpt : -1;
 }
