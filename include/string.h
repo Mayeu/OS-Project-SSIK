@@ -9,8 +9,6 @@
 #ifndef __STRING_H
 #define __STRING_H
 
-#include <bool.h>
-
  /**
  * \fn int strcpy(char *src, char *dest)
  * \brief Copy the string src to dest.
