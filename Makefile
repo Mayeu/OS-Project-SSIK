@@ -59,7 +59,7 @@ $(BUILD)/%.o: $(SRC_USER)/%.c
 test: $(OBJS_TEST) kernel user
 
 $(BUILD)/%.o: $(SRC_TEST)/%.c
-	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
+	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
 
 # link all the binarie
 link: $(BIN)/ssik indent kernel user test
