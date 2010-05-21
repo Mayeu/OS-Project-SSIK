@@ -104,7 +104,7 @@ is_empty(pls * ls)
 
   while (i < MAX_PROC)
   {
-  if (!is_empty(&ls[i]) return FALSE; i++;}
+  if (!pls_is_empty(&ls[i]) return FALSE; i++;}
       return TRUE;}
 
 /**

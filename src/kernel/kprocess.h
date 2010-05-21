@@ -158,12 +158,12 @@ uint8_t         rm_psupervisor(pcb * p, uint8_t pid);
 
 
 /**
- * \fn bool is_empty(pls *ls)
+ * \fn bool p_is_empty(pls *ls)
  * \brief Return whether the list is empty or not
  *
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool            is_empty(pcb * pcb);
+bool            p_is_empty(pcb * pcb);
 
 #endif

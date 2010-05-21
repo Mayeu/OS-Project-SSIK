@@ -27,7 +27,7 @@ void            kperror(char *error_msg);
  *
  * \return the error number
  */
-uint8_t         kgerror(void);
+uint32_t         kgerror(void);
 
  /**
  * \fn void kserror(int32_t e)
@@ -35,6 +35,6 @@ uint8_t         kgerror(void);
  *
  * \param e the error number to set
  */
-void            kserror(uint8_t e);
+void            kserror(uint32_t e);
 
 #endif /* __KERROR_H */
