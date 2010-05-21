@@ -36,6 +36,7 @@ LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 
 # Default indent, build the project and the doc
 all: indent kernel user link
+nolink: indent kernel user
 
 # Kernel building
 kernel: $(OBJS_KERNEL) indent
