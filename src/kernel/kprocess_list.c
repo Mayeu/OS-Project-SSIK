@@ -62,7 +62,7 @@ rm_from_pls(pcb * p, pls * ls)
   pcb            *to_rm;
   if (p == NULL || ls == NULL)
     return NULLPTR;
-  to_rm = search(p->pid, ls);
+  to_rm = search_pcb(p->pid, ls);
   if (to_rm == NULL)
     return FAILNOOB;
 
@@ -115,7 +115,7 @@ is_empty(pls * ls)
 }
 
 /**
- * \fn pcb* search(int pid, pls *ls)
+ * \fn pcb* search_pcb(int pid, pls *ls)
  * \brief search for a process in a list
  *
  * \param pid the pid ot the process to search
@@ -123,7 +123,7 @@ is_empty(pls * ls)
  * \return a pcb
  */
 pcb            *
-search(uint32_t pid, pls * ls)
+search_pcb(uint32_t pid, pls * ls)
 {
   int             i = 0;
   while (i < MAX_PROC)
@@ -146,16 +146,16 @@ pcb            *
 searchall(uint32_t pid)
 {
   pcb            *t;
-  t = search(pid, &pready);
+  t = search_pcb(pid, &pready);
   if (t != NULL)
     return t;
-  t = search(pid, &prunning);
+  t = search_pcb(pid, &prunning);
   if (t == NULL)
     return t;
-  t = search(pid, &pwaiting);
+  t = search_pcb(pid, &pwaiting);
   if (t == NULL)
     return t;
-  t = search(pid, &pterminate);
+  t = search_pcb(pid, &pterminate);
   if (t == NULL)
     return t;
   return NULL;
@@ -174,17 +174,17 @@ searchall(uint32_t pid)
 uint32_t
 move(uint32_t pid, pls * src, pls * dest)
 {
-	uint32_t ret;
+  uint32_t        ret;
   pcb            *src_space, *dest_space;
   if (src == NULL || dest == NULL)
     return NULLPTR;
-  if ((src_space = search(pid, src)) == NULL)
+  if ((src_space = search_pcb(pid, src)) == NULL)
     return FAILNOOB;
   if ((dest_space = empty_space(dest)) == NULL)
     return OUTOMEM;
   ret = copy_p(src_space, dest_space);
-	src_space->empty = TRUE;
-	return ret;
+  src_space->empty = TRUE;
+  return ret;
 }
 
 /**
