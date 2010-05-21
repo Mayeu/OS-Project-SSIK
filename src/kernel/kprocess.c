@@ -16,6 +16,7 @@ bool is_already_supervised(pcb *p, uint8_t pid);
 int32_t search_psupervised(pcb *p, int8_t pid);
 int8_t get_next_pid(uint8_t *npid);
  
+
 /**
  * initialize a pcb with all the needed value, add it to
  * the ready queue, and ask for a long term scheduling.
@@ -46,6 +47,7 @@ uint8_t create_proc(char *name, pcb * p)
 	else
 		/* No free space */
 		return OUTOFMEM;
+
 }
 
 /**
@@ -58,6 +60,7 @@ uint8_t rm_p(pcb * p)
 
   p->empty = TRUE;
   return OMGROXX;
+
 }
 
 /**
@@ -72,6 +75,7 @@ uint8_t chg_ppri(pcb * p, uint8_t pri)
 
   p->pri = pri;
   return OMGROXX;
+
 }
 
 /**
@@ -91,6 +95,7 @@ uint8_t get_pinfo(pcb * p, pcbinfo * pi)
 	pi->wait = p->wait;
 	pi->empty = p->empty;
 	return OMGROXX;
+
 }
 
 /**
@@ -112,11 +117,13 @@ uint8_t copy_p(pcb * psrc, pcb * pdest)
 	pdest->error = psrc->error;
 	pdest->empty = psrc->empty;
 	return OMGROXX;
+
 }
 
 /**
  * add a pid to the supervise list of a process;
  */
+
 uint8_t add_psupervised(pcb * p, uint8_t pid)
 {
 	if(p == NULL)
@@ -174,6 +181,7 @@ uint8_t rm_psupervisor(pcb * p, uint8_t pid)
 
 	p->supervisor = -1;
 	return OMGROXX;
+
 }
 
  /**
@@ -181,6 +189,7 @@ uint8_t rm_psupervisor(pcb * p, uint8_t pid)
  */
 // uint8_t add_psupervisor(pcb * p, uint8_t pid)
 // {
+
 // }
 
 /**
@@ -225,4 +234,5 @@ int8_t get_next_pid(uint8_t *npid)
 	}
 	*npid = next_pid;
 	return OMGROXX;
+
 }

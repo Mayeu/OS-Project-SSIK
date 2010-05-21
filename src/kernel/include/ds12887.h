@@ -3,10 +3,10 @@
  * @brief Structure for accessing the timer
  */
 
-#ifndef DS12887_H
-#define DS12887_H
+#ifndef __DS12887_H
+#define __DS12887_H
 
-#include "types.h"
+#include <types.h>
 typedef struct
 {
   struct
@@ -63,6 +63,6 @@ typedef struct
   uint8_t         non_volatile[114];
 } ds12887_t;
 
-#endif /*  */
+#endif /* __DS12887_H */
 
 /* end of file ds12887.h */
