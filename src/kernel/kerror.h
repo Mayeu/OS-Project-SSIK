@@ -9,7 +9,7 @@
 #ifndef __KERROR_H
 #define __KERROR_H
 
-#include <kernel.h>
+#include "kernel.h"
 #include <types.h>
 
  /**
