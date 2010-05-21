@@ -80,7 +80,7 @@ bool            pls_is_empty(pls * ls);
  * \param ls a pointer to the list
  * \return a pcb
  */
-pcb            *search(uint32_t pid, pls * ls);
+pcb            *search_pcb(uint32_t pid, pls * ls);
 
 /**
  * \fn pcb* searchall(int pid)

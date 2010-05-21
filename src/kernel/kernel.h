@@ -13,6 +13,9 @@
 
 #include "kprocess_list.h"
 
+/* Time of one clock tick */
+#define QUANTUM 100
+
 /*
  * global variable
  */
@@ -34,6 +37,8 @@ uint32_t        kerror;
  * @brief Global pointer to the current pcb error
  */
 uint32_t       *p_error;
+
+
 
 /*
  * Functions
