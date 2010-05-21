@@ -34,7 +34,7 @@ kperror(char *error_msg)
  /**
  * Return the error number
  */
-uint8_t
+uint32_t
 kgerror(void)
 {
   return *p_error;
@@ -44,7 +44,7 @@ kgerror(void)
  * Set the current error code.
  */
 void
-kserror(uint8_t e)
+kserror(uint32_t e)
 {
   *p_error = e;
 }
