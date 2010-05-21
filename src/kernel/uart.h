@@ -30,6 +30,13 @@ typedef struct
  * Functions
  */
 
+/**
+ * @brief initialize the uart
+ * @param void
+ * @return void
+ */
+void uart_init(void);
+
 #endif /* __UART_H */
 
 /* end of file uart.h */
