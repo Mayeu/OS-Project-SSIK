@@ -3,7 +3,7 @@
  * @brief Test a lot of stuff
  */
 
-#include "../test.h"
+#include "../kernel/test.h"
 
 void
 test()
