@@ -9,6 +9,7 @@
 #define __KERNEL_H
 
 #include <types.h>
+#include <stdio.h>
 
 #include "kprocess_list.h"
 
@@ -39,12 +40,12 @@ pls             pterminate;
 /**
  * @brief Kernel last error. Default to success
  */
-int32_t         kerror;
+uint32_t         kerror;
 
 /**
  * @brief Global pointer to the current pcb error
  */
-int32_t        *perror;
+uint32_t        *p_error;
 
 /*
  * Functions
