@@ -13,14 +13,9 @@
 #include <types.h>
 #include <registers.h>
 #include <stdlib.h>
+#include <process.h>
 
-
-#define MIN_PRI 0
-#define MAX_PRI 30
-#define BAS_PRI 15
 #define NSUPERVISED 40
-
-uint32_t        next_pid = 0;
 
 /**
  * \struct pcb

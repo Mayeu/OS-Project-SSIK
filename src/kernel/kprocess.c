@@ -13,6 +13,8 @@
 #include "kprocess_list.h"
 #include "kernel.h"
 
+static uint32_t next_pid = 0;
+
  /* Privates functions */
 bool            is_already_supervised(pcb * p, uint32_t pid);
 int32_t         search_psupervised(pcb * p, int32_t pid);
