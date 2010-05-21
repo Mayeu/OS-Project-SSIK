@@ -9,6 +9,7 @@
 #include "debug.h"
 #include "kernel.h"
 #include "kinout.h"
+#include "test.h"
 
 static registers_t regs;
 
@@ -32,6 +33,12 @@ kinit()
 
   /* Setup storage-area for saving registers on exception. */
   kset_registers(&regs);
+
+  /**
+	* Launch test
+	*/
+
+  test();
 
   /* Forever do nothing. */
   while (1);
