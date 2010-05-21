@@ -52,9 +52,10 @@ kprint(char *text)
  * @param void
  * @return void
  */
-void            kprintn(void)
+void
+kprintn(void)
 {
-	kprint_char("\n");
+  kprint_char('\n');
 }
 
 /**
@@ -66,7 +67,7 @@ void
 kprintln(char *text)
 {
   kprint(text);
-  kprint_char("\n");
+  kprint_char('\n');
 }
 
 /* end of file kinout.c */
