@@ -27,7 +27,12 @@ void
 kprint_char(char c)
 {
   while (!tty->lsr.field.thre); /* poll untill we can print */
-  tty->thr = c;                 /* print the char */
+  if (c == '\n')
+  {
+    tty->thr = '\r';            /* print the char */
+    while (!tty->lsr.field.thre);       /* poll untill we can print */
+  }
+  tty->thr = c;
 }
 
 /**
@@ -40,8 +45,6 @@ kprint(char *text)
 {
   while (*text != '\0')
   {
-    if (*text == '\n')
-      kprint_char('\r');
     kprint_char(*text);
     text++;
   }
