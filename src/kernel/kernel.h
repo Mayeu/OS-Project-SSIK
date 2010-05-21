@@ -17,25 +17,13 @@
  * global variable
  */
 
-/**
- * @brief List of ready process
+/*
+ * declarationo of the pcb lists
  */
-pls             pready;
-
-/**
- * @brief List of running process
- */
-pls             prunning;
-
-/**
- * @brief List of waiting process
- */
-pls             pwaiting;
-
-/**
- * @brief List of terminate process
- */
-pls             pterminate;
+pls             pready; /*!< @brief List of ready process */
+pls             prunning;/*!< @brief List of running process */
+pls             pwaiting;/*!< @brief List of waiting process */
+pls             pterminate;/*!< @brief List of terminate process */
 
 /**
  * @brief Kernel last error. Default to success
