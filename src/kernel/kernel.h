@@ -40,12 +40,12 @@ pls             pterminate;
 /**
  * @brief Kernel last error. Default to success
  */
-uint32_t         kerror;
+uint32_t        kerror;
 
 /**
  * @brief Global pointer to the current pcb error
  */
-uint32_t        *p_error;
+uint32_t       *p_error;
 
 /*
  * Functions
