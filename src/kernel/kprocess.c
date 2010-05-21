@@ -149,6 +149,7 @@ add_psupervised(pcb * p, uint32_t pid)
     else
       return FAILNOOB;
   }
+  return FAILNOOB;
 }
 
 /**
@@ -195,14 +196,6 @@ rm_psupervisor(pcb * p, uint32_t pid)
   return OMGROXX;
 
 }
-
- /**
- * add a pid to the supervisor list of a process;
- */
-// uint8_t add_psupervisor(pcb * p, uint8_t pid)
-// {
-
-// }
 
 /**
  * Return whether the pcb is empty or not.

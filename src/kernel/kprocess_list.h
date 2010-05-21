@@ -33,7 +33,7 @@ typedef struct
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t         create_pls(pls * ls);
+uint32_t        create_pls(pls * ls);
 
 /**
  * \fn int rm_pls(pls *ls)
@@ -42,7 +42,7 @@ uint8_t         create_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t         rm_pls(pls * ls);
+uint32_t        rm_pls(pls * ls);
 
 /**
  * \fn int rm_from_pls(pcb *p, pls *ls)
@@ -52,7 +52,7 @@ uint8_t         rm_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t         rm_from_pls(pcb * p, pls * ls);
+uint32_t        rm_from_pls(pcb * p, pls * ls);
 
 /**
  * \fn pcb* empty_space(pls *ls)
@@ -80,7 +80,7 @@ bool            pls_is_empty(pls * ls);
  * \param ls a pointer to the list
  * \return a pcb
  */
-pcb            *search(uint8_t pid, pls * ls);
+pcb            *search(uint32_t pid, pls * ls);
 
 /**
  * \fn pcb* searchall(int pid)
@@ -89,7 +89,7 @@ pcb            *search(uint8_t pid, pls * ls);
  * \param pid the pid ot the process to search
  * \return a pcb
  */
-pcb            *searchall(uint8_t pid);
+pcb            *searchall(uint32_t pid);
 
 /**
  * \fn int move(int pid, pls *src, pls *dest)
@@ -101,7 +101,7 @@ pcb            *searchall(uint8_t pid);
  * \param dest the destination list
  * \return an error code
  */
-uint8_t         move(uint8_t pid, pls * src, pls * dest);
+uint32_t        move(uint32_t pid, pls * src, pls * dest);
 
 /**
  * \fn int sort(pls *ls)
@@ -110,7 +110,7 @@ uint8_t         move(uint8_t pid, pls * src, pls * dest);
  * \param ls the list to sort
  * \return an error code
  */
-uint8_t         sort(pls * ls);
+uint32_t        sort(pls * ls);
 
 /**
  * \fn int16_t first(pls *ls)
@@ -119,6 +119,6 @@ uint8_t         sort(pls * ls);
  * \param ls the list
  * \return the pid or an error code
  */
-int16_t         first(pls * ls);
+int32_t         first(pls * ls);
 
 #endif

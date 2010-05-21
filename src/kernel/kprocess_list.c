@@ -8,6 +8,7 @@
  */
 
 #include <errno.h>
+#include "kernel.h"
 #include "kprocess_list.h"
 
 /**
@@ -41,9 +42,9 @@ rm_pls(pls * ls)
   if (ls == NULL)
     return NULLPTR;
 
-  for (i = 0, i < MAX_PROC; i++)
-    rm_p(&ls[i]);
-  current = NULL;
+  for (i = 0; i < MAX_PROC; i++)
+    rm_p(&ls->ls[i]);
+  ls->current = NULL;
   return OMGROXX;
 }
 
@@ -61,7 +62,8 @@ rm_from_pls(pcb * p, pls * ls)
   pcb            *to_rm;
   if (p == NULL || ls == NULL)
     return NULLPTR;
-  if (to_rm = search(p->pid, ls) == NULL)
+  to_rm = search(p->pid, ls);
+  if (to_rm == NULL)
     return FAILNOOB;
 
   to_rm->empty = TRUE;
@@ -81,12 +83,12 @@ empty_space(pls * ls)
   int             i = 0;
   if (ls == NULL)
     return NULL;
-  while (ls[i]->empty == FALSE && i < MAX_PROC)
+  while (ls->ls[i].empty == FALSE && i < MAX_PROC)
     i++;
   if (i == MAX_PROC)
     return NULL;
   else
-    return &ls[i];
+    return &ls->ls[i];
 }
 
 /**
@@ -105,8 +107,12 @@ is_empty(pls * ls)
 
   while (i < MAX_PROC)
   {
-  if (!pls_is_empty(&ls[i]) return FALSE; i++;}
-      return TRUE;}
+    if (!p_is_empty(&ls->ls[i]))
+      return FALSE;
+    i++;
+  }
+  return TRUE;
+}
 
 /**
  * \fn pcb* search(int pid, pls *ls)
@@ -116,12 +122,18 @@ is_empty(pls * ls)
  * \param ls a pointer to the list
  * \return a pcb
  */
-      pcb * search(uint8_t pid, pls * ls)
-      {
-      int i = 0; while (i < MAX_PROC)
-      {
-      if (ls->ls[i].pid == pid) return &ls->ls[i]; i++;}
-      return NULL;}
+pcb            *
+search(uint32_t pid, pls * ls)
+{
+  int             i = 0;
+  while (i < MAX_PROC)
+  {
+    if (ls->ls[i].pid == pid)
+      return &ls->ls[i];
+    i++;
+  }
+  return NULL;
+}
 
 /**
  * \fn pcb* searchall(int pid)
@@ -130,16 +142,24 @@ is_empty(pls * ls)
  * \param pid the pid ot the process to search
  * \return a pcb
  */
-      pcb * searchall(uint8_t pid)
-      {
-      pcb * t;
-      if (t = search(pid, pready) != NULL)
-      return t;
-      if (t = search(pid, prunning) == NULL)
-      return t;
-      if (t = search(pid, pwaiting) == NULL)
-      return t;
-      if (t = search(pid, pterminate) == NULL) return t; return NULL;}
+pcb            *
+searchall(uint32_t pid)
+{
+  pcb            *t;
+  t = search(pid, &pready);
+  if (t != NULL)
+    return t;
+  t = search(pid, &prunning);
+  if (t == NULL)
+    return t;
+  t = search(pid, &pwaiting);
+  if (t == NULL)
+    return t;
+  t = search(pid, &pterminate);
+  if (t == NULL)
+    return t;
+  return NULL;
+}
 
 /**
  * \fn int move(int pid, pls *src, pls *dest)
@@ -151,15 +171,18 @@ is_empty(pls * ls)
  * \param dest the destination list
  * \return an error code
  */
-      uint8_t move(uint8_t pid, pls * src, pls * dest)
-      {
-      pcb * src_space, *dest_space;
-      if (src == NULL || dest == NULL)
-      return NULLPTR;
-      if ((src_space = search(pid, src)) == NULL)
-      return FAILNOOB;
-      if ((dest_space = empty_space(dest)) == NULL)
-      return OUTOMEM; return copy(src_space, dest_space);}
+uint32_t
+move(uint32_t pid, pls * src, pls * dest)
+{
+  pcb            *src_space, *dest_space;
+  if (src == NULL || dest == NULL)
+    return NULLPTR;
+  if ((src_space = search(pid, src)) == NULL)
+    return FAILNOOB;
+  if ((dest_space = empty_space(dest)) == NULL)
+    return OUTOMEM;
+  return copy_p(src_space, dest_space);
+}
 
 /**
  * \fn int sort(pls *ls)
@@ -168,23 +191,39 @@ is_empty(pls * ls)
  * \param ls the list to sort
  * \return an error code
  */
-      uint8_t sort(pls * ls)
+uint32_t
+sort(pls * ls)
+{
+  bool            ordered = FALSE;
+  int             i;
+  int             size = MAX_PROC;
+  pcb             tmp;
+  if (ls == NULL)
+    return NULLPTR;
+  while (!ordered)
+  {
+    ordered = TRUE;
+    for (i = 0; i < size; i++)
+      if (ls->ls[i].pri > ls->ls[i + 1].pri)
       {
-      bool ordered = FALSE;
-      int i; int size = MAX_PROC; pcb tmp; while (!ordered)
-      {
-      ordered = true; for (i = 0; i < size; i++) if (tab[i] > tab[i + 1])
-      {
-      // Swap the two pcb
-      copy_p(&(ls->ls[i]), &tmp);
-      copy_p(&(ls->ls[i + 1]), &(ls->ls[i]));
-      copy_p(&tmp, &(ls->ls[i + 1])); ordered = false;}
-      size--;}
+        // Swap the two pcb
+        copy_p(&(ls->ls[i]), &tmp);
+        copy_p(&(ls->ls[i + 1]), &(ls->ls[i]));
+        copy_p(&tmp, &(ls->ls[i + 1]));
+        ordered = FALSE;
       }
+    size--;
+  }
+  return OMGROXX;
+}
 
 /**
  * return the pid of the first pcb in the list.
  */
-      int16_t first(pls * ls)
-      {
-      if (ls == NULL) return NULLPTR; return ls->ls[0].pid;}
+int32_t
+first(pls * ls)
+{
+  if (ls == NULL)
+    return NULLPTR;
+  return ls->ls[0].pid;
+}
