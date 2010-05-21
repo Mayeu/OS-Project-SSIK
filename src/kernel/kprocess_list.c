@@ -174,6 +174,7 @@ searchall(uint32_t pid)
 uint32_t
 move(uint32_t pid, pls * src, pls * dest)
 {
+	uint32_t ret;
   pcb            *src_space, *dest_space;
   if (src == NULL || dest == NULL)
     return NULLPTR;
@@ -181,7 +182,9 @@ move(uint32_t pid, pls * src, pls * dest)
     return FAILNOOB;
   if ((dest_space = empty_space(dest)) == NULL)
     return OUTOMEM;
-  return copy_p(src_space, dest_space);
+  ret = copy_p(src_space, dest_space);
+	src_space->empty = TRUE;
+	return ret;
 }
 
 /**
