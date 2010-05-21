@@ -63,13 +63,13 @@ uint8_t         rm_from_pls(pcb * p, pls * ls);
 pcb            *empty_space(pls * ls);
 
 /**
- * \fn bool is_empty(pls *ls)
+ * \fn bool pls_is_empty(pls *ls)
  * \brief Return whether the list is empty or not
  *
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool            is_empty(pls * ls);
+bool            pls_is_empty(pls * ls);
 
 /**
  * \fn pcb* search(int pid, pls *ls)

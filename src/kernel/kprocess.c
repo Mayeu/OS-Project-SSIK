@@ -205,7 +205,7 @@ rm_psupervisor(pcb * p, uint8_t pid)
  * Return whether the pcb is empty or not.
  */
 bool
-is_empty(pcb * pcb)
+p_is_empty(pcb * pcb)
 {
   if (pcb == NULL)
     FALSE;
