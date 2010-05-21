@@ -3,7 +3,9 @@
  * @brief Implementation of function to print in tty and the malta
  */
 
-#include <types>
+#include <types.h>
+#include "malta.h"
+
 #include "kinout.h"
 
 /**
@@ -16,6 +18,17 @@ kmaltaprint(uint32_t word)
 {
 }
 
+/**
+ * @brief Print a char on the tty
+ * @param the string
+ * @return void
+ */
+void
+kprint_char(char c)
+{
+  while (!tty->lsr.field.thre); /* poll untill we can print */
+  tty->thr = c;                 /* print the char */
+}
 
 /**
  * @brief Print a string on the tty
@@ -23,6 +36,15 @@ kmaltaprint(uint32_t word)
  * @return void
  */
 void
-kprint(char print_array[])
+kprint(char *text)
 {
+  while (*text == '\0')
+  {
+    if (*text == '\n')
+      kprint_char('\r');
+    kprint_char(*text);
+    text++;
+  }
 }
+
+/* end of file kinout.c */

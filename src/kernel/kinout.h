@@ -16,11 +16,18 @@
 void            kmaltaprint(uint32_t word);
 
 /**
+ * @brief Print a char on the tty
+ * @param the string
+ * @return void
+ */
+void            kprint_char(char c);
+
+/**
  * @brief Print a string on the tty
  * @param the string
  * @return void
  */
-void            kprint(char print_array[]);
+void            kprint(char *text);
 
 #endif
 
