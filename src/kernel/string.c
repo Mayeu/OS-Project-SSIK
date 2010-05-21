@@ -8,6 +8,7 @@
 
 #include <string.h>
 #include <errno.h>
+#include <stdlib.h>
 
  /**
  * Copy the string src to dest.
@@ -27,7 +28,7 @@ strcpy(char *src, char *dst)
   }
   dst[i] = '\0';
 
-  return SUCCESS;
+  return OMGROXX;
 }
 
  /**
@@ -48,7 +49,7 @@ strcpyn(char *src, char *dst, int length)
   }
   dst[i] = '\0';
 
-  return SUCCESS;
+  return OMGROXX;
 }
 
  /**
@@ -122,7 +123,7 @@ char           *
 strchr(char *str, char c)
 {
   if (str == NULL)
-    return NULLPTR;
+    return NULL;
 
   while (*str && *str != c)
     str++;
@@ -142,7 +143,7 @@ strcat(char *dst, char *src)
   char           *d = dst;
 
   if ((dst == NULL) || (src == NULL))
-    return NULLPTR;
+    return 0;
 
   while (*d)
     ++d;
@@ -173,7 +174,7 @@ itos(int value, char *str)
   int             i = 1, r;
 
   if (str == NULL)
-    return NULLPTR;
+    return 0;
 
   if (value < 0)
   {
