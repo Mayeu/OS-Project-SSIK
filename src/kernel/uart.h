@@ -22,8 +22,8 @@
 
 typedef struct
 {
-	char buffer[FIFO_SIZE];
-	uint32_t length;
+  char            buffer[FIFO_SIZE];
+  uint32_t        length;
 } fifo;
 
 /**
@@ -33,4 +33,3 @@ typedef struct
 #endif /* __UART_H */
 
 /* end of file uart.h */
-
