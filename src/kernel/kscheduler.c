@@ -36,3 +36,9 @@ timer_exception()
 
   schedule();
 }
+
+void
+schedule()
+{
+
+}
