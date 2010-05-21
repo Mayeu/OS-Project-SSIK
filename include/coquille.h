@@ -9,8 +9,12 @@
 #ifndef __COQUILLE_H
 #define __COQUILLE_H
 
-void coquille(void);
 
-void split_input(char *str);
+#define MAX_ARG 5
+#define MAX_CHAR 20
+
+void            coquille(void);
+
+int             split_input(char *str, char[MAX_ARG][MAX_CHAR]);
 
 #endif //__COQUILLE_H

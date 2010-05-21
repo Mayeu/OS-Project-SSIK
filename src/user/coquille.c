@@ -11,67 +11,69 @@
 #include <stdio.h>
 #include <process.h>
 
-#define MAX_ARG 5
 
-char command_arg[MAX_ARG][20];
+char            command_arg[MAX_ARG][MAX_CHAR];
 
-void coquille(void)
+void
+coquille(void)
 {
-	int res;
-	char prompt_line[255];
-	char buffer[255];
+  int             res;
+  char            prompt_line[255];
+  char            buffer[255];
 
-	strcpy(prompt_line, "coquille> ");
+  strcpy(prompt_line, "coquille> ");
 
-	print(prompt_line);
+  print(prompt_line);
 
-	while (1)
-	{
-		// waiting for the user to enter a command
-		fgets(buffer, 255);
+  while (1)
+  {
+    // waiting for the user to enter a command
+    //fgets(buffer, 255);
 
-		// split the string
-		res = split_input(buffer, command_arg);
+    // split the string
+    res = split_input(buffer, command_arg);
 
-		if (res != -1)
-		{
-			// fourchette
-		}
+    if (res != -1)
+    {
+      // fourchette
+    }
 
-	}
+  }
 
 }
 
-int split_arg(char *str, char data[MAX_ARG][20])
+int
+split_arg(char *str, char data[MAX_ARG][MAX_CHAR])
 {
-    int i=0, cpt=0;
-    char *next;
-    str = trim(str);
+  int             i = 0, cpt = 0;
+  char           *next;
+  str = trim(str);
 
-    while (*str != '\0')
+  while (*str != '\0')
+  {
+    next = strchr(str, ' ');
+    if (next != NULL)
     {
-        next = strchr(str, ' ');
-        if (next != NULL)
-        {
-            if (i < MAX_ARG)
-            {
-                strcpyn(str, data[i], next-str);
-                cpt++;
-            }
-            str = next;
-            str++;
-        }
-        else{
-            next = strchr(str, '\0');
-            if (i < MAX_ARG)
-            {
-                strcpy(str, data[i]);
-                cpt++;
-            }
-            str = next;
-        }
-        i++;
+      if (i < MAX_ARG)
+      {
+        strcpyn(str, data[i], next - str);
+        cpt++;
+      }
+      str = next;
+      str++;
     }
+    else
+    {
+      next = strchr(str, '\0');
+      if (i < MAX_ARG)
+      {
+        strcpy(str, data[i]);
+        cpt++;
+      }
+      str = next;
+    }
+    i++;
+  }
 
-    return (i <= MAX_ARG) ? cpt : -1;
+  return (i <= MAX_ARG) ? cpt : -1;
 }

@@ -122,7 +122,7 @@ int             stoi(char *str);
  * \param str the string to clean
  * \return A pointer to the resulting null-terminated string, same as parameter str
  */
-char *trim(char *str);
+char           *trim(char *str);
 
 
 #endif //__STRING_H
