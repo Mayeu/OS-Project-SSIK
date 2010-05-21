@@ -69,7 +69,7 @@ typedef struct
  * \return the pid of the newly created process(>0), or an error (<0)
  */
 
-uint32_t        create_proc(char *name, pcb * p);
+uint32_t        create_proc(char *name, uint32_t prio, int32_t params[4]);
 
 
 /**

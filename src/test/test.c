@@ -4,8 +4,9 @@
  */
 
 #include "../kernel/test.h"
-
 #include "test_string.c"
+#include "test_kprocess.c"
+//#include "test_kprocess_list.c"
 
 void
 test()
@@ -13,5 +14,10 @@ test()
   /*
    * Call  your test here
    */
+
 	test_string();
+
+	test_kprocess();
+	//test_kprocess_list();
+
 }
