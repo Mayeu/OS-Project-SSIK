@@ -1,5 +1,11 @@
 add-directory targets/mips-simple
 run-command-file mips-simple-common.simics
 
+gdb-remote port=10000
+
 # Avoid printing MALTA info
 malta.log-level 0
+
+magic-break-enable
+
+#c
