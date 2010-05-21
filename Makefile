@@ -7,6 +7,7 @@ PROJECT_DIR=.
 SRC=src
 SRC_KERNEL=$(PROJECT_DIR)/$(SRC)/kernel
 SRC_USER=$(PROJECT_DIR)/$(SRC)/user
+SRC_TEST=$(PROJECT_DIR)/$(SRC)/test
 
 # bin directory
 BIN=bin
@@ -15,6 +16,7 @@ BUILD=build
 # Object files for the examples
 OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kinout.o kerror.o kprocess.o kprocess_list.o)
 OBJS_USER= $(addprefix $(BUILD)/, string.o)
+OBJS_TEST= $(addprefix $(BUILD)/, test.o)
 
 # GCC prefix
 MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
@@ -35,8 +37,8 @@ CC=$(MIPS_PREFIX)-gcc
 LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 
 # Default indent, build the project and the doc
-all: indent kernel user link
-nolink: indent kernel user
+all: indent kernel user test link
+nolink: indent kernel user test
 
 # Kernel building
 kernel: $(OBJS_KERNEL) indent
@@ -52,11 +54,17 @@ user: $(OBJS_USER) kernel
 
 $(BUILD)/%.o: $(SRC_USER)/%.c
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
+	
+# Test building
+test: $(OBJS_TEST) kernel user
+
+$(BUILD)/%.o: $(SRC_TEST)/%.c
+	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
 
 # link all the binarie
-link: $(BIN)/ssik indent kernel user
+link: $(BIN)/ssik indent kernel user test
 
-$(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER)
+$(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER) $(OBJS_TEST)
 	$(LD) $(ARCH) -o $@ $^
 
 # Run the program
