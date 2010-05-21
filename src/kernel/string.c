@@ -8,7 +8,6 @@
 
 #include <string.h>
 #include <errno.h>
-#include <stdlib.h>
 
  /**
  * Copy the string src to dest.
