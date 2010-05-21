@@ -19,9 +19,7 @@ static registers_t regs;
 void
 kinit()
 {
-  char           *hello;
-
-  hello = "Hello World";
+  char            hello[] = "Hello World\n\0";
 
   /* Set UART word length ('3' meaning 8 bits).
    * Do this early to enable debug printouts (e.g. kdebug_print).
