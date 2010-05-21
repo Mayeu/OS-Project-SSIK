@@ -4,11 +4,10 @@
  * \author Adrien Forest
  * \version 0.1
  * \date 24 Avril 2010
- *
  */
 
-#IFNDEF __STDIO_H
-#DEFINE __STDIO_H
+#ifndef __STDIO_H
+#define __STDIO_H
 
  /**
  * \fn int printf(char *str)
@@ -51,4 +50,4 @@ been readen or either a newline or a the End-of-File is reached, whichever comes
  */
 int             gets(char *str, int num);
 
-#__STDIO_H
+#endif //__STDIO_H

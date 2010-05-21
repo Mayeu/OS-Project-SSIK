@@ -12,7 +12,12 @@ typedef signed char int8_t;
 typedef signed short int16_t;
 typedef signed int int32_t;
 
-enum bool { FALSE, TRUE };
+#ifndef __NULL_TYPES_
+#define __NULL_TYPES_
+
+#define NULL ((void *)0)
+
+#endif /* __NULL_TYPES_ */
 
 #endif /*  */
 

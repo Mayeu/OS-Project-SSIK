@@ -7,12 +7,13 @@
  *
  */
 
-#IFNDEF __KPROCESS_LIST_H
-#DEFINE __KPROCESS_LIST_H
+#ifndef __KPROCESS_LIST_H
+#define __KPROCESS_LIST_H
 
+#include <stdlib.h>
 #include "kprocess.h"
 
-#DEFINE MAX_PROC 10             /* max number of processes in a list. */
+#define MAX_PROC 10             /* max number of processes in a list. */
 
 /**
  * \struct pls
@@ -32,7 +33,7 @@ typedef struct
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             create_pls(pls * ls);
+uint8_t         create_pls(pls * ls);
 
 /**
  * \fn int rm_pls(pls *ls)
@@ -41,7 +42,7 @@ uint8_t             create_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_pls(pls * ls);
+uint8_t         rm_pls(pls * ls);
 
 /**
  * \fn int rm_from_pls(pcb *p, pls *ls)
@@ -51,7 +52,7 @@ uint8_t             rm_pls(pls * ls);
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t             rm_from_pls(pcb * p, pls * ls);
+uint8_t         rm_from_pls(pcb * p, pls * ls);
 
 /**
  * \fn pcb* empty_space(pls *ls)
@@ -63,13 +64,13 @@ uint8_t             rm_from_pls(pcb * p, pls * ls);
 pcb            *empty_space(pls * ls);
 
 /**
- * \fn bool is_empty(pls *ls)
+ * \fn bool pls_is_empty(pls *ls)
  * \brief Return whether the list is empty or not
  *
  * \param ls a pointer to the list
  * \return a boolean
  */
-bool            is_empty(pcb * p);
+bool            pls_is_empty(pls * ls);
 
 /**
  * \fn pcb* search(int pid, pls *ls)
@@ -79,7 +80,7 @@ bool            is_empty(pcb * p);
  * \param ls a pointer to the list
  * \return a pcb
  */
-pcb            *search(int pid, pls * ls);
+pcb            *search(uint8_t pid, pls * ls);
 
 /**
  * \fn pcb* searchall(int pid)
@@ -88,7 +89,7 @@ pcb            *search(int pid, pls * ls);
  * \param pid the pid ot the process to search
  * \return a pcb
  */
-pcb            *searchall(int pid);
+pcb            *searchall(uint8_t pid);
 
 /**
  * \fn int move(int pid, pls *src, pls *dest)
@@ -100,7 +101,7 @@ pcb            *searchall(int pid);
  * \param dest the destination list
  * \return an error code
  */
-uint8_t             move(int pid, pls * src, pls * dest);
+uint8_t         move(uint8_t pid, pls * src, pls * dest);
 
 /**
  * \fn int sort(pls *ls)
@@ -109,4 +110,15 @@ uint8_t             move(int pid, pls * src, pls * dest);
  * \param ls the list to sort
  * \return an error code
  */
-uint8_t             sort(pls * ls);
+uint8_t         sort(pls * ls);
+
+/**
+ * \fn int16_t first(pls *ls)
+ * \brief return the pid of the first pcb in the list.
+ *
+ * \param ls the list
+ * \return the pid or an error code
+ */
+int16_t         first(pls * ls);
+
+#endif

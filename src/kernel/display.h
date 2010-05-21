@@ -3,10 +3,10 @@
  * @brief Structure to access the Malta lcd screen
  */
 
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef __DISPLAY_H
+#define __DISPLAY_H
 
-#include "types.h"
+#include <types.h>
 
 /* Display driver for 8 digit LED on Malta board       */
 /* (See pages 14-16 of the Malta board's User's Guide) */
@@ -44,6 +44,6 @@ typedef struct
   } asciipos[8];
 } display_t;
 
-#endif /*  */
+#endif /* __DISPLAY_H */
 
 /* end of file display.h */

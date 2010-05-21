@@ -4,12 +4,12 @@
  *        malta screen.
  */
 
-#ifndef MALTA_H
-#define MALTA_H
+#ifndef __MALTA_H
+#define __MALTA_H
 
-#include "mips4kc.h"
-#include "ds12887.h"
-#include "ns16550.h"
+#include <mips4kc.h>
+#include <ds12887.h>
+#include <ns16550.h>
 #include "display.h"
 
 #define IO_BASE1 0xb8000000

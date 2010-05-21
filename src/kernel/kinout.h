@@ -3,24 +3,24 @@
  * @brief Offer function to print in the tty and malta, and to get the stdin from the tty
  */
 
-#ifndef KINOUT_H
-#define KINOUT_H
+#ifndef __KINOUT_H
+#define __KINOUT_H
 
-#include <types.d>
+#include <types.h>
 
 /**
  * @brief Display a value on the Malta display.
  * @param an uint32_t to print
  * @return void
  */
-static void     kmaltaprint(uint32_t word);
+void     kmaltaprint(uint32_t word);
 
 /**
  * @brief Print a string on the tty
  * @param the string
  * @return void
  */
-static void     kprint(char print_array[]);
+void     kprint(char print_array[]);
 
 #endif
 

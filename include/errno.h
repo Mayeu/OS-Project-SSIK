@@ -7,20 +7,22 @@
  *
  */
 
-#IFNDEF __ERRNO_H
-#DEFINE __ERRNO_H
+#ifndef __ERRNO_H
+#define __ERRNO_H
 
-enum {
-	SUCCESS, // No error occured
-	OUTOMEM, // Out of memory
-	UNKNPID, // Unknown pid (process identifier)
-	UNKNMID, // Unknown mid (message identifier)
-	INVPRI,  // Invalid priority
-	OUTOPID, // Out of pid (number of processes is limited)
-	OUTOMID, // Out of mid (number of messages is limited)
-	NULLPTR, // Null pointer error
-	EINVALL, // Invalid argument
-	INVEID
+enum
+{
+  OMGROXX,                      // No error occured
+  FAILNOOB,                     // General error
+  OUTOMEM,                      // Out of memory
+  UNKNPID,                      // Unknown pid (process identifier)
+  UNKNMID,                      // Unknown mid (message identifier)
+  INVPRI,                       // Invalid priority
+  OUTOPID,                      // Out of pid (number of processes is limited)
+  OUTOMID,                      // Out of mid (number of messages is limited)
+  NULLPTR,                      // Null pointer error
+  INVARG,                       // Invalid argument
+  INVEID                        // Invalid ID
 };
 
-#__ERRNO_H
+#endif //__ERRNO_H

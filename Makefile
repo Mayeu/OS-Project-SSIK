@@ -13,7 +13,7 @@ BIN=bin
 BUILD=build
 
 # Object files for the examples
-OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o)
+OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kprocess.o kprocess_list.o)
 OBJS_USER=
 
 # GCC prefix

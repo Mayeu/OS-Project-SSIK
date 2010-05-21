@@ -7,6 +7,7 @@
 #include "asm.h"
 #include "malta.h"
 #include "debug.h"
+#include "kernel.h"
 
 static registers_t regs;
 
