@@ -13,7 +13,7 @@ BIN=bin
 BUILD=build
 
 # Object files for the examples
-OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kprocess.o kprocess_list.o)
+OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o)
 OBJS_USER=
 
 # GCC prefix
@@ -27,7 +27,7 @@ MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
 ARCH=-EL -G0 -mips32
 
 # Other gcc flags
-CFLAGS	+= -ggdb -Wall -Werror -I$(PROJECT_DIR)/include
+CFLAGS	+= -ggdb -Wall -Werror -fno-builtin -I$(PROJECT_DIR)/include
 KCFLAGS	+= $(CFLAGS) -I$(PROJECT_DIR)/$(SRC_KERNEL)/include
 
 # Compiler and linker commands

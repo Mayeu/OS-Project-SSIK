@@ -16,7 +16,7 @@
  /* Privates functions */
 bool            is_already_supervised(pcb * p, uint32_t pid);
 int32_t         search_psupervised(pcb * p, int32_t pid);
-int32_t          get_next_pid(uint32_t * npid);
+int32_t         get_next_pid(uint32_t * npid);
 
 
 /**
@@ -28,7 +28,7 @@ create_proc(char *name, pcb * p)
 {
   if (name == NULL || p == NULL)
     return NULLPTR;
-	p = empty_space(&pready);
+  p = empty_space(&pready);
   if (p != NULL)
   {
     if (get_next_pid(&p->pid) == OMGROXX)
@@ -88,7 +88,7 @@ chg_ppri(pcb * p, uint32_t pri)
 uint32_t
 get_pinfo(pcb * p, pcbinfo * pi)
 {
-	uint32_t i;
+  uint32_t        i;
   if (p == NULL || pi == NULL)
     return NULLPTR;
 
@@ -110,7 +110,7 @@ get_pinfo(pcb * p, pcbinfo * pi)
 uint32_t
 copy_p(pcb * psrc, pcb * pdest)
 {
- uint32_t i;
+  uint32_t        i;
   if (psrc == NULL || pdest == NULL)
     return NULLPTR;
 
