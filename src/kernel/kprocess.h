@@ -12,6 +12,7 @@
 
 #include <types.h>
 #include <registers.h>
+#include <stdlib.h>
 
 
 #define MIN_PRI 0
@@ -19,7 +20,7 @@
 #define BAS_PRI 15
 #define NSUPERVISED 40
 
-uint8_t         next_pid = 0;
+uint32_t        next_pid = 0;
 
 /**
  * \struct pcb
@@ -30,15 +31,15 @@ uint8_t         next_pid = 0;
  */
 typedef struct
 {
-  uint8_t         pid;          /*!< Process identifier. */
+  uint32_t        pid;          /*!< Process identifier. */
   char            name[20];     /*!< Process name. */
-  uint8_t         pri;          /*!< Process priority. */
-  int16_t         supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  int16_t         supervisor;   /*!< supervisor. */
+  uint32_t        pri;          /*!< Process priority. */
+  int32_t         supervised[NSUPERVISED];      /*!< List of supervised processes. */
+  int32_t         supervisor;   /*!< supervisor. */
   registers_t     registers;    /*!< Some data that has to be saved between
                                    a context switch. */
   uint32_t        wait;
-  uint8_t         error;        /*!< Last error the process encountered. */
+  uint32_t        error;        /*!< Last error the process encountered. */
   bool            empty;
 } pcb;
 
@@ -51,9 +52,9 @@ typedef struct
  */
 typedef struct
 {
-  uint8_t         pid;          /*!< Process identifier. */
+  uint32_t        pid;          /*!< Process identifier. */
   char            name[20];     /*!< Process name. */
-  uint8_t         pri;          /*!< Process priority. */
+  uint32_t        pri;          /*!< Process priority. */
   uint32_t        supervised[NSUPERVISED];      /*!< List of supervised processes. */
   uint32_t        supervisor[NSUPERVISED];      /*!< List of supervisor processes. */
   uint32_t        wait;
@@ -73,7 +74,7 @@ typedef struct
  * \return the pid of the newly created process(>0), or an error (<0)
  */
 
-uint8_t         create_proc(char *name, pcb * p);
+uint32_t        create_proc(char *name, pcb * p);
 
 
 /**
@@ -84,7 +85,7 @@ uint8_t         create_proc(char *name, pcb * p);
  * \return an error code
  */
 
-uint8_t         rm_p(pcb * p);
+uint32_t        rm_p(pcb * p);
 
 /**
  * \fn int chg_ppri(pcb *p, int pri)
@@ -95,7 +96,7 @@ uint8_t         rm_p(pcb * p);
  * \return an error code
  */
 
-uint8_t         chg_ppri(pcb * p, uint8_t pri);
+uint32_t        chg_ppri(pcb * p, uint32_t pri);
 
 /**
  * \fn int get_pinfo(pcb *p, pcbinfo *pi)
@@ -105,7 +106,7 @@ uint8_t         chg_ppri(pcb * p, uint8_t pri);
  * \param pi the pointer to the pcbinfo
  * \return an error code
  */
-uint8_t         get_pinfo(pcb * p, pcbinfo * pi);
+uint32_t        get_pinfo(pcb * p, pcbinfo * pi);
 
 /**
  * \fn int copy_p(pcb *psrc, pcb *pdest)
@@ -115,7 +116,7 @@ uint8_t         get_pinfo(pcb * p, pcbinfo * pi);
  * \param pdest the destination pcb
  * \return an error code
  */
-uint8_t         copy_p(pcb * psrc, pcb * pdest);
+uint32_t        copy_p(pcb * psrc, pcb * pdest);
 /**
  * \fn int add_psupervise(pcb *p, int pid)
  * \brief add a pid to the supervise list of a process
@@ -124,7 +125,7 @@ uint8_t         copy_p(pcb * psrc, pcb * pdest);
  * \param pid the pid to add
  * \return an error code
  */
-uint8_t         add_psupervised(pcb * p, uint8_t pid);
+uint32_t        add_psupervised(pcb * p, uint32_t pid);
 
  /**
  * \fn int rm_psupervised(pcb *p, int pid)
@@ -134,7 +135,7 @@ uint8_t         add_psupervised(pcb * p, uint8_t pid);
  * \param pid the pid to remove
  * \return an error code
  */
-uint8_t         rm_psupervised(pcb * p, uint8_t pid);
+uint32_t        rm_psupervised(pcb * p, uint32_t pid);
 
 /**
  * \fn int chg_psupervisor(pcb *p, int pid)
@@ -144,7 +145,7 @@ uint8_t         rm_psupervised(pcb * p, uint8_t pid);
  * \param pid the pid to add
  * \return an error code
  */
-uint8_t         chg_psupervisor(pcb * p, uint8_t pid);
+uint32_t        chg_psupervisor(pcb * p, uint32_t pid);
 
  /**
  * \fn int rm_psuperviser(pcb *p, int pid)
@@ -154,7 +155,7 @@ uint8_t         chg_psupervisor(pcb * p, uint8_t pid);
  * \param pid the pid to remove
  * \return an error code
  */
-uint8_t         rm_psupervisor(pcb * p, uint8_t pid);
+uint32_t        rm_psupervisor(pcb * p, uint32_t pid);
 
 
 /**

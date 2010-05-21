@@ -7,6 +7,7 @@
  *
  */
 
+#include <errno.h>
 #include "kprocess_list.h"
 
 /**
@@ -16,7 +17,7 @@
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t
+uint32_t
 create_pls(pls * ls)
 {
   if (ls == NULL)
@@ -33,7 +34,7 @@ create_pls(pls * ls)
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t
+uint32_t
 rm_pls(pls * ls)
 {
   int             i;
@@ -54,7 +55,7 @@ rm_pls(pls * ls)
  * \param ls a pointer to a list
  * \return an error code
  */
-uint8_t
+uint32_t
 rm_from_pls(pcb * p, pls * ls)
 {
   pcb            *to_rm;
