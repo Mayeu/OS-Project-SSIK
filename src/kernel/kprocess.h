@@ -56,7 +56,7 @@ typedef struct
   char            name[20];     /*!< Process name. */
   uint32_t        pri;          /*!< Process priority. */
   uint32_t        supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  uint32_t        supervisor[NSUPERVISED];      /*!< List of supervisor processes. */
+  uint32_t        supervisor;   /*!< List of supervisor processes. */
   uint32_t        wait;
   bool            empty;
 } pcbinfo;
