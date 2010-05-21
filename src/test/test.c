@@ -4,11 +4,15 @@
  */
 
 #include "../kernel/test.h"
-
+#include "test_kprocess.c"
+//#include "test_kprocess_list.c"
 void
 test()
 {
   /*
    * Call  your test here
    */
+	test_kprocess();
+	//test_kprocess_list();
+
 }

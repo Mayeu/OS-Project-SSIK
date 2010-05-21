@@ -21,8 +21,14 @@
 uint32_t
 create_pls(pls * ls)
 {
+  int             i;
   if (ls == NULL)
     return NULLPTR;
+
+                                                                                                                        /** TODO: init registers ... */
+
+  for (i = 0; i < MAX_PROC; i++)
+    ls->ls[i].empty = TRUE;
 
   ls->current = NULL;
   return OMGROXX;

@@ -32,7 +32,7 @@ create_proc(char *name, uint32_t prio, int32_t params[4])
   int             i;
   prgm           *prog;
   pcb            *p;
-  if (name == NULL || p == NULL)
+  if (name == NULL)
     return NULLPTR;
   if (prio > MAX_PRI || prio < MIN_PRI)
     return INVARG;
@@ -44,9 +44,10 @@ create_proc(char *name, uint32_t prio, int32_t params[4])
     if (get_next_pid(&p->pid) == OMGROXX)
     {
       prog = search_prgm(name); // search for the specified program
-      if (prog == NULL)
-        return INVARG;
-
+                                                                                                                /** TODO: Uncomment prog when programs are implemented */
+      /*    if (prog == NULL)                                                               
+         return INVARG;
+       */
       p->pri = prio;
       p->supervisor = first(&prunning); /* The supervisor is the process that has requested 
                                          * The create_proc function and then it is the
