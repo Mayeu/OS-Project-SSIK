@@ -10,8 +10,8 @@
 #ifndef __KSCHEDULER_H
 #define __KSCHEDULER_H
 
-void timer_exception();
+void            timer_exception();
 
-void schedule();
+void            schedule();
 
 #endif
