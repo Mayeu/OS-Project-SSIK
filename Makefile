@@ -13,8 +13,8 @@ BIN=bin
 BUILD=build
 
 # Object files for the examples
-OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o string.o kerror.o kprocess.o kprocess_list.o)
-OBJS_USER=
+OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kerror.o kprocess.o kprocess_list.o)
+OBJS_USER= $(addprefix $(BUILD)/, string.o)
 
 # GCC prefix
 MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
@@ -48,7 +48,7 @@ $(BUILD)/%.o: $(SRC_KERNEL)/%.S
 	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
 	
 # User building
-user: $(BUILD)/$(OBJS_USER) kernel
+user: $(OBJS_USER) kernel
 
 $(BUILD)/%.o: $(SRC_USER)/%.c
 	$(CC) $(ARCH) $(CFLAGS) -o $@ -c $<
