@@ -15,7 +15,7 @@ BUILD=build
 
 # Object files for the examples
 OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kinout.o kerror.o kprocess.o kprocess_list.o)
-OBJS_USER= $(addprefix $(BUILD)/, string.o coquille.o)
+OBJS_USER= $(addprefix $(BUILD)/, string.o)
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
 
 # GCC prefix
