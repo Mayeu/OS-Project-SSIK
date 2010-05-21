@@ -224,3 +224,35 @@ stoi(char *str)
 
   return neg * id;
 }
+
+ /**
+ * Remove all the non-usefull spaces
+ */
+char           *
+trim(char *str)
+{
+  char           *s, *i;
+  int             ready = 0;
+
+  for (i = s = str; *i; i++)
+  {
+
+    if (isspace(*i))
+    {
+      if (!ready)
+        continue;
+      else
+        ready = 0;
+    }
+    else
+      ready = 1;
+
+    *(s++) = *i;
+  }
+  *s = '\0';
+
+  if (isspace(*(--s)))
+    *s = '\0';
+
+  return str;
+}
