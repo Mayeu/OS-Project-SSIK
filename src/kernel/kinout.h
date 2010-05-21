@@ -29,6 +29,13 @@ void            kprint_char(char c);
  */
 void            kprint(char *text);
 
+/**
+ * @brief Print a string on the tty with a \n at the end
+ * @param the string
+ * @return void
+ */
+void            kprintn(char *text);
+
 #endif
 
 /* end of file kinout.h*/
