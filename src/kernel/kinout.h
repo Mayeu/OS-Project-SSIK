@@ -30,11 +30,18 @@ void            kprint_char(char c);
 void            kprint(char *text);
 
 /**
+ * @brief Print a \n on the tty
+ * @param void
+ * @return void
+ */
+void            kprintn(void);
+
+/**
  * @brief Print a string on the tty with a \n at the end
  * @param the string
  * @return void
  */
-void            kprintn(char *text);
+void            kprintln(char *text);
 
 #endif
 

@@ -48,15 +48,25 @@ kprint(char *text)
 }
 
 /**
+ * @brief Print a \n on the tty
+ * @param void
+ * @return void
+ */
+void            kprintn(void)
+{
+	kprint_char("\n");
+}
+
+/**
  * @brief Print a string on the tty with an \n at the end
  * @param the string
  * @return void
  */
 void
-kprintn(char *text)
+kprintln(char *text)
 {
   kprint(text);
-  kprint("\n");
+  kprint_char("\n");
 }
 
 /* end of file kinout.c */
