@@ -52,3 +52,12 @@ kinit()
   /* Forever do nothing. */
   while (1);
 }
+
+/**
+ * @brief The ancestor of the ancestor.
+ *
+ * First process to be launched
+ */
+void init()
+{
+}
