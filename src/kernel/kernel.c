@@ -51,14 +51,14 @@ kinit()
   create_pls(&pterminate);
 
   /*
-	* Launch test
-	*/
+   * Launch test
+   */
 
   test();
 
   /*
-	* Print the splash screen
-	*/
+   * Print the splash screen
+   */
 
   splash();
 
