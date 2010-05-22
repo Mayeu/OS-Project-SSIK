@@ -58,6 +58,6 @@ void            kinit();
  *
  * First process to be launched
  */
-void init();
+void            init();
 
 #endif

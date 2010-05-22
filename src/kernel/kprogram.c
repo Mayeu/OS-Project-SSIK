@@ -17,16 +17,14 @@
  * Global variable
  */
 
-static prgm prgm_ls[NUM_PROG] =
-{
-	/*
-	 * The init program
-	 */
-	{
-		"init",
-		(uint32_t)init,
-		"Initialize the system."
-	}
+static prgm     prgm_ls[NUM_PROG] = {
+  /*
+   * The init program
+   */
+  {
+   "init",
+   (uint32_t) init,
+   "Initialize the system."}
 };
 
 /**
@@ -38,11 +36,11 @@ static prgm prgm_ls[NUM_PROG] =
 prgm           *
 search_prgm(char *name)
 {
-	uint32_t i ;
+  uint32_t        i;
 
-	for (i = 0; i < NUM_PROG; i++)
-		if (strcmp(name, prgm_ls[i].name) == 0)
-		return &(prgm_ls[i]) ;
+  for (i = 0; i < NUM_PROG; i++)
+    if (strcmp(name, prgm_ls[i].name) == 0)
+      return &(prgm_ls[i]);
 
   return NULL;
 }
