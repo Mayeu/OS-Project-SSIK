@@ -76,7 +76,7 @@ test_kprocess_list()
 	kprint("search_pls:\t");
 
 	create_proc("test", 15, (int32_t*)params);
-	pres = search_pcb(npid, &pready);
+	pres = search_pcb(0, &pready);
 	if (pres->pid == 0)
 		kprintln("OK");
 	else
