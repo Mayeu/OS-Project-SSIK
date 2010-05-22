@@ -3,7 +3,7 @@
  * @brief implemet the uart fuctions
  */
 
-#include <stdio.h>
+#include <stdlib.h>
 #include "malta.h"
 #include "uart.h"
 

@@ -6,18 +6,20 @@
 #include "../kernel/test.h"
 #include "test_string.c"
 #include "test_kprocess.c"
+#include "test_uart_fifo.c"
 //#include "test_kprocess_list.c"
 
-void
+	void
 test()
 {
-  /*
-   * Call  your test here
-   */
+	/*
+	 * Call  your test here
+	 */
 
 	test_string();
 
 	test_kprocess();
 	//test_kprocess_list();
+	test_uart_fifo();
 
 }
