@@ -67,9 +67,9 @@ create_proc(char *name, uint32_t prio, int32_t params[4])
                                                                                                                                                                 /** TODO: init the registers */
 
       // init the parameters
-		
+
       for (i = 0; i < 4; i++)
-        p->registers.a_reg[i] = (uint32_t) &params[i];
+        p->registers.a_reg[i] = (uint32_t) & params[i];
       p->wait = 0;
       p->error = OMGROXX;
       p->empty = FALSE;
@@ -275,4 +275,13 @@ get_next_pid(uint32_t * npid)
   *npid = next_pid;
   return OMGROXX;
 
+}
+
+ /**
+ * reset the next_pid to 0
+ */
+void
+reset_next_pid()
+{
+  next_pid = 0;
 }
