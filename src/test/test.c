@@ -6,7 +6,7 @@
 #include "../kernel/test.h"
 #include "test_string.c"
 #include "test_kprocess.c"
-//#include "test_kprocess_list.c"
+#include "test_kprocess_list.c"
 
 void
 test()
@@ -18,6 +18,6 @@ test()
 	test_string();
 
 	test_kprocess();
-	//test_kprocess_list();
+	test_kprocess_list();
 
 }
