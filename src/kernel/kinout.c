@@ -9,13 +9,30 @@
 #include "kinout.h"
 
 /**
- * @brief Display a value on the Malta display.
- * @param an uint32_t to print
+ * @brief Display 8 char on the Malta display.
+ *
+ * If the data are too long (more than 8 char) only the 8th firts are printed
+ * @param a string to print
  * @return void
  */
 void
-kmaltaprint(uint32_t word)
+kmaltaprint8(const char *str)
 {
+  int             i = 0;
+
+  malta->lcdbar.reg = 0xFF;
+
+  /*
+   * Print 8 character or less
+   */
+  for (i = 0; i < 8 && str[i] != '\0'; i++)
+    malta->asciipos[i].value = data[i];
+
+  /*
+   * if the string is less than 8 char, complete with whitespace
+   */
+  for (; i < 8; i++)
+    malta0->asciipos[i].value = 0x20;
 }
 
 /**
