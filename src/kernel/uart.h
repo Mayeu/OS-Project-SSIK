@@ -35,6 +35,10 @@ typedef struct
  * Functions
  */
 
+/*
+ * bounded fifo function
+ */
+
 /**
  * @brief reset the fifo buffer to default value
  * @param void
@@ -51,14 +55,20 @@ uint32_t        push_fifo_buffer(char c);
 
 /**
  * @brief pop a char from the fifo buffer
- * @parama a pointer to the char to pop
+ * @param a pointer to the char to pop
  * @return OMGROXX if the buffer is not empty, FAILNOOB otherwise
  */
 uint32_t        pop_fifo_buffer(char *c);
 
-/*
- * bounded fifo function
+/**
+ * @brief return a pointer to the fifo_buffer struct
+ *
+ * --!!! This function is here for test purpose only! Don't use it !!!--
+ *
+ * @param void
+ * @return a pointer to the fifo buffer
  */
+fifo_buffer    *get_fifo_buffer();
 
 /*
  * UART functions

@@ -38,7 +38,7 @@ reset_fifo_buffer(void)
 uint32_t
 push_fifo_buffer(char c)
 {
-  if (uart_fifo.length <= UART_FIFO_SIZE)
+  if (uart_fifo.length >= UART_FIFO_SIZE)
     return OUTOMEM;
 
   uart_fifo.buffer[uart_fifo.in++] = c;
@@ -71,6 +71,20 @@ pop_fifo_buffer(char *c)
     uart_fifo.out = 0;
 
   return OMGROXX;
+}
+
+/**
+ * @brief return a pointer to the fifo_buffer struct
+ *
+ * --!!! This function is here for test purpose only! Don't use it !!!--
+ *
+ * @param void
+ * @return a pointer to the fifo buffer
+ */
+fifo_buffer    *
+get_fifo_buffer()
+{
+  return &uart_fifo;
 }
 
 /*

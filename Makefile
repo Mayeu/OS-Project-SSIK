@@ -97,3 +97,6 @@ doc_user:
 # clean: remove object files and emacs backup files
 clean:
 	rm -rf $(BUILD)/*.o $(BIN)/ssik doc/*
+
+gdb:
+	/it/kurs/compsys/mips-devel/bin/mips-idt-elf-gdb bin/ssik

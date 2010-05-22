@@ -70,7 +70,7 @@ void
 kprintln(char *text)
 {
   kprint(text);
-  kprint_char('\n');
+  kprintn();
 }
 
 /* end of file kinout.c */
