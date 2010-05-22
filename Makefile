@@ -17,7 +17,7 @@ BUILD=build
 OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kinout.o kerror.o kprocess.o kprocess_list.o kprogram.o kscheduler.o ksyscall.o kexception.o uart.o)
 OBJS_USER= $(addprefix $(BUILD)/, string.o)
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
-TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c)
+TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c)
 
 # GCC prefix
 MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
