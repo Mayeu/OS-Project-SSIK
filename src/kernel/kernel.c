@@ -35,6 +35,12 @@ kinit()
   kset_registers(&regs);
 
   /*
+   * Print SSIK on the malta
+   */
+
+  kmaltaprint8("  SSIK  ");
+
+  /*
    * Init the four list of pcb
    */
 

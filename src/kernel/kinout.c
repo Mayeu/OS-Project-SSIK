@@ -20,19 +20,19 @@ kmaltaprint8(const char *str)
 {
   int             i = 0;
 
-  malta->lcdbar.reg = 0xFF;
+  malta->ledbar.reg = 0xFF;
 
   /*
    * Print 8 character or less
    */
   for (i = 0; i < 8 && str[i] != '\0'; i++)
-    malta->asciipos[i].value = data[i];
+    malta->asciipos[i].value = str[i];
 
   /*
    * if the string is less than 8 char, complete with whitespace
    */
   for (; i < 8; i++)
-    malta0->asciipos[i].value = 0x20;
+    malta->asciipos[i].value = 0x20;
 }
 
 /**

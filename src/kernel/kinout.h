@@ -15,35 +15,34 @@
  * @param a string to print
  * @return void
  */
-void
-kmaltaprint8(const char *str)
+void            kmaltaprint8(const char *str);
 /**
  * @brief Print a char on the tty
  * @param the string
  * @return void
  */
-     void            kprint_char(char c);
+void            kprint_char(char c);
 
 /**
  * @brief Print a string on the tty
  * @param the string
  * @return void
  */
-     void            kprint(char *text);
+void            kprint(char *text);
 
 /**
  * @brief Print a \n on the tty
  * @param void
  * @return void
  */
-     void            kprintn(void);
+void            kprintn(void);
 
 /**
  * @brief Print a string on the tty with a \n at the end
  * @param the string
  * @return void
  */
-     void            kprintln(char *text);
+void            kprintln(char *text);
 
 #endif
 
