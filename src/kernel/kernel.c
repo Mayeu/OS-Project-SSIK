@@ -11,6 +11,7 @@
 #include "kinout.h"
 #include "kprocess_list.h"
 #include "test.h"
+#include "splash.h"
 
 static registers_t regs;
 
@@ -49,11 +50,17 @@ kinit()
   create_pls(&pwaiting);
   create_pls(&pterminate);
 
-  /**
+  /*
 	* Launch test
 	*/
 
   test();
+
+  /*
+	* Print the splash screen
+	*/
+
+  splash();
 
   /* Forever do nothing. */
   while (1);
