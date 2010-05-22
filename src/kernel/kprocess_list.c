@@ -55,6 +55,32 @@ rm_pls(pls * ls)
 }
 
 /**
+ * \fn void rm_all_pls()
+ * \brief remove all the lists and reset next_pid
+ */
+void rm_all_pls()
+{
+	rm_pls(&pready);
+	rm_pls(&prunning);
+	rm_pls(&pwaiting);
+	rm_pls(&pterminate);
+	next_pid = 0;
+}
+
+/**
+ * \fn void create_all_pls()
+ * \brief create all the lists and reset next_pid
+ */
+void create_all_pls()
+{
+	create_pls(&pready);
+	create_pls(&prunning);
+	create_pls(&pwaiting);
+	create_pls(&pterminate);
+	next_pid = 0;
+}
+
+/**
  * \fn int rm_from_pls(pcb *p, pls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
