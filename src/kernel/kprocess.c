@@ -30,7 +30,6 @@ uint32_t
 create_proc(char *name, uint32_t prio, int32_t params[4])
 {
   int             i;
-  prgm           *prog;
   pcb            *p;
   if (name == NULL)
     return NULLPTR;
@@ -42,26 +41,32 @@ create_proc(char *name, uint32_t prio, int32_t params[4])
   if (p != NULL)
   {
     if (get_next_pid(&p->pid) == OMGROXX)
-    {
-      prog = search_prgm(name); // search for the specified program
-                                                                                                                /** TODO: Uncomment prog when programs are implemented */
-      /*    if (prog == NULL)                                                               
+    {                                                                                                                                                   /** TODO: Uncomment prog when programs are implemented */
+
+      /* prgm           *prog;
+         prog = search_prgm(name); // search for the specified program                                                       
+         if (prog == NULL)                                                               
          return INVARG;
+         // init the program counter to the program address
+         p->registers.epc_reg = prog->address;
        */
       p->pri = prio;
-      p->supervisor = first(&prunning); /* The supervisor is the process that has requested 
-                                         * The create_proc function and then it is the
-                                         * process that is currently running.
-                                         */
+                                                                                                                                                                        /** TODO: change the init so that current is not null */
+/*		if(prunning.current == NULL)
+			return NULLPTR;
+                        p->supervisor = prunning.current->pid;
+*//* The supervisor is the process that has requested 
+       * The create_proc function and then it is the
+       * process that is currently running.
+       */
       for (i = 0; i < NSUPERVISED; i++)
         p->supervised[i] = -1;
       strcpy(name, p->name);
-      // init the program counter to the program address
-      p->registers.epc_reg = prog->address;
+                                                                                                                                                                /** TODO: init the registers */
+
       // init the parameters
       for (i = 0; i < 4; i++)
         p->registers.a_reg[i] = params[i];
-      //p->registers = ;                      /** TODO: init the registers */
       p->wait = 0;
       p->error = OMGROXX;
       p->empty = FALSE;
