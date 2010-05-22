@@ -64,7 +64,7 @@ void rm_all_pls()
 	rm_pls(&prunning);
 	rm_pls(&pwaiting);
 	rm_pls(&pterminate);
-	next_pid = 0;
+	reset_next_pid();
 }
 
 /**
@@ -77,7 +77,7 @@ void create_all_pls()
 	create_pls(&prunning);
 	create_pls(&pwaiting);
 	create_pls(&pterminate);
-	next_pid = 0;
+	reset_next_pid();
 }
 
 /**
