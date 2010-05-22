@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <process.h>
 
+#define MAX_ARG 4
+#define ARG_SIZE 20
 #define NSUPERVISED 40
 
 /**

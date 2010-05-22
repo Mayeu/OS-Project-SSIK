@@ -13,6 +13,7 @@
 #include "kprocess_list.h"
 #include "kernel.h"
 #include "kprogram.h"
+#include "kinout.h"
 
 static uint32_t next_pid = 0;
 
@@ -41,37 +42,39 @@ create_proc(char *name, uint32_t prio, int32_t params[4])
   if (p != NULL)
   {
     if (get_next_pid(&p->pid) == OMGROXX)
-    {                                                                                                                                                   /** TODO: Uncomment prog when programs are implemented */
-
+    {
+                           /** TODO: Uncomment prog when programs are implemented */
       /* prgm           *prog;
-         prog = search_prgm(name); // search for the specified program                                                       
+         prog = search_prgm(name); // search for the specified program
          if (prog == NULL)                                                               
          return INVARG;
          // init the program counter to the program address
          p->registers.epc_reg = prog->address;
        */
       p->pri = prio;
-                                                                                                                                                                        /** TODO: change the init so that current is not null */
-/*		if(prunning.current == NULL)
-			return NULLPTR;
-                                    p->supervisor = prunning.current->pid;
-*//* The supervisor is the process that has requested 
+      /* The supervisor is the process that has requested 
        * The create_proc function and then it is the
        * process that is currently running.
        */
+                                                                                                                                        /** TODO: change the init so that current is not null */
+      if (prunning.current == NULL)
+        p->supervisor = -1;
+      else
+        p->supervisor = prunning.current->pid;
       for (i = 0; i < NSUPERVISED; i++)
         p->supervised[i] = -1;
       strcpy(name, p->name);
                                                                                                                                                                 /** TODO: init the registers */
 
       // init the parameters
+		
       for (i = 0; i < 4; i++)
-        p->registers.a_reg[i] = params[i];
+        p->registers.a_reg[i] = (uint32_t) &params[i];
       p->wait = 0;
       p->error = OMGROXX;
       p->empty = FALSE;
 
-      return p->pid;
+      return OMGROXX;
     }
     else
       return OUTOPID;
@@ -154,7 +157,6 @@ copy_p(pcb * psrc, pcb * pdest)
   pdest->error = psrc->error;
   pdest->empty = psrc->empty;
   return OMGROXX;
-
 }
 
 /**
@@ -264,7 +266,7 @@ int32_t
 get_next_pid(uint32_t * npid)
 {
   int             init = next_pid;
-  while (searchall(next_pid) == NULL)
+  while (searchall(next_pid) != NULL)
   {
     next_pid++;
     if (next_pid == init)
