@@ -16,7 +16,7 @@ test_kprocess()
 //	pcb *ptr_pcb1, *ptr_pcb2;
 	uint32_t res;
 	int32_t params[4] = {1, 2, 3, 4};
-	char resc[3];
+//	char resc[3];
 
 	kprintln("------TEST MODULE KPROCESS BEGIN------");
 
@@ -30,10 +30,10 @@ test_kprocess()
 	res = create_proc("test1", 10, params);
 
 	kprint("create_proc");
-	if(res == OMGROXX && pready.ls[0].pid == 0 && strcmp(pready.ls0.name, "test1") && );
-		kprint("\t\t\tOK");
+	if(res == OMGROXX && pready.ls[0].pid == 0 && strcmp(pready.ls[0].name, "test1"))
+		kprintln("\t\t\tOK");
 	else
-		kprint("\t\t\tNOK");
+		kprintln("\t\t\tNOK");
 		
 //	kprintln(itos(res, resc));
 //	kprint(atoi(pready.ls[0].pid));
