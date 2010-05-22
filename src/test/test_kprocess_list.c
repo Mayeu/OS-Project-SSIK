@@ -16,7 +16,6 @@ test_kprocess_list()
 	pcb *pres;
 	char params[4][20];
 	char buf[255];
-	int npid = next_pid;
 	strcpy("1", params[0]);
 	strcpy("2", params[1]);
 	strcpy("3", params[2]);
