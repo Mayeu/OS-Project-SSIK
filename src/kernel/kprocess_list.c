@@ -105,7 +105,7 @@ empty_space(pls * ls)
  * \return a boolean
  */
 bool
-is_empty(pls * ls)
+pls_is_empty(pls * ls)
 {
   int             i;
   if (ls == NULL)
@@ -134,7 +134,7 @@ search_pcb(uint32_t pid, pls * ls)
   int             i = 0;
   while (i < MAX_PROC)
   {
-    if (ls->ls[i].pid == pid)
+    if ((ls->ls[i].pid == pid) && (ls->ls[i].empty == FALSE))
       return &ls->ls[i];
     i++;
   }
