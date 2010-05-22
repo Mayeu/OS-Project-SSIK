@@ -13,7 +13,7 @@
  * Define
  */
 
-#define FIFO_SIZE 30
+#define UART_FIFO_SIZE 30
 
 /**
  * Structure
@@ -25,10 +25,10 @@
 
 typedef struct
 {
-  char            buffer[FIFO_SIZE];
+  char            buffer[UART_FIFO_SIZE];
   uint32_t        length;
-  uint32_t start;
-  uint32_t end;
+  uint32_t        in;
+  uint32_t        out;
 } fifo_buffer;
 
 /*
@@ -40,21 +40,21 @@ typedef struct
  * @param void
  * @return void
  */
-void reset_fifo_buffer(void);
+void            reset_fifo_buffer(void);
 
 /**
  * @brief push a char in the fifo buffer
  * @param the char to push
  * @return OMGROXX if there isan empty space OUTOMEM otherwise
  */
-uint32_t push_fifo_buffer(char c);
+uint32_t        push_fifo_buffer(char c);
 
 /**
  * @brief pop a char from the fifo buffer
  * @parama a pointer to the char to pop
  * @return OMGROXX if the buffer is not empty, FAILNOOB otherwise
  */
-uint32_t pop_fifo_buffer(char *c);
+uint32_t        pop_fifo_buffer(char *c);
 
 /*
  * bounded fifo function
@@ -69,7 +69,7 @@ uint32_t pop_fifo_buffer(char *c);
  * @param void
  * @return void
  */
-void uart_init(void);
+void            uart_init(void);
 
 #endif /* __UART_H */
 
