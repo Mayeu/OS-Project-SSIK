@@ -16,12 +16,15 @@ test_kprocess_list()
 	pcb *pres;
 	char params[4][20];
 	char buf[255];
+	int npid = next_pid;
 	strcpy("1", params[0]);
 	strcpy("2", params[1]);
 	strcpy("3", params[2]);
 	strcpy("4", params[3]);
 //	uint32_t res;
 //	char resc[3];
+
+	create_all_pls();
 
 	kprint("------TEST MODULE KPROCESS_LIST BEGIN------\n");
 
@@ -74,7 +77,7 @@ test_kprocess_list()
 	kprint("search_pls:\t");
 
 	create_proc("test", 15, (int32_t*)params);
-	pres = search_pcb(0, &pready);
+	pres = search_pcb(npid, &pready);
 	if (pres->pid == 0)
 		kprintln("OK");
 	else
@@ -125,5 +128,7 @@ test_kprocess_list()
 	kprintln(itos(pready.ls[3].pid, buf));
 
 	kprint("------TEST MODULE KPROCESS_LIST END--------\n");
+
+	rm_all_pls();
 
 }

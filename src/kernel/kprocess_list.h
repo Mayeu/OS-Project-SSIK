@@ -45,6 +45,18 @@ uint32_t        create_pls(pls * ls);
 uint32_t        rm_pls(pls * ls);
 
 /**
+ * \fn void rm_all_pls()
+ * \brief remove all the lists and reset next_pid
+ */
+void       rm_all_pls();
+
+/**
+ * \fn void create_all_pls()
+ * \brief create all the lists and reset next_pid
+ */
+void       create_all_pls();
+
+/**
  * \fn int rm_from_pls(pcb *p, pls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
