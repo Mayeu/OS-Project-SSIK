@@ -164,4 +164,11 @@ uint32_t        rm_psupervisor(pcb * p, uint32_t pid);
  */
 bool            p_is_empty(pcb * pcb);
 
+ /**
+ * \fn uint32_t rest_pid()
+ * \brief reset the next_pid to 0
+ *
+ */
+void            reset_next_pid();
+
 #endif

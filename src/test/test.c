@@ -18,6 +18,7 @@ test()
 	test_string();
 
 	test_kprocess();
+
 	test_kprocess_list();
 
 }
