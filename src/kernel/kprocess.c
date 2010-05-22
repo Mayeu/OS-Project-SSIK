@@ -54,7 +54,7 @@ create_proc(char *name, uint32_t prio, int32_t params[4])
                                                                                                                                                                         /** TODO: change the init so that current is not null */
 /*		if(prunning.current == NULL)
 			return NULLPTR;
-                        p->supervisor = prunning.current->pid;
+                                    p->supervisor = prunning.current->pid;
 *//* The supervisor is the process that has requested 
        * The create_proc function and then it is the
        * process that is currently running.
