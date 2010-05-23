@@ -8,138 +8,159 @@
 #include "../kernel/kernel.h"
 #include <string.h>
 
+
 void
 test_kprocess_list()
 {
-	int i, res = 1;
-	bool bres;
-	pcb *pres;
+	int i, res;
+	bool err;
+	pcb *pcb1;
+	pcb *pcb2;
+	pcb *pcb3;
 	char params[4][20];
-	//char buf[255];
 	strcpy("1", params[0]);
 	strcpy("2", params[1]);
 	strcpy("3", params[2]);
 	strcpy("4", params[3]);
-//	uint32_t res;
-//	char resc[3];
 
 	create_all_pls();
 
-	kprint("------TEST MODULE KPROCESS_LIST BEGIN------\n");
+	kprintln("----------TEST MODULE KPROCESS_LIST BEGIN----------");
 
-	kprint("create_pls:\t");
+	kprint("create_pls\t\t\t\t\t");														// testCREATE1
+	res = create_pls(&pready);
+	err = (res == OMGROXX) &&
+			(pready.current == NULL);
+	if(!err)
+	{
+		for (i=0; i<MAX_PROC && res ; i++)
+			if (pready.ls[i].empty == FALSE)
+			{
+				err = FALSE;
+				break;
+			}
+	}
+	if(err)
+		kprintln("OK");
+	else
+		kprintln("NOK");
+
+	kprint("rm_pls\t\t\t\t\t\t");														// testRM1
+	res = rm_pls(&pready);
+	err = (res == OMGROXX) &&
+			(pready.current == NULL);
+	if(!err)
+	{
+		for (i=0; i<MAX_PROC && res ; i++)
+			if (pready.ls[i].empty == FALSE)
+			{
+				err = FALSE;
+				break;
+			}
+	}
+	if(err)
+		kprintln("OK");
+	else
+		kprintln("NOK");
+
+	// recreate the list to continue the tests
 	create_pls(&pready);
-	for (i=0; i<MAX_PROC && res ; i++)
-	{
-		if (pready.ls[i].empty == FALSE)
-			res = 0;
-	}
-	if (pready.current != NULL)
-		res = 0;
-	if (res == 1)
+
+	kprint("rm_from_pls\t\t\t\t\t");														// testRM_FROM_PLS1
+	create_proc("test_rm_from_pls", 15, (char **)params);
+	res = rm_from_pls(0, &pready);
+	err = (res == OMGROXX) &&
+			(pready.ls[0].pid == 0) &&
+			(pready.ls[0].empty == TRUE);
+	if(err)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("rm_pls:\t\t");
-
-	rm_pls(&pready);
-	for (i=0; i<MAX_PROC && res ; i++)
-	{
-		if (pready.ls[i].empty == FALSE)
-			res = 0;
-	}
-	if (pready.current != NULL)
-		res = 0;
-	if (res == 1)
+	kprint("empty_space\t\t\t\t\t");
+	pcb1 = empty_space(&pready);
+	err = (pcb1 == &pready.ls[0]) &&
+			(pcb1->empty == TRUE);
+	if (err)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("rm_from_pls:\tEN ATTENTE\n");
-	
-	kprint("empty_space:\t");
-	pres = empty_space(&pready);
-	if (pres->empty == TRUE)
+	kprint("pls_is_empty\t\t\t\t\t");
+	res = pls_is_empty(&pready);
+	err = (res == TRUE);
+	if (err)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("pls_is_empty:\t");
-
-	bres = pls_is_empty(&pready);
-	if (bres == TRUE)
+	kprint("search_pcb\t\t\t\t\t");
+	res = create_proc("testsearch", 15, (char **)params);
+	pcb1 = search_pcb(0, &pready);
+	err = (pcb1 != NULL) &&
+			(pcb1 == &pready.ls[0]);
+	if (err)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("search_pls:\t");
-
-	//create_proc("test", 15, (int32_t*)params);
-	create_proc("test", 15, (char **)params);
-	pres = search_pcb(0, &pready);
-	if (pres->pid == 0)
+	kprint("searchall\t\t\t\t\t");
+	pcb1 = searchall(0);
+	err = (pcb1 != NULL) &&
+			(pcb1 == &pready.ls[0]);
+	if (err)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("searchall:\t");
-
-//	create_proc("test2", 15, (int32_t*)params);
-	create_proc("test2", 15, (char **)params);
-	pres = searchall(1);
-	if (pres->pid == 1)
+	kprint("searchall not found\t\t\t\t");
+	pcb3 = searchall(3);
+	if (pcb3 == NULL)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("searchall pcb inexistant:\t");
-	pres = searchall(3);
-	if (pres == NULL)
+	kprint("move\t\t\t\t\t\t");
+	res = move(0, &pready, &prunning);
+	pcb2 = search_pcb(0, &prunning);
+	pcb3 = search_pcb(0, &pready);
+	err = (res == OMGROXX) &&
+			(pcb3 == NULL) &&
+			(pcb2 != NULL) &&
+			(pcb2->pid == pcb1->pid) &&
+			(strcmp(pcb2->name, pcb1->name) == 0) &&
+			(pcb2->pri == pcb1->pri) &&
+			(pcb1->supervisor == -1) &&
+			(strcmp(argn((char **)pcb2->registers.a_reg[0], 1), argn((char **)pcb1->registers.a_reg[0], 1)) == 0) &&
+			(strcmp(argn((char **)pcb2->registers.a_reg[0], 2), argn((char **)pcb1->registers.a_reg[0], 2)) == 0) &&
+			(strcmp(argn((char **)pcb2->registers.a_reg[0], 3), argn((char **)pcb1->registers.a_reg[0], 3)) == 0) &&
+			(pcb2->wait == pcb1->wait) &&
+			(pcb2->error == pcb1->error) &&
+			(pcb2->empty == FALSE);
+	if (err)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("move:\t\t");
-	move(1, &pready, &prunning);
-	res = 1;
-	pres = search_pcb(1, &pready);
-	if (pres != NULL)
-		res = 0;
-	pres = search_pcb(1, &prunning);
-	if (pres == NULL)
-		res = 0;
-	if (res == 1)
+	kprint("sort\t\t\t\t\t\t");
+	create_proc("test_sort1", 15, (char **)params);		
+	create_proc("test_sort2", 10, (char **)params);
+	create_proc("test_sort3", 20, (char **)params);
+	res = sort(&pready);
+	pcb1 = &pready.ls[0];
+	pcb2 = &pready.ls[1];
+	pcb3 = &pready.ls[2];
+	err = (res == OMGROXX) &&
+			(pcb1->pid == 3) &&
+			(pcb2->pid == 1) &&
+			(pcb3->pid == 2);
+	if (err)
 		kprintln("OK");
 	else
-		kprintln("ERROR");
+		kprintln("NOK");
 
-	kprint("sort:\t\t");
-
-/*
-	kprintln("AVANT CREATES");
-	kprintln(itos(prunning.ls[0].pid, buf));
-	kprintln(itos(pready.ls[0].pid, buf));
-	kprintln(itos(pready.ls[1].pid, buf));
-	kprintln(itos(pready.ls[2].pid, buf));
-	kprintln(itos(pready.ls[3].pid, buf));
-
-	create_proc("test3", 20, (int32_t*)params);
-	create_proc("test4",  5, (int32_t*)params);
-	create_proc("test5", 10, (int32_t*)params);
-
-	//sort(&pready);
-	
-	kprintln("APRES CREATES");
-	kprintln(itos(prunning.ls[0].pid, buf));
-	kprintln(itos(pready.ls[0].pid, buf));
-	kprintln(itos(pready.ls[1].pid, buf));
-	kprintln(itos(pready.ls[2].pid, buf));
-	kprintln(itos(pready.ls[3].pid, buf));
-
-*/
-	kprint("------TEST MODULE KPROCESS_LIST END--------\n");
+	kprintln("----------TEST MODULE KPROCESS_LIST END------------\n");
+	kprintln("");
 
 	rm_all_pls();
-
 }
