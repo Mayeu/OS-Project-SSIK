@@ -15,7 +15,7 @@ BUILD=build
 
 # Object files for the examples
 OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kinout.o kerror.o kprocess.o kprocess_list.o kprogram.o kscheduler.o ksyscall.o kexception.o uart.o splash.o)
-OBJS_USER= $(addprefix $(BUILD)/, string.o)
+OBJS_USER= $(addprefix $(BUILD)/, string.o process.o increment.o stdio.o error.o coquille.o)
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
 TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c)
 
@@ -30,7 +30,7 @@ MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
 ARCH=-EL -G0 -mips32
 
 # Other gcc flags
-CFLAGS	= -ggdb -Wall -Werror -fno-builtin -I$(PROJECT_DIR)/include
+CFLAGS	= -ggdb -Werror -fno-builtin -I$(PROJECT_DIR)/include
 KCFLAGS	+= $(CFLAGS) -I$(PROJECT_DIR)/$(SRC_KERNEL)/include
 
 # Compiler and linker commands

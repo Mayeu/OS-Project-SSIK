@@ -19,7 +19,7 @@
 #include "kinout.h"
 #include "asm.h"
 #include "kerror.h"
-
+/*
 int32_t
 syscall_none(int32_t scode)
 {
@@ -44,7 +44,7 @@ int32_t
 syscall_three(int32_t p1, int32_t p2, int32_t p3, int32_t scode)
 {
   asm("move $v0, $a3\n\t syscall\n\t");
-}
+}*/
 
 
 void
