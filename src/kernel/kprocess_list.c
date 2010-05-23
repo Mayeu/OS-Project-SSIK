@@ -7,9 +7,13 @@
  *
  */
 
+#include <string.h>
 #include <errno.h>
 #include "kernel.h"
 #include "kprocess_list.h"
+#include "kinout.h"
+
+void print_pls(pls *ls);		// Internal function (see the bottom of the file
 
 /**
  * \fn int create_pls(pls *ls)
@@ -86,22 +90,20 @@ create_all_pls()
  * \fn int rm_from_pls(pcb *p, pls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
- * \param p the pcb to remove
+ * \param pid the pid of the process to remove
  * \param ls a pointer to a list
  * \return an error code
  */
 uint32_t
-rm_from_pls(pcb * p, pls * ls)
+rm_from_pls(int32_t pid, pls * ls)
 {
   pcb            *to_rm;
-  if (p == NULL || ls == NULL)
+  if (ls == NULL)
     return NULLPTR;
-  to_rm = search_pcb(p->pid, ls);
-  if (to_rm == NULL)
-    return FAILNOOB;
 
-  to_rm->empty = TRUE;
-  return OMGROXX;
+  to_rm = search_pcb(pid, ls);
+
+	return rm_p(to_rm);
 }
 
 /**
@@ -162,8 +164,11 @@ search_pcb(uint32_t pid, pls * ls)
   int             i = 0;
   while (i < MAX_PROC)
   {
-    if ((ls->ls[i].pid == pid) && (ls->ls[i].empty == FALSE))
-      return &ls->ls[i];
+    if (ls->ls[i].pid == pid)
+	 {
+		if(ls->ls[i].empty == FALSE)
+      	return &ls->ls[i];
+	}
     i++;
   }
   return NULL;
@@ -184,13 +189,13 @@ searchall(uint32_t pid)
   if (t != NULL)
     return t;
   t = search_pcb(pid, &prunning);
-  if (t == NULL)
+  if (t != NULL)
     return t;
   t = search_pcb(pid, &pwaiting);
-  if (t == NULL)
+  if (t != NULL)
     return t;
   t = search_pcb(pid, &pterminate);
-  if (t == NULL)
+  if (t != NULL)
     return t;
   return NULL;
 }
@@ -240,7 +245,7 @@ sort(pls * ls)
   {
     ordered = TRUE;
     for (i = 0; i < size; i++)
-      if (ls->ls[i].pri > ls->ls[i + 1].pri)
+      if (ls->ls[i + 1].pri > ls->ls[i].pri)
       {
         // Swap the two pcb
         move_p(&(ls->ls[i]), &tmp);
@@ -252,3 +257,22 @@ sort(pls * ls)
   }
   return OMGROXX;
 }
+
+/* Internal functions */
+void print_pls(pls *ls)
+{
+	int i = 0;
+	char resc[10];
+	for(; i< MAX_PROC ; i++)
+	{
+		if(ls->ls[i].empty == FALSE)
+			kprint(itos(ls->ls[i].pid, resc));
+		else
+			kprint("E");
+		if(i != MAX_PROC - 1)
+			kprint(" - ");
+		else
+			kprintln("");
+	}
+}
+

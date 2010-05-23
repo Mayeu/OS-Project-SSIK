@@ -16,7 +16,7 @@
 #include "kinout.h"
 
 static uint32_t next_pid = 0;
-char            t[3];                                                                                                                           /** TOTO: remove: only for debug */
+
  /* Privates functions */
 bool            is_already_supervised(pcb * p, uint32_t pid);
 int32_t         search_psupervised(pcb * p, int32_t pid);
@@ -142,6 +142,8 @@ move_p(pcb * psrc, pcb * pdest)
   uint32_t        i;
   if (psrc == NULL || pdest == NULL)
     return NULLPTR;
+	if(psrc->empty == TRUE)
+		return INVARG;
 
   pdest->pid = psrc->pid;
   strcpy(psrc->name, pdest->name);

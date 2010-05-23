@@ -17,7 +17,7 @@ test_kprocess()
 	pcb *pcb1;
 	pcb *pcb2;
 	pcb *pcb3;
-	pcbinfo pcbi1;
+//	pcbinfo pcbi1;
 	uint32_t res;
 	char params[MAX_ARG+1][ARG_SIZE], params2[MAX_ARG+1][ARG_SIZE];
 	strcpy("4", params[0]);
@@ -71,10 +71,10 @@ test_kprocess()
 	else
 		kprintln("NOK");
 
-	//res = create_proc("testCREATE2", 15, (int32_t *)params2);
-	res = create_proc("testCREATE2", 15, (char **)params2);
 
 	kprint("create_proc test2\t\t\t\t");													// testCREATE2
+	//res = create_proc("testCREATE2", 15, (int32_t *)params2);
+	res = create_proc("testCREATE2", 15, (char **)params2);
 	pcb2 = &pready.ls[1];
 
 	err = (res = OMGROXX || res >= 0) &&
@@ -151,7 +151,7 @@ test_kprocess()
 		kprintln("OK");
 	else
 		kprintln("NOK");
-
+/*
 	kprint("get_pcbinfo\t\t\t\t\t");															// testCHANGEPRI1
 	res = get_pinfo(pcb1, &pcbi1);
 	err = (res == OMGROXX) &&
@@ -174,7 +174,7 @@ test_kprocess()
 		kprintln("OK");
 	else
 		kprintln("NOK");
-
+*/
 
 	kprint("move_p\t\t\t\t\t\t");																// testMOVE3
 	pcb3 = &pready.ls[2];
@@ -323,4 +323,7 @@ test_kprocess()
 
 	kprintln("------------TEST MODULE KPROCESS END--------------");
 	kprintln("");
+
+
+	rm_all_pls();
 }

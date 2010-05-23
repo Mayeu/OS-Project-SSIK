@@ -64,7 +64,7 @@ void            create_all_pls();
  * \param ls a pointer to a list
  * \return an error code
  */
-uint32_t        rm_from_pls(pcb * p, pls * ls);
+uint32_t        rm_from_pls(int32_t pid, pls * ls);
 
 /**
  * \fn pcb* empty_space(pls *ls)
