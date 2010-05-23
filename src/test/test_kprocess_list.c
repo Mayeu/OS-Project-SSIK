@@ -67,7 +67,7 @@ test_kprocess_list()
 	create_pls(&pready);
 
 	kprint("rm_from_pls\t\t\t\t\t");														// testRM_FROM_PLS1
-	create_proc("test_rm_from_pls", 15, (char **)params);
+	create_proc("init", 15, (char **)params);
 	res = rm_from_pls(0, &pready);
 	err = (res == OMGROXX) &&
 			(pready.ls[0].pid == 0) &&
@@ -95,7 +95,7 @@ test_kprocess_list()
 		kprintln("NOK");
 
 	kprint("search_pcb\t\t\t\t\t");
-	res = create_proc("testsearch", 15, (char **)params);
+	res = create_proc("init", 15, (char **)params);
 	pcb1 = search_pcb(0, &pready);
 	err = (pcb1 != NULL) &&
 			(pcb1 == &pready.ls[0]);
@@ -143,9 +143,9 @@ test_kprocess_list()
 		kprintln("NOK");
 
 	kprint("sort\t\t\t\t\t\t");
-	create_proc("test_sort1", 15, (char **)params);		
-	create_proc("test_sort2", 10, (char **)params);
-	create_proc("test_sort3", 20, (char **)params);
+	create_proc("init", 15, (char **)params);		
+	create_proc("init", 10, (char **)params);
+	create_proc("init", 20, (char **)params);
 	res = sort(&pready);
 	pcb1 = &pready.ls[0];
 	pcb2 = &pready.ls[1];
