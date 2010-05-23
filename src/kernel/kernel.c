@@ -34,6 +34,9 @@ kinit()
   /* Setup storage-area for saving registers on exception. */
   kset_registers(&regs);
 
+  /* Update the status register to enable exceptions. */ 
+    kset_sr(0xFFBF00E8, 0x10008001);
+
   /*
    * Init the four list of pcb
    */
