@@ -44,13 +44,12 @@ create_proc(char *name, uint32_t prio, char **params)
     if (get_next_pid(&p->pid) == OMGROXX)
     {
                            /** TODO: Uncomment prog when programs are implemented */
-      /* prgm           *prog;
+       	prgm           *prog;
          prog = search_prgm(name); // search for the specified program
          if (prog == NULL)                                                               
          return INVARG;
          // init the program counter to the program address
          p->registers.epc_reg = prog->address;
-       */
       p->pri = prio;
       /* The supervisor is the process that has requested 
        * The create_proc function and then it is the

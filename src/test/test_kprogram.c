@@ -15,9 +15,9 @@ void test_kprogram()
 	int e;
 	char c;
 
-	kprintln("\n------TEST MODULE KPROGRAM BEGIN------");
+	kprintln("------------TEST MODULE KPROGRAM BEGIN------------");
 
-	kprint("Test search_prgm: ");
+	kprint("Test search_prgm\t\t\t\t");
 	e = test_search_prgm() ;
 
 	if (e == OMGROXX)
@@ -28,7 +28,7 @@ void test_kprogram()
 		kprintln(itos(e,&c));
 	}
 
-	kprintln("-------TEST MODULE KPROGRAM END-------");
+	kprintln("-------------TEST MODULE KPROGRAM END-------------");
 }
 
 uint32_t test_search_prgm(void)

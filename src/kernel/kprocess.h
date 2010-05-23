@@ -15,10 +15,6 @@
 #include <stdlib.h>
 #include <process.h>
 
-#define MAX_ARG 4
-#define ARG_SIZE 20
-#define NSUPERVISED 40
-
 /**
  * \struct pcb
  * \brief Process representation.
@@ -39,24 +35,6 @@ typedef struct
   uint32_t        error;        /*!< Last error the process encountered. */
   bool            empty;
 } pcb;
-
-/**
- * \struct pcbinfo
- * \brief Copy of a process pcb.
- *
- * A copy has to be created and passed to make sure that the real pcb will not
- * be affected in any way.
- */
-typedef struct
-{
-  uint32_t        pid;          /*!< Process identifier. */
-  char            name[ARG_SIZE];       /*!< Process name. */
-  uint32_t        pri;          /*!< Process priority. */
-  uint32_t        supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  uint32_t        supervisor;   /*!< List of supervisor processes. */
-  uint32_t        wait;
-  bool            empty;
-} pcbinfo;
 
 /**
  * \fn int create_proc(char *name, pcb *p)
