@@ -11,22 +11,6 @@
 
 #include <string.h>
 
-int32_t
-ktest(char *name, int32_t val, char **data)
-{
-  char            buf[10];
-  int             i, nb_arg;
-	kprint("program ");
-  kprintln(name);
-	kprint("prio : ");
-	kprintln(itos(val, buf));
-  nb_arg = stoi(argn(data, 0));
-  for (i = 1; i <= nb_arg; i++)
-    kprintln(argn(data, i));
-	kprintln("end");
-	return val+1;
-}
-
 /**
  * @brief Display 8 char on the Malta display.
  *
