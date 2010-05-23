@@ -36,7 +36,6 @@ typedef struct
   bool            empty;
 } pcb;
 
-
 /**
  * \fn int create_proc(char *name, pcb *p)
  * \brief initialize a pcb with all the needed value,

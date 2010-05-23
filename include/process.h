@@ -16,6 +16,7 @@
 #define ARG_SIZE 20
 #define NSUPERVISED 40
 
+#include <stdlib.h>
 
 /**
  * \struct pcbinfo
@@ -26,12 +27,12 @@
  */
 typedef struct
 {
-  uint32_t        pid;          /*!< Process identifier. */
+  int       pid;          /*!< Process identifier. */
   char            name[ARG_SIZE];       /*!< Process name. */
-  uint32_t        pri;          /*!< Process priority. */
-  uint32_t        supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  uint32_t        supervisor;   /*!< List of supervisor processes. */
-  uint32_t        wait;
+  int        pri;          /*!< Process priority. */
+  int        supervised[NSUPERVISED];      /*!< List of supervised processes. */
+  int        supervisor;   /*!< List of supervisor processes. */
+  int        wait;
   bool            empty;
 } pcbinfo;
 
