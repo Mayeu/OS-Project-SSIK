@@ -10,22 +10,23 @@
 #ifndef __KSYSCALL_H
 #define __KSYSCALL_H
 
-#include "registers.h"
+#include "include/registers.h"
 
 enum
 {
-  TEST,
   FOURCHETTE,
   PRINT,
+	PRINTLN,
+	FPRINT,
+	SLEEP,
   KILL,
-  QUIT
+  EXIT
 };
 
-void            syscall_none(int32_t scode);
-void            syscall_one(int32_t p1, int32_t scode);
-void            syscall_two(int32_t p1, int32_t p2, int32_t scode);
-void            syscall_three(int32_t p1, int32_t p2, int32_t p3,
-                              int32_t scode);
+int32_t         syscall_none(int32_t scode);
+int32_t         syscall_one(int32_t p1, int32_t scode);
+int32_t         syscall_two(int32_t p1, int32_t p2, int32_t scode);
+int32_t         syscall_three(int32_t p1, int32_t p2, int32_t p3, int32_t scode);
 
 void            syscall_handler(registers_t * regs);
 
