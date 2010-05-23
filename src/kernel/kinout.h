@@ -8,7 +8,7 @@
 
 #include <types.h>
 
-void            ktest(char *name, int val, char **data);
+int32_t         ktest(char *name, int val, char **data);
 
 /**
  * @brief Display 8 char on the Malta display.
