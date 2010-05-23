@@ -9,16 +9,49 @@
 #ifndef __STDIO_H
 #define __STDIO_H
 
-void            test_arg(char *str, int num, char **data);
+enum
+{
+  CONSOLE,
+  MALTA
+};
 
  /**
- * \fn int printf(char *str)
+ * \fn int print(char *str)
  * \brief Print the string str to the standard output.
  *
  * \param str the string to print
  * \return the error identifier in case of any failure
  */
 int             print(char *str);
+
+ /**
+ * \fn int println(char *str)
+ * \brief Print the string str to the standard output.
+and return line.
+ *
+ * \param str the string to print
+ * \return the error identifier in case of any failure
+ */
+int             println(char *str);
+
+ /**
+ * \fn int printi(int n)
+ * \brief Print the number n to the standard output.
+ *
+ * \param n the number to print
+ * \return the error identifier in case of any failure
+ */
+int             printi(int n);
+
+ /**
+ * \fn int printiln(char *str)
+ * \brief Print the number n to the standard output.
+and return line.
+ *
+ * \param n the number to print
+ * \return the error identifier in case of any failure
+ */
+int             printiln(int n);
 
  /**
  * \fn int fprintf(int out, char *str)

@@ -9,6 +9,7 @@
 #include "test_uart_fifo.c"
 #include "test_kprogram.c"
 #include "test_kprocess_list.c"
+#include "test_coquille.c"
 
 	void
 test()
@@ -26,5 +27,7 @@ test()
 	test_uart_fifo();
 
 	test_kprogram();
+
+	test_coquille();
 
 }

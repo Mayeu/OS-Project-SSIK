@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include "ksyscall.h"
 
  /**
@@ -15,8 +16,38 @@
 int
 print(char *str)
 {
-  syscall_one((int32_t) str, PRINT);
-  return 0;
+  return syscall_one((int32_t) str, PRINT);
+}
+
+ /**
+ * \brief Print the string str to the standard output.
+and return line.
+ */
+int
+println(char *str)
+{
+  return syscall_one((int32_t) str, PRINTLN);
+}
+
+ /**
+ * Print the number n to the standard output.
+ */
+int
+printi(int n)
+{
+  char            buf[10];
+  return print(itos(n, buf));
+}
+
+ /**
+ * Print the number n to the standard output.
+and return line.
+ */
+int
+printiln(int n)
+{
+  char            buf[10];
+  return println(itos(n, buf));
 }
 
  /**
@@ -25,7 +56,7 @@ print(char *str)
 int
 fprint(int out, char *str)
 {
-  return 0;
+  return syscall_two(out, (int32_t) str, FPRINT);
 }
 
  /**

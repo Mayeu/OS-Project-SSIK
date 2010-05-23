@@ -10,11 +10,11 @@
 #define __COQUILLE_H
 
 
-#define MAX_ARG 5
+#define MAX_SHELL_ARG 5
 #define MAX_CHAR 20
 
 void            coquille(void);
 
-int             split_input(char *str, char[MAX_ARG][MAX_CHAR]);
+int             split_args(char *str, char[MAX_SHELL_ARG][MAX_CHAR]);
 
 #endif //__COQUILLE_H

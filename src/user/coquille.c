@@ -10,28 +10,73 @@
 #include <string.h>
 #include <stdio.h>
 #include <process.h>
+#include <error.h>
 
-
-char            command_arg[MAX_ARG][MAX_CHAR];
+char            command_arg[MAX_SHELL_ARG][MAX_CHAR];
 
 void
 coquille(void)
 {
-  int             res;
+  int             res, pid;
   char            prompt_line[255];
   char            buffer[255];
+  char            prog_name[20];
+  char           *command = "init arg1 arg2 arg3 arg4";
+  pcbinfo         pcbi;
 
-  strcpy(prompt_line, "coquille> ");
+  strcpy("coquille> ", prompt_line);
 
   print(prompt_line);
 
+  fprint(MALTA, "ABCDEFGH");
+
+  res = split_args(command, command_arg);
+
+  println(command);
+
+  if (res != -1)
+  {
+    // copy the program name from the array
+    strcpy(command_arg[0], prog_name);
+    // copy the number of arguments at position 0, replacing the progr name
+    strcpy(itos(res, buffer), command_arg[0]);
+
+    pid = fourchette(prog_name, (char **) command_arg);
+
+    // print the new pid
+    print("pid : ");
+    println(itos(pid, buffer));
+
+    get_proc_info(pid, &pcbi);
+    printiln(pcbi.empty);
+    printiln(pcbi.pid);
+    printiln(pcbi.pri);
+    println(pcbi.name);
+
+    println("changed prio to 30");
+    chgpri(pid, 30);
+    printiln(123456789);
+    printiln(gerror());
+    perror("Erreur !");
+
+    get_proc_info(pid, &pcbi);
+    printiln(pcbi.empty);
+    printiln(pcbi.pid);
+    printiln(pcbi.pri);
+    println(pcbi.name);
+
+
+  }
+
+/*
   while (1)
   {
     // waiting for the user to enter a command
     //fgets(buffer, 255);
 
     // split the string
-    res = split_input(buffer, command_arg);
+    //res = split_args(buffer, command_arg);
+		res = split_args(command, command_arg);
 
     if (res != -1)
     {
@@ -39,14 +84,15 @@ coquille(void)
     }
 
   }
-
+*/
 }
 
 int
-split_arg(char *str, char data[MAX_ARG][MAX_CHAR])
+split_args(char *str, char data[MAX_SHELL_ARG][MAX_CHAR])
 {
   int             i = 0, cpt = 0;
   char           *next;
+  char            buf[3];
   str = trim(str);
 
   while (*str != '\0')
@@ -54,7 +100,7 @@ split_arg(char *str, char data[MAX_ARG][MAX_CHAR])
     next = strchr(str, ' ');
     if (next != NULL)
     {
-      if (i < MAX_ARG)
+      if (i < MAX_SHELL_ARG)
       {
         strcpyn(str, data[i], next - str);
         cpt++;
@@ -65,7 +111,7 @@ split_arg(char *str, char data[MAX_ARG][MAX_CHAR])
     else
     {
       next = strchr(str, '\0');
-      if (i < MAX_ARG)
+      if (i < MAX_SHELL_ARG)
       {
         strcpy(str, data[i]);
         cpt++;
@@ -75,5 +121,5 @@ split_arg(char *str, char data[MAX_ARG][MAX_CHAR])
     i++;
   }
 
-  return (i <= MAX_ARG) ? cpt : -1;
+  return (i <= MAX_SHELL_ARG) ? cpt - 1 : -1;
 }

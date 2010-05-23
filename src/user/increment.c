@@ -1,9 +1,10 @@
 #include <stdio.h>
 
-void increment(int N)
+void
+increment(int N)
 {
-	int i = 1;
-	for(; i<=N ; i++)
-		printi(i);
-	println("");
+  int             i = 1;
+  for (; i <= N; i++)
+    printi(i);
+  println("");
 }
