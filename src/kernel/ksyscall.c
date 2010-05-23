@@ -17,35 +17,8 @@
 #include "kscheduler.h"
 #include "kernel.h"
 #include "kinout.h"
+#include "kerror.h"
 #include "asm.h"
-
-/*
-	void
-syscall_none(int32_t scode)
-{
-  asm("move $v0, $a0\n\t syscall\n\t");
-}
-
-int32_t
-syscall_one(int32_t p1, int32_t scode)
-{
-	int res;
-  asm("move $v0, $a1\n\t syscall\n\t");
-	return res;
-}
-
-int32_t
-syscall_two(int32_t p1, int32_t p2, int32_t scode)
-{
-  asm("move $v0, $a2\n\t syscall\n\t");
-}
-
-int32_t
-syscall_three(int32_t p1, int32_t p2, int32_t p3, int32_t scode)
-{
-  asm("move $v0, $a3\n\t syscall\n\t");
-}*/
-
 
 void
 syscall_handler(registers_t * regs)

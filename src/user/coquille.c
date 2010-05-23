@@ -92,7 +92,6 @@ split_args(char *str, char data[MAX_SHELL_ARG][MAX_CHAR])
 {
   int             i = 0, cpt = 0;
   char           *next;
-  char            buf[3];
   str = trim(str);
 
   while (*str != '\0')

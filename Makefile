@@ -30,7 +30,7 @@ MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
 ARCH=-EL -G0 -mips32
 
 # Other gcc flags
-CFLAGS	= -ggdb -Werror -fno-builtin -I$(PROJECT_DIR)/include
+CFLAGS	= -ggdb -Werror -Wall -fno-builtin -I$(PROJECT_DIR)/include
 KCFLAGS	+= $(CFLAGS) -I$(PROJECT_DIR)/$(SRC_KERNEL)/include
 
 # Compiler and linker commands
