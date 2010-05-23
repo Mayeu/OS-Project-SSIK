@@ -27,12 +27,12 @@
  */
 typedef struct
 {
-  int       pid;          /*!< Process identifier. */
+  int             pid;          /*!< Process identifier. */
   char            name[ARG_SIZE];       /*!< Process name. */
-  int        pri;          /*!< Process priority. */
-  int        supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  int        supervisor;   /*!< List of supervisor processes. */
-  int        wait;
+  int             pri;          /*!< Process priority. */
+  int             supervised[NSUPERVISED];      /*!< List of supervised processes. */
+  int             supervisor;   /*!< List of supervisor processes. */
+  int             wait;
   bool            empty;
 } pcbinfo;
 
@@ -62,7 +62,7 @@ int             kill(int pid);
 void            sleep(int time);
 
  /**
- * \fn fourchette(char *name, int prio, char *argv[])
+ * \fn int fourchette(char *name, int prio, char *argv[])
  * \brief creates a child process that differs from the parent process only in its PID and
 PPID. If success, the PID of the child process is returned in the parent’s thread of execution,
 and a 0 is returned in the child’s thread of execution.
@@ -72,5 +72,26 @@ and a 0 is returned in the child’s thread of execution.
  * \return the process pid
  */
 int             fourchette(char *name, char *argv[]);
+
+ /**
+ * \fn int get_proc_info(int pid)
+ * \brief fill the pcb_info structure given in parameter with the pcb information. Only
+not critical information is given to the user.
+ *
+ * \param pid the pid of the process
+ * \param res the pcbinfo structure to fill
+ * \return the error identifier in case of any failure
+ */
+int             get_proc_info(int pid, pcbinfo * res);
+
+ /**
+ * \fn int chgpri(int pid, int newprio)
+ * \brief changes the priority of the process from the old one to the new priority ’prio’.
+ *
+ * \param pid the pid of the process
+ * \param newprio the new priority of the process
+ * \return the error identifier in case of any failure
+ */
+int             chgpri(int pid, int newprio);
 
 #endif //__PROCESS_H

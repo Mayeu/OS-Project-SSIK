@@ -18,6 +18,7 @@
 #include "kernel.h"
 #include "kinout.h"
 #include "asm.h"
+#include "kerror.h"
 
 int32_t
 syscall_none(int32_t scode)
@@ -28,7 +29,9 @@ syscall_none(int32_t scode)
 int32_t
 syscall_one(int32_t p1, int32_t scode)
 {
+	int res;
   asm("move $v0, $a1\n\t syscall\n\t");
+	return res;
 }
 
 int32_t
@@ -54,8 +57,7 @@ syscall_handler(registers_t * regs)
   switch (syscall)
   {
   	case FOURCHETTE:
-    	//res = create_proc((char *)regs->a_reg[0], BAS_PRIO, (char **)regs->a_reg[1]);
-    	res = ktest((char*)regs->a_reg[0], BAS_PRI, (char **)regs->a_reg[1]);
+    	res = create_proc((char*)regs->a_reg[0], BAS_PRI, (char**)regs->a_reg[1]);
     break;
   	case PRINT:
 			kprint((char*)regs->a_reg[0]);
@@ -72,6 +74,23 @@ syscall_handler(registers_t * regs)
   	case SLEEP:
     	prunning.current->wait = regs->a_reg[0] * timer_msec;
     break;
+  	case PERROR:
+    	kperror((char*)regs->a_reg[0]);
+    break;
+  	case GERROR:
+    	res = kgerror();
+    break;
+  	case SERROR:
+    	kserror(regs->a_reg[0]);
+    break;
+		case GETPINFO:
+			p = searchall(regs->a_reg[0]);
+			res = get_pinfo(p, (pcbinfo*)regs->a_reg[1]);
+		break;
+		case CHGPPRI:
+			p = searchall(regs->a_reg[0]);
+			res = chg_ppri(p, regs->a_reg[1]);
+		break;
   	case KILL:
     	p = searchall(regs->a_reg[0]);
     	res = rm_p(p);

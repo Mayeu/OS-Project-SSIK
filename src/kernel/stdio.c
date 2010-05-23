@@ -23,7 +23,8 @@ print(char *str)
  * \brief Print the string str to the standard output.
 and return line.
  */
-int println(char *str)
+int
+println(char *str)
 {
   return syscall_one((int32_t) str, PRINTLN);
 }
@@ -31,20 +32,22 @@ int println(char *str)
  /**
  * Print the number n to the standard output.
  */
-int printi(int n)
+int
+printi(int n)
 {
-	char buf[10];
-	return print(itos(n, buf));
+  char            buf[10];
+  return print(itos(n, buf));
 }
 
  /**
  * Print the number n to the standard output.
 and return line.
  */
-int printiln(int n)
+int
+printiln(int n)
 {
-	char buf[10];
-	return println(itos(n, buf));
+  char            buf[10];
+  return println(itos(n, buf));
 }
 
  /**
@@ -53,7 +56,7 @@ int printiln(int n)
 int
 fprint(int out, char *str)
 {
-  return syscall_two(out, (int32_t)str, FPRINT);
+  return syscall_two(out, (int32_t) str, FPRINT);
 }
 
  /**

@@ -9,7 +9,6 @@
 #ifndef __KERROR_H
 #define __KERROR_H
 
-#include "kernel.h"
 #include <types.h>
 
  /**
@@ -23,7 +22,7 @@ void            kperror(char *error_msg);
 
  /**
  * \fn int kgerror(void)
- * \brief Return the error number
+ * \brief Return the error number.
  *
  * \return the error number
  */
