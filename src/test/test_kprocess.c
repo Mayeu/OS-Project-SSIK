@@ -9,8 +9,6 @@
 #include "../kernel/kinout.h"
 #include "../kernel/kernel.h"
 
-
-
 void
 test_kprocess()
 {

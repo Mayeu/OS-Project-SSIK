@@ -136,6 +136,7 @@ test_kprocess_list()
 	kprintln(itos(pready.ls[1].pid, buf));
 	kprintln(itos(pready.ls[2].pid, buf));
 	kprintln(itos(pready.ls[3].pid, buf));
+
 */
 	kprint("------TEST MODULE KPROCESS_LIST END--------\n");
 

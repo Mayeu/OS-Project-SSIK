@@ -67,9 +67,6 @@ create_proc(char *name, uint32_t prio, char **params)
                                                                                                                                                                 /** TODO: init the registers */
 
       // init the parameters
-
-      //for (i = 0; i < MAX_ARG; i++)
-      //  p->registers.a_reg[i] = (uint32_t) &params[i];
       p->registers.a_reg[0] = (uint32_t) params;
       p->wait = 0;
       p->error = OMGROXX;

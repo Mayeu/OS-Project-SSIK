@@ -9,6 +9,8 @@
 #ifndef __STDIO_H
 #define __STDIO_H
 
+void            test_arg(char *str, int num, char **data);
+
  /**
  * \fn int printf(char *str)
  * \brief Print the string str to the standard output.
