@@ -7,6 +7,27 @@
 #include "malta.h"
 
 #include "kinout.h"
+#include "kprocess.h"
+
+#include <string.h>
+
+char           *
+argn(char **data, int num)
+{
+  return (char *) (data + num * (ARG_SIZE / sizeof(char *)));
+}
+
+void
+ktest(char *name, int32_t val, char **data)
+{
+  char            buf[10];
+  int             i, nb_arg;
+  kprintln(name);
+  kprintln(itos((int) val, buf));
+  nb_arg = stoi(argn(data, 0));
+  for (i = 1; i <= nb_arg; i++)
+    kprintln(argn(data, i));
+}
 
 /**
  * @brief Display a value on the Malta display.

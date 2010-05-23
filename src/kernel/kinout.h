@@ -8,6 +8,8 @@
 
 #include <types.h>
 
+void            ktest(char *name, int val, char **data);
+
 /**
  * @brief Display a value on the Malta display.
  * @param an uint32_t to print

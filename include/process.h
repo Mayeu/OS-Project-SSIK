@@ -13,4 +13,8 @@
 #define MAX_PRI 30
 #define BAS_PRI 15
 
+int             kill(int pid);
+
+int             fourchette(char *name, int prio, int argc, char *argv[]);
+
 #endif //__PROCESS_H

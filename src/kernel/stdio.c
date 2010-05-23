@@ -7,6 +7,13 @@
  */
 
 #include <stdio.h>
+#include "ksyscall.h"
+
+void
+test_arg(char *str, int num, char **data)
+{
+  syscall_three((int32_t) str, num, (int32_t) data, TEST);
+}
 
  /**
  * Print the string str to the standard output.
@@ -14,7 +21,8 @@
 int
 print(char *str)
 {
-  // syscall
+  syscall_one((int32_t) str, PRINT);
+  return 0;
 }
 
  /**
@@ -23,6 +31,7 @@ print(char *str)
 int
 fprint(int out, char *str)
 {
+  return 0;
 }
 
  /**
@@ -31,6 +40,7 @@ fprint(int out, char *str)
 char
 getc(void)
 {
+  return 'c';
 }
 
  /**
@@ -39,4 +49,5 @@ getc(void)
 int
 gets(char *str, int num)
 {
+  return 0;
 }
