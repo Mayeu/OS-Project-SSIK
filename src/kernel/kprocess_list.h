@@ -45,6 +45,18 @@ uint32_t        create_pls(pls * ls);
 uint32_t        rm_pls(pls * ls);
 
 /**
+ * \fn void rm_all_pls()
+ * \brief remove all the lists and reset next_pid
+ */
+void            rm_all_pls();
+
+/**
+ * \fn void create_all_pls()
+ * \brief create all the lists and reset next_pid
+ */
+void            create_all_pls();
+
+/**
  * \fn int rm_from_pls(pcb *p, pls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
@@ -111,14 +123,5 @@ uint32_t        move(uint32_t pid, pls * src, pls * dest);
  * \return an error code
  */
 uint32_t        sort(pls * ls);
-
-/**
- * \fn int16_t first(pls *ls)
- * \brief return the pid of the first pcb in the list.
- *
- * \param ls the list
- * \return the pid or an error code
- */
-int32_t         first(pls * ls);
 
 #endif

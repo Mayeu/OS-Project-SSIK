@@ -55,6 +55,34 @@ rm_pls(pls * ls)
 }
 
 /**
+ * \fn void rm_all_pls()
+ * \brief remove all the lists and reset next_pid
+ */
+void
+rm_all_pls()
+{
+  rm_pls(&pready);
+  rm_pls(&prunning);
+  rm_pls(&pwaiting);
+  rm_pls(&pterminate);
+  reset_next_pid();
+}
+
+/**
+ * \fn void create_all_pls()
+ * \brief create all the lists and reset next_pid
+ */
+void
+create_all_pls()
+{
+  create_pls(&pready);
+  create_pls(&prunning);
+  create_pls(&pwaiting);
+  create_pls(&pterminate);
+  reset_next_pid();
+}
+
+/**
  * \fn int rm_from_pls(pcb *p, pls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
@@ -105,7 +133,7 @@ empty_space(pls * ls)
  * \return a boolean
  */
 bool
-is_empty(pls * ls)
+pls_is_empty(pls * ls)
 {
   int             i;
   if (ls == NULL)
@@ -134,7 +162,7 @@ search_pcb(uint32_t pid, pls * ls)
   int             i = 0;
   while (i < MAX_PROC)
   {
-    if (ls->ls[i].pid == pid)
+    if ((ls->ls[i].pid == pid) && (ls->ls[i].empty == FALSE))
       return &ls->ls[i];
     i++;
   }
@@ -188,8 +216,7 @@ move(uint32_t pid, pls * src, pls * dest)
     return FAILNOOB;
   if ((dest_space = empty_space(dest)) == NULL)
     return OUTOMEM;
-  ret = copy_p(src_space, dest_space);
-  src_space->empty = TRUE;
+  ret = move_p(src_space, dest_space);
   return ret;
 }
 
@@ -216,23 +243,12 @@ sort(pls * ls)
       if (ls->ls[i].pri > ls->ls[i + 1].pri)
       {
         // Swap the two pcb
-        copy_p(&(ls->ls[i]), &tmp);
-        copy_p(&(ls->ls[i + 1]), &(ls->ls[i]));
-        copy_p(&tmp, &(ls->ls[i + 1]));
+        move_p(&(ls->ls[i]), &tmp);
+        move_p(&(ls->ls[i + 1]), &(ls->ls[i]));
+        move_p(&tmp, &(ls->ls[i + 1]));
         ordered = FALSE;
       }
     size--;
   }
   return OMGROXX;
-}
-
-/**
- * return the pid of the first pcb in the list.
- */
-int32_t
-first(pls * ls)
-{
-  if (ls == NULL)
-    return NULLPTR;
-  return ls->ls[0].pid;
 }
