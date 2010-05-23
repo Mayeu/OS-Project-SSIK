@@ -72,7 +72,7 @@ create_proc(char *name, uint32_t prio, char **params)
       p->error = OMGROXX;
       p->empty = FALSE;
 
-      return OMGROXX;
+      return p->pid;
     }
     else
       return OUTOPID;

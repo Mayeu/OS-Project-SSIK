@@ -45,7 +45,7 @@ test_kprocess()
 	res = create_proc("testCREATE1", 10, (char **)params);
 	pcb1 = &pready.ls[0];
 
-	err = (res == OMGROXX) &&
+	err = (res == OMGROXX || res >= 0) &&
 			(pcb1->pid == 0) &&
 			(strcmp(pcb1->name, "testCREATE1") == 0) &&
 			(pcb1->pri == 10) &&
@@ -77,7 +77,7 @@ test_kprocess()
 	kprint("create_proc test2\t\t\t\t");													// testCREATE2
 	pcb2 = &pready.ls[1];
 
-	err = (res == OMGROXX) &&
+	err = (res = OMGROXX || res >= 0) &&
 			(pcb2->pid == 1) &&
 			(strcmp(pcb2->name, "testCREATE2") == 0) &&
 			(pcb2->pri == 15) &&
@@ -118,7 +118,7 @@ test_kprocess()
 	res = create_proc("testCREATE3", 12, (char **)params2);
 	pcb1 = &pready.ls[0];
 
-	err = (res == OMGROXX) &&
+	err = (res == OMGROXX || res >= 0) &&
 			(pcb1->pid == 2) &&
 			(strcmp(pcb1->name, "testCREATE3") == 0) &&
 			(pcb1->pri == 12) &&
@@ -210,7 +210,7 @@ test_kprocess()
 	res = create_proc("testCREATE4", 20, (char **)params2);
 	pcb1 = &pready.ls[0];
 
-	err = (res == OMGROXX) &&
+	err = (res == OMGROXX || res >= 0) &&
 			(pcb1->pid == 3) &&
 			(strcmp(pcb1->name, "testCREATE4") == 0) &&
 			(pcb1->pri == 20) &&
@@ -295,7 +295,7 @@ test_kprocess()
 	res = create_proc("testCREATE5", 5, (char **)params);
 	pcb1 = &pready.ls[3];
 
-	err = (res == OMGROXX) &&
+	err = (res == OMGROXX || res >= 0) &&
 			(pcb1->pid == 0) &&
 			(strcmp(pcb1->name, "testCREATE5") == 0) &&
 			(pcb1->pri == 5) &&
