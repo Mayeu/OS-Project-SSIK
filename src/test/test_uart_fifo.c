@@ -17,9 +17,9 @@ void test_uart_fifo()
 	int e;
 	char c;
 
-	kprintln("\n------TEST MODULE UART FIFO BEGIN------");
+	kprintln("-----------TEST MODULE UART FIFO BEGIN------------");
 
-	kprint("Test reset_fifo_buffer: ");
+	kprint("Test reset_fifo_buffer\t\t\t\t");
 	e = test_uart_reset_fifo() ;
 	if (e == OMGROXX)
 		kprintln("OK");
@@ -29,7 +29,7 @@ void test_uart_fifo()
 		kprintln(itos(e,&c));
 	}
 
-	kprint("Test push_fifo_buffer: ");
+	kprint("Test push_fifo_buffer\t\t\t\t");
 	e = test_uart_push_fifo();
 	if ( e == OMGROXX)
 		kprintln("OK");
@@ -39,7 +39,7 @@ void test_uart_fifo()
 		kprintln(itos(e,&c));
 	}
 
-	kprint("Test pop_fifo_buffer: ");
+	kprint("Test pop_fifo_buffer\t\t\t\t");
 	e = test_uart_pop_fifo();
 	if (e  == OMGROXX)
 		kprintln("OK");
@@ -49,7 +49,8 @@ void test_uart_fifo()
 		kprintln(itos(e,&c));
 	}
 
-	kprintln("-------TEST MODULE UART FIFO END-------");
+	kprintln("------------TEST MODULE UART FIFO END-------------");
+	kprintln("");
 }
 
 /* Test the uart reset */

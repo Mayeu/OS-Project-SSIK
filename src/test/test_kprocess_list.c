@@ -25,7 +25,7 @@ test_kprocess_list()
 
 	create_all_pls();
 
-	kprintln("----------TEST MODULE KPROCESS_LIST BEGIN----------");
+	kprintln("----------TEST MODULE KPROCESS_LIST BEGIN---------");
 
 	kprint("create_pls\t\t\t\t\t");														// testCREATE1
 	res = create_pls(&pready);
@@ -159,7 +159,7 @@ test_kprocess_list()
 	else
 		kprintln("NOK");
 
-	kprintln("----------TEST MODULE KPROCESS_LIST END------------\n");
+	kprintln("----------TEST MODULE KPROCESS_LIST END-----------\n");
 	kprintln("");
 
 	rm_all_pls();
