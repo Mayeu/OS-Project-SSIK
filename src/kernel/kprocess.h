@@ -29,7 +29,7 @@
 typedef struct
 {
   uint32_t        pid;          /*!< Process identifier. */
-  char            name[20];     /*!< Process name. */
+  char            name[ARG_SIZE];       /*!< Process name. */
   uint32_t        pri;          /*!< Process priority. */
   int32_t         supervised[NSUPERVISED];      /*!< List of supervised processes. */
   int32_t         supervisor;   /*!< supervisor. */
@@ -50,7 +50,7 @@ typedef struct
 typedef struct
 {
   uint32_t        pid;          /*!< Process identifier. */
-  char            name[20];     /*!< Process name. */
+  char            name[ARG_SIZE];       /*!< Process name. */
   uint32_t        pri;          /*!< Process priority. */
   uint32_t        supervised[NSUPERVISED];      /*!< List of supervised processes. */
   uint32_t        supervisor;   /*!< List of supervisor processes. */
@@ -71,7 +71,8 @@ typedef struct
  * \return the pid of the newly created process(>0), or an error (<0)
  */
 
-uint32_t        create_proc(char *name, uint32_t prio, int32_t params[4]);
+//uint32_t        create_proc(char *name, uint32_t prio, int32_t params[MAX_ARG]);
+uint32_t        create_proc(char *name, uint32_t prio, char **params);
 
 
 /**
@@ -113,7 +114,7 @@ uint32_t        get_pinfo(pcb * p, pcbinfo * pi);
  * \param pdest the destination pcb
  * \return an error code
  */
-uint32_t        copy_p(pcb * psrc, pcb * pdest);
+uint32_t        move_p(pcb * psrc, pcb * pdest);
 /**
  * \fn int add_psupervise(pcb *p, int pid)
  * \brief add a pid to the supervise list of a process
@@ -135,14 +136,14 @@ uint32_t        add_psupervised(pcb * p, uint32_t pid);
 uint32_t        rm_psupervised(pcb * p, uint32_t pid);
 
 /**
- * \fn int chg_psupervisor(pcb *p, int pid)
+ * \fn int add_psupervisor(pcb *p, int pid)
  * \brief change the pid of the process supervisor
  *
  * \param p the pointer to the process
  * \param pid the pid to add
  * \return an error code
  */
-uint32_t        chg_psupervisor(pcb * p, uint32_t pid);
+uint32_t        add_psupervisor(pcb * p, uint32_t pid);
 
  /**
  * \fn int rm_psuperviser(pcb *p, int pid)
@@ -170,5 +171,15 @@ bool            p_is_empty(pcb * pcb);
  *
  */
 void            reset_next_pid();
+
+/**
+ * \fn char *argn(char **data, int num)
+ * \brief Returns the argument at position num
+ *
+ * \param data the original array of arguments
+ * \param num the number of the argument to return
+ * \return the argument
+ */
+char           *argn(char **data, int num);
 
 #endif
