@@ -9,12 +9,6 @@
 #include <stdio.h>
 #include "ksyscall.h"
 
-void
-test_arg(char *str, int num, char **data)
-{
-  syscall_three((int32_t) str, num, (int32_t) data, TEST);
-}
-
  /**
  * Print the string str to the standard output.
  */

@@ -11,12 +11,6 @@
 
 #include <string.h>
 
-char           *
-argn(char **data, int num)
-{
-  return (char *) (data + num * (ARG_SIZE / sizeof(char *)));
-}
-
 void
 ktest(char *name, int32_t val, char **data)
 {
