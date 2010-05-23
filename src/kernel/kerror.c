@@ -27,7 +27,7 @@ kperror(char *error_msg)
     strcpy(error_msg, res);
     strcat(res, " : ");
   }
-  itos((int)p_error, num);
+  itos((int) p_error, num);
   strcat(res, num);
 
   kprint(res);
@@ -40,7 +40,7 @@ kperror(char *error_msg)
 uint32_t
 kgerror(void)
 {
-  return (uint32_t)p_error;
+  return (uint32_t) p_error;
 }
 
  /**
@@ -49,5 +49,5 @@ kgerror(void)
 void
 kserror(uint32_t e)
 {
-	prunning.current->error = e;
+  prunning.current->error = e;
 }

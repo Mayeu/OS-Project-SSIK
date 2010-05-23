@@ -19,7 +19,7 @@ separated from it by a colon and space; otherwise, only the error message string
 void
 perror(char *error_msg)
 {
-	syscall_one((int32_t)error_msg, PERROR);
+  syscall_one((int32_t) error_msg, PERROR);
 }
 
  /**
@@ -28,7 +28,7 @@ perror(char *error_msg)
 int
 gerror(void)
 {
-	return syscall_none(GERROR);
+  return syscall_none(GERROR);
 }
 
  /**
@@ -37,5 +37,5 @@ gerror(void)
 void
 serror(int e)
 {
-	syscall_one(e, SERROR);
+  syscall_one(e, SERROR);
 }

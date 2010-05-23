@@ -17,6 +17,7 @@
 #include "kscheduler.h"
 #include "kernel.h"
 #include "kinout.h"
+#include "asm.h"
 
 /*
 	void
@@ -55,50 +56,51 @@ syscall_handler(registers_t * regs)
 
   switch (syscall)
   {
-  	case FOURCHETTE:
-    	res = create_proc((char*)regs->a_reg[0], BAS_PRI, (char**)regs->a_reg[1]);
+  case FOURCHETTE:
+    res =
+      create_proc((char *) regs->a_reg[0], BAS_PRI, (char **) regs->a_reg[1]);
     break;
-  	case PRINT:
-			kprint((char*)regs->a_reg[0]);
+  case PRINT:
+    kprint((char *) regs->a_reg[0]);
     break;
-  	case PRINTLN:
-    	kprintln((char*)regs->a_reg[0]);
+  case PRINTLN:
+    kprintln((char *) regs->a_reg[0]);
     break;
-		case FPRINT:
-			if (regs->a_reg[0] == CONSOLE)
-				kprint((char*)regs->a_reg[1]);
-			else
-				kmaltaprint8((char*)regs->a_reg[1]);
-		break;
-  	case SLEEP:
-    	prunning.current->wait = regs->a_reg[0] * timer_msec;
+  case FPRINT:
+    if (regs->a_reg[0] == CONSOLE)
+      kprint((char *) regs->a_reg[1]);
+    else
+      kmaltaprint8((char *) regs->a_reg[1]);
     break;
-  	case PERROR:
-    	kperror((char*)regs->a_reg[0]);
+  case SLEEP:
+    prunning.current->wait = regs->a_reg[0] * timer_msec;
     break;
-  	case GERROR:
-    	res = kgerror();
+  case PERROR:
+    kperror((char *) regs->a_reg[0]);
     break;
-  	case SERROR:
-    	kserror(regs->a_reg[0]);
+  case GERROR:
+    res = kgerror();
     break;
-		case GETPINFO:
-			p = searchall(regs->a_reg[0]);
-			res = get_pinfo(p, (pcbinfo*)regs->a_reg[1]);
-		break;
-		case CHGPPRI:
-			p = searchall(regs->a_reg[0]);
-			res = chg_ppri(p, regs->a_reg[1]);
-		break;
-  	case KILL:
-    	p = searchall(regs->a_reg[0]);
-    	res = rm_p(p);
-    	schedule();
+  case SERROR:
+    kserror(regs->a_reg[0]);
     break;
-  	case EXIT:
-   		p = search_pcb(prunning.current->pid, &prunning);
-    	res = rm_p(p);
-    	schedule();
+  case GETPINFO:
+    p = searchall(regs->a_reg[0]);
+    res = get_pinfo(p, (pcbinfo *) regs->a_reg[1]);
+    break;
+  case CHGPPRI:
+    p = searchall(regs->a_reg[0]);
+    res = chg_ppri(p, regs->a_reg[1]);
+    break;
+  case KILL:
+    p = searchall(regs->a_reg[0]);
+    res = rm_p(p);
+    schedule();
+    break;
+  case EXIT:
+    p = search_pcb(prunning.current->pid, &prunning);
+    res = rm_p(p);
+    schedule();
     break;
   default:
     ;
