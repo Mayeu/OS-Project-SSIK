@@ -52,13 +52,7 @@ syscall_handler(registers_t * regs)
     ktest((char *) regs->a_reg[0], regs->a_reg[1], (char **) regs->a_reg[2]);
     break;
   case FOURCHETTE:
-    // name in a0, pri in a1, params in a3
-    res =
-      create_proc((char *) regs->a_reg[0], regs->a_reg[1],
-                  (int32_t *) regs->a_reg[2]);
-    break;
-  case PRINT:
-    kprint((char *) regs->a_reg[0]);
+    res = create_proc((char *) regs->a_reg[0], regs->a_reg[1], (char **) regs->a_reg[2]);     // name in a0, pri in a1, params in a3
     break;
   case KILL:
     p = searchall(regs->a_reg[0]);      // pid in a0
@@ -66,7 +60,7 @@ syscall_handler(registers_t * regs)
     schedule();
     break;
   case QUIT:
-    p = searchall(first(&prunning));
+    p = searchall(prunning.current->pid);
     res = rm_p(p);
     break;
   default:

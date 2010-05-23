@@ -11,12 +11,13 @@
 void            ktest(char *name, int val, char **data);
 
 /**
- * @brief Display a value on the Malta display.
- * @param an uint32_t to print
+ * @brief Display 8 char on the Malta display.
+ *
+ * If the data are too long (more than 8 char) only the 8th firts are printed
+ * @param a string to print
  * @return void
  */
-void            kmaltaprint(uint32_t word);
-
+void            kmaltaprint8(const char *str);
 /**
  * @brief Print a char on the tty
  * @param the string

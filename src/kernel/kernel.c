@@ -11,6 +11,7 @@
 #include "kinout.h"
 #include "kprocess_list.h"
 #include "test.h"
+#include "splash.h"
 
 static registers_t regs;
 
@@ -38,6 +39,12 @@ kinit()
     kset_sr(0xFFBF00E8, 0x10008001);
 
   /*
+   * Print SSIK on the malta
+   */
+
+  kmaltaprint8("  SSIK  ");
+
+  /*
    * Init the four list of pcb
    */
 
@@ -46,12 +53,28 @@ kinit()
   create_pls(&pwaiting);
   create_pls(&pterminate);
 
-  /**
-	* Launch test
-	*/
+  /*
+   * Launch test
+   */
 
   test();
 
+  /*
+   * Print the splash screen
+   */
+
+  splash();
+
   /* Forever do nothing. */
   while (1);
+}
+
+/**
+ * @brief The ancestor of the ancestor.
+ *
+ * First process to be launched
+ */
+void
+init()
+{
 }

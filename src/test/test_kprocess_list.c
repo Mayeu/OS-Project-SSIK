@@ -15,7 +15,11 @@ test_kprocess_list()
 	bool bres;
 	pcb *pres;
 	char params[4][20];
+<<<<<<< HEAD:src/test/test_kprocess_list.c
 	char buf[255];
+=======
+	//char buf[255];
+>>>>>>> 208b46ca19eb25fa86abc4d561a36a528b30152d:src/test/test_kprocess_list.c
 	strcpy("1", params[0]);
 	strcpy("2", params[1]);
 	strcpy("3", params[2]);
@@ -75,7 +79,12 @@ test_kprocess_list()
 
 	kprint("search_pls:\t");
 
+<<<<<<< HEAD:src/test/test_kprocess_list.c
 	create_proc("test", 15, (int32_t*)params);
+=======
+	//create_proc("test", 15, (int32_t*)params);
+	create_proc("test", 15, (char **)params);
+>>>>>>> 208b46ca19eb25fa86abc4d561a36a528b30152d:src/test/test_kprocess_list.c
 	pres = search_pcb(0, &pready);
 	if (pres->pid == 0)
 		kprintln("OK");
@@ -84,7 +93,12 @@ test_kprocess_list()
 
 	kprint("searchall:\t");
 
+<<<<<<< HEAD:src/test/test_kprocess_list.c
 	create_proc("test2", 15, (int32_t*)params);
+=======
+//	create_proc("test2", 15, (int32_t*)params);
+	create_proc("test2", 15, (char **)params);
+>>>>>>> 208b46ca19eb25fa86abc4d561a36a528b30152d:src/test/test_kprocess_list.c
 	pres = searchall(1);
 	if (pres->pid == 1)
 		kprintln("OK");
@@ -114,18 +128,37 @@ test_kprocess_list()
 
 	kprint("sort:\t\t");
 
-	create_proc("test3", 20, (int32_t*)params);
-	create_proc("test4",  5, (int32_t*)params);
-	create_proc("test5", 10, (int32_t*)params);
-
-	//sort(&pready);
-	
+<<<<<<< HEAD:src/test/test_kprocess_list.c
+=======
+/*
+	kprintln("AVANT CREATES");
 	kprintln(itos(prunning.ls[0].pid, buf));
 	kprintln(itos(pready.ls[0].pid, buf));
 	kprintln(itos(pready.ls[1].pid, buf));
 	kprintln(itos(pready.ls[2].pid, buf));
 	kprintln(itos(pready.ls[3].pid, buf));
 
+>>>>>>> 208b46ca19eb25fa86abc4d561a36a528b30152d:src/test/test_kprocess_list.c
+	create_proc("test3", 20, (int32_t*)params);
+	create_proc("test4",  5, (int32_t*)params);
+	create_proc("test5", 10, (int32_t*)params);
+
+	//sort(&pready);
+	
+<<<<<<< HEAD:src/test/test_kprocess_list.c
+=======
+	kprintln("APRES CREATES");
+>>>>>>> 208b46ca19eb25fa86abc4d561a36a528b30152d:src/test/test_kprocess_list.c
+	kprintln(itos(prunning.ls[0].pid, buf));
+	kprintln(itos(pready.ls[0].pid, buf));
+	kprintln(itos(pready.ls[1].pid, buf));
+	kprintln(itos(pready.ls[2].pid, buf));
+	kprintln(itos(pready.ls[3].pid, buf));
+<<<<<<< HEAD:src/test/test_kprocess_list.c
+
+=======
+*/
+>>>>>>> 208b46ca19eb25fa86abc4d561a36a528b30152d:src/test/test_kprocess_list.c
 	kprint("------TEST MODULE KPROCESS_LIST END--------\n");
 
 	rm_all_pls();

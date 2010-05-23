@@ -30,13 +30,30 @@ ktest(char *name, int32_t val, char **data)
 }
 
 /**
- * @brief Display a value on the Malta display.
- * @param an uint32_t to print
+ * @brief Display 8 char on the Malta display.
+ *
+ * If the data are too long (more than 8 char) only the 8th firts are printed
+ * @param a string to print
  * @return void
  */
 void
-kmaltaprint(uint32_t word)
+kmaltaprint8(const char *str)
 {
+  int             i = 0;
+
+  malta->ledbar.reg = 0xFF;
+
+  /*
+   * Print 8 character or less
+   */
+  for (i = 0; i < 8 && str[i] != '\0'; i++)
+    malta->asciipos[i].value = str[i];
+
+  /*
+   * if the string is less than 8 char, complete with whitespace
+   */
+  for (; i < 8; i++)
+    malta->asciipos[i].value = 0x20;
 }
 
 /**
@@ -91,7 +108,7 @@ void
 kprintln(char *text)
 {
   kprint(text);
-  kprint_char('\n');
+  kprintn();
 }
 
 /* end of file kinout.c */

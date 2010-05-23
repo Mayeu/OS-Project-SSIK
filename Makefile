@@ -14,9 +14,10 @@ BIN=bin
 BUILD=build
 
 # Object files for the examples
-OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kinout.o kerror.o kprocess.o kprocess_list.o kprogram.o kscheduler.o ksyscall.o kexception.o)
+OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o debug.o kinout.o kerror.o kprocess.o kprocess_list.o kprogram.o kscheduler.o ksyscall.o kexception.o uart.o splash.o)
 OBJS_USER= $(addprefix $(BUILD)/, string.o)
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
+TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c)
 
 # GCC prefix
 MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
@@ -37,11 +38,11 @@ CC=$(MIPS_PREFIX)-gcc
 LD=$(MIPS_PREFIX)-ld -Ttext 80020000
 
 # Default indent, build the project and the doc
-all: indent kernel user test link
-nolink: indent kernel user test
+all: link
+nolink: test
 
 # Kernel building
-kernel: $(OBJS_KERNEL) indent
+kernel: $(OBJS_KERNEL)
 
 $(BUILD)/%.o: $(SRC_KERNEL)/%.c
 	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
@@ -58,11 +59,11 @@ $(BUILD)/%.o: $(SRC_USER)/%.c
 # Test building
 test: $(OBJS_TEST) kernel user
 
-$(BUILD)/%.o: $(SRC_TEST)/%.c
+$(BUILD)/test.o: $(SRC_TEST)/test.c $(TEST_DEPS)
 	$(CC) $(ARCH) $(KCFLAGS) -o $@ -c $<
 
 # link all the binarie
-link: $(BIN)/ssik indent kernel user test
+link: $(BIN)/ssik kernel user test
 
 $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER) $(OBJS_TEST)
 	$(LD) $(ARCH) -o $@ $^
@@ -97,3 +98,6 @@ doc_user:
 # clean: remove object files and emacs backup files
 clean:
 	rm -rf $(BUILD)/*.o $(BIN)/ssik doc/*
+
+gdb:
+	/it/kurs/compsys/mips-devel/bin/mips-idt-elf-gdb bin/ssik

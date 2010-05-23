@@ -16,19 +16,19 @@
 #include "kinout.h"
 
 static uint32_t next_pid = 0;
-
+char            t[3];                                                                                                                           /** TOTO: remove: only for debug */
  /* Privates functions */
 bool            is_already_supervised(pcb * p, uint32_t pid);
 int32_t         search_psupervised(pcb * p, int32_t pid);
 int32_t         get_next_pid(uint32_t * npid);
-
 
 /**
  * initialize a pcb with all the needed value, add it to
  * the ready queue, and ask for a long term scheduling.
  */
 uint32_t
-create_proc(char *name, uint32_t prio, int32_t params[4])
+//create_proc(char *name, uint32_t prio, int32_t params[4])
+create_proc(char *name, uint32_t prio, char **params)
 {
   int             i;
   pcb            *p;
@@ -67,9 +67,7 @@ create_proc(char *name, uint32_t prio, int32_t params[4])
                                                                                                                                                                 /** TODO: init the registers */
 
       // init the parameters
-
-      for (i = 0; i < 4; i++)
-        p->registers.a_reg[i] = (uint32_t) & params[i];
+      p->registers.a_reg[0] = (uint32_t) params;
       p->wait = 0;
       p->error = OMGROXX;
       p->empty = FALSE;
@@ -95,7 +93,6 @@ rm_p(pcb * p)
 
   p->empty = TRUE;
   return OMGROXX;
-
 }
 
 /**
@@ -140,7 +137,7 @@ get_pinfo(pcb * p, pcbinfo * pi)
  * copy a pcb inside an other.
  */
 uint32_t
-copy_p(pcb * psrc, pcb * pdest)
+move_p(pcb * psrc, pcb * pdest)
 {
   uint32_t        i;
   if (psrc == NULL || pdest == NULL)
@@ -152,10 +149,12 @@ copy_p(pcb * psrc, pcb * pdest)
   for (i = 0; i < NSUPERVISED; i++)
     pdest->supervised[i] = psrc->supervised[i];
   pdest->supervisor = psrc->supervisor;
-  //pdest->registers = psrc->registers;           /** TODO: copy the registers */
+  pdest->registers.a_reg[0] = psrc->registers.a_reg[0];           /** TODO: copy the registers */
   pdest->wait = psrc->wait;
   pdest->error = psrc->error;
   pdest->empty = psrc->empty;
+
+  psrc->empty = TRUE;
   return OMGROXX;
 }
 
@@ -166,21 +165,27 @@ copy_p(pcb * psrc, pcb * pdest)
 uint32_t
 add_psupervised(pcb * p, uint32_t pid)
 {
+  pcb            *supervised;
   if (p == NULL)
     return NULLPTR;
+  if ((supervised = searchall(pid)) == NULL)
+    return INVARG;
+  if (supervised->supervisor != -1)
+    return INVARG;
   if (!is_already_supervised(p, pid))
   {
     /* look for the first empty (pid = -1) position */
     int             pos = search_psupervised(p, -1);
     if (pos != -1)
     {
-      p->supervised[pos] = pid;
+      p->supervised[pos] = pid; // add the pid as a new supervised process
+      supervised->supervisor = p->pid;  // change the supervisor of the supervised process
       return OMGROXX;
     }
     else
       return FAILNOOB;
   }
-  return FAILNOOB;
+  return OMGROXX;
 }
 
 /**
@@ -194,7 +199,9 @@ rm_psupervised(pcb * p, uint32_t pid)
   int             pos = search_psupervised(p, pid);
   if (pos != -1)
   {
-    p->supervised[pos] = -1;
+    pcb            *supervised = searchall(pid);
+    p->supervised[pos] = -1;    // remove the supervised process
+    supervised->supervisor = -1;        // remove the supervisor of the previously supervised process
     return OMGROXX;
   }
   else
@@ -205,13 +212,14 @@ rm_psupervised(pcb * p, uint32_t pid)
  * add a pid to the supervisor list of a process;
  */
 uint32_t
-chg_psupervisor(pcb * p, uint32_t pid)
+add_psupervisor(pcb * p, uint32_t pid)
 {
   if (p == NULL)
     return NULLPTR;
+  if (p->supervisor != -1)
+    return INVARG;
 
-  p->supervisor = pid;
-  return OMGROXX;
+  return add_psupervised(searchall(pid), p->pid);
 }
 
 /**
@@ -223,7 +231,7 @@ rm_psupervisor(pcb * p, uint32_t pid)
   if (p == NULL)
     return NULLPTR;
 
-  p->supervisor = -1;
+  rm_psupervised(searchall(pid), p->pid);
   return OMGROXX;
 
 }
@@ -258,6 +266,7 @@ search_psupervised(pcb * p, int32_t pid)
   {
     if (p->supervised[i] == pid)
       return i;
+    i++;
   }
   return -1;
 }
@@ -284,4 +293,10 @@ void
 reset_next_pid()
 {
   next_pid = 0;
+}
+
+char           *
+argn(char **data, int num)
+{
+  return (char *) (data + num * (ARG_SIZE / sizeof(char *)));
 }

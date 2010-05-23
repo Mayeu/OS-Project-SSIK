@@ -53,4 +53,11 @@ uint32_t       *p_error;
  */
 void            kinit();
 
+/**
+ * @brief The ancestor of the ancestor.
+ *
+ * First process to be launched
+ */
+void            init();
+
 #endif
