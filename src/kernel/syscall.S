@@ -4,9 +4,10 @@
 #include "asm_regs.h"
 
 	.text
-	.globl my_system_call
-	.globl kmy_system_call
-	.globl ksyscall_handler
+   .globl syscall_none
+	.globl syscall_one
+	.globl syscall_two
+	.globl syscall_three
 
 
 	# my_system_call:
