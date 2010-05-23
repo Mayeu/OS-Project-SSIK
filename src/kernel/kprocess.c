@@ -44,12 +44,12 @@ create_proc(char *name, uint32_t prio, char **params)
     if (get_next_pid(&p->pid) == OMGROXX)
     {
                            /** TODO: Uncomment prog when programs are implemented */
-       	prgm           *prog;
-         prog = search_prgm(name); // search for the specified program
-         if (prog == NULL)                                                               
-         return INVARG;
-         // init the program counter to the program address
-         p->registers.epc_reg = prog->address;
+      prgm           *prog;
+      prog = search_prgm(name); // search for the specified program
+      if (prog == NULL)
+        return INVARG;
+      // init the program counter to the program address
+      p->registers.epc_reg = prog->address;
       p->pri = prio;
       /* The supervisor is the process that has requested 
        * The create_proc function and then it is the
@@ -60,14 +60,14 @@ create_proc(char *name, uint32_t prio, char **params)
         p->supervisor = -1;
       else
         p->supervisor = prunning.current->pid;
-      for (i = 0; i < NSUPERVISED; i++)
+      for (i = 0; i < MAXPCB; i++)
         p->supervised[i] = -1;
       strcpy(name, p->name);
                                                                                                                                                                 /** TODO: init the registers */
 
       // init the parameters
       p->registers.a_reg[0] = (uint32_t) params;
-      p->wait = 0;
+      p->sleep = 0;
       p->error = OMGROXX;
       p->empty = FALSE;
 
@@ -123,10 +123,10 @@ get_pinfo(pcb * p, pcbinfo * pi)
   pi->pid = p->pid;
   strcpy(p->name, pi->name);
   pi->pri = p->pri;
-  for (i = 0; i < NSUPERVISED; i++)
+  for (i = 0; i < MAXPCB; i++)
     pi->supervised[i] = p->supervised[i];
   pi->supervisor = p->supervisor;
-  pi->wait = p->wait;
+  pi->wait = p->sleep;
   pi->empty = p->empty;
   return OMGROXX;
 
@@ -141,17 +141,17 @@ move_p(pcb * psrc, pcb * pdest)
   uint32_t        i;
   if (psrc == NULL || pdest == NULL)
     return NULLPTR;
-	if(psrc->empty == TRUE)
-		return INVARG;
+  if (psrc->empty == TRUE)
+    return INVARG;
 
   pdest->pid = psrc->pid;
   strcpy(psrc->name, pdest->name);
   pdest->pri = psrc->pri;
-  for (i = 0; i < NSUPERVISED; i++)
+  for (i = 0; i < MAXPCB; i++)
     pdest->supervised[i] = psrc->supervised[i];
   pdest->supervisor = psrc->supervisor;
   pdest->registers.a_reg[0] = psrc->registers.a_reg[0];           /** TODO: copy the registers */
-  pdest->wait = psrc->wait;
+  pdest->sleep = psrc->sleep;
   pdest->error = psrc->error;
   pdest->empty = psrc->empty;
 
@@ -263,7 +263,7 @@ search_psupervised(pcb * p, int32_t pid)
 {
   uint32_t        i = 0;
 
-  while (i < NSUPERVISED)
+  while (i < MAXPCB)
   {
     if (p->supervised[i] == pid)
       return i;

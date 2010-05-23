@@ -21,11 +21,11 @@ timer_exception()
     p = &pwaiting.ls[i];
     if (!p_is_empty(p))
     {
-      p->wait -= QUANTUM;
+      p->sleep -= QUANTUM;
     }
     if (empty_space(&pready))
     {
-      if (p->wait <= 0)
+      if (p->sleep <= 0)
         move(p->pid, &pwaiting, &pready);
     }
     else

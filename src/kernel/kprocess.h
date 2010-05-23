@@ -14,27 +14,7 @@
 #include <registers.h>
 #include <stdlib.h>
 #include <process.h>
-
-/**
- * \struct pcb
- * \brief Process representation.
- *
- * A process is represented by its PCB which is made of
- * its identifier, its name ...
- */
-typedef struct
-{
-  uint32_t        pid;          /*!< Process identifier. */
-  char            name[ARG_SIZE];       /*!< Process name. */
-  uint32_t        pri;          /*!< Process priority. */
-  int32_t         supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  int32_t         supervisor;   /*!< supervisor. */
-  registers_t     registers;    /*!< Some data that has to be saved between
-                                   a context switch. */
-  uint32_t        wait;
-  uint32_t        error;        /*!< Last error the process encountered. */
-  bool            empty;
-} pcb;
+#include "kpcb.h"
 
 /**
  * \fn int create_proc(char *name, pcb *p)

@@ -56,12 +56,12 @@ test_kprocess()
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 2), "12") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 3), "123") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 4), "1234") == 0) &&
-			(pcb1->wait == 0) &&
+			(pcb1->sleep == 0) &&
 			(pcb1->error == OMGROXX) &&
 			(pcb1->empty == FALSE);
 	if(!err)
 	{
-		for(i=0; i<NSUPERVISED; i++)
+		for(i=0; i<MAXPCB; i++)
 			if(pcb1->supervised[i] != -1)
 			{
 				err = FALSE;
@@ -87,12 +87,12 @@ test_kprocess()
 			(strcmp(argn((char **)pcb2->registers.a_reg[0], 1), "a") == 0) &&
 			(strcmp(argn((char **)pcb2->registers.a_reg[0], 2), "ab") == 0) &&
 			(strcmp(argn((char **)pcb2->registers.a_reg[0], 3), "abc") == 0) &&
-			(pcb2->wait == 0) &&
+			(pcb2->sleep == 0) &&
 			(pcb2->error == OMGROXX) &&
 			(pcb2->empty == FALSE);
 	if(!err)
 	{
-		for(i=0; i<NSUPERVISED; i++)
+		for(i=0; i<MAXPCB; i++)
 			if(pcb2->supervised[i] != -1)
 			{
 				err = FALSE;
@@ -128,12 +128,12 @@ test_kprocess()
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 1), "a") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 2), "ab") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 3), "abc") == 0) &&
-			(pcb1->wait == 0) &&
+			(pcb1->sleep == 0) &&
 			(pcb1->error == OMGROXX) &&
 			(pcb1->empty == FALSE);
 	if(!err)
 	{
-		for(i=0; i<NSUPERVISED; i++)
+		for(i=0; i<MAXPCB; i++)
 			if(pcb1->supervised[i] != -1)
 			{
 				err = FALSE;
@@ -161,11 +161,11 @@ test_kprocess()
 			(strcmp(pcb1->name, pcbi1.name) == 0) &&
 			(pcb1->pri == pcbi1.pri) &&
 			(pcb1->supervisor == pcbi1.supervisor) &&
-			(pcb1->wait == pcbi1.wait) &&
+			(pcb1->sleep == pcbi1.wait) &&
 			(pcb1->empty == pcbi1.empty);
 	if(!err)
 	{
-		for(i=0; i<NSUPERVISED; i++)
+		for(i=0; i<MAXPCB; i++)
 			if(pcb1->supervised[i] != pcbi1.supervised[i])
 			{
 				err = FALSE;
@@ -189,13 +189,13 @@ test_kprocess()
 			(strcmp(argn((char **)pcb3->registers.a_reg[0], 1), "a") == 0) &&
 			(strcmp(argn((char **)pcb3->registers.a_reg[0], 2), "ab") == 0) &&
 			(strcmp(argn((char **)pcb3->registers.a_reg[0], 3), "abc") == 0) &&
-			(pcb3->wait == 0) &&
+			(pcb3->sleep == 0) &&
 			(pcb3->error == OMGROXX) &&
 			(pcb3->empty == FALSE) &&
 			(pcb1->empty == TRUE);
 	if(!err)
 	{
-		for(i=0; i<NSUPERVISED; i++)
+		for(i=0; i<MAXPCB; i++)
 			if(pcb3->supervised[i] != -1)
 			{
 				err = FALSE;
@@ -220,12 +220,12 @@ test_kprocess()
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 1), "a") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 2), "ab") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 3), "abc") == 0) &&
-			(pcb1->wait == 0) &&
+			(pcb1->sleep == 0) &&
 			(pcb1->error == OMGROXX) &&
 			(pcb1->empty == FALSE);
 	if(!err)
 	{
-		for(i=0; i<NSUPERVISED; i++)
+		for(i=0; i<MAXPCB; i++)
 			if(pcb1->supervised[i] != -1)
 			{
 				err = FALSE;
@@ -306,12 +306,12 @@ test_kprocess()
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 2), "12") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 3), "123") == 0) &&
 			(strcmp(argn((char **)pcb1->registers.a_reg[0], 4), "1234") == 0) &&
-			(pcb1->wait == 0) &&
+			(pcb1->sleep == 0) &&
 			(pcb1->error == OMGROXX) &&
 			(pcb1->empty == FALSE);
 	if(!err)
 	{
-		for(i=0; i<NSUPERVISED; i++)
+		for(i=0; i<MAXPCB; i++)
 			if(pcb1->supervised[i] != -1)
 			{
 				err = FALSE;

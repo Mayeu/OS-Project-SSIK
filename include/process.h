@@ -14,7 +14,7 @@
 #define BAS_PRI 15
 #define MAX_ARG 4
 #define ARG_SIZE 20
-#define NSUPERVISED 40
+#define MAXPCB 40
 
 #include <stdlib.h>
 
@@ -27,12 +27,12 @@
  */
 typedef struct
 {
-  int       pid;          /*!< Process identifier. */
+  int             pid;          /*!< Process identifier. */
   char            name[ARG_SIZE];       /*!< Process name. */
-  int        pri;          /*!< Process priority. */
-  int        supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  int        supervisor;   /*!< List of supervisor processes. */
-  int        wait;
+  int             pri;          /*!< Process priority. */
+  int             supervised[MAXPCB];   /*!< List of supervised processes. */
+  int             supervisor;   /*!< List of supervisor processes. */
+  int             wait;
   bool            empty;
 } pcbinfo;
 

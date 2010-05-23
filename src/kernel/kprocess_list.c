@@ -13,7 +13,7 @@
 #include "kprocess_list.h"
 #include "kinout.h"
 
-void print_pls(pls *ls);		// Internal function (see the bottom of the file
+void            print_pls(pls * ls);    // Internal function (see the bottom of the file
 
 /**
  * \fn int create_pls(pls *ls)
@@ -29,7 +29,7 @@ create_pls(pls * ls)
   if (ls == NULL)
     return NULLPTR;
 
-   	/** TODO: init registers ... */
+        /** TODO: init registers ... */
 
   for (i = 0; i < MAX_PROC; i++)
     ls->ls[i].empty = TRUE;
@@ -103,7 +103,7 @@ rm_from_pls(int32_t pid, pls * ls)
 
   to_rm = search_pcb(pid, ls);
 
-	return rm_p(to_rm);
+  return rm_p(to_rm);
 }
 
 /**
@@ -165,10 +165,10 @@ search_pcb(uint32_t pid, pls * ls)
   while (i < MAX_PROC)
   {
     if (ls->ls[i].pid == pid)
-	 {
-		if(ls->ls[i].empty == FALSE)
-      	return &ls->ls[i];
-	}
+    {
+      if (ls->ls[i].empty == FALSE)
+        return &ls->ls[i];
+    }
     i++;
   }
   return NULL;
@@ -259,20 +259,20 @@ sort(pls * ls)
 }
 
 /* Internal functions */
-void print_pls(pls *ls)
+void
+print_pls(pls * ls)
 {
-	int i = 0;
-	char resc[10];
-	for(; i< MAX_PROC ; i++)
-	{
-		if(ls->ls[i].empty == FALSE)
-			kprint(itos(ls->ls[i].pid, resc));
-		else
-			kprint("E");
-		if(i != MAX_PROC - 1)
-			kprint(" - ");
-		else
-			kprintln("");
-	}
+  int             i = 0;
+  char            resc[10];
+  for (; i < MAX_PROC; i++)
+  {
+    if (ls->ls[i].empty == FALSE)
+      kprint(itos(ls->ls[i].pid, resc));
+    else
+      kprint("E");
+    if (i != MAX_PROC - 1)
+      kprint(" - ");
+    else
+      kprintln("");
+  }
 }
-

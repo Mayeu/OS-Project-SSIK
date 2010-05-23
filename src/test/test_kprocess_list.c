@@ -134,7 +134,7 @@ test_kprocess_list()
 			(strcmp(argn((char **)pcb2->registers.a_reg[0], 1), argn((char **)pcb1->registers.a_reg[0], 1)) == 0) &&
 			(strcmp(argn((char **)pcb2->registers.a_reg[0], 2), argn((char **)pcb1->registers.a_reg[0], 2)) == 0) &&
 			(strcmp(argn((char **)pcb2->registers.a_reg[0], 3), argn((char **)pcb1->registers.a_reg[0], 3)) == 0) &&
-			(pcb2->wait == pcb1->wait) &&
+			(pcb2->sleep == pcb1->sleep) &&
 			(pcb2->error == pcb1->error) &&
 			(pcb2->empty == FALSE);
 	if (err)
