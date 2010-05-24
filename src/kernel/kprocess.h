@@ -14,6 +14,9 @@
 #include <registers.h>
 #include <stdlib.h>
 #include <process.h>
+#include "kmsg.h"
+
+#define MAX_MSG 20
 
 /**
  * \struct pcb
@@ -31,6 +34,7 @@ typedef struct
   int32_t         supervisor;   /*!< supervisor. */
   registers_t     registers;    /*!< Some data that has to be saved between
                                    a context switch. */
+	msg messages[MAX_MSG];
   uint32_t        wait;
   uint32_t        error;        /*!< Last error the process encountered. */
   bool            empty;
