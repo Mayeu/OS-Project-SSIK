@@ -16,7 +16,7 @@ timer_exception()
 {
   int             i;
   pcb            *p;
-  for (i = 0; i < MAX_PROC; i++)
+  for (i = 0; i < MAXPCB; i++)
   {
     p = &pwaiting.ls[i];
     if (!p_is_empty(p))

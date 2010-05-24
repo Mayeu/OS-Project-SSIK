@@ -12,8 +12,20 @@
 
 #include <stdlib.h>
 #include "kprocess.h"
+#include "kpcb.h"
 
-#define MAX_PROC 10             /* max number of processes in a list. */
+/**
+ * @brief An element of a linked list of process
+ *
+ * This linked list will not be dynamic but in a bounded array. 
+ */
+
+typedef struct linked_item
+{
+	uint32_t item_id; /*!< use because we are in a bounded array, to know the adress of the element */
+	pcb p;
+	struct linked_item *next;
+} pcls_item;
 
 /**
  * \struct pls
@@ -22,9 +34,23 @@
  */
 typedef struct
 {
-  pcb             ls[MAX_PROC]; /*!< list of processes. */
-  pcb            *current;      /*!< the current process in the list. */
+	pcls_item ls[MAXPCB];
+	pcls_item *start;
+	pcls_item *end;
+	uint32_t length;
+} pcls;
+
+/**
+ * \struct pls
+ * \brief List of processes.
+ *
+ */
+typedef struct
+{
+	pcb ls[MAXPCB];
+	pcb *current;
 } pls;
+
 
 /**
  * \fn int create_pls(pls *ls)
@@ -123,5 +149,74 @@ uint32_t        move(uint32_t pid, pls * src, pls * dest);
  * \return an error code
  */
 uint32_t        sort(pls * ls);
+
+/**
+ * @brief Reset the list to his default value
+ *
+ * This function reset all the pcb in the list, and all the pointer to NULL
+ */
+void pcls_reset(pcls *ls);
+
+/**
+ * @brief Add an element to the list.
+ *
+ * The list is always sorted by priority (highest to lowest).
+ * The added pcb will be a copy of the passed pcb
+ *
+ * @param The the list where we add an element
+ * @param a pointer to the pcb to add to the list
+ * @return OMGROXX if everything goes well.
+ */
+int32_t pcls_add(pcls *ls, pcb *p);
+
+/**
+ * @brief Delete a pcb from a list. (Reset it to his default value)
+ */
+	uint32_t
+pcls_delete_pcb(pcls *ls, pcb *p);
+
+/**
+ * @brief Move a PCB from a list to an other
+ */
+int32_t
+pcls_move_pcb(pcls *src, pcls *dest, pcb *p);
+
+/**
+ * @brief Reset an list element to it's default value.
+ */
+void
+pcls_item_reset(pcls_item *it, uint32_t id);
+
+/**
+ * @brief Search a pcb in a list and return the pcls_item associated
+ * @param a list
+ * @param the pcb to found
+ * @return NULL if not found, the pcls_item otherwise
+ */
+pcls_item*
+pcls_search_pcb(pcls *ls, pcb *p);
+
+/**
+ * @brief Search a pid in a list and return the pcls_item associated
+ * @param a list
+ * @param the pid to found
+ * @return NULL if not found, the pcls_item otherwise
+ */
+pcls_item*
+pcls_search_pid(pcls *ls, int32_t pid);
+
+/**
+ * @brief Return the first empty pcls_item in the static array of pcls
+ * @param a list
+ * @return the adress or NULL if no space
+ */
+pcls_item * pcls_item_alloc(pcls *ls);
+
+/**
+ * @brief Copy a pcb in a pcls_item
+ * @param the source pcb
+ * @param the destination item
+ */
+	void pcls_item_cpy_pcb(pcb *p, pcls_item *it);
 
 #endif

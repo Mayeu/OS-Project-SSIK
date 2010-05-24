@@ -33,7 +33,7 @@ test_kprocess_list()
 			(pready.current == NULL);
 	if(!err)
 	{
-		for (i=0; i<MAX_PROC && res ; i++)
+		for (i=0; i<MAXPCB && res ; i++)
 			if (pready.ls[i].empty == FALSE)
 			{
 				err = FALSE;
@@ -51,7 +51,7 @@ test_kprocess_list()
 			(pready.current == NULL);
 	if(!err)
 	{
-		for (i=0; i<MAX_PROC && res ; i++)
+		for (i=0; i<MAXPCB && res ; i++)
 			if (pready.ls[i].empty == FALSE)
 			{
 				err = FALSE;

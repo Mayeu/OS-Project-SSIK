@@ -129,6 +129,16 @@ bool            pcb_get_empty(pcb * p);
  */
 
 /**
+ * @brief Set a pcb to it's default value
+ */
+void            pcb_reset(pcb * p);
+
+/**
+ * @brief Copy a pcb in an other
+ */
+void pcb_cpy(pcb *src, pcb *dest);
+ 
+/**
  * @brief Set the pid of the pcb
  */
 void            pcb_set_pid(pcb * p, uint32_t pid);

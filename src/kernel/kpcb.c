@@ -128,6 +128,47 @@ pcb_get_empty(pcb * p)
  */
 
 /**
+ * @brief Set a pcb to it's default value
+ */
+void            pcb_reset(pcb * p)
+{
+	pcb_set_pid(p, 0);
+	pcb_set_name(p, "");
+	pcb_set_pri(p,0);
+	pcb_reset_supervised(p);
+	pcb_set_supervisor(p, -1);
+	pcb_set_state(p, 0);
+	pcb_set_sleep(p, 0);
+	pcb_set_waitfor(p, 0);
+	pcb_set_error(p, OMGROXX);
+	pcb_set_empty(p, TRUE);
+}
+
+/**
+ * @brief Copy a pcb in an other
+ */
+void pcb_cpy(pcb *src, pcb *dest)
+{ 
+int32_t *s, i;
+
+	pcb_set_pid(dest, pcb_get_pid(src));
+	pcb_set_name(dest, pcb_get_name(src));
+	pcb_set_pri(dest, pcb_get_pri(src));
+	pcb_reset_supervised(dest);
+	s = pcb_get_supervised(src);
+
+	for (i = 0; i < MAXPCB; i++)
+		pcb_set_supervised(dest, s[i]);
+
+	pcb_set_supervisor(dest, pcb_get_supervisor(src));
+	pcb_set_state(dest, pcb_get_state(src));
+	pcb_set_sleep(dest, pcb_get_sleep(src));
+	pcb_set_waitfor(dest, pcb_get_waitfor(src));
+	pcb_set_error(dest, pcb_get_error(src));
+	pcb_set_empty(dest, pcb_get_empty(src));
+}
+
+/**
  * @brief Set the pid of the pcb
  */
 void
