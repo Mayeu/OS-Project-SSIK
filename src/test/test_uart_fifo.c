@@ -102,10 +102,10 @@ uint32_t test_uart_push_fifo(void)
 		return -5;
 
 	/* fill all the buffer wiht 'a' */
-	for (j = 1; j < 30; j++)
+	for (j = 1; j < UART_FIFO_SIZE; j++)
 		push_fifo_buffer('a') ;
 
-	if(fifo->length != 30)
+	if(fifo->length != UART_FIFO_SIZE)
 		return -6;
 
 	if(push_fifo_buffer('a') != OUTOMEM)
@@ -116,6 +116,30 @@ uint32_t test_uart_push_fifo(void)
 
 uint32_t test_uart_pop_fifo(void)
 {
+	fifo_buffer *fifo;
+	char c;
+	uint32_t j;
+
+	fifo = get_fifo_buffer();
+	reset_fifo_buffer();
+
+	if (pop_fifo_buffer(&c) != FAILNOOB )
+		return -1;
+
+	push_fifo_buffer('a');
+
+	if (pop_fifo_buffer(&c) != OMGROXX && c != 'a')
+		return -2;
+
+	/* fill all the buffer wiht 'c' */
+	for (j = 1; j < UART_FIFO_SIZE; j++)
+		push_fifo_buffer('c') ;
+
+	pop_fifo_buffer(&c);
+
+	if (fifo->length != UART_FIFO_SIZE-1)
+		return -3;
+
 	return OMGROXX;
 }
 
