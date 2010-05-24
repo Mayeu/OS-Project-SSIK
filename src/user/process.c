@@ -49,7 +49,7 @@ fourchette(char *name, char *argv[])
 }
 
  /**
- * \brief fill the pcb_info structure given in parameter with the pcb information. Only
+ * fill the pcb_info structure given in parameter with the pcb information. Only
 not critical information is given to the user.
  */
 int
@@ -59,10 +59,18 @@ get_proc_info(int pid, pcbinfo * res)
 }
 
  /**
- * \brief changes the priority of the process from the old one to the new priority ’prio’.
+ * Changes the priority of the process from the old one to the new priority ’prio’.
  */
 int
 chgpri(int pid, int newprio)
 {
   return syscall_two(pid, newprio, CHGPPRI);
+}
+
+ /**
+ * Get the current process pid.
+ */
+int get_pid(void)
+{
+	return syscall_none(GETPID);
 }

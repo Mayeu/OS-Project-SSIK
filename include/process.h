@@ -63,7 +63,7 @@ void            sleep(int time);
 
  /**
  * \fn int fourchette(char *name, int prio, char *argv[])
- * \brief creates a child process that differs from the parent process only in its PID and
+ * \brief Creates a child process that differs from the parent process only in its PID and
 PPID. If success, the PID of the child process is returned in the parent’s thread of execution,
 and a 0 is returned in the child’s thread of execution.
  *
@@ -75,7 +75,7 @@ int             fourchette(char *name, char *argv[]);
 
  /**
  * \fn int get_proc_info(int pid)
- * \brief fill the pcb_info structure given in parameter with the pcb information. Only
+ * \brief Fill the pcb_info structure given in parameter with the pcb information. Only
 not critical information is given to the user.
  *
  * \param pid the pid of the process
@@ -86,12 +86,20 @@ int             get_proc_info(int pid, pcbinfo * res);
 
  /**
  * \fn int chgpri(int pid, int newprio)
- * \brief changes the priority of the process from the old one to the new priority ’prio’.
+ * \brief Changes the priority of the process from the old one to the new priority ’prio’.
  *
  * \param pid the pid of the process
  * \param newprio the new priority of the process
  * \return the error identifier in case of any failure
  */
 int             chgpri(int pid, int newprio);
+
+ /**
+ * \fn int get_pid(void)
+ * \brief Get the current process pid.
+ *
+ * \return the process pid
+ */
+int             get_pid(void);
 
 #endif //__PROCESS_H

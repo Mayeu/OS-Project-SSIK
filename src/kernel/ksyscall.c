@@ -61,6 +61,9 @@ syscall_handler(registers_t * regs)
     p = searchall(regs->a_reg[0]);
     res = get_pinfo(p, (pcbinfo *) regs->a_reg[1]);
     break;
+  case GETPID:
+    res = prunning.current->pid;
+    break;
   case CHGPPRI:
     p = searchall(regs->a_reg[0]);
     res = chg_ppri(p, regs->a_reg[1]);
@@ -78,6 +81,7 @@ syscall_handler(registers_t * regs)
   default:
     ;
   }
+
   // saves the return code
   regs->v_reg[0] = res;
 }
