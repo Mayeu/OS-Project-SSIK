@@ -7,3 +7,5 @@ gdb-remote port=84242
 malta.log-level 0
 
 magic-break-enable
+
+run
