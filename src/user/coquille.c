@@ -28,7 +28,7 @@ coquille(void)
 
   print(prompt_line);
 
-  fprint(MALTA, "ABCDEFGH");
+  fprint(MALTA, "ABCDEF");
 
   res = split_args(command, command_arg);
 
@@ -41,7 +41,7 @@ coquille(void)
     // copy the number of arguments at position 0, replacing the progr name
     strcpy(itos(res, buffer), command_arg[0]);
 
-    pid = fourchette(prog_name, (char **) command_arg);
+    pid = fourchette(prog_name, (char**) command_arg);
 
     // print the new pid
     print("pid : ");
@@ -55,7 +55,6 @@ coquille(void)
 
     println("changed prio to 30");
     chgpri(pid, 30);
-    printiln(123456789);
     printiln(gerror());
     perror("Erreur !");
 

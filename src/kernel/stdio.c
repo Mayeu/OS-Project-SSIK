@@ -6,7 +6,6 @@
  * \date 20 Mai 2010
  */
 
-#include <stdio.h>
 #include <string.h>
 #include "ksyscall.h"
 
@@ -60,7 +59,7 @@ fprint(int out, char *str)
 }
 
  /**
- * Returns the character currently pointed by the internal file position indicator of the input stream
+ * Returns the character currently pointed by the internal file position indicator of the input stream.
  */
 char
 getc(void)
@@ -69,7 +68,7 @@ getc(void)
 }
 
  /**
- * Reads characters from stream and stores them as a string into str until (num-1) characters have
+ * Reads characters from stream and stores them as a string into str until (num-1) characters have.
  */
 int
 gets(char *str, int num)
