@@ -41,11 +41,9 @@ push_fifo_buffer(char c)
   if (uart_fifo.length >= UART_FIFO_SIZE)
     return OUTOMEM;
 
-  uart_fifo.buffer[uart_fifo.in++] = c;
+  uart_fifo.buffer[uart_fifo.in] = c;
   uart_fifo.length++;
-
-  if (uart_fifo.in >= UART_FIFO_SIZE)
-    uart_fifo.in = 0;
+  uart_fifo.in = (uart_fifo.in + 1) % UART_FIFO_SIZE ;
 
   return OMGROXX;
 }
@@ -64,11 +62,9 @@ pop_fifo_buffer(char *c)
   if (uart_fifo.length == 0)
     return FAILNOOB;
 
-  *c = uart_fifo.buffer[uart_fifo.out++];
+  *c = uart_fifo.buffer[uart_fifo.out];
   uart_fifo.length--;
-
-  if (uart_fifo.out >= UART_FIFO_SIZE)
-    uart_fifo.out = 0;
+  uart_fifo.out = ( uart_fifo.out + 1 ) % UART_FIFO_SIZE;
 
   return OMGROXX;
 }

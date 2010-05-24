@@ -128,17 +128,26 @@ uint32_t test_uart_pop_fifo(void)
 
 	push_fifo_buffer('a');
 
-	if (pop_fifo_buffer(&c) != OMGROXX && c != 'a')
+	if (pop_fifo_buffer(&c) != OMGROXX )
 		return -2;
 
+		if (	c != 'a' )
+		return -3;
+
+			if (fifo->out != 1)
+		return -4;
+
+	if (fifo->length != 0)
+		return -5;
+
 	/* fill all the buffer wiht 'c' */
-	for (j = 1; j < UART_FIFO_SIZE; j++)
+	for (j = 0; j < UART_FIFO_SIZE; j++)
 		push_fifo_buffer('c') ;
 
 	pop_fifo_buffer(&c);
 
 	if (fifo->length != UART_FIFO_SIZE-1)
-		return -3;
+		return -6;
 
 	return OMGROXX;
 }
