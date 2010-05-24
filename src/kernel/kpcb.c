@@ -8,6 +8,7 @@
 #include <process.h>
 #include <string.h>
 #include <errno.h>
+#include "kinout.h"
 #include "kpcb.h"
 
 /*
@@ -160,36 +161,54 @@ pcb_set_pri(pcb * p, int32_t pri)
 }
 
 /**
+ * @brief Reset the list of supervised process to -1.
+ */
+void
+pcb_reset_supervised(pcb * p)
+{
+  uint32_t        i;
+
+  /*
+   * We try to found if the process is already in the list
+   * At the same time we save the first empty space
+   */
+  for( i = 0; i < MAXPCB; i++)
+    p->supervised[i] = -1;
+}
+
+/**
  * @brief Add a pid to the list of supervised process.
  */
 int32_t
-pcb_set_supervised(pcb * p, uint32_t pid)
+pcb_set_supervised(pcb * p, int32_t pid)
 {
-  uint32_t        i, first_empty;
+  int32_t        i;
+  int32_t first_empty;
 
   /*
    * We try to found if the process is already in the list
    * At the same time we save the first empty space
    */
   i = 0;
-  while (p->supervised[i] != pid || i < MAXPCB)
+  first_empty = -1;
+  while (p->supervised[i] != pid && i < MAXPCB)
   {
     if (first_empty == -1 && p->supervised[i] == -1)
       first_empty = i;
     i++;
   }
-
-  /*
-   * Already inside, not a fail !
-   */
-  if (p->supervised[i] == pid)
-    return OMGROXX;
-
+ 
   /*
    * We reach i and first_empty stayed at -1 : out of memory !
    */
   if (i >= MAXPCB && first_empty == -1)
     return OUTOMEM;
+ 
+  /*
+   * Already inside, not a fail !
+   */
+  if (first_empty == -1 && p->supervised[i] == pid)
+    return OMGROXX;
 
   /*
    * Any other case
@@ -208,7 +227,7 @@ pcb_rm_supervised(pcb * p, uint32_t pid)
   uint32_t        i;
 
   i = 0;
-  while (p->supervised[i] != pid || i < MAXPCB)
+  while (p->supervised[i] != pid && i < MAXPCB)
     i++;
 
   /*
@@ -223,7 +242,7 @@ pcb_rm_supervised(pcb * p, uint32_t pid)
  * @brief Set the supervisor of the process
  */
 void
-pcb_set_supervisor(pcb * p, uint32_t pid)
+pcb_set_supervisor(pcb * p, int32_t pid)
 {
   p->supervisor = pid;
 }

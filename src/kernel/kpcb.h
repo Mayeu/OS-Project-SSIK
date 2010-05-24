@@ -144,9 +144,14 @@ void            pcb_set_name(pcb * p, char *name);
 void            pcb_set_pri(pcb * p, int32_t pri);
 
 /**
+ * @brief Reset the list of supervised process to -1.
+ */
+void pcb_reset_supervised(pcb * p);
+
+/**
  * @brief Add a pid to the list of supervised process.
  */
-int32_t         pcb_set_supervised(pcb * p, uint32_t pid);
+int32_t         pcb_set_supervised(pcb * p, int32_t pid);
 
 /**
  * @brief Remove a pid to the list of supervised process.
@@ -156,7 +161,7 @@ void            pcb_rm_supervised(pcb * p, uint32_t pid);
 /**
  * @brief Set the supervisor of the process
  */
-void            pcb_set_supervisor(pcb * p, uint32_t pid);
+void            pcb_set_supervisor(pcb * p, int32_t pid);
 
 /**
  * @brief Set the current state of the process

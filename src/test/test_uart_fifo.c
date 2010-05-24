@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include "../uart.h"
+#include "../kernel/uart.h"
 
 uint32_t test_uart_reset_fifo(void);
 uint32_t test_uart_push_fifo(void);

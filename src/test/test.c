@@ -6,6 +6,7 @@
 #include "../kernel/test.h"
 #include "test_string.c"
 #include "test_kprocess.c"
+#include "test_kpcb.c"
 #include "test_uart_fifo.c"
 #include "test_kprogram.c"
 #include "test_kprocess_list.c"
@@ -19,6 +20,8 @@ test()
 
 	test_string();
 
+	test_kpcb();
+
 	test_kprocess();
 
 	test_kprocess_list();
@@ -26,5 +29,4 @@ test()
 	test_uart_fifo();
 
 	test_kprogram();
-
 }
