@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <process.h>
 #include <error.h>
+#include <message.h>
 
 char            command_arg[MAX_SHELL_ARG][MAX_CHAR];
 
@@ -63,6 +64,9 @@ coquille(void)
     printiln(pcbi.pid);
     printiln(pcbi.pri);
     println(pcbi.name);
+
+		send(prog_name, CHAR_PTR, 5);
+		send("lolilol", CHAR_PTR, 2);
 
 
   }
