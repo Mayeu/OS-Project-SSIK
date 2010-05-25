@@ -14,9 +14,7 @@
 #include <registers.h>
 #include <stdlib.h>
 #include <process.h>
-#include "kmsg.h"
-
-#define MAX_MSG 20
+#include "kmsg_lst.h"
 
 /**
  * \struct pcb
@@ -34,27 +32,30 @@ typedef struct
   int32_t         supervisor;   /*!< supervisor. */
   registers_t     registers;    /*!< Some data that has to be saved between
                                    a context switch. */
-	msg messages[MAX_MSG];
-  uint32_t        wait;
+  mls					messages;		/*!< the message queue */
+  int32_t         wait;				/*!< time before waking up or -1 means waiting for a process to terminate */
+  uint32_t        wait_for;		/*!< pid of the supervised process that the process is waiting for */
   uint32_t        error;        /*!< Last error the process encountered. */
-  bool            empty;
+  bool            empty;			/*!< indicate if the pcb is used (FALSE) or not (TRUE) */
 } pcb;
 
 /**
- * \fn int create_proc(char *name, pcb *p)
+ * \fn create_pcb(pcb *p, int32_t pid, char *name, uint32_t pc, int32_t supervisor, uint32_t prio, char **params)
  * \brief initialize a pcb with all the needed value,
  * 			add it to the ready queue, and ask for a 
 			long term scheduling.
  *
  * The allocated space in the ready queue is supposed to be free.
  *
+ * \param p the location where to create the pcb
+ * \param p the pid
  * \param name the name of the program to launch
- * \param p the pointer to the pcb
- * \return the pid of the newly created process(>0), or an error (<0)
+ * \param pc the address of the entry point of the program to launch
+ * \param supervidor the pid of the supervisor
+ * \param prio the priority of the process
+ * \return params the params
  */
-
-//uint32_t        create_proc(char *name, uint32_t prio, int32_t params[MAX_ARG]);
-uint32_t        create_proc(char *name, uint32_t prio, char **params);
+void create_pcb(pcb *p, int32_t pid, char *name, uint32_t pc, int32_t supervisor, uint32_t prio, char **params);
 
 
 /**
@@ -97,46 +98,6 @@ uint32_t        get_pinfo(pcb * p, pcbinfo * pi);
  * \return an error code
  */
 uint32_t        move_p(pcb * psrc, pcb * pdest);
-/**
- * \fn int add_psupervise(pcb *p, int pid)
- * \brief add a pid to the supervise list of a process
- *
- * \param p the pointer to the process
- * \param pid the pid to add
- * \return an error code
- */
-uint32_t        add_psupervised(pcb * p, uint32_t pid);
-
- /**
- * \fn int rm_psupervised(pcb *p, int pid)
- * \brief remove a pid from the supervise list of a process
- *
- * \param p the pointer to the process
- * \param pid the pid to remove
- * \return an error code
- */
-uint32_t        rm_psupervised(pcb * p, uint32_t pid);
-
-/**
- * \fn int add_psupervisor(pcb *p, int pid)
- * \brief change the pid of the process supervisor
- *
- * \param p the pointer to the process
- * \param pid the pid to add
- * \return an error code
- */
-uint32_t        add_psupervisor(pcb * p, uint32_t pid);
-
- /**
- * \fn int rm_psuperviser(pcb *p, int pid)
- * \brief remove a pid from the superviser list of a process
- *
- * \param p the pointer to the process
- * \param pid the pid to remove
- * \return an error code
- */
-uint32_t        rm_psupervisor(pcb * p, uint32_t pid);
-
 
 /**
  * \fn bool p_is_empty(pls *ls)
@@ -165,4 +126,6 @@ void            reset_next_pid();
  */
 char           *argn(char **data, int num);
 
+bool            is_already_supervised(pcb * p, uint32_t pid);
+int32_t         search_psupervised(pcb * p, int32_t pid);
 #endif
