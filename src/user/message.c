@@ -20,7 +20,7 @@ int send(void* data, msg_t tdata, int pid)
 }
 
 /**
- * \brief Send the data to the process 'pid' with priority 'prio'.
+ * Send the data to the process 'pid' with priority 'prio'.
  */
 int sendp(void* data, msg_t tdata, int pid, int pri)
 {	

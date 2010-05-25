@@ -17,9 +17,8 @@
 typedef enum
 {
 	INT_T,
-	CHAR_T,
 	CHAR_PTR,
-	OTHER
+	//OTHER_T
 } msg_t;
 
 // type of message priority
