@@ -10,6 +10,7 @@
 #include "test_uart_fifo.c"
 #include "test_kprogram.c"
 #include "test_kprocess_list.c"
+#include "test_kprocess_list2.c"
 
 	void
 test()
@@ -22,11 +23,13 @@ test()
 
 	test_kpcb();
 
-	test_kprocess();
-
-	test_kprocess_list();
+	test_kprocess_list2();
 
 	test_uart_fifo();
 
 	test_kprogram();
+
+	//test_kprocess();
+
+	//test_kprocess_list();
 }

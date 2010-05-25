@@ -203,7 +203,7 @@ pcls_search_pcb(pcls *ls, pcb *p);
  * @return NULL if not found, the pcls_item otherwise
  */
 pcls_item*
-pcls_search_pid(pcls *ls, int32_t pid);
+pcls_search_pid(pcls *ls, uint32_t pid);
 
 /**
  * @brief Return the first empty pcls_item in the static array of pcls

@@ -319,7 +319,7 @@ void pcls_reset(pcls *ls)
  */
 int32_t pcls_add(pcls *ls, pcb *p)
 {
-	pcls_item *it, *last, *next;
+	pcls_item *it, *last_it, *next_it;
 
 	it = pcls_item_alloc(ls);
 
@@ -335,24 +335,29 @@ int32_t pcls_add(pcls *ls, pcb *p)
 		ls->start = it;
 	else
 	{
-		last = ls->start;
-		next = last->next;
+		last_it = NULL;
+		next_it = ls->start;
 
-		while ( pcb_get_pri(&(next->p)) > pcb_get_pri(&(it->p))
-				&& next->next != NULL)
+		while ( pcb_get_pri(&(next_it->p)) > pcb_get_pri(&(it->p))
+				&& next_it->next != NULL)
 		{
-			last = next;
-			next = next->next ;
+			last_it = next_it;
+			next_it = next_it->next ;
 		}
 
-		if (pcb_get_pri(&(next->p)) <= pcb_get_pri(&(it->p)))
+		if (pcb_get_pri(&(next_it->p)) <= pcb_get_pri(&(it->p)))
 		{
-			last->next = it ;
-			it->next = next;
+			if(last_it != NULL)
+				last_it->next = it ;
+			else
+				ls->start = it;
+
+			it->next = next_it;
 		}
 		else
-			next->next = it;
+			next_it->next = it;
 	}
+
 	ls->length++;
 
 	return OMGROXX;
@@ -369,8 +374,8 @@ pcls_delete_pcb(pcls *ls, pcb *p)
 	if (ls->length == 0)
 		return NOTFOUND;
 
-	last = ls->start;
-	next = last->next;
+	last = NULL;
+	next = ls->start;
 
 	while(pcb_get_pid(&(next->p)) != pcb_get_pid(p)
 			&& !next->next)
@@ -381,7 +386,10 @@ pcls_delete_pcb(pcls *ls, pcb *p)
 
 	if (pcb_get_pid(&(next->p)) == pcb_get_pid(p))
 	{
-		last->next = next->next;
+		if (last == NULL)
+			ls->start = next->next;
+		else
+			last->next = next->next;
 		pcls_item_reset(next, next->item_id);
 	}
 	else
@@ -426,6 +434,9 @@ pcls_move_pcb(pcls *src, pcls *dest, pcb *p)
 
 /**
  * @brief Search a pcb in a list and return the pcls_item associated
+ *
+ * Use the pid to found the good pcb
+ *
  * @param a list
  * @param the pcb to found
  * @return NULL if not found, the pcls_item otherwise
@@ -433,23 +444,19 @@ pcls_move_pcb(pcls *src, pcls *dest, pcb *p)
 pcls_item*
 pcls_search_pcb(pcls *ls, pcb *p)
 {
-	pcls_item *next, *last ;
+	pcls_item *last ;
 
 	if (ls->length == 0)
 		return NULL;
 
 	last = ls->start;
-	next = last->next;
 
-	while(pcb_get_pid(&(next->p)) != pcb_get_pid(p)
-			&& !next->next)
-	{
-		last = next;
-		next = next->next;
-	}
+	while(pcb_get_pid(&(last->p)) != pcb_get_pid(p)
+			&& last->next)
+		last = last->next;
 
-	if (pcb_get_pid(&(next->p)) == pcb_get_pid(p))
-		return next;
+	if (pcb_get_pid(&(last->p)) == pcb_get_pid(p))
+		return last;
 
 	else
 		return NULL;
@@ -462,25 +469,21 @@ pcls_search_pcb(pcls *ls, pcb *p)
  * @return NULL if not found, the pcls_item otherwise
  */
 pcls_item*
-pcls_search_pid(pcls *ls, int32_t pid)
+pcls_search_pid(pcls *ls, uint32_t pid)
 {
-	pcls_item *next, *last ;
+	pcls_item *last ;
 
 	if (ls->length == 0)
 		return NULL;
 
 	last = ls->start;
-	next = last->next;
 
-	while(pcb_get_pid(&(next->p)) != pid
-			&& !next->next)
-	{
-		last = next;
-		next = next->next;
-	}
+	while(pcb_get_pid(&(last->p)) != pid
+			&& last->next != NULL)
+		last = last->next;
 
-	if (pcb_get_pid(&(next->p)) == pid)
-		return next;
+	if (pcb_get_pid(&(last->p)) == pid)
+		return last;
 
 	else
 		return NULL;
