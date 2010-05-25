@@ -56,6 +56,15 @@ syscall_handler(registers_t * regs)
   case WAKEUP:
     break;
   case WAIT:
+/*
+	wait()
+	p = search_pcb(regs->a_reg[0], &pterminate);
+	// copy de la valeur de retour du proc
+	// qu'on attendait
+	*regs->a_reg[1] = p->registers->v_reg[0]; 
+
+	rm(p)
+*/
     break;
   case SEND:
 		mres = (msg_arg*)regs->a_reg[0];

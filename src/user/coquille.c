@@ -29,7 +29,7 @@ coquille(void)
 
   print(prompt_line);
 
-  fprint(MALTA, "ABCDEF");
+  fprint(MALTA, "ABC DEF");
 
   res = split_args(command, command_arg);
 
@@ -66,7 +66,7 @@ coquille(void)
     println(pcbi.name);
 
 		send(prog_name, CHAR_PTR, 5);
-		send("lolilol", CHAR_PTR, 2);
+		send((void*)42, INT_T, 2);
 
 
   }
