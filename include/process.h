@@ -10,8 +10,8 @@
 #define __PROCESS_H
 
 #define MIN_PRI 0
-#define MAX_PRI 30
-#define BAS_PRI 15
+#define MAX_PRI 42
+#define BAS_PRI 21
 #define MAX_ARG 4
 #define ARG_SIZE 20
 #define MAXPCB 40
@@ -27,14 +27,28 @@
  */
 typedef struct
 {
-  int             pid;          /*!< Process identifier. */
-  char            name[ARG_SIZE];       /*!< Process name. */
-  int             pri;          /*!< Process priority. */
-  int             supervised[MAXPCB];   /*!< List of supervised processes. */
-  int             supervisor;   /*!< List of supervisor processes. */
-  int             wait;
-  bool            empty;
+	int             pid;          /*!< Process identifier. */
+	char            name[ARG_SIZE];       /*!< Process name. */
+	int             pri;          /*!< Process priority. */
+	int             supervised[MAXPCB];   /*!< List of supervised processes. */
+	int             supervisor;   /*!< List of supervisor processes. */
+	int             wait;
+	bool            empty;
 } pcbinfo;
+
+typedef struct
+{
+	int        pid;          /*!< Process identifier. */
+	char            name[ARG_SIZE];       /*!< Process name. */
+	int        pri;          /*!< Process priority. */
+	int         supervised[MAXPCB];   /*!< List of supervised processes. */
+	int         supervisor;   /*!< supervisor. */
+	int        state;        /*!< Current state of the process */
+	int        sleep;        /*!< Time to sleep, if state == SLEEPING */
+	int        waitfor;      /*!< pid of the process you are waiting for */
+	int         error;        /*!< Last error the process encountered. */
+	bool            empty;        /*!< is this pcb empty ? */
+} pcbinfo2;
 
 int             kill(int pid);
 

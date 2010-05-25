@@ -276,6 +276,10 @@ pcb_rm_supervised(pcb * p, uint32_t pid)
    */
   if (p->supervised[i] == pid)
     p->supervised[i] = -1;
+
+  /*
+	* We did not found it. But hey not anymore :)
+	*/
 }
 
 

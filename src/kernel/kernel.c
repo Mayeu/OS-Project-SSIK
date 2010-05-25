@@ -9,7 +9,7 @@
 #include "debug.h"
 #include "kernel.h"
 #include "kinout.h"
-#include "kprocess_list.h"
+#include "kprocess.h"
 #include "test.h"
 #include "splash.h"
 
@@ -52,6 +52,13 @@ kinit()
   create_pls(&prunning);
   create_pls(&pwaiting);
   create_pls(&pterminate);
+
+  pcls_reset(&pclsready);
+  pcls_reset(&pclsrunning);
+  pcls_reset(&pclswaiting);
+  pcls_reset(&pclsterminate);
+
+	reset_used_stack();
 
   /*
    * Launch test

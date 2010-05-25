@@ -28,6 +28,12 @@ pls             prunning;       /*!< @brief List of running process */
 pls             pwaiting;       /*!< @brief List of waiting process */
 pls             pterminate;     /*!< @brief List of terminate process */
 
+pcls             pclsready;         /*!< @brief List of ready process */
+pcls             pclsrunning;       /*!< @brief List of running process */
+pcls             pclswaiting;       /*!< @brief List of waiting process */
+pcls             pclsterminate;     /*!< @brief List of terminate process */
+
+
 /**
  * @brief Kernel last error. Default to success
  */

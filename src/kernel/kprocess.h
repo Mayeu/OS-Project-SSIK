@@ -32,6 +32,13 @@
 //uint32_t        create_proc(char *name, uint32_t prio, int32_t params[MAX_ARG]);
 uint32_t        create_proc(char *name, uint32_t prio, char **params);
 
+int32_t *
+get_used_stack();
+	uint32_t *
+allocate_stack(uint32_t pid);
+	int32_t
+deallocate_stack(uint32_t pid);
+
 
 /**
  * \fn int rm_p(pcb *p)
@@ -64,15 +71,6 @@ uint32_t        chg_ppri(pcb * p, uint32_t pri);
  */
 uint32_t        get_pinfo(pcb * p, pcbinfo * pi);
 
-/**
- * \fn int copy_p(pcb *psrc, pcb *pdest)
- * \brief copy a pcb inside an other
- *
- * \param psrc the source pcb
- * \param pdest the destination pcb
- * \return an error code
- */
-uint32_t        move_p(pcb * psrc, pcb * pdest);
 /**
  * \fn int add_psupervise(pcb *p, int pid)
  * \brief add a pid to the supervise list of a process
@@ -123,6 +121,13 @@ uint32_t        rm_psupervisor(pcb * p, uint32_t pid);
  */
 bool            p_is_empty(pcb * pcb);
 
+/**
+ * @brief Return the next avaible pid, or an error code
+ */
+
+	int32_t
+get_next_pid();
+
  /**
  * \fn uint32_t rest_pid()
  * \brief reset the next_pid to 0
@@ -130,6 +135,11 @@ bool            p_is_empty(pcb * pcb);
  */
 void            reset_next_pid();
 
+/**
+ * @brief reset to -1 all the element of used_stack
+ */
+void
+reset_used_stack();
 
 /**
  * \fn char *argn(char **data, int num)
@@ -140,5 +150,19 @@ void            reset_next_pid();
  * \return the argument
  */
 char           *argn(char **data, int num);
+
+/*
+ * Deprecated
+ */
+
+/**
+ * \fn int copy_p(pcb *psrc, pcb *pdest)
+ * \brief copy a pcb inside an other
+ *
+ * \param psrc the source pcb
+ * \param pdest the destination pcb
+ * \return an error code
+ */
+uint32_t        move_p(pcb * psrc, pcb * pdest);
 
 #endif

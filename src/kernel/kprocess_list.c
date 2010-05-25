@@ -16,6 +16,246 @@
 void            print_pls(pls * ls);    // Internal function (see the bottom of the file
 
 /**
+ * @brief Reset the list to his default value
+ *
+ * This function reset all the pcb in the list, and all the pointer to NULL
+ */
+void pcls_reset(pcls *ls)
+{
+	uint32_t i;
+
+	ls->start = NULL;
+	ls->end = NULL;
+	ls->length = 0 ;
+
+	for(i = 0; i < MAXPCB; i++)
+		pcls_item_reset(&(ls->ls[i]), i);
+}
+
+/**
+ * @brief Add an element to the list.
+ *
+ * The list is always sorted by priority (highest to lowest).
+ * The added pcb will be a copy of the passed pcb
+ *
+ * @param The the list where we add an element
+ * @param a pointer to the pcb to add to the list
+ * @return OMGROXX if everything goes well.
+ */
+int32_t pcls_add(pcls *ls, pcb *p)
+{
+	pcls_item *it, *last_it, *next_it;
+
+	it = pcls_item_alloc(ls);
+
+	if(!it)
+		return OUTOMEM;
+
+	pcls_item_cpy_pcb(p, it);
+
+	/*
+	 * Found the position of the element
+	 */
+	if (ls->start == NULL) //Nothing in the list
+		ls->start = it;
+	else
+	{
+		last_it = NULL;
+		next_it = ls->start;
+
+		while ( pcb_get_pri(&(next_it->p)) > pcb_get_pri(&(it->p))
+				&& next_it->next != NULL)
+		{
+			last_it = next_it;
+			next_it = next_it->next ;
+		}
+
+		if (pcb_get_pri(&(next_it->p)) <= pcb_get_pri(&(it->p)))
+		{
+			if(last_it != NULL)
+				last_it->next = it ;
+			else
+				ls->start = it;
+
+			it->next = next_it;
+		}
+		else
+			next_it->next = it;
+	}
+
+	ls->length++;
+
+	return OMGROXX;
+}
+
+/**
+ * @brief Delete a pcb from a list. (Reset it to his default value)
+ */
+	uint32_t
+pcls_delete_pcb(pcls *ls, pcb *p)
+{
+	pcls_item *next, *last ;
+
+	if (ls->length == 0)
+		return NOTFOUND;
+
+	last = NULL;
+	next = ls->start;
+
+	while(pcb_get_pid(&(next->p)) != pcb_get_pid(p)
+			&& !next->next)
+	{
+		last = next;
+		next = next->next;
+	}
+
+	if (pcb_get_pid(&(next->p)) == pcb_get_pid(p))
+	{
+		if (last == NULL)
+			ls->start = next->next;
+		else
+			last->next = next->next;
+		pcls_item_reset(next, next->item_id);
+	}
+	else
+		return NOTFOUND;
+
+	ls->length--;
+
+	return OMGROXX;
+}
+
+/**
+ * @brief Move a PCB from a list to an other
+ */
+int32_t
+pcls_move_pcb(pcls *src, pcls *dest, pcb *p)
+{
+	int32_t e;
+	pcls_item  *it_src;
+
+	e = OMGROXX;
+
+	it_src = pcls_search_pcb(src, p);
+
+	if(!it_src)
+		return NOTFOUND;
+
+	/*
+	 * we add the pcb in the list
+	 */
+	e = pcls_add(dest, p); 
+	
+	if(e != OMGROXX)
+		return e;
+
+	/*
+	 * We delete the old pcb
+	 */
+	e = pcls_delete_pcb(src, p);
+
+	return e;
+}
+
+/**
+ * @brief Search a pcb in a list and return the pcls_item associated
+ *
+ * Use the pid to found the good pcb
+ *
+ * @param a list
+ * @param the pcb to found
+ * @return NULL if not found, the pcls_item otherwise
+ */
+pcls_item*
+pcls_search_pcb(pcls *ls, pcb *p)
+{
+	pcls_item *last ;
+
+	if (ls->length == 0)
+		return NULL;
+
+	last = ls->start;
+
+	while(pcb_get_pid(&(last->p)) != pcb_get_pid(p)
+			&& last->next)
+		last = last->next;
+
+	if (pcb_get_pid(&(last->p)) == pcb_get_pid(p))
+		return last;
+
+	else
+		return NULL;
+}
+
+/**
+ * @brief Search a pid in a list and return the pcls_item associated
+ * @param a list
+ * @param the pid to found
+ * @return NULL if not found, the pcls_item otherwise
+ */
+pcls_item*
+pcls_search_pid(pcls *ls, uint32_t pid)
+{
+	pcls_item *last ;
+
+	if (ls->length == 0)
+		return NULL;
+
+	last = ls->start;
+
+	while(pcb_get_pid(&(last->p)) != pid
+			&& last->next != NULL)
+		last = last->next;
+
+	if (pcb_get_pid(&(last->p)) == pid)
+		return last;
+
+	else
+		return NULL;
+}
+
+/**
+ * @brief Reset an list element to it's default value.
+ */
+	void
+pcls_item_reset(pcls_item *it, uint32_t id)
+{
+	it->item_id = id;
+	it->next = NULL;
+	pcb_reset(&(it->p));
+}
+
+/**
+ * @brief Return the first empty pcls_item in the static array of pcls
+ * @param a list
+ * @return the adress or NULL if no space
+ */
+pcls_item * pcls_item_alloc(pcls *ls)
+{
+	uint32_t i;
+
+	for( i = 0; i < MAXPCB; i++)
+		if (pcb_get_empty(&((ls->ls[i]).p)))
+			return &(ls->ls[i]);
+
+	return NULL;
+}
+
+/**
+ * @brief Copy a pcb in a pcls_item
+ * @param the source pcb
+ * @param the destination item
+ */
+void pcls_item_cpy_pcb(pcb *p, pcls_item *it)
+{
+	pcb_cpy(p, &(it->p));
+}
+
+/*
+ * Deprecated
+ */
+
+/**
  * \fn int create_pls(pls *ls)
  * \brief initialize a list of pcb
  *
@@ -290,238 +530,3 @@ print_pls(pls * ls)
 }
 
 
-/**
- * @brief Reset the list to his default value
- *
- * This function reset all the pcb in the list, and all the pointer to NULL
- */
-void pcls_reset(pcls *ls)
-{
-	uint32_t i;
-
-	ls->start = NULL;
-	ls->end = NULL;
-	ls->length = 0 ;
-
-	for(i = 0; i < MAXPCB; i++)
-		pcls_item_reset(&(ls->ls[i]), i);
-}
-
-/**
- * @brief Add an element to the list.
- *
- * The list is always sorted by priority (highest to lowest).
- * The added pcb will be a copy of the passed pcb
- *
- * @param The the list where we add an element
- * @param a pointer to the pcb to add to the list
- * @return OMGROXX if everything goes well.
- */
-int32_t pcls_add(pcls *ls, pcb *p)
-{
-	pcls_item *it, *last_it, *next_it;
-
-	it = pcls_item_alloc(ls);
-
-	if(!it)
-		return OUTOMEM;
-
-	pcls_item_cpy_pcb(p, it);
-
-	/*
-	 * Found the position of the element
-	 */
-	if (ls->start == NULL) //Nothing in the list
-		ls->start = it;
-	else
-	{
-		last_it = NULL;
-		next_it = ls->start;
-
-		while ( pcb_get_pri(&(next_it->p)) > pcb_get_pri(&(it->p))
-				&& next_it->next != NULL)
-		{
-			last_it = next_it;
-			next_it = next_it->next ;
-		}
-
-		if (pcb_get_pri(&(next_it->p)) <= pcb_get_pri(&(it->p)))
-		{
-			if(last_it != NULL)
-				last_it->next = it ;
-			else
-				ls->start = it;
-
-			it->next = next_it;
-		}
-		else
-			next_it->next = it;
-	}
-
-	ls->length++;
-
-	return OMGROXX;
-}
-
-/**
- * @brief Delete a pcb from a list. (Reset it to his default value)
- */
-	uint32_t
-pcls_delete_pcb(pcls *ls, pcb *p)
-{
-	pcls_item *next, *last ;
-
-	if (ls->length == 0)
-		return NOTFOUND;
-
-	last = NULL;
-	next = ls->start;
-
-	while(pcb_get_pid(&(next->p)) != pcb_get_pid(p)
-			&& !next->next)
-	{
-		last = next;
-		next = next->next;
-	}
-
-	if (pcb_get_pid(&(next->p)) == pcb_get_pid(p))
-	{
-		if (last == NULL)
-			ls->start = next->next;
-		else
-			last->next = next->next;
-		pcls_item_reset(next, next->item_id);
-	}
-	else
-		return NOTFOUND;
-
-	ls->length--;
-
-	return OMGROXX;
-}
-
-/**
- * @brief Move a PCB from a list to an other
- */
-int32_t
-pcls_move_pcb(pcls *src, pcls *dest, pcb *p)
-{
-	int32_t e;
-	pcls_item  *it_src;
-
-	e = OMGROXX;
-
-	it_src = pcls_search_pcb(src, p);
-
-	if(!it_src)
-		return NOTFOUND;
-
-	/*
-	 * we add the pcb in the list
-	 */
-	e = pcls_add(dest, p); 
-	
-	if(e != OMGROXX)
-		return e;
-
-	/*
-	 * We delete the old pcb
-	 */
-	e = pcls_delete_pcb(src, p);
-
-	return e;
-}
-
-/**
- * @brief Search a pcb in a list and return the pcls_item associated
- *
- * Use the pid to found the good pcb
- *
- * @param a list
- * @param the pcb to found
- * @return NULL if not found, the pcls_item otherwise
- */
-pcls_item*
-pcls_search_pcb(pcls *ls, pcb *p)
-{
-	pcls_item *last ;
-
-	if (ls->length == 0)
-		return NULL;
-
-	last = ls->start;
-
-	while(pcb_get_pid(&(last->p)) != pcb_get_pid(p)
-			&& last->next)
-		last = last->next;
-
-	if (pcb_get_pid(&(last->p)) == pcb_get_pid(p))
-		return last;
-
-	else
-		return NULL;
-}
-
-/**
- * @brief Search a pid in a list and return the pcls_item associated
- * @param a list
- * @param the pid to found
- * @return NULL if not found, the pcls_item otherwise
- */
-pcls_item*
-pcls_search_pid(pcls *ls, uint32_t pid)
-{
-	pcls_item *last ;
-
-	if (ls->length == 0)
-		return NULL;
-
-	last = ls->start;
-
-	while(pcb_get_pid(&(last->p)) != pid
-			&& last->next != NULL)
-		last = last->next;
-
-	if (pcb_get_pid(&(last->p)) == pid)
-		return last;
-
-	else
-		return NULL;
-}
-
-/**
- * @brief Reset an list element to it's default value.
- */
-	void
-pcls_item_reset(pcls_item *it, uint32_t id)
-{
-	it->item_id = id;
-	it->next = NULL;
-	pcb_reset(&(it->p));
-}
-
-/**
- * @brief Return the first empty pcls_item in the static array of pcls
- * @param a list
- * @return the adress or NULL if no space
- */
-pcls_item * pcls_item_alloc(pcls *ls)
-{
-	uint32_t i;
-
-	for( i = 0; i < MAXPCB; i++)
-		if (pcb_get_empty(&((ls->ls[i]).p)))
-			return &(ls->ls[i]);
-
-	return NULL;
-}
-
-/**
- * @brief Copy a pcb in a pcls_item
- * @param the source pcb
- * @param the destination item
- */
-void pcls_item_cpy_pcb(pcb *p, pcls_item *it)
-{
-	pcb_cpy(p, &(it->p));
-}
