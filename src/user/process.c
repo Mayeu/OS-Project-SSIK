@@ -14,9 +14,9 @@
  * Kill the current process.
  */
 int
-exit()
+exit(int status)
 {
-  return syscall_none(EXIT);
+  return syscall_one(status, EXIT);
 }
 
  /**
@@ -38,6 +38,34 @@ sleep(int time)
 }
 
  /**
+ * Block the process 'pid' until someone call the wake_up() function.
+ */
+int
+block(int pid)
+{
+	return syscall_one(pid, BLOCK);
+}
+
+ /**
+ * Wake up the process with the pid 'pid'.
+ */
+int
+wake_up(int pid)
+{
+	return syscall_one(pid, WAKEUP);
+}
+
+ /**
+ * Wait for the process 'pid' to exit and set the status
+variable with its exit code.
+ */
+int
+wait(int pid, int *status)
+{
+	return syscall_two(pid, (int32_t)status, WAIT);
+}
+
+ /**
  * Creates a child process that differs from the parent process only in its PID and
 PPID. If success, the PID of the child process is returned in the parent’s thread of execution,
 and a 0 is returned in the child’s thread of execution.
@@ -49,7 +77,7 @@ fourchette(char *name, char *argv[])
 }
 
  /**
- * fill the pcb_info structure given in parameter with the pcb information. Only
+ * Fill the pcb_info structure given in parameter with the pcb information. Only
 not critical information is given to the user.
  */
 int

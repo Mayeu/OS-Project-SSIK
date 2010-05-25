@@ -37,12 +37,13 @@ typedef struct
 } pcbinfo;
 
  /**
- * \fn int exit()
+ * \fn int exit(int status)
  * \brief Kill the current process.
  *
+ * \param status the value returned by the process when exiting
  * \return the error identifier in case of any failure
  */
-int             exit();
+int             exit(int status);
 
  /**
  * \fn int kill(int pid)
@@ -60,6 +61,35 @@ int             kill(int pid);
  * \param time sleep for the specified number of milliseconds
  */
 void            sleep(int time);
+
+ /**
+ * \fn int block(int pid)
+ * \brief Block the process 'pid' until someone call the wake_up() function.
+ *
+ * \param pid the pid of the process to block
+ * \return the error identifier in case of any failure
+ */
+int            block(int pid);
+
+ /**
+ * \fn int wake_up(int pid)
+ * \brief Wake up the process with the pid 'pid'.
+ *
+ * \param pid the pid of the process to wake up
+ * \return the error identifier in case of any failure
+ */
+int            wake_up(int pid);
+
+ /**
+ * \fn int wait(int pid, int *status)
+ * \brief Wait for the process 'pid' to exit and set the status
+variable with its exit code.
+ *
+ * \param pid the pid of the process to wait for
+ * \param status the value of the waited process return code
+ * \retun the error identifier in case of any failure
+ */
+int            wait(int pid, int *status);
 
  /**
  * \fn int fourchette(char *name, int prio, char *argv[])
