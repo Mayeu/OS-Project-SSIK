@@ -29,6 +29,7 @@ void test_kprogram()
 	}
 
 	kprintln("-------------TEST MODULE KPROGRAM END-------------");
+	kprintln("");
 }
 
 uint32_t test_search_prgm(void)
