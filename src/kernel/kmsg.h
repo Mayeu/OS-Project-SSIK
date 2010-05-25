@@ -11,15 +11,8 @@
 #define __KMSG_H
 
 #include <stdlib.h>
-//#include <message.h>
+#include <message.h>
 #include "include/types.h"
-
-typedef enum				// to delete after getting Adrien work
-{
-	INT_T,
-	CHAR_PTR
-	//OTHER_T NOT WORKING YET
-} msg_t;
 
 typedef struct
 {

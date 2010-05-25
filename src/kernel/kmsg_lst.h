@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 #include <errno.h>
-//#include <message.h>
+#include <message.h>
 #include "include/types.h"
 #include "kmsg.h"
 
@@ -20,24 +20,6 @@
 #define MIN_MPRI 0
 #define MAX_MPRI 30
 #define BAS_MPRI 15
-
-
-typedef enum
-{
-	FPRI,
-	FPID,
-	FTYPE
-} msg_filter;
-
-typedef struct				// to delete after getting Adrien work
-{
-	void *data;
-	msg_t datatype;
-	int pid;
-	int pri;
-	int timeout;
-	msg_filter filter;
-} msg_arg;
 
 enum	// status
 {
