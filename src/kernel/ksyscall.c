@@ -8,8 +8,10 @@
  */
 
 // used to get the BAS_PRI variable
-#include <process.h>
 #include <stdio.h>
+#include <string.h> // for debug
+#include <process.h>
+#include <message.h>
 
 #include "ksyscall.h"
 #include "kprocess.h"
@@ -26,7 +28,8 @@ syscall_handler(registers_t * regs)
   int32_t         res = 0;
   int32_t         syscall = regs->v_reg[0];     // code of the syscall
   pcb            *p;
-
+	msg_arg 			 *mres;
+	char					 	buf[3];
   switch (syscall)
   {
   case FOURCHETTE:
@@ -47,6 +50,26 @@ syscall_handler(registers_t * regs)
     break;
   case SLEEP:
     prunning.current->wait = regs->a_reg[0] * timer_msec;
+    break;
+  case BLOCK:
+    break;
+  case WAKEUP:
+    break;
+  case WAIT:
+    break;
+  case SEND:
+		mres = (msg_arg*)regs->a_reg[0];
+		kprint("process pid = ");
+		//kprint(itos(prunning.current->pid, buf));
+		kprint(" is sending datatype ");
+		kprint(itos(mres->datatype, buf));
+		kprint(" to process pid = ");
+		kprintln(itos(mres->pid, buf));
+		//kprintln((char*)mres->data);
+		// res = send_msg(prunning.current->pid, msg_arg);
+    break;
+  case RECV:
+		// res = recv_msg(prunning.current->pid, msg_arg);
     break;
   case PERROR:
     kperror((char *) regs->a_reg[0]);
@@ -75,7 +98,8 @@ syscall_handler(registers_t * regs)
     break;
   case EXIT:
     p = search_pcb(prunning.current->pid, &prunning);
-    res = rm_p(p);
+		p->registers.v_reg[0] = regs->a_reg[0];
+		move(prunning.current->pid, &prunning, &pterminate);
     schedule();
     break;
   default:
