@@ -36,6 +36,21 @@ typedef struct
 uint32_t        create_pls(pls * ls);
 
 /**
+ * \fn create_proc(char *name, uint32_t prio, char **params)
+ * \brief initialize a pcb with all the needed value,
+ * 			add it to the ready queue, and ask for a 
+			long term scheduling.
+ *
+ * The allocated space in the ready queue is supposed to be free.
+ *
+ * \param name the name of the program to launch
+ * \param p the priority of the process
+ * \param p the params
+ * \return the pid of the newly created process(>0), or an error (<0)
+ */
+uint32_t create_proc(char *name, uint32_t prio, char **params);
+
+/**
  * \fn int rm_pls(pls *ls)
  * \brief delete a list of pcb
  *
@@ -123,5 +138,45 @@ uint32_t        move(uint32_t pid, pls * src, pls * dest);
  * \return an error code
  */
 uint32_t        sort(pls * ls);
+/**
+ * \fn int add_psupervise(pcb *p, int pid)
+ * \brief add a pid to the supervise list of a process
+ *
+ * \param p the pointer to the process
+ * \param pid the pid to add
+ * \return an error code
+ */
+uint32_t        add_psupervised(pcb * p, uint32_t pid);
+
+ /**
+ * \fn int rm_psupervised(pcb *p, int pid)
+ * \brief remove a pid from the supervise list of a process
+ *
+ * \param p the pointer to the process
+ * \param pid the pid to remove
+ * \return an error code
+ */
+uint32_t        rm_psupervised(pcb * p, uint32_t pid);
+
+/**
+ * \fn int add_psupervisor(pcb *p, int pid)
+ * \brief change the pid of the process supervisor
+ *
+ * \param p the pointer to the process
+ * \param pid the pid to add
+ * \return an error code
+ */
+uint32_t        add_psupervisor(pcb * p, uint32_t pid);
+
+ /**
+ * \fn int rm_psuperviser(pcb *p, int pid)
+ * \brief remove a pid from the superviser list of a process
+ *
+ * \param p the pointer to the process
+ * \param pid the pid to remove
+ * \return an error code
+ */
+uint32_t        rm_psupervisor(pcb * p, uint32_t pid);
+
 
 #endif

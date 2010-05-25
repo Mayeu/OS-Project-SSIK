@@ -86,7 +86,7 @@ test_kprocess_list()
 	else
 		kprintln("NOK");
 
-	kprint("pls_is_empty\t\t\t\t\t");
+	kprint("pls_is_empty true\t\t\t\t");
 	res = pls_is_empty(&pready);
 	err = (res == TRUE);
 	if (err)
@@ -94,9 +94,17 @@ test_kprocess_list()
 	else
 		kprintln("NOK");
 
+	kprint("pls_is_empty false\t\t\t\t");
+	create_proc("init", 15, (char **)params);
+	res = pls_is_empty(&pready);
+	err = (res == FALSE);
+	if (err)
+		kprintln("OK");
+	else
+		kprintln("NOK");
+
 	kprint("search_pcb\t\t\t\t\t");
-	res = create_proc("init", 15, (char **)params);
-	pcb1 = search_pcb(0, &pready);
+	pcb1 = search_pcb(1, &pready);
 	err = (pcb1 != NULL) &&
 			(pcb1 == &pready.ls[0]);
 	if (err)
@@ -105,7 +113,7 @@ test_kprocess_list()
 		kprintln("NOK");
 
 	kprint("searchall\t\t\t\t\t");
-	pcb1 = searchall(0);
+	pcb1 = searchall(1);
 	err = (pcb1 != NULL) &&
 			(pcb1 == &pready.ls[0]);
 	if (err)
@@ -114,16 +122,16 @@ test_kprocess_list()
 		kprintln("NOK");
 
 	kprint("searchall not found\t\t\t\t");
-	pcb3 = searchall(3);
+	pcb3 = searchall(0);
 	if (pcb3 == NULL)
 		kprintln("OK");
 	else
 		kprintln("NOK");
 
 	kprint("move\t\t\t\t\t\t");
-	res = move(0, &pready, &prunning);
-	pcb2 = search_pcb(0, &prunning);
-	pcb3 = search_pcb(0, &pready);
+	res = move(1, &pready, &prunning);
+	pcb2 = search_pcb(1, &prunning);
+	pcb3 = search_pcb(1, &pready);
 	err = (res == OMGROXX) &&
 			(pcb3 == NULL) &&
 			(pcb2 != NULL) &&
@@ -151,9 +159,9 @@ test_kprocess_list()
 	pcb2 = &pready.ls[1];
 	pcb3 = &pready.ls[2];
 	err = (res == OMGROXX) &&
-			(pcb1->pid == 3) &&
-			(pcb2->pid == 1) &&
-			(pcb3->pid == 2);
+			(pcb1->pid == 4) &&
+			(pcb2->pid == 2) &&
+			(pcb3->pid == 3);
 	if (err)
 		kprintln("OK");
 	else

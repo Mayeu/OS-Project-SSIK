@@ -12,8 +12,13 @@
 #include "kernel.h"
 #include "kprocess_list.h"
 #include "kinout.h"
+#include "kprogram.h"
 
-void print_pls(pls *ls);		// Internal function (see the bottom of the file
+static uint32_t next_pid = 0;
+
+// Internal function (see the bottom of the file)
+int32_t get_next_pid(uint32_t * npid);
+void print_pls(pls *ls);		
 
 /**
  * \fn int create_pls(pls *ls)
@@ -36,6 +41,49 @@ create_pls(pls * ls)
 
   ls->current = NULL;
   return OMGROXX;
+}
+
+
+/**
+ * initialize a pcb with all the needed value, add it to
+ * the ready queue, and ask for a long term scheduling.
+ */
+uint32_t
+//create_proc(char *name, uint32_t prio, int32_t params[4])
+create_proc(char *name, uint32_t prio, char **params)
+{
+  pcb            *p;
+	uint32_t new_pid;
+	prgm *prog;
+	uint32_t supervisor;
+  if (name == NULL)
+    return NULLPTR;
+  if (prio > MAX_PRI || prio < MIN_PRI)
+    return INVARG;
+  if (params == NULL)
+    return NULLPTR;
+  p = empty_space(&pready);     // search for an empty pcb in the ready queue
+  if (p == NULL)
+ 	return OUTOMEM;
+    if (get_next_pid(&new_pid) != OMGROXX)
+	return OUTOPID;
+
+	prog = search_prgm(name); // search for the specified program
+	if (prog == NULL)                                                               
+		return INVARG;
+
+	/* The supervisor is the process that has requested 
+	 * The create_proc function and then it is the
+	 * process that is currently running.
+	 */
+	if (prunning.current == NULL)
+		supervisor = -1;
+	else
+		supervisor = prunning.current->pid;
+
+	create_pcb(p, new_pid, name, prog->address, supervisor, prio, params);
+
+	return new_pid;
 }
 
 /**
@@ -137,7 +185,7 @@ empty_space(pls * ls)
 bool
 pls_is_empty(pls * ls)
 {
-  int             i;
+  int             i = 0;
   if (ls == NULL)
     return FALSE;
 
@@ -258,7 +306,113 @@ sort(pls * ls)
   return OMGROXX;
 }
 
+
+/**
+ * add a pid to the supervise list of a process;
+ */
+
+uint32_t
+add_psupervised(pcb * p, uint32_t pid)
+{
+  pcb            *supervised;
+  if (p == NULL)
+    return NULLPTR;
+  if ((supervised = searchall(pid)) == NULL)
+    return INVARG;
+  if (supervised->supervisor != -1)
+    return INVARG;
+  if (!is_already_supervised(p, pid))
+  {
+    /* look for the first empty (pid = -1) position */
+    int             pos = search_psupervised(p, -1);
+    if (pos != -1)
+    {
+      p->supervised[pos] = pid; // add the pid as a new supervised process
+      supervised->supervisor = p->pid;  // change the supervisor of the supervised process
+      return OMGROXX;
+    }
+    else
+      return FAILNOOB;
+  }
+  return OMGROXX;
+}
+
+/**
+ * remove a pid from the supervised list of a process
+ */
+uint32_t
+rm_psupervised(pcb * p, uint32_t pid)
+{
+  if (p == NULL)
+    return NULLPTR;
+  int             pos = search_psupervised(p, pid);
+  if (pos != -1)
+  {
+    pcb            *supervised = searchall(pid);
+    p->supervised[pos] = -1;    // remove the supervised process
+    supervised->supervisor = -1;        // remove the supervisor of the previously supervised process
+    return OMGROXX;
+  }
+  else
+    return INVARG;
+}
+
+/**
+ * add a pid to the supervisor list of a process;
+ */
+uint32_t
+add_psupervisor(pcb * p, uint32_t pid)
+{
+  if (p == NULL)
+    return NULLPTR;
+  if (p->supervisor != -1)
+    return INVARG;
+
+  return add_psupervised(searchall(pid), p->pid);
+}
+
+/**
+ * remove the pid from the supervisor a process.
+ */
+uint32_t
+rm_psupervisor(pcb * p, uint32_t pid)
+{
+  if (p == NULL)
+    return NULLPTR;
+
+  rm_psupervised(searchall(pid), p->pid);
+  return OMGROXX;
+
+}
+
+ /**
+ * reset the next_pid to 0
+ */
+void
+reset_next_pid()
+{
+  next_pid = 0;
+}
+
+
 /* Internal functions */
+/**
+ * set nmid to the next available value of mid
+ */
+int32_t get_next_pid(uint32_t * pmid)
+{
+  int             init = next_pid;
+  *pmid = next_pid;
+	next_pid++;
+  while (searchall(next_pid) != NULL)
+  {
+    next_pid++;
+    if (next_pid == init)
+      return OUTOPID;
+  }
+  return OMGROXX;
+}
+
 void print_pls(pls *ls)
 {
 	int i = 0;
