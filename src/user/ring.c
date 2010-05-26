@@ -10,64 +10,105 @@
 #include <stdio.h>
 #include <string.h>
 #include <message.h>
+#include <process.h>
 
-#define MAX 10
+#define MAX 	 10
+#define TIMER 500
 
 int pid[MAX];
 
-void ring_proc(int pidmain, int loop)
+// params: int nb_proc, int loop -> main program
+// params: int pidmain, int loop -> child programs
+int ring(int argc, char* argv[])
 {
 	int i;
-	int first;
-	int pid_next, pid_prev;
+	pcbinfo pcbi;
 	
-	char mess[10] = "hello";
-	char rcv[10];
-
-	recv_from_pid((int*)&first, INT_T, pidmain, -1);
-	recv_from_pid((int*)&pid_next, INT_T, pidmain, -1);
-	recv_from_pid((int*)&pid_prev, INT_T, pidmain, -1);
-
-	for (i=0; i<loop; i++)
+	get_proc_info(get_pid(), &pcbi);
+	get_proc_info(pcbi.supervisor, &pcbi);
+	
+	// if the supervisor process is not ring (it should be the shell), case parent
+	if (strcmp(pcbi.name, "ring") != 0)
 	{
-		if (first)
+		int nb_proc;
+		char args[2][ARG_SIZE];
+
+		if (argc < 2)
 		{
-			send(mess, CHAR_PTR, pid_next);
-			print("process no "); printi(get_pid()); print("sent msg '"); print(mess); println("'");
-			recv_from_pid((char*)rcv, CHAR_PTR, pid_prev, -1);
-			print("process no "); printi(get_pid()); print("got msg '"); print(rcv); println("'");
+			println("Error: You must input the number of processes and the number of loops to do");
+			exit(-1);
 		}
-		else
+
+		// number of proc in argv[0]
+		nb_proc = stoi(argv[0]);
+
+		if (nb_proc > MAX)
 		{
-			recv_from_pid((char*)rcv, CHAR_PTR, pid_prev, -1);
-			print("process no "); printi(get_pid()); print("got msg '"); print(rcv); println("'");
-			send(mess, CHAR_PTR, pid_next);
-			print("process no "); printi(get_pid()); print("sent msg '"); print(mess); println("'");
+			print("Error: Number of processors must be at most ");printiln(MAX);
+			exit(-1);
+		}
+
+		// fill the argument array for the childs
+		itos(get_pid(), args[0]);
+		strcpy(get_arg(argv, 2), args[1]);
+	
+		// creating the children
+		for (i=0; i<nb_proc; i++)
+			pid[i] = fourchette("ring", 2, (char**)args);
+
+		// data to send to all the children
+		for (i=0; i<nb_proc; i++)
+		{
+			// are you the first child process ?
+			send((void*)(i == 0), INT_T, pid[i]);
+			// pid of the process to send the message
+			send((void*)pid[(i+1)%nb_proc], INT_T, pid[i]);
+			// pid of the process to wait the message
+			send((void*)pid[(i-1)%nb_proc], INT_T, pid[i]);
+		}
+	}
+	// if the supervisor process is the program ring, case child
+	else
+	{
+		int pidmain, loop;
+		int first, pid_next, pid_prev;
+		
+		char mess[10] = "hello";
+		char rcv[10];
+
+		pidmain = stoi(argv[0]);
+		loop = stoi(argv[1]);
+		
+		// params sent by the main process
+		recv_from_pid((int*)&first,    INT_T, pidmain, 0);
+		recv_from_pid((int*)&pid_next, INT_T, pidmain, 0);
+		recv_from_pid((int*)&pid_prev, INT_T, pidmain, 0);
+
+		for (i=0; i<loop; i++)
+		{
+			// if we are the first child, send then receive
+			if (first)
+			{
+				send(mess, CHAR_PTR, pid_next);
+				print("process no ");printi(get_pid());print("sent msg '");print(mess);println("'");
+				sleep(TIMER);
+				recv_from_pid((char*)rcv, CHAR_PTR, pid_prev, -1);
+				print("process no ");printi(get_pid()); print("got msg '");print(rcv);println("'");
+				sleep(TIMER);
+			}
+			// if not, receive then send
+			else
+			{
+				recv_from_pid((char*)rcv, CHAR_PTR, pid_prev, -1);
+				print("process no "); printi(get_pid()); print("got msg '"); print(rcv); println("'");
+				sleep(TIMER);
+				send(mess, CHAR_PTR, pid_next);
+				print("process no "); printi(get_pid()); print("sent msg '"); print(mess); println("'");
+				sleep(TIMER);
+			}
 		}
 	}
 
-	exit(OMGROXX);
-}
-
-void ring(int nb_proc, int loop)
-{
-	int i;
-	char args[4];
-
-	itos(3, arg[0]);
-	itos(get_pid(), arg[1]);
-	itos(loop, arg[2]);
-
-	for (i=0; i<nb_proc, i++)
-	{
-		pid[i] = fourchette("ring_proc", (char**)args);
-	}
-	for (i=0; i<nb_proc; i++)
-	{
-		send((void*)(i == 0), INT_T, pid[i]);
-		send((void*)pid[(i+1)%nb_proc], INT_T, pid[i]);
-		send((void*)pid[(i-1)%nb_proc], INT_T, pid[i]);
-	}
-
-	exit(OMGROXX);
+	exit(0);
+	return 0;
 }

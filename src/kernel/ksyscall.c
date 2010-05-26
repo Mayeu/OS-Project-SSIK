@@ -14,7 +14,6 @@
 #include <message.h>
 
 #include "ksyscall.h"
-#include "kprocess.h"
 #include "kprocess_list.h"
 #include "kscheduler.h"
 #include "kernel.h"
@@ -33,8 +32,10 @@ syscall_handler(registers_t * regs)
   switch (syscall)
   {
   case FOURCHETTE:
+		// A CHANGER, POUR ENVOYER LE NB D'ARG STOQUE DS regs->a_reg[1]
+		// NE PAS OUBLIER DE COPIER LES ARG DS LA STRUCT DU PCB !!
     res =
-      create_proc((char *) regs->a_reg[0], BAS_PRI, (char **) regs->a_reg[1]);
+      create_proc((char *)regs->a_reg[0], BAS_PRI, (char **) regs->a_reg[2]);
     break;
   case PRINT:
     kprint((char *) regs->a_reg[0]);
@@ -106,6 +107,7 @@ syscall_handler(registers_t * regs)
     schedule();
     break;
   case EXIT:
+		// NOTIFY THE SUPERVISOR OF THE EXITING PROCESS !
     p = search_pcb(prunning.current->pid, &prunning);
 		p->registers.v_reg[0] = regs->a_reg[0];
 		move(prunning.current->pid, &prunning, &pterminate);

@@ -18,11 +18,11 @@ char            command_arg[MAX_SHELL_ARG][MAX_CHAR];
 void
 coquille(void)
 {
-  int             res, pid;
+  int             nb_arg, pid;
   char            prompt_line[255];
   char            buffer[255];
   char            prog_name[20];
-  char           *command = "init arg1 arg2 arg3 arg4";
+  char            *command = "init arg1 arg2 arg3 arg4";
   pcbinfo         pcbi;
 
   strcpy("coquille> ", prompt_line);
@@ -31,18 +31,13 @@ coquille(void)
 
   fprint(MALTA, "ABC DEF");
 
-  res = split_args(command, command_arg);
+  nb_arg = split_args(command, command_arg);
 
   println(command);
 
-  if (res != -1)
+  if (nb_arg != -1)
   {
-    // copy the program name from the array
-    strcpy(command_arg[0], prog_name);
-    // copy the number of arguments at position 0, replacing the progr name
-    strcpy(itos(res, buffer), command_arg[0]);
-
-    pid = fourchette(prog_name, (char**) command_arg);
+    pid = fourchette(command_arg[0], nb_arg, (char**) command_arg);
 
     // print the new pid
     print("pid : ");
@@ -67,8 +62,6 @@ coquille(void)
 
 		send(prog_name, CHAR_PTR, 5);
 		send((void*)42, INT_T, 2);
-
-
   }
 
 /*
