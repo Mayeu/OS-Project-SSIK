@@ -9,6 +9,7 @@
 #include "kprocess.h"
 #include "kernel.h"
 #include "kinout.h"
+#include "kscheduler.h"
 #include "ksleep.h"
 
 /**
@@ -75,4 +76,27 @@ process_sleep()
 		last = it;
 		it = last->next;
 	}
+}
+
+/*
+ * @brief sleep the current_process
+ */
+void
+go_to_spleep(uint32_t time)
+{
+	pcb *p;
+
+	p = get_current_pcb();
+
+	if(p != NULL)
+		return ;
+
+	pcb_set_state(p, SLEEPING);
+	pcb_set_sleep(p, time*timer_msec);
+	pcls_move_pcb(&pclsrunning, &pclsready, p);
+
+	/*
+	 * We need to schedule now
+	 */
+	schedule();
 }

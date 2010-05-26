@@ -11,10 +11,11 @@
 #include <types.h>
 #include <stdio.h>
 
+#include "asm.h"
 #include "kprocess_list.h"
 
 /* Time of one clock tick */
-#define QUANTUM 100
+#define QUANTUM 10*timer_msec
 
 /*
  * global variable
