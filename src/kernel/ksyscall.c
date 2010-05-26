@@ -107,6 +107,7 @@ syscall_handler(registers_t * regs)
     schedule();
     break;
   case EXIT:
+		// NOTIFY THE SUPERVISOR OF THE EXITING PROCESS !
     p = search_pcb(prunning.current->pid, &prunning);
 		p->registers.v_reg[0] = regs->a_reg[0];
 		move(prunning.current->pid, &prunning, &pterminate);
