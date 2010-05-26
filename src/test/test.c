@@ -13,6 +13,7 @@
 #include "test_kprocess_list.c"
 #include "test_kprocess_list2.c"
 #include "test_ksleep.c"
+#include "test_kscheduler.c"
 
 	void
 test()
@@ -34,6 +35,8 @@ test()
 	test_kprocess2();
 
 	test_ksleep();
+
+	test_kscheduler();
 
 	//test_kprocess();
 

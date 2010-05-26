@@ -33,6 +33,10 @@
 //uint32_t        create_proc(char *name, uint32_t prio, int32_t params[MAX_ARG]);
 uint32_t        create_proc(char *name, uint32_t prio, char **params);
 
+pcb *get_current_pcb();
+void
+set_current_pcb(pcb *p);
+
 int32_t *
 get_used_stack();
 	uint32_t *

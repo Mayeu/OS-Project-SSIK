@@ -65,6 +65,17 @@ int32_t         get_next_pid();
  * Functions
  */
 
+pcb *get_current_pcb()
+{
+	return current_pcb;
+}
+
+void
+set_current_pcb(pcb *p)
+{
+	current_pcb = p;
+}
+
 /**
  * initialize a pcb with all the needed value, add it to
  * the ready queue, and ask for a long term scheduling.

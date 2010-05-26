@@ -11,6 +11,8 @@
 #include "mips4kc.h"
 #include "kscheduler.h"
 #include "ksyscall.h"
+#include "kscheduler.h"
+#include "ksleep.h"
 
 
 cause_reg_t     cause;
@@ -40,7 +42,8 @@ kexception()
     else if (cause.field.ip & 0x80)     // timer exception
     {
       // check if there are some processes to wake up and reschedule all processes.
-      timer_exception();
+      process_sleep();
+		schedule();
       /* Reload timer for another QUANTUM ms (simulated time) */
       kload_timer(QUANTUM * timer_msec);
 
