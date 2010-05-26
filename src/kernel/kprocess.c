@@ -52,7 +52,7 @@ static uint32_t used_stack[MAXPCB] ;
 /**
  * @brief the current pcb
  */
-uint32_t current_pcb;
+pcb* current_pcb;
 
 /*
  * Privates functions
@@ -124,7 +124,10 @@ create_proc(char *name, uint32_t prio,  char **params)
 		 * or -1 if the system ask.
 		 * This value is in the global variable current_pcb
 		 */
-		pcb_set_supervisor(&p, current_pcb);
+		if (current_pcb != NULL)
+		pcb_set_supervisor(&p, pcb_get_pid(current_pcb));
+		else
+		pcb_set_supervisor(&p, -1);
 
 		/*
 		 * Set the parameters of the function
