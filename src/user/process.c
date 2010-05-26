@@ -7,7 +7,7 @@
  */
 
 #include <process.h>
-
+#include <string.h>
 #include "../kernel/ksyscall.h"
 
  /**
@@ -29,7 +29,7 @@ kill(int pid)
 }
 
  /**
- * Sleep makes the current process sleep until ’time’ milliseconds seconds have elapsed.
+ * Sleep makes the current process sleep until 'time' milliseconds seconds have elapsed.
  */
 void
 sleep(int time)
@@ -66,14 +66,21 @@ wait(int pid, int *status)
 }
 
  /**
- * Creates a child process that differs from the parent process only in its PID and
-PPID. If success, the PID of the child process is returned in the parent’s thread of execution,
-and a 0 is returned in the child’s thread of execution.
+ * Creates a new process with the program identified by its name 'name'. The
+program must be stored in the program list of the OS.
  */
-int
-fourchette(char *name, char *argv[])
+int fourchette(char *name, int argc, char *argv[])
 {
-  return syscall_two((int32_t) name, (int32_t) argv, FOURCHETTE);
+	int i;
+	char new_args[MAX_ARG+1][ARG_SIZE];
+
+	// add the program name to the new arg array
+	strcpy(name, new_args[0]);
+	// copy all the arguments
+	for (i=0; i<argc; i++)
+		strcpy((char*)(argv) + i*ARG_SIZE, new_args[i+1]);
+	
+  return syscall_three((int32_t) name, argc, (int32_t) new_args, FOURCHETTE);
 }
 
  /**
@@ -87,7 +94,7 @@ get_proc_info(int pid, pcbinfo * res)
 }
 
  /**
- * Changes the priority of the process from the old one to the new priority ’prio’.
+ * Changes the priority of the process from the old one to the new priority 'prio'.
  */
 int
 chgpri(int pid, int newprio)

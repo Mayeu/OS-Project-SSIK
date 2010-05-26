@@ -92,16 +92,16 @@ variable with its exit code.
 int            wait(int pid, int *status);
 
  /**
- * \fn int fourchette(char *name, int prio, char *argv[])
- * \brief Creates a child process that differs from the parent process only in its PID and
-PPID. If success, the PID of the child process is returned in the parent’s thread of execution,
-and a 0 is returned in the child’s thread of execution.
+ * \fn int fourchette(char *name, int argc, char *argv[])
+ * \brief Creates a new process with the program identified by its name 'name'. The
+program must be stored in the program list of the OS.
  *
  * \param name the process name
- * \param the arguments list (first arg is number of arg)
- * \return the process pid
+ * \param argc the number of arguments in the argv array
+ * \param the arguments list (first arg is the name of the program)
+ * \return the process pid (>0) or an negative error in case of any failure
  */
-int             fourchette(char *name, char *argv[]);
+int             fourchette(char *name, int argc, char *argv[]);
 
  /**
  * \fn int get_proc_info(int pid)
