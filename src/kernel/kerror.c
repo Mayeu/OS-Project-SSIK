@@ -6,9 +6,11 @@
  * \date 24 Avril 2010
  */
 
+#include <string.h>
+
 #include "kerror.h"
 #include "kinout.h"
-#include <string.h>
+#include "kernel.h"
 
  /**
  * Print the specified err_msg followed by the description of the error according to the global
@@ -29,15 +31,16 @@ kperror(char *error_msg)
   strcat(res, num);
 
   kprint(res);
+  kprintn();
 }
 
  /**
- * Return the error number
+ * Return the error number.
  */
 uint32_t
 kgerror(void)
 {
-  return *p_error;
+  return (uint32_t) p_error;
 }
 
  /**
@@ -46,5 +49,5 @@ kgerror(void)
 void
 kserror(uint32_t e)
 {
-  *p_error = e;
+  prunning.current->error = e;
 }

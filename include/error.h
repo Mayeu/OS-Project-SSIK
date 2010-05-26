@@ -13,7 +13,7 @@
  * \fn void perror(char *error_msg)
  * \brief the perror() function writes the last error that occured followed by a newline, to the standard
 output. If the argument string is non-NULL, this string is prepended to the message string and
-separated from it by a colon and space (“: ”); otherwise, only the error message string is printed.
+separated from it by a colon and space; otherwise, only the error message string is printed.
  *
  * \param error_msg error message to print
  */
