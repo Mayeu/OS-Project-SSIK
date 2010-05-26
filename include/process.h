@@ -37,6 +37,12 @@ typedef struct
 } pcbinfo;
 
  /**
+ * \fn char* get_arg(char* argv[], int i)
+ * return the argument i from the char* array of arguments.
+ */
+char*           get_arg(char* argv[], int i);
+
+ /**
  * \fn int exit(int status)
  * \brief Kill the current process.
  *

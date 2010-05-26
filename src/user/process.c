@@ -11,6 +11,14 @@
 #include "../kernel/ksyscall.h"
 
  /**
+ * return the argument i from the char* array of arguments.
+ */
+char* get_arg(char* argv[], int i)
+{
+	return (char*)argv + (i * ARG_SIZE * sizeof(char));
+}
+
+ /**
  * Kill the current process.
  */
 int
