@@ -14,6 +14,7 @@
 #include <registers.h>
 #include <stdlib.h>
 #include <process.h>
+#include "kprocess_list.h"
 #include "kpcb.h"
 
 /**

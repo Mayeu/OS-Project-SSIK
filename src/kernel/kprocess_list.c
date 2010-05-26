@@ -63,6 +63,9 @@ int32_t pcls_add(pcls *ls, pcb *p)
 		last_it = NULL;
 		next_it = ls->start;
 
+		/*
+		 * Looking for the position
+		 */
 		while ( pcb_get_pri(&(next_it->p)) > pcb_get_pri(&(it->p))
 				&& next_it->next != NULL)
 		{
@@ -70,8 +73,14 @@ int32_t pcls_add(pcls *ls, pcb *p)
 			next_it = next_it->next ;
 		}
 
+		/*
+		 * are we at the end of the list ?
+		 */
 		if (pcb_get_pri(&(next_it->p)) <= pcb_get_pri(&(it->p)))
 		{
+			/*
+			 * no
+			 */
 			if(last_it != NULL)
 				last_it->next = it ;
 			else
@@ -80,6 +89,9 @@ int32_t pcls_add(pcls *ls, pcb *p)
 			it->next = next_it;
 		}
 		else
+			/*
+			 * yes
+			 */
 			next_it->next = it;
 	}
 

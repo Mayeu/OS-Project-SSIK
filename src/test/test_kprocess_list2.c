@@ -191,11 +191,11 @@ uint32_t test_pcls_add         ()
 	 * We check that the data are copied and not pointed by checking the first list again
 	 */
 	if(strcmp(pcb_get_name(&((ls1.start)->p)), "pri21") != 0
-			&& pcb_get_pri(&((ls1.start)->p)) != 21)
+			|| pcb_get_pri(&((ls1.start)->p)) != 21)
 		return -4;
 
 if(strcmp(pcb_get_name(&((ls2.start)->p)), "pri22") != 0
-			&& pcb_get_pri(&((ls2.start)->p)) != 22)
+			|| pcb_get_pri(&((ls2.start)->p)) != 22)
 		return -5;
 
 	pcb_reset(&p); /* default value */
@@ -211,15 +211,26 @@ if(strcmp(pcb_get_name(&((ls2.start)->p)), "pri22") != 0
 		return -6;
 
 	if(strcmp(pcb_get_name(&((ls2.start)->p)), "pri42") != 0
-			&& pcb_get_pri(&((ls2.start)->p)) != 42)
+			|| pcb_get_pri(&((ls2.start)->p)) != 42)
 		return -7;
 
 	/*
 	 * We check that pri22 is after pri42
 	 */
 	if(strcmp( pcb_get_name(&(((ls2.start)->next)->p)), "pri22") != 0
-			&& pcb_get_pri(&(((ls2.start)->next)->p)) != 22)
+			|| pcb_get_pri(&(((ls2.start)->next)->p)) != 22)
 		return -8;
+
+	//pcb_reset(&p); /* default value */
+	//pcb_set_name(&p, "pri0");
+	//pcb_set_pri(&p, 0);
+	//pcb_set_pid(&p, pid_loc++);
+	//pcb_set_empty(&p, FALSE);
+
+//if(pcls_add(&ls2, &p) != OMGROXX
+//		|| strcmp( pcb_get_name(&(ls2.start->next->next->p)), "pri0") != 0 
+//		||(ls2.start)->next->next->next != NULL)
+//		return -42;
 
 	/*
 	 * list 2 look like:
@@ -237,21 +248,21 @@ if(strcmp(pcb_get_name(&((ls2.start)->p)), "pri22") != 0
 		return -9;
 
 	if(strcmp(pcb_get_name(&((ls2.start)->p)), "pri42") != 0
-			&& pcb_get_pri(&((ls2.start)->p)) != 42)
+			|| pcb_get_pri(&((ls2.start)->p)) != 42)
 		return -10;
 
 	/*
 	 * We check that pri32 is after pri42
 	 */
 	if(strcmp( pcb_get_name(&(ls2.start->next->p)), "pri32") != 0
-			&& pcb_get_pri(&(ls2.start->next->p)) != 32)
+			|| pcb_get_pri(&(ls2.start->next->p)) != 32)
 		return -11;
 	
 	/*
 	 * We check that pri22 is after pri32
 	 */
 	if(strcmp( pcb_get_name(&(ls2.start->next->next->p)), "pri22") != 0
-			&& pcb_get_pri(&(ls2.start->next->next->p)) != 22)
+			|| pcb_get_pri(&(ls2.start->next->next->p)) != 22)
 		return -12;
 
 	/*
