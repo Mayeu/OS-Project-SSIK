@@ -21,10 +21,10 @@
 #define MAX_MPRI 30
 #define BAS_MPRI 15
 
-enum	// status
+enum                            // status
 {
-	WAITING,
-	NOT_WAITING
+  WAITING,
+  NOT_WAITING
 };
 
 /**
@@ -34,14 +34,14 @@ enum	// status
  */
 typedef struct
 {
-  msg             ls[MAX_MSG]; /*!< list of messages. */
-  int32_t         status;      /*!< the status of the list (type of message expected, see above). */
-  msg_filter filter;
-  int32_t filtervalue;		//value of the filter
-  int32_t timeout;
+  msg             ls[MAX_MSG];  /*!< list of messages. */
+  int32_t         status;       /*!< the status of the list (type of message expected, see above). */
+  msg_filter      filter;
+  int32_t         filtervalue;  //value of the filter
+  int32_t         timeout;
 } mls;
 
-int32_t init_msg_lst(mls *ls);
+int32_t         init_msg_lst(mls * ls);
 
 /**
  * \fn msg *search_msg(uint32_t mid, mls *ls)
@@ -51,7 +51,7 @@ int32_t init_msg_lst(mls *ls);
  * \param ls the message list
  * \return the message or NULL if not found
  */
-msg *search_msg(uint32_t mid, mls *ls);
+msg            *search_msg(uint32_t mid, mls * ls);
 
 /**
  * \fn msg *search_msg_all(uint32_t mid)
@@ -60,7 +60,7 @@ msg *search_msg(uint32_t mid, mls *ls);
  * \param mid the message identifier
  * \return the message or NULL if not found
  */
-msg *search_msg_all(uint32_t mid);
+msg            *search_msg_all(uint32_t mid);
 
 /**
  * \fn msg *empty_msg_space(mls *ls)
@@ -69,7 +69,7 @@ msg *search_msg_all(uint32_t mid);
  * \param ls the message list
  * \return the message of NULL if error
  */
-msg *empty_msg_space(mls *ls);
+msg            *empty_msg_space(mls * ls);
 
 /**
  * \fn bool is_empty_mls(mls *ls)
@@ -78,7 +78,7 @@ msg *empty_msg_space(mls *ls);
  * \param ls the message list
  * \return TRUE if ls is empty, false otherwise
  */
-bool is_empty_mls(mls *ls);
+bool            is_empty_mls(mls * ls);
 
 /**
  * \fn int32_t send_msg(uint32_t sdr_pid, msg_arg *args)
@@ -91,7 +91,7 @@ bool is_empty_mls(mls *ls);
  * \param data the content of the message
  * \return an error code or the message identifier
  */
-int32_t send_msg(uint32_t sdr_pid, msg_arg *args);
+int32_t         send_msg(uint32_t sdr_pid, msg_arg * args);
 
 /**
  * \fn int32_t recv_msg(uint32_t sdr_pid, msg_arg *args)
@@ -102,7 +102,7 @@ int32_t send_msg(uint32_t sdr_pid, msg_arg *args);
  * \param m the content of the message received
  * \return an error code
  */
-int32_t recv_msg(uint32_t recv_pid, msg_arg *args);
+int32_t         recv_msg(uint32_t recv_pid, msg_arg * args);
 
 /**
  * \fn int32_t move_one_msg_lst(uint32_t mid, mls * src, mls * dest)
@@ -113,7 +113,7 @@ int32_t recv_msg(uint32_t recv_pid, msg_arg *args);
  * \param dest the dest message list
  * \return an error code
  */
-int32_t move_one_msg_lst(uint32_t mid, mls * src, mls * dest);
+int32_t         move_one_msg_lst(uint32_t mid, mls * src, mls * dest);
 
 /**
  * \fn int32_t move_msg_lst(uint32_t mid, mls * src, mls * dest)
@@ -123,7 +123,7 @@ int32_t move_one_msg_lst(uint32_t mid, mls * src, mls * dest);
  * \param dest the dest message list
  * \return an error code
  */
-int32_t move_msg_lst(mls * src, mls * dest);
+int32_t         move_msg_lst(mls * src, mls * dest);
 
 /**
  * \fn int32_t sort_msg(mls *ls)
@@ -132,7 +132,7 @@ int32_t move_msg_lst(mls * src, mls * dest);
  * \param ls the message list
  * \return an error code
  */
-int32_t sort_msg(mls *ls);
+int32_t         sort_msg(mls * ls);
 
 /**
  * \fn int32_t reset_msg_lst(mls *ls)
@@ -141,13 +141,13 @@ int32_t sort_msg(mls *ls);
  * \param ls the message list
  * \return an error code
  */
-int32_t reset_msg_lst(mls *ls);
+int32_t         reset_msg_lst(mls * ls);
 
 /**
  * \fn void reset_next_mid()
  * \brief Reset next_mid to 0
  *
  */
-void reset_next_mid();
+void            reset_next_mid();
 
 #endif

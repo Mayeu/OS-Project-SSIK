@@ -11,6 +11,7 @@
 #define __KSYSCALL_H
 
 #include "include/registers.h"
+#include "include/types.h"
 
 enum
 {
@@ -19,16 +20,16 @@ enum
   PRINTLN,
   FPRINT,
   SLEEP,
-	BLOCK,
-	WAKEUP,
-	WAIT,
-	SEND,
-	RECV,
+  BLOCK,
+  WAKEUP,
+  WAIT,
+  SEND,
+  RECV,
   PERROR,
   GERROR,
   SERROR,
   GETPINFO,
-	GETPID,
+  GETPID,
   CHGPPRI,
   KILL,
   EXIT

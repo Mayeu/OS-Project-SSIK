@@ -21,8 +21,8 @@ coquille(void)
   int             nb_arg, pid;
   char            prompt_line[255];
   char            buffer[255];
-  char            prog_name[20];
-  char            *command = "init arg1 arg2 arg3 arg4";
+  //char            prog_name[20];
+  char           *command = "init arg1 arg2 arg3 arg4";
   pcbinfo         pcbi;
 
   strcpy("coquille> ", prompt_line);
@@ -37,7 +37,7 @@ coquille(void)
 
   if (nb_arg != -1)
   {
-    pid = fourchette(command_arg[0], nb_arg, (char**) command_arg);
+    pid = fourchette(command_arg[0], nb_arg, (char **) command_arg);
 
     // print the new pid
     print("pid : ");
@@ -60,8 +60,8 @@ coquille(void)
     printiln(pcbi.pri);
     println(pcbi.name);
 
-		send(prog_name, CHAR_PTR, 5);
-		send((void*)42, INT_T, 2);
+    // send(prog_name, CHAR_PTR, 5);
+    // send((void *) 42, INT_T, 2);
   }
 
 /*

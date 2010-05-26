@@ -130,42 +130,45 @@ pcb_get_empty(pcb * p)
 /**
  * @brief Set a pcb to it's default value
  */
-void            pcb_reset(pcb * p)
+void
+pcb_reset(pcb * p)
 {
-	pcb_set_pid(p, 0);
-	pcb_set_name(p, "");
-	pcb_set_pri(p,0);
-	pcb_reset_supervised(p);
-	pcb_set_supervisor(p, -1);
-	pcb_set_state(p, 0);
-	pcb_set_sleep(p, 0);
-	pcb_set_waitfor(p, 0);
-	pcb_set_error(p, OMGROXX);
-	pcb_set_empty(p, TRUE);
+  pcb_set_pid(p, 0);
+  pcb_set_name(p, "");
+  pcb_set_pri(p, 0);
+  pcb_reset_supervised(p);
+  pcb_set_supervisor(p, -1);
+  pcb_set_state(p, 0);
+  pcb_set_sleep(p, 0);
+  pcb_set_waitfor(p, 0);
+  pcb_set_error(p, OMGROXX);
+  pcb_set_empty(p, TRUE);
 }
 
 /**
  * @brief Copy a pcb in an other
  */
-void pcb_cpy(pcb *src, pcb *dest)
-{ 
-int32_t *s, i;
+void
+pcb_cpy(pcb * src, pcb * dest)
+{
+  int32_t        *s, i;
 
-	pcb_set_pid(dest, pcb_get_pid(src));
-	pcb_set_name(dest, pcb_get_name(src));
-	pcb_set_pri(dest, pcb_get_pri(src));
-	pcb_reset_supervised(dest);
-	s = pcb_get_supervised(src);
+  pcb_set_pid(dest, pcb_get_pid(src));
+  pcb_set_name(dest, pcb_get_name(src));
+  pcb_set_pri(dest, pcb_get_pri(src));
+  pcb_reset_supervised(dest);
+  s = pcb_get_supervised(src);
 
-	for (i = 0; i < MAXPCB; i++)
-		pcb_set_supervised(dest, s[i]);
+  for (i = 0; i < MAXPCB; i++)
+    pcb_set_supervised(dest, s[i]);
 
-	pcb_set_supervisor(dest, pcb_get_supervisor(src));
-	pcb_set_state(dest, pcb_get_state(src));
-	pcb_set_sleep(dest, pcb_get_sleep(src));
-	pcb_set_waitfor(dest, pcb_get_waitfor(src));
-	pcb_set_error(dest, pcb_get_error(src));
-	pcb_set_empty(dest, pcb_get_empty(src));
+  pcb_set_supervisor(dest, pcb_get_supervisor(src));
+  pcb_set_state(dest, pcb_get_state(src));
+  pcb_set_sleep(dest, pcb_get_sleep(src));
+  pcb_set_waitfor(dest, pcb_get_waitfor(src));
+  pcb_set_error(dest, pcb_get_error(src));
+  pcb_set_empty(dest, pcb_get_empty(src));
+  pcb_set_register(dest, &(src->registers));
 }
 
 /**
@@ -213,7 +216,7 @@ pcb_reset_supervised(pcb * p)
    * We try to found if the process is already in the list
    * At the same time we save the first empty space
    */
-  for( i = 0; i < MAXPCB; i++)
+  for (i = 0; i < MAXPCB; i++)
     p->supervised[i] = -1;
 }
 
@@ -223,8 +226,8 @@ pcb_reset_supervised(pcb * p)
 int32_t
 pcb_set_supervised(pcb * p, int32_t pid)
 {
-  int32_t        i;
-  int32_t first_empty;
+  int32_t         i;
+  int32_t         first_empty;
 
   /*
    * We try to found if the process is already in the list
@@ -238,13 +241,13 @@ pcb_set_supervised(pcb * p, int32_t pid)
       first_empty = i;
     i++;
   }
- 
+
   /*
    * We reach i and first_empty stayed at -1 : out of memory !
    */
   if (i >= MAXPCB && first_empty == -1)
     return OUTOMEM;
- 
+
   /*
    * Already inside, not a fail !
    */
@@ -278,10 +281,32 @@ pcb_rm_supervised(pcb * p, uint32_t pid)
     p->supervised[i] = -1;
 
   /*
-	* We did not found it. But hey not anymore :)
-	*/
+   * We did not found it. But hey not anymore :)
+   */
 }
 
+void
+pcb_set_register(pcb * p, registers_t * regs)
+{
+  uint32_t        i;
+
+  p->registers.at_reg = regs->at_reg;
+  for (i = 0; i < 2; i++)
+    p->registers.v_reg[i] = regs->v_reg[i];
+  for (i = 0; i < 4; i++)
+    p->registers.a_reg[i] = regs->a_reg[i];
+  for (i = 0; i < 10; i++)
+    p->registers.t_reg[i] = regs->t_reg[0];
+  for (i = 0; i < 8; i++)
+    p->registers.s_reg[i] = regs->s_reg[i];
+  p->registers.sp_reg = regs->sp_reg;
+  p->registers.fp_reg = regs->fp_reg;
+  p->registers.ra_reg = regs->ra_reg;
+  p->registers.sp_reg = regs->sp_reg;
+  p->registers.epc_reg = regs->epc_reg;
+  p->registers.gp_reg = regs->gp_reg;
+
+}
 
 /**
  * @brief Set the supervisor of the process

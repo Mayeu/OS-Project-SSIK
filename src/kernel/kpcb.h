@@ -127,6 +127,8 @@ bool            pcb_get_empty(pcb * p);
 /*
  * Setters
  */
+void            pcb_set_register(pcb * p, registers_t * regs);
+
 
 /**
  * @brief Set a pcb to it's default value
@@ -136,8 +138,8 @@ void            pcb_reset(pcb * p);
 /**
  * @brief Copy a pcb in an other
  */
-void pcb_cpy(pcb *src, pcb *dest);
- 
+void            pcb_cpy(pcb * src, pcb * dest);
+
 /**
  * @brief Set the pid of the pcb
  */
@@ -156,7 +158,7 @@ void            pcb_set_pri(pcb * p, int32_t pri);
 /**
  * @brief Reset the list of supervised process to -1.
  */
-void pcb_reset_supervised(pcb * p);
+void            pcb_reset_supervised(pcb * p);
 
 /**
  * @brief Add a pid to the list of supervised process.

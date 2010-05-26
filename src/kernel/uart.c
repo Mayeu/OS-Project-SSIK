@@ -43,7 +43,7 @@ push_fifo_buffer(char c)
 
   uart_fifo.buffer[uart_fifo.in] = c;
   uart_fifo.length++;
-  uart_fifo.in = (uart_fifo.in + 1) % UART_FIFO_SIZE ;
+  uart_fifo.in = (uart_fifo.in + 1) % UART_FIFO_SIZE;
 
   return OMGROXX;
 }
@@ -64,7 +64,7 @@ pop_fifo_buffer(char *c)
 
   *c = uart_fifo.buffer[uart_fifo.out];
   uart_fifo.length--;
-  uart_fifo.out = ( uart_fifo.out + 1 ) % UART_FIFO_SIZE;
+  uart_fifo.out = (uart_fifo.out + 1) % UART_FIFO_SIZE;
 
   return OMGROXX;
 }

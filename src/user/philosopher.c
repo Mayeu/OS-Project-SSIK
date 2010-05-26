@@ -13,8 +13,8 @@
 #include <process.h>
 
 // params: 
-int philosopher(int argc, char *argv[])
+int
+philosopher(int argc, char *argv[])
 {
-	
-}
 
+}

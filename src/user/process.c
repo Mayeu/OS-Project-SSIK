@@ -13,9 +13,10 @@
  /**
  * return the argument i from the char* array of arguments.
  */
-char* get_arg(char* argv[], int i)
+char           *
+get_arg(char *argv[], int i)
 {
-	return (char*)argv + (i * ARG_SIZE * sizeof(char));
+  return (char *) argv + (i * ARG_SIZE * sizeof(char));
 }
 
  /**
@@ -51,7 +52,7 @@ sleep(int time)
 int
 block(int pid)
 {
-	return syscall_one(pid, BLOCK);
+  return syscall_one(pid, BLOCK);
 }
 
  /**
@@ -60,7 +61,7 @@ block(int pid)
 int
 wake_up(int pid)
 {
-	return syscall_one(pid, WAKEUP);
+  return syscall_one(pid, WAKEUP);
 }
 
  /**
@@ -70,24 +71,25 @@ variable with its exit code.
 int
 wait(int pid, int *status)
 {
-	return syscall_two(pid, (int32_t)status, WAIT);
+  return syscall_two(pid, (int32_t) status, WAIT);
 }
 
  /**
  * Creates a new process with the program identified by its name 'name'. The
 program must be stored in the program list of the OS.
  */
-int fourchette(char *name, int argc, char *argv[])
+int
+fourchette(char *name, int argc, char *argv[])
 {
-	int i;
-	char new_args[MAX_ARG+1][ARG_SIZE];
+  int             i;
+  char            new_args[MAX_ARG + 1][ARG_SIZE];
 
-	// add the program name to the new arg array
-	strcpy(name, new_args[0]);
-	// copy all the arguments
-	for (i=0; i<argc; i++)
-		strcpy((char*)(argv) + i*ARG_SIZE, new_args[i+1]);
-	
+  // add the program name to the new arg array
+  strcpy(name, new_args[0]);
+  // copy all the arguments
+  for (i = 0; i < argc; i++)
+    strcpy((char *) (argv) + i * ARG_SIZE, new_args[i + 1]);
+
   return syscall_three((int32_t) name, argc, (int32_t) new_args, FOURCHETTE);
 }
 
@@ -113,7 +115,8 @@ chgpri(int pid, int newprio)
  /**
  * Get the current process pid.
  */
-int get_pid(void)
+int
+get_pid(void)
 {
-	return syscall_none(GETPID);
+  return syscall_none(GETPID);
 }

@@ -27,34 +27,34 @@
  */
 typedef struct
 {
-	int             pid;          /*!< Process identifier. */
-	char            name[ARG_SIZE];       /*!< Process name. */
-	int             pri;          /*!< Process priority. */
-	int             supervised[MAXPCB];   /*!< List of supervised processes. */
-	int             supervisor;   /*!< List of supervisor processes. */
-	int             wait;
-	bool            empty;
+  int             pid;          /*!< Process identifier. */
+  char            name[ARG_SIZE];       /*!< Process name. */
+  int             pri;          /*!< Process priority. */
+  int             supervised[MAXPCB];   /*!< List of supervised processes. */
+  int             supervisor;   /*!< List of supervisor processes. */
+  int             wait;
+  bool            empty;
 } pcbinfo;
 
 typedef struct
 {
-	int        pid;          /*!< Process identifier. */
-	char            name[ARG_SIZE];       /*!< Process name. */
-	int        pri;          /*!< Process priority. */
-	int         supervised[MAXPCB];   /*!< List of supervised processes. */
-	int         supervisor;   /*!< supervisor. */
-	int        state;        /*!< Current state of the process */
-	int        sleep;        /*!< Time to sleep, if state == SLEEPING */
-	int        waitfor;      /*!< pid of the process you are waiting for */
-	int         error;        /*!< Last error the process encountered. */
-	bool            empty;        /*!< is this pcb empty ? */
+  int             pid;          /*!< Process identifier. */
+  char            name[ARG_SIZE];       /*!< Process name. */
+  int             pri;          /*!< Process priority. */
+  int             supervised[MAXPCB];   /*!< List of supervised processes. */
+  int             supervisor;   /*!< supervisor. */
+  int             state;        /*!< Current state of the process */
+  int             sleep;        /*!< Time to sleep, if state == SLEEPING */
+  int             waitfor;      /*!< pid of the process you are waiting for */
+  int             error;        /*!< Last error the process encountered. */
+  bool            empty;        /*!< is this pcb empty ? */
 } pcbinfo2;
 
  /**
  * \fn char* get_arg(char* argv[], int i)
  * return the argument i from the char* array of arguments.
  */
-char*           get_arg(char* argv[], int i);
+char           *get_arg(char *argv[], int i);
 
  /**
  * \fn int exit(int status)
@@ -89,7 +89,7 @@ void            sleep(int time);
  * \param pid the pid of the process to block
  * \return the error identifier in case of any failure
  */
-int            block(int pid);
+int             block(int pid);
 
  /**
  * \fn int wake_up(int pid)
@@ -98,7 +98,7 @@ int            block(int pid);
  * \param pid the pid of the process to wake up
  * \return the error identifier in case of any failure
  */
-int            wake_up(int pid);
+int             wake_up(int pid);
 
  /**
  * \fn int wait(int pid, int *status)
@@ -109,7 +109,7 @@ variable with its exit code.
  * \param status the value of the waited process return code
  * \retun the error identifier in case of any failure
  */
-int            wait(int pid, int *status);
+int             wait(int pid, int *status);
 
  /**
  * \fn int fourchette(char *name, int argc, char *argv[])

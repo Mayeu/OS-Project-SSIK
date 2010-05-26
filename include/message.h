@@ -16,27 +16,28 @@
 // all the data type we can send
 typedef enum
 {
-	INT_T,
-	CHAR_PTR,
-	//OTHER_T
+  INT_T,
+  CHAR_PTR,
+  //OTHER_T
 } msg_t;
 
 // type of message priority
 typedef enum
 {
-	FPRI,
-	FPID,
-	FTYPE
+  FPRI,
+  FPID,
+  FTYPE
 } msg_filter;
 
 // arguments to pass to the send/recv functions
-typedef struct {
-	void *data;
-	msg_t datatype;
-	int pid;
-	int pri;
-	int timeout;
-	msg_filter filter;
+typedef struct
+{
+  void           *data;
+  msg_t           datatype;
+  int             pid;
+  int             pri;
+  int             timeout;
+  msg_filter      filter;
 } msg_arg;
 
 /**
@@ -47,7 +48,7 @@ typedef struct {
  * \param pid the pid of the receiver
  * \return an error code
  */
-int send(void* data, msg_t tdata, int pid);
+int             send(void *data, msg_t tdata, int pid);
 
 /**
  * \fn sendp(void* data, int pid, int prio)
@@ -59,7 +60,7 @@ int send(void* data, msg_t tdata, int pid);
  * \param the priority of the message to send
  * \return an error code
  */
-int sendp(void* data, msg_t tdata, int pid, int prio);
+int             sendp(void *data, msg_t tdata, int pid, int prio);
 
 /**
  * \fn int recv(void* data, msg_t tdata, int timeout)
@@ -70,7 +71,7 @@ int sendp(void* data, msg_t tdata, int pid, int prio);
  * \param timeout time to wait before stopping receive process
  * \return an error code
  */
-int recv(void* data, msg_t tdata, int timeout);
+int             recv(void *data, msg_t tdata, int timeout);
 
 /**
  * \fn int recv_from_pid(void* data, msg_t tdata, int pid, int timeout)
@@ -82,7 +83,7 @@ int recv(void* data, msg_t tdata, int timeout);
  * \param timeout time to wait before stopping receive process
  * \return an error code
  */
-int recv_from_pid(void* data, msg_t tdata, int pid, int timeout);
+int             recv_from_pid(void *data, msg_t tdata, int pid, int timeout);
 
 /**
  * \fn int recv_fromp_pri(void* data, msg_t tdata, int pri, int timeout)
@@ -94,7 +95,7 @@ int recv_from_pid(void* data, msg_t tdata, int pid, int timeout);
  * \param timeout time to wait before stopping receive process
  * \return an error code
  */
-int recv_fromp_pri(void* data, msg_t tdata, int pri, int timeout);
-	
+int             recv_fromp_pri(void *data, msg_t tdata, int pri, int timeout);
+
 
 #endif //__MESSAGE_H

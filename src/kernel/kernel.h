@@ -24,15 +24,15 @@
 /*
  * declarationo of the pcb lists
  */
-pls             pready;         /*!< @brief List of ready process */
-pls             prunning;       /*!< @brief List of running process */
-pls             pwaiting;       /*!< @brief List of waiting process */
-pls             pterminate;     /*!< @brief List of terminate process */
+//pls             pready;         /*!< @brief List of ready process */
+//pls             prunning;       /*!< @brief List of running process */
+//pls             pwaiting;       /*!< @brief List of waiting process */
+//pls             pterminate;     /*!< @brief List of terminate process */
 
-pcls             pclsready;         /*!< @brief List of ready process */
-pcls             pclsrunning;       /*!< @brief List of running process */
-pcls             pclswaiting;       /*!< @brief List of waiting process */
-pcls             pclsterminate;     /*!< @brief List of terminate process */
+pcls            pclsready;      /*!< @brief List of ready process */
+pcls            pclsrunning;    /*!< @brief List of running process */
+pcls            pclswaiting;    /*!< @brief List of waiting process */
+pcls            pclsterminate;  /*!< @brief List of terminate process */
 
 
 /**
@@ -44,8 +44,6 @@ uint32_t        kerror;
  * @brief Global pointer to the current pcb error
  */
 uint32_t       *p_error;
-
-
 
 /*
  * Functions

@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <string.h>
 #include "../kernel/kprocess.h"
+#include "../kernel/kernel.h"
 
 uint32_t test_get_next_pid         ();
 uint32_t test_reset_next_pid       ();

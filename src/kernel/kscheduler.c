@@ -14,128 +14,132 @@
 #include "kprocess.h"
 
 
-	void
+void
 schedule()
 {
-	uint32_t pri;
-	pcls_item *it;
-	//pcb *p;
-	//char c;
+  uint32_t        pri;
+  pcls_item      *it;
+  //pcb *p;
+  //char c;
 
-	/*
-	 * Real first
-	 * If running and waiting are empty, we dont have anything to do
-	 */
-	if (pclsrunning.start == NULL && pclsready.start == NULL)
-	{
-		p_error = &kerror;
-		set_current_pcb(NULL);
-		return;
-	}
+  //kprintln("Hmmm Schedule me!");
 
-	/*
-	 * First we take the priority of the element of running
-	 * In running everybody have the same priority
-	 */
-	if(pclsrunning.start != NULL)
-		pri = pcb_get_pri(&(pclsrunning.start->p)) ;
-	else
-		pri = 0;
+  /*
+   * Real first
+   * If running and waiting are empty, we dont have anything to do
+   */
+  if (pclsrunning.start == NULL && pclsready.start == NULL)
+  {
+    p_error = &kerror;
+    set_current_pcb(NULL);
+    return;
+  }
 
-	/*
-	 * Is the first element of the ready list more prioritary ?
-	 * The list are ordered by default, so we just have to check
-	 * the first to know
-	 * If so we need to empty the running list
-	 */
-	if (pclsready.start != NULL && pri < pcb_get_pri(&(pclsready.start->p))) 
-	{
-		it = pclsrunning.start;
+  /*
+   * First we take the priority of the element of running
+   * In running everybody have the same priority
+   */
+  if (pclsrunning.start != NULL)
+    pri = pcb_get_pri(&(pclsrunning.start->p));
+  else
+    pri = 0;
 
-		while (it != NULL )
-		{
-			pcb_set_state(&(it->p), READY);
-			pcls_move_pcb(&pclsrunning, &pclsready, &(it->p));
-			it = pclsrunning.start;
-		} 
+  /*
+   * Is the first element of the ready list more prioritary ?
+   * The list are ordered by default, so we just have to check
+   * the first to know
+   * If so we need to empty the running list
+   */
+  if (pclsready.start != NULL && pri < pcb_get_pri(&(pclsready.start->p)))
+  {
+    it = pclsrunning.start;
 
-		pri = pcb_get_pri(&(pclsready.start->p));
-	}
+    while (it != NULL)
+    {
+      pcb_set_state(&(it->p), READY);
+      pcls_move_pcb(&pclsrunning, &pclsready, &(it->p));
+      it = pclsrunning.start;
+    }
 
-	/*
-	 * Now we can add the element of the highest priority in
-	 * running.
-	 * Again since the list are ordered, we just have to take
-	 * the first part of the element.
-	 */
-	it = pclsready.start;
+    pri = pcb_get_pri(&(pclsready.start->p));
+  }
 
-	while (it != NULL && pcb_get_pri(&(it->p)) == pri)
-	{
-		pcb_set_state(&(it->p), RUNNING);
-		pcls_move_pcb(&pclsready, &pclsrunning, &(it->p));
-		it = pclsready.start;
-	} 
+  /*
+   * Now we can add the element of the highest priority in
+   * running.
+   * Again since the list are ordered, we just have to take
+   * the first part of the element.
+   */
+  it = pclsready.start;
 
-	/*
-	 * Is the pclsrunning list empty ?
-	 */
-	if (pclsrunning.length == 0)
-	{
-		/*
-		 * Set the current pcb to null
-		 */
-		set_current_pcb(NULL);
+  while (it != NULL && pcb_get_pri(&(it->p)) == pri)
+  {
+    pcb_set_state(&(it->p), RUNNING);
+    pcls_move_pcb(&pclsready, &pclsrunning, &(it->p));
+    it = pclsready.start;
+  }
 
-		/*
-		 * Set the error pointer to the kernel error
-		 */
-		p_error = &kerror;
-	}
+  /*
+   * Is the pclsrunning list empty ?
+   */
+  if (pclsrunning.length == 0)
+  {
+    /*
+     * Set the current pcb to null
+     */
+    set_current_pcb(NULL);
 
-	/*
-	 * Nop not at all !
-	 */
-	else
-	{
-		/*
-		 * The current pcb is in the list of running process ?
-		 */
-		if(get_current_pcb() != NULL)
-		{
-			it = pcls_search_pcb(&pclsrunning, get_current_pcb());
-			if (it->next != NULL)
-			{
-				/*
-				 * We set the current pcb to the next element of the list
-				 */
-				set_current_pcb(&(it->next->p));
-			}
+    /*
+     * Set the error pointer to the kernel error
+     */
+    p_error = &kerror;
+  }
 
-			/*
-			 * hey ! p is null :/
-			 * DON'T PANIC ! Just take the first element in the running list ;)
-			 */ 
-			else
-			{
-				set_current_pcb(&(pclsrunning.start->p));
-			}
-		}
+  /*
+   * Nop not at all !
+   */
+  else
+  {
+    /*
+     * The current pcb is in the list of running process ?
+     */
+    if (get_current_pcb() != NULL)
+    {
+      it = pcls_search_pcb(&pclsrunning, get_current_pcb());
+      if (it->next != NULL)
+      {
+        /*
+         * We set the current pcb to the next element of the list
+         */
+        set_current_pcb(&(it->next->p));
+      }
 
-		/*
-		 * Nop not in the list!
-		 * So just take the first of the runnig list :)
-		 */
-		else
-			set_current_pcb(&(pclsrunning.start->p));
+      /*
+       * hey ! p is null :/
+       * DON'T PANIC ! Just take the first element in the running list ;)
+       */
+      else
+      {
+        set_current_pcb(&(pclsrunning.start->p));
+      }
+    }
 
-		/*
-		 * Now we set the error pointer
-		 */
-		p_error = &(get_current_pcb()->error) ;
-	}
+    /*
+     * Nop not in the list!
+     * So just take the first of the runnig list :)
+     */
+    else
+      set_current_pcb(&(pclsrunning.start->p));
 
-	/*
-	 * Ok we are done ! (maybe)
-	 */
+    /*
+     * Now we set the error pointer
+     */
+    p_error = &(get_current_pcb()->error);
+  }
+
+  /*
+   * Ok we are done ! (maybe)
+   */
+
+  //kprintln("Deja finis?");
 }

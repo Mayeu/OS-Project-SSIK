@@ -49,5 +49,5 @@ kgerror(void)
 void
 kserror(uint32_t e)
 {
-  prunning.current->error = e;
+  *p_error = e;
 }

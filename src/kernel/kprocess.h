@@ -16,7 +16,7 @@
 #include <process.h>
 #include "kprocess_list.h"
 #include "kpcb.h"
-#include "kmsg_lst.h"
+//#include "kmsg_lst.h"
 
 /**
  * \struct pcb
@@ -25,22 +25,23 @@
  * A process is represented by its PCB which is made of
  * its identifier, its name ...
  */
+/*
 typedef struct
 {
-  uint32_t        pid;          /*!< Process identifier. */
-  char            name[ARG_SIZE];       /*!< Process name. */
-  uint32_t        pri;          /*!< Process priority. */
-  int32_t         supervised[NSUPERVISED];      /*!< List of supervised processes. */
-  int32_t         supervisor;   /*!< supervisor. */
-  registers_t     registers;    /*!< Some data that has to be saved between
-                                   a context switch. */
-  mls					messages;		/*!< the message queue */
-  int32_t         wait;				/*!< time before waking up or -1 means waiting for a process to terminate */
-  uint32_t        wait_for;		/*!< pid of the supervised process that the process is waiting for */
-  uint32_t        error;        /*!< Last error the process encountered. */
-  bool            empty;			/*!< indicate if the pcb is used (FALSE) or not (TRUE) */
-} pcb;
-
+  //uint32_t        pid;         // !< Process identifier. */
+  //char            name[ARG_SIZE];       /*!< Process name. */
+  //uint32_t        pri;          /*!< Process priority. */
+  //int32_t         supervised[NSUPERVISED];      /*!< List of supervised processes. */
+  //int32_t         supervisor;   /*!< supervisor. */
+  //registers_t     registers;    /*!< Some data that has to be saved between
+   //                                a context switch. */
+  //mls                                 messages;               /*!< the message queue */
+  //int32_t         wait;                               /*!< time before waking up or -1 means waiting for a process to terminate */
+  //uint32_t        wait_for;           /*!< pid of the supervised process that the process is waiting for */
+  //uint32_t        error;        /*!< Last error the process encountered. */
+  //bool            empty;                      /*!< indicate if the pcb is used (FALSE) or not (TRUE) */
+//} pcb;
+//*/
 /**
  * \fn create_pcb(pcb *p, int32_t pid, char *name, uint32_t pc, int32_t supervisor, uint32_t prio, char **params)
  * \brief initialize a pcb with all the needed value,
@@ -57,18 +58,16 @@ typedef struct
  * \param prio the priority of the process
  * \return params the params
  */
-void create_pcb(pcb *p, int32_t pid, char *name, uint32_t pc, int32_t supervisor, uint32_t prio, char **params);
+void            create_pcb(pcb * p, int32_t pid, char *name, uint32_t pc,
+                           int32_t supervisor, uint32_t prio, char **params);
 
-pcb *get_current_pcb();
-void
-set_current_pcb(pcb *p);
+pcb            *get_current_pcb();
+void            set_current_pcb(pcb * p);
 
-int32_t *
-get_used_stack();
-	uint32_t *
-allocate_stack(uint32_t pid);
-	int32_t
-deallocate_stack(uint32_t pid);
+int32_t        *get_used_stack();
+uint32_t       *allocate_stack(uint32_t pid);
+int32_t         deallocate_stack(uint32_t pid);
+pcb            *search_all_list(uint32_t pid);
 
 
 /**
@@ -164,8 +163,7 @@ bool            p_is_empty(pcb * pcb);
  * @brief Return the next avaible pid, or an error code
  */
 
-	int32_t
-get_next_pid();
+int32_t         get_next_pid();
 
  /**
  * \fn uint32_t rest_pid()
@@ -177,8 +175,7 @@ void            reset_next_pid();
 /**
  * @brief reset to -1 all the element of used_stack
  */
-void
-reset_used_stack();
+void            reset_used_stack();
 
 /**
  * \fn char *argn(char **data, int num)

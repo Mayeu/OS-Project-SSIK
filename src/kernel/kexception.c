@@ -8,6 +8,7 @@
  */
 
 #include "asm.h"
+#include "kinout.h"
 #include "mips4kc.h"
 #include "kscheduler.h"
 #include "ksyscall.h"
@@ -16,6 +17,8 @@
 
 
 cause_reg_t     cause;
+
+void            kset_timer(uint32_t time);
 
 void
 kexception()
@@ -41,11 +44,13 @@ kexception()
     }
     else if (cause.field.ip & 0x80)     // timer exception
     {
+      // kprintln("I'm in your OS, calling your Scheduler");
       // check if there are some processes to wake up and reschedule all processes.
       process_sleep();
-		schedule();
+      schedule();
       /* Reload timer for another QUANTUM ms (simulated time) */
-      kload_timer(QUANTUM * timer_msec);
+      kload_timer(QUANTUM);
+      kset_cause(~0x8000, 0);   //clear the flag for timer interrupt
 
     }
   }

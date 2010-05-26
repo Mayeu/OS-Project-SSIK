@@ -17,86 +17,86 @@
  *
  * If a process as to be waking up, he is moved to the pclsready list.
  */
-	void
+void
 process_sleep()
 {
-	pcls_item *it, *last;
+  pcls_item      *it, *last;
 
-	/*
-	 * First : maybe we don't have anything to do ?
-	 */
-	if(pclswaiting.length == 0)
-		return ;
+  /*
+   * First : maybe we don't have anything to do ?
+   */
+  if (pclswaiting.length == 0)
+    return;
 
-	/*
-	 * Ok the list contains stuff
-	 */
-	last = NULL ;
-	it = pclswaiting.start ;
+  /*
+   * Ok the list contains stuff
+   */
+  last = NULL;
+  it = pclswaiting.start;
 
-	while (it != NULL)
-	{
-		/*
-		 * Is the pcb sleeping ?
-		 */
-		if(pcb_get_state(&(it->p)) == SLEEPING)
-		{
-			pcb *p = &(it->p) ;
+  while (it != NULL)
+  {
+    /*
+     * Is the pcb sleeping ?
+     */
+    if (pcb_get_state(&(it->p)) == SLEEPING)
+    {
+      pcb            *p = &(it->p);
 
-			/*
-			 * Can we remove a QUANTUM from is sleeping time ?
-			 */
-			if (pcb_get_sleep(p) >= QUANTUM)
-				pcb_set_sleep(p, (pcb_get_sleep(p) - QUANTUM));
+      /*
+       * Can we remove a QUANTUM from is sleeping time ?
+       */
+      if (pcb_get_sleep(p) >= QUANTUM)
+        pcb_set_sleep(p, (pcb_get_sleep(p) - QUANTUM));
 
-			else
-			{
-				/*
-				 * Oh did I wake you up ?
-				 */
-				pcb_set_sleep(p, 0);
-				pcb_set_state(p, READY);
-				pcls_move_pcb(&pclswaiting, &pclsready, p);
+      else
+      {
+        /*
+         * Oh did I wake you up ?
+         */
+        pcb_set_sleep(p, 0);
+        pcb_set_state(p, READY);
+        pcls_move_pcb(&pclswaiting, &pclsready, p);
 
-				/*
-				 * set it to the "real" next one but don't update last !
-				 */
-				if(last == NULL)
-					it = pclswaiting.start ;
-				else
-					it = last;
+        /*
+         * set it to the "real" next one but don't update last !
+         */
+        if (last == NULL)
+          it = pclswaiting.start;
+        else
+          it = last;
 
-				continue;
-			}
-		}
+        continue;
+      }
+    }
 
-		/*
-		 * These are not the droids you are looking for
-		 */
-		last = it;
-		it = last->next;
-	}
+    /*
+     * These are not the droids you are looking for
+     */
+    last = it;
+    it = last->next;
+  }
 }
 
 /*
  * @brief sleep the current_process
  */
 void
-go_to_spleep(uint32_t time)
+go_to_sleep(uint32_t time)
 {
-	pcb *p;
+  pcb            *p;
 
-	p = get_current_pcb();
+  p = get_current_pcb();
 
-	if(p != NULL)
-		return ;
+  if (p != NULL)
+    return;
 
-	pcb_set_state(p, SLEEPING);
-	pcb_set_sleep(p, time*timer_msec);
-	pcls_move_pcb(&pclsrunning, &pclsready, p);
+  pcb_set_state(p, SLEEPING);
+  pcb_set_sleep(p, time * timer_msec);
+  pcls_move_pcb(&pclsrunning, &pclsready, p);
 
-	/*
-	 * We need to schedule now
-	 */
-	schedule();
+  /*
+   * We need to schedule now
+   */
+  schedule();
 }
