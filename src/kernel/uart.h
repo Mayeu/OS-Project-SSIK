@@ -8,6 +8,10 @@
 
 #include <types.h>
 #include <errno.h>
+#include <process.h>
+#include "kpcb.h"
+#include "kernel.h"
+#include "kprocess.h"
 
 /**
  * Define
@@ -20,7 +24,7 @@
  */
 
 /**
- * @brief A bounded fifo structure
+ * @brief A bounded fifo char structure
  */
 
 typedef struct
@@ -30,6 +34,17 @@ typedef struct
   uint32_t        in;
   uint32_t        out;
 } fifo_buffer;
+
+/**
+ * UART state
+ */
+
+enum
+{
+  UART_UNUSED,
+  UART_PRINT,
+  UART_READ
+};
 
 /*
  * Functions
@@ -80,6 +95,23 @@ fifo_buffer    *get_fifo_buffer();
  * @return void
  */
 void            uart_init(void);
+
+/*
+ *
+ */
+int32_t         uart_give_to(pcb * p);
+
+void            uart_set_mode(int32_t mode, char *str, uint32_t len);
+/* prints a character from out_buffer and sets the device to interrupt when it is done printing (only if there are remaining characters to print) */
+void            uart_print();
+/* ends the use of the device by its current owner by waking it up. It also release the device and put the return value in the PCB */
+int32_t         end_of_printing(int32_t code);
+
+void            clean_uart();
+
+int32_t         uart_release(int32_t code);
+void            uart_exception();
+void            set_uart_user(pcb * p);
 
 #endif /* __UART_H */
 

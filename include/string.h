@@ -124,5 +124,4 @@ int             stoi(char *str);
  */
 char           *trim(char *str);
 
-
 #endif //__STRING_H

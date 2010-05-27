@@ -44,6 +44,13 @@ void            kprintn(void);
  */
 void            kprintln(char *text);
 
+/**
+ * @brief Print function using interrupt.
+ * @param the string to print
+ * @return
+ */
+uint32_t        print_string(char *str);
+uint32_t        read_string(uint32_t length, char *buf);
 #endif
 
 /* end of file kinout.h*/

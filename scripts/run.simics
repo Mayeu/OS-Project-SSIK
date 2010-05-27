@@ -8,4 +8,4 @@ malta.log-level 0
 
 magic-break-enable
 
-run
+#run

@@ -68,7 +68,6 @@ uint32_t        pcls_delete_pcb(pcls * ls, pcb * p);
  * @brief Move a PCB from a list to an other
  */
 int32_t         pcls_move_pcb(pcls * src, pcls * dest, pcb * p);
-
 /**
  * @brief Reset an list element to it's default value.
  */

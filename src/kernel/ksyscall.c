@@ -31,7 +31,7 @@ syscall_handler(registers_t * regs)
   //msg_arg        *mres;
   //char            buf[3];
 
-  kdebug_println("syscal in");
+  //kdebug_println("syscal in");
 
   switch (syscall)
   {
@@ -42,11 +42,13 @@ syscall_handler(registers_t * regs)
       create_proc((char *) regs->a_reg[0], BAS_PRI, (char **) regs->a_reg[2]);
     break;
   case PRINT:
-    kprint((char *) regs->a_reg[0]);
+    res = print_string((char *) regs->a_reg[0]);
     break;
-  case PRINTLN:
-    kprintln((char *) regs->a_reg[0]);
-    break;
+    //case PRINTLN:
+    //kprintln("Want to print");
+    //res = print_string((char *) regs->a_reg[0]);
+    //res = print_string("\n");
+    //break;
   case FPRINT:
     if (regs->a_reg[0] == CONSOLE)
       kprint((char *) regs->a_reg[1]);
@@ -123,7 +125,7 @@ syscall_handler(registers_t * regs)
     break;
   }
 
-  kdebug_println("syscal out");
+  //kdebug_println("syscal out");
   // saves the return code
   regs->v_reg[0] = res;
 

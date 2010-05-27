@@ -16,6 +16,7 @@
 #include "ksyscall.h"
 #include "kscheduler.h"
 #include "ksleep.h"
+#include "uart.h"
 #include "kprogram.h"
 
 void
@@ -40,8 +41,10 @@ kexception()
   {
     if (cause.field.ip & 4)     // uart interrupt
     {
-      //uart_exception();    /** TODO: add uart_exception to uart file */
+      //kdebug_println("Exception in");
+      uart_exception();    /** TODO: add uart_exception to uart file */
       kset_cause(~0x1000, 0);   // Acknowledge UART interrupt.
+      //kdebug_println("Exception out");
     }
     else if (cause.field.ip & 0x80)     // timer exception
     {

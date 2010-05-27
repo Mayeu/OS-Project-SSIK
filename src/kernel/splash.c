@@ -3,7 +3,7 @@
  * @brief The splash scree
  */
 
-#include "kinout.h"
+#include <stdio.h>
 #include "splash.h"
 
 /**
@@ -14,13 +14,13 @@
 void
 splash(void)
 {
-  kprintln("\n\nWelcome in");
-  kprintln(" _______ _______ _______ __  __");
-  kprintln("|     __|     __|_     _|  |/  |");
-  kprintln("|__     |__     |_|   |_|     < ");
-  kprintln("|_______|_______|_______|__|\\__|");
-  kprintln("The Simply and Stupidly Implemented Kernel");
-  kprintln("Proudly procrastinated by Adrien, Chris & Mayeu");
+  print("\n\nWelcome in\n");
+  print(" _______ _______ _______ __  __\n");
+  print("|     __|     __|_     _|  |/  |\n");
+  print("|__     |__     |_|   |_|     < \n");
+  print("|_______|_______|_______|__|\\__|\n");
+  print("The Simply and Stupidly Implemented Kernel\n");
+  //print("Proudly procrastinated by Adrien, Chris & Mayeu\n");
 
-  kprintln("\nFirst time here? Type help!");
+  print("\nFirst time here? Type help!\n");
 }

@@ -89,13 +89,13 @@ go_to_sleep(uint32_t time)
 {
   pcb            *p, *tmp;
 
-  kdebug_println("go to sleep in");
+  //kdebug_println("go to sleep in");
 
   p = get_current_pcb();
 
   if (p == NULL)
   {
-    kprintln("bubuuu");
+    //kprintln("bubuuu");
     return FAILNOOB;
   }
 
@@ -109,7 +109,7 @@ go_to_sleep(uint32_t time)
   tmp = &(pcls_search_pcb(&pclswaiting, p)->p);
   set_current_pcb(tmp);
 
-  kdebug_println("go to sleep out");
+  //kdebug_println("go to sleep out");
 
   return OMGROXX;
 }
