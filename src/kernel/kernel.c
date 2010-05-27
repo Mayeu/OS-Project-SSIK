@@ -126,9 +126,9 @@ init()
    */
   splash();
 
-  print("Hey! I'm going to sleep a little :)");
+  print("Hey! I'm going to sleep a little :)\n");
   sleep(1000);
-  print("Maybe");
+  print("Maybe\n");
 
   //while (1);
 }
