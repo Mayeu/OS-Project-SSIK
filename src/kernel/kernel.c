@@ -127,6 +127,7 @@ init()
   splash();
 
   println("Hey! I'm going to sleep a little :)");
+  println("Hey! I'm going to sleep a little :)");
   sleep(1000);
   println("Maybe");
 

@@ -8,5 +8,5 @@
 #ifndef __SLEEP_H
 #define __SLEEP_H
 void            process_sleep();
-void            go_to_sleep(uint32_t time);
+uint32_t            go_to_sleep(uint32_t time);
 #endif

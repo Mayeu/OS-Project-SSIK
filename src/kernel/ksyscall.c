@@ -54,8 +54,7 @@ syscall_handler(registers_t * regs)
       kmaltaprint8((char *) regs->a_reg[1]);
     break;
   case SLEEP:
-    //prunning.current->wait = regs->a_reg[0] * timer_msec;
-    go_to_sleep(regs->a_reg[0]);
+    res = go_to_sleep(regs->a_reg[0]);
     schedule();
     break;
   case BLOCK:
@@ -124,7 +123,7 @@ syscall_handler(registers_t * regs)
     break;
   }
 
-  //kdebug_println("syscal out");
+  kdebug_println("syscal out");
   // saves the return code
   regs->v_reg[0] = res;
 

@@ -84,7 +84,7 @@ process_sleep()
 /*
  * @brief sleep the current_process
  */
-void
+uint32_t
 go_to_sleep(uint32_t time)
 {
   pcb            *p, *tmp;
@@ -96,7 +96,7 @@ go_to_sleep(uint32_t time)
   if (p == NULL)
   {
     kprintln("bubuuu");
-    return;
+    return FAILNOOB;
   }
 
   pcb_set_state(p, SLEEPING);
@@ -111,5 +111,5 @@ go_to_sleep(uint32_t time)
 
   kdebug_println("go to sleep out");
 
-  return;
+  return OMGROXX;
 }
