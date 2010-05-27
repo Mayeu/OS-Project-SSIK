@@ -30,10 +30,10 @@ kexception()
   {
     registers_t    *reg;
     reg = &(get_current_pcb()->registers);
+    reg->epc_reg += 4;
 
     syscall_handler(reg);
 
-    reg->epc_reg += 4;
     kset_cause(~0x60, 0);       // Acknowledge
   }
   else if (cause.field.exc == 0)        // internal exception
