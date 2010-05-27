@@ -15,7 +15,7 @@ BUILD=build
 
 # Object files for the examples
 OBJS_KERNEL= $(addprefix $(BUILD)/, syscall.o kernel.o asm.o debug.o kinout.o kerror.o kprocess.o kprocess_list.o kprogram.o kscheduler.o ksyscall.o kexception.o uart.o splash.o kmsg.o kmsg_lst.o)
-OBJS_USER= $(addprefix $(BUILD)/, string.o process.o increment.o stdio.o error.o coquille.o message.o ring.o)
+OBJS_USER= $(addprefix $(BUILD)/, string.o process.o increment.o fibonacci.o stdio.o error.o coquille.o message.o ring.o philosopher.o scroll.o coquille_up.o)
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
 TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c)
 

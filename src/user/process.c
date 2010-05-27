@@ -8,6 +8,7 @@
 
 #include <process.h>
 #include <string.h>
+#include <stdio.h>
 #include "../kernel/ksyscall.h"
 
  /**
@@ -77,16 +78,17 @@ wait(int pid, int *status)
  * Creates a new process with the program identified by its name 'name'. The
 program must be stored in the program list of the OS.
  */
-int fourchette(char *name, int argc, char *argv[])
+int fourchette(char *name, int prio, int argc, char *argv[])
 {
 	int i;
+	char pr[3];
 	char new_args[MAX_ARG+1][ARG_SIZE];
 
-	// add the program name to the new arg array
-	strcpy(name, new_args[0]);
+	// add the process priority to the new arg array
+	strcpy(itos(prio, pr), new_args[0]);
 	// copy all the arguments
 	for (i=0; i<argc; i++)
-		strcpy((char*)(argv) + i*ARG_SIZE, new_args[i+1]);
+		strcpy(get_arg(argv, i), new_args[i+1]);
 	
   return syscall_three((int32_t) name, argc, (int32_t) new_args, FOURCHETTE);
 }
@@ -116,4 +118,13 @@ chgpri(int pid, int newprio)
 int get_pid(void)
 {
 	return syscall_none(GETPID);
+}
+
+ /**
+ * Fill the char* array with the name of all the processes running and
+the int array with all the corresponding pids.
+ */
+int get_ps(char *pnames[ARG_SIZE], int *pid)
+{
+	return syscall_two((int32_t)pnames, (int32_t)pid, GETPS);
 }
