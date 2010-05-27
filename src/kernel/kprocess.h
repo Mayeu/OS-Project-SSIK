@@ -14,7 +14,7 @@
 #include <registers.h>
 #include <stdlib.h>
 #include <process.h>
-#include "kmsg_lst.h"
+#include "kmsg.h"
 
 /**
  * \struct pcb

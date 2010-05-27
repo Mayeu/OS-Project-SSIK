@@ -29,7 +29,7 @@ create_pcb(pcb *p, int32_t pid, char *name, uint32_t pc, int32_t supervisor, uin
 	p->registers.epc_reg = pc;
 	// init the parameters
 	p->registers.a_reg[0] = (uint32_t) params;
-	init_msg_lst(&p->messages);
+	reset_mls(&p->messages);
 	p->wait = 0;
 	p->error = OMGROXX;
 	p->empty = FALSE;
@@ -122,7 +122,7 @@ move_p(pcb * psrc, pcb * pdest)
   pdest->registers.epc_reg = psrc->registers.epc_reg;
   pdest->registers.gp_reg = psrc->registers.gp_reg;
 
-	move_msg_lst(&psrc->messages, &pdest->messages);
+	copy_mls(&psrc->messages, &pdest->messages);
   pdest->wait = psrc->wait;
   pdest->wait = psrc->wait_for;
   pdest->error = psrc->error;
