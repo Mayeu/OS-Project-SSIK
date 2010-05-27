@@ -29,6 +29,7 @@ enum
   SERROR,
   GETPINFO,
 	GETPID,
+	GETPS,
   CHGPPRI,
   KILL,
   EXIT

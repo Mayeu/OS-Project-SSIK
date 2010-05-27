@@ -4,7 +4,6 @@
  * \author Christophe Carasco
  * \version 0.1
  * \date 25 mai 2010
- *
  */
 
 #include <stdio.h>
@@ -44,7 +43,7 @@ int ring(int argc, char* argv[])
 
 		if (nb_proc > MAX)
 		{
-			print("Error: Number of processors must be at most ");printiln(MAX);
+			print("Error: Number of processes must be at most ");printiln(MAX);
 			exit(-1);
 		}
 
@@ -54,7 +53,7 @@ int ring(int argc, char* argv[])
 	
 		// creating the children
 		for (i=0; i<nb_proc; i++)
-			pid[i] = fourchette("ring", 2, (char**)args);
+			pid[i] = fourchette("ring", BAS_PRI, 2, (char**)args);
 
 		// data to send to all the children
 		for (i=0; i<nb_proc; i++)
@@ -90,20 +89,24 @@ int ring(int argc, char* argv[])
 			if (first)
 			{
 				send(mess, CHAR_PTR, pid_next);
-				print("process no ");printi(get_pid());print("sent msg '");print(mess);println("'");
+				print("Process ");printi(get_pid());print("sent '");print(mess);println("' to Process ");
+					printiln(pid_next);
 				sleep(TIMER);
 				recv_from_pid((char*)rcv, CHAR_PTR, pid_prev, -1);
-				print("process no ");printi(get_pid()); print("got msg '");print(rcv);println("'");
+				print("Process ");printi(get_pid()); print("received '");print(rcv);println("' from Process ");
+					printiln(pid_prev);
 				sleep(TIMER);
 			}
 			// if not, receive then send
 			else
 			{
-				recv_from_pid((char*)rcv, CHAR_PTR, pid_prev, -1);
-				print("process no "); printi(get_pid()); print("got msg '"); print(rcv); println("'");
+				recv_from_pid((char*)rcv, CHAR_PTR, pid_prev, -1);				
+				print("Process ");printi(get_pid()); print("received '");print(rcv);println("' from Process ");
+					printiln(pid_prev);
 				sleep(TIMER);
 				send(mess, CHAR_PTR, pid_next);
-				print("process no "); printi(get_pid()); print("sent msg '"); print(mess); println("'");
+				print("Process ");printi(get_pid());print("sent '");print(mess);println("' to Process ");
+					printiln(pid_next);
 				sleep(TIMER);
 			}
 		}

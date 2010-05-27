@@ -80,9 +80,10 @@ get_pinfo(pcb * p, pcbinfo * pi)
   for (i = 0; i < NSUPERVISED; i++)
     pi->supervised[i] = p->supervised[i];
   pi->supervisor = p->supervisor;
+/*
   pi->wait = p->wait;
   pi->wait = p->wait_for;
-  pi->empty = p->empty;
+  pi->empty = p->empty;*/
   return OMGROXX;
 
 }

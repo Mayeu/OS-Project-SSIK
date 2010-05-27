@@ -29,14 +29,22 @@ syscall_handler(registers_t * regs)
   pcb            *p;
 	msg_arg 			 *mres;
 	char					 	buf[3];
+	
   switch (syscall)
   {
   case FOURCHETTE:
+	{
 		// A CHANGER, POUR ENVOYER LE NB D'ARG STOQUE DS regs->a_reg[1]
 		// NE PAS OUBLIER DE COPIER LES ARG DS LA STRUCT DU PCB !!
-    res =
-      create_proc((char *)regs->a_reg[0], BAS_PRI, (char **) regs->a_reg[2]);
+		char  *name = (char *)regs->a_reg[0];
+		char **argv = (char **)regs->a_reg[2];
+		int prio = stoi(get_arg(argv, 0));
+
+		strcpy(name, get_arg(argv, 0));
+    res = create_proc(name, prio, argv);
+
     break;
+	}
   case PRINT:
     kprint((char *) regs->a_reg[0]);
     break;
@@ -91,12 +99,31 @@ syscall_handler(registers_t * regs)
     kserror(regs->a_reg[0]);
     break;
   case GETPINFO:
+		// TODOOOOOOOOOOO
     p = searchall(regs->a_reg[0]);
     res = get_pinfo(p, (pcbinfo *) regs->a_reg[1]);
     break;
   case GETPID:
     res = prunning.current->pid;
     break;
+  case GETPS:
+	{
+/*
+		pcls_item* p;
+		char **pnames = (char**)regs->a_reg[0];
+		int *pid = (int*)regs->a_reg[1];
+		int i = 0;
+
+		for (p = pclsready.start; p != pclsready.end; p = p->next, i++)
+		{
+			strcpy(pcb_get_name(p), get_arg(pnames, i));
+			pid[i] = pcb_get_pid(p);
+		}
+		res = i;
+*/
+		res = -1;
+    break;
+	}
   case CHGPPRI:
     p = searchall(regs->a_reg[0]);
     res = chg_ppri(p, regs->a_reg[1]);
@@ -108,10 +135,13 @@ syscall_handler(registers_t * regs)
     break;
   case EXIT:
 		// NOTIFY THE SUPERVISOR OF THE EXITING PROCESS !
+		kprint("proc exiting with value "); kprint(itos(regs->a_reg[0], buf));kprintn();
+/*
     p = search_pcb(prunning.current->pid, &prunning);
 		p->registers.v_reg[0] = regs->a_reg[0];
 		move(prunning.current->pid, &prunning, &pterminate);
     schedule();
+*/
     break;
   default:
     ;
