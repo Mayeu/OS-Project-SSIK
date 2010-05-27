@@ -26,7 +26,8 @@ typedef enum
 {
 	FPRI,
 	FPID,
-	FTYPE
+	FTYPE,	
+	FNONE
 } msg_filter;
 
 // arguments to pass to the send/recv functions

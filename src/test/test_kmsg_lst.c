@@ -134,7 +134,7 @@ test_kmsg_lst()
 
 	kprint("recv_msg string 4\t\t\t\t");												//RECV_MSG
 	res = recv_msg(0, &msgargres3);	// process 0 wants to receive a CHAR_T and put it in messres3
-	err = (res == OMGROXX) &&
+	err = (res == 0) &&
 			(strcmp(messres3, "other") == 0);
 	test_unit(err, res);
 
@@ -164,20 +164,20 @@ test_kmsg_lst()
 	kprint("recv_msg by PID\t\t\t\t\t");												//RECV_MSG
 	res = recv_msg(0, &msgargres4);	// process 0 wants to receive a INT_T from pid = 1 and put it in messres4
 	
-	err = (res == OMGROXX) &&
+	err = (res == 1) &&
 			((int)messres4 == 42);
 	test_unit(err, res);
 
 	kprint("recv_msg by PRIO\t\t\t\t");												//RECV_MSG
 	res = recv_msg(0, &msgargres5);	// process 0 wants to receive a INT_T wit prio = 15 and put it in messres5
 	
-	err = (res == OMGROXX) &&
+	err = (res == 0) &&
 			((int)messres5 == 43);
 	test_unit(err, res);
 	
 	kprint("recv_msg by PID\t\t\t\t\t");												//RECV_MSG
 	res = recv_msg(1, &msgargres6);	// process 0 wants to receive a INT_T wit prio = 15 and put it in messres5
-	err = (res == OMGROXX) &&
+	err = (res == 0) &&
 			(strcmp(messres6, "Hello1") == 0);
 	test_unit(err, res);
 

@@ -200,7 +200,7 @@ int32_t recv_msg(uint32_t recv_pid, msg_arg *args)
 			kprintln(itos((int)args->data, resc));
 		}
 */
-		return OMGROXX;
+		return args->pid;
 	}
 
 	return FAILNOOB;
@@ -215,6 +215,7 @@ bool search_msg_filtered(msg_filter filter, int32_t filtervalue, msg *m, msg_t d
 	if(m->datatype == datatype)
 	{
 		if((filter == FPRI && m->pri == filtervalue) ||
+		(filter == FNONE) ||
 		(filter == FPID && m->sdr_pid == filtervalue) ||
 		(filter == FTYPE && m->datatype == filtervalue ))
 			return TRUE;
