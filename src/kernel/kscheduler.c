@@ -9,6 +9,7 @@
 
 #include <string.h>
 #include "kernel.h"
+#include "debug.h"
 #include "kinout.h"
 #include "kscheduler.h"
 #include "kprocess.h"
@@ -22,7 +23,7 @@ schedule()
   //pcb *p;
   //char c;
 
-  //kprintln("Hmmm Schedule me!");
+  kdebug_println("Scheduler in");
 
   /*
    * Real first
@@ -141,5 +142,5 @@ schedule()
    * Ok we are done ! (maybe)
    */
 
-  //kprintln("Deja finis?");
+  kdebug_println("Scheduler out");
 }

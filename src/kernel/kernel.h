@@ -15,7 +15,7 @@
 #include "kprocess_list.h"
 
 /* Time of one clock tick */
-#define QUANTUM 10*timer_msec
+#define QUANTUM 100*timer_msec
 
 /*
  * global variable
@@ -24,10 +24,6 @@
 /*
  * declarationo of the pcb lists
  */
-//pls             pready;         /*!< @brief List of ready process */
-//pls             prunning;       /*!< @brief List of running process */
-//pls             pwaiting;       /*!< @brief List of waiting process */
-//pls             pterminate;     /*!< @brief List of terminate process */
 
 pcls            pclsready;      /*!< @brief List of ready process */
 pcls            pclsrunning;    /*!< @brief List of running process */
@@ -64,5 +60,7 @@ void            kinit();
  * First process to be launched
  */
 void            init();
+
+void            pinit();
 
 #endif

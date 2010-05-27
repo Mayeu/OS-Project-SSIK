@@ -14,7 +14,7 @@ BIN=bin
 BUILD=build
 
 # Object files for the examples
-OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o timer.o exception.o debug.o kinout.o kerror.o kpcb.o kprocess.o kprocess_list.o kprogram.o kscheduler.o syscall.o ksyscall.o kexception.o uart.o splash.o ksleep.o )
+OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o exception.o timer.o debug.o kinout.o kerror.o kpcb.o kprocess.o kprocess_list.o kprogram.o kscheduler.o syscall.o ksyscall.o kexception.o uart.o splash.o ksleep.o )
 OBJS_USER= $(addprefix $(BUILD)/, string.o process.o increment.o stdio.o error.o coquille.o )
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
 TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c test_kpcb.c test_kprocess2.c test_kprocess.c test_kprocess_list2.c test_kprocess_list.c test_ksleep.c test_kscheduler.c)
@@ -83,6 +83,7 @@ indent:
 	indent $(IDT_OPT) $(SRC_KERNEL)/*.c
 	indent $(IDT_OPT) $(SRC_USER)/*.h
 	indent $(IDT_OPT) $(SRC_USER)/*.c
+	indent $(IDT_OPT) $(SRC_TEST)/*.c
 	
 # Build the kernel doc and user doc
 doc: doc_kernel doc_user

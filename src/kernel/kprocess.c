@@ -11,6 +11,7 @@
 #include <string.h>
 #include <process.h>
 #include "kprocess.h"
+#include "debug.h"
 #include "kprogram.h"
 #include "kernel.h"
 #include "kinout.h"
@@ -87,6 +88,8 @@ create_proc(char *name, uint32_t prio, char **params)
   pcb             p;
   prgm           *prg;
 
+  kdebug_println("Create process in");
+
   if (name == NULL)
     return NULLPTR;
 
@@ -115,7 +118,7 @@ create_proc(char *name, uint32_t prio, char **params)
     /*
      * init the program counter
      */
-    p.registers.epc_reg = prg->address;
+    p.registers.epc_reg = (uint32_t) prg->address;
 
     /*
      * get a pid
@@ -142,7 +145,7 @@ create_proc(char *name, uint32_t prio, char **params)
     /*
      * Set the parameters of the function
      */
-    //p.registers.a_reg[0] = argc; /* the first element of **param is the number of arg */
+    p.registers.a_reg[0] = 0;   //argc; /* the first element of **param is the number of arg */
     p.registers.a_reg[1] = (uint32_t) & params; /* the adresse of the first arg */
 
     /*
@@ -193,6 +196,8 @@ create_proc(char *name, uint32_t prio, char **params)
   }
   else
     return OUTOMEM;
+
+  kdebug_println("Create process out");
 
   return pid;
 }
@@ -253,13 +258,12 @@ create_pcb(pcb *p, int32_t pid, char *name, uint32_t pc, int32_t supervisor, uin
 uint32_t
 rm_p(pcb * p)
 {
-  kprint
-    ("DEPRECATED: rm_p is redondante with pcls_delet_pcb in kprocss_list");
   if (p == NULL)
     return NULLPTR;
 
+  //pcls_delete_pcb(p);
 
-  pcb_reset(p);
+  pcb_counter--;
 
   return OMGROXX;
 }

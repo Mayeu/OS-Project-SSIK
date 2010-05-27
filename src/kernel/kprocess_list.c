@@ -13,6 +13,7 @@
 #include "kprocess_list.h"
 #include "kinout.h"
 #include "kprogram.h"
+#include "debug.h"
 
 //void            print_pls(pls * ls);    // Internal function (see the bottom of the file
 

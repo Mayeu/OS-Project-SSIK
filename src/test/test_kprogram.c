@@ -8,44 +8,46 @@
 #include <string.h>
 #include "../kernel/kprogram.h"
 
-uint32_t test_search_prgm(void);
+uint32_t        test_search_prgm(void);
 
-void test_kprogram()
+void
+test_kprogram()
 {
-	int e;
-	char c;
+  int             e;
+  char            c;
 
-	kprintln("------------TEST MODULE KPROGRAM BEGIN------------");
+  kprintln("------------TEST MODULE KPROGRAM BEGIN------------");
 
-	kprint("Test search_prgm\t\t\t\t");
-	e = test_search_prgm() ;
+  kprint("Test search_prgm\t\t\t\t");
+  e = test_search_prgm();
 
-	if (e == OMGROXX)
-		kprintln("OK");
-	else
-	{
-		kprint("FAIL: ");
-		kprintln(itos(e,&c));
-	}
+  if (e == OMGROXX)
+    kprintln("OK");
+  else
+  {
+    kprint("FAIL: ");
+    kprintln(itos(e, &c));
+  }
 
-	kprintln("-------------TEST MODULE KPROGRAM END-------------");
-	kprintln("");
+  kprintln("-------------TEST MODULE KPROGRAM END-------------");
+  kprintln("");
 }
 
-uint32_t test_search_prgm(void)
+uint32_t
+test_search_prgm(void)
 {
-	prgm *tmp;
+  prgm           *tmp;
 
-	tmp = search_prgm("init");
+  tmp = search_prgm("init");
 
-	if(tmp == NULL)
-		return -1;
+  if (tmp == NULL)
+    return -1;
 
-	if(strcmp(tmp->name, "init") != 0)
-		return -2;
+  if (strcmp(tmp->name, "init") != 0)
+    return -2;
 
-	if(search_prgm("flipitou") != NULL)
-		return -3;
+  if (search_prgm("flipitou") != NULL)
+    return -3;
 
-			return OMGROXX ;
+  return OMGROXX;
 }

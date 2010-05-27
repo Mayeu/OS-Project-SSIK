@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <string.h>             // for debug
 #include <process.h>
-#include <message.h>
 
 #include "ksyscall.h"
 #include "kprocess.h"
@@ -19,6 +18,7 @@
 #include "kernel.h"
 #include "kinout.h"
 #include "kerror.h"
+#include "debug.h"
 #include "ksleep.h"
 #include "asm.h"
 
@@ -28,8 +28,12 @@ syscall_handler(registers_t * regs)
   int32_t         res = 0;
   int32_t         syscall = regs->v_reg[0];     // code of the syscall
   pcb            *p;
-  msg_arg        *mres;
+  //msg_arg        *mres;
   char            buf[3];
+
+  //kdebug_println("syscal in");
+  kprintln(itos(syscall, buf));
+
   switch (syscall)
   {
   case FOURCHETTE:
@@ -70,13 +74,13 @@ syscall_handler(registers_t * regs)
      */
     break;
   case SEND:
-    mres = (msg_arg *) regs->a_reg[0];
-    kprint("process pid = ");
+    //mres = (msg_arg *) regs->a_reg[0];
+    //kprint("process pid = ");
     //kprint(itos(prunning.current->pid, buf));
-    kprint(" is sending datatype ");
-    kprint(itos(mres->datatype, buf));
-    kprint(" to process pid = ");
-    kprintln(itos(mres->pid, buf));
+    //kprint(" is sending datatype ");
+    //kprint(itos(mres->datatype, buf));
+    //kprint(" to process pid = ");
+    //kprintln(itos(mres->pid, buf));
     //kprintln((char*)mres->data);
     // res = send_msg(prunning.current->pid, msg_arg);
     break;
@@ -116,9 +120,11 @@ syscall_handler(registers_t * regs)
     schedule();
     break;
   default:
-    ;
+    kprintln("ERROR: Unknown syscall");
+    break;
   }
 
+  //kdebug_println("syscal out");
   // saves the return code
   regs->v_reg[0] = res;
 }

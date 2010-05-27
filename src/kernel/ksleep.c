@@ -7,6 +7,7 @@
 #include <string.h>
 #include <errno.h>
 #include "kprocess.h"
+#include "debug.h"
 #include "kernel.h"
 #include "kinout.h"
 #include "kscheduler.h"
@@ -84,7 +85,9 @@ process_sleep()
 void
 go_to_sleep(uint32_t time)
 {
-  pcb            *p;
+  pcb            *p;            //, *tmp;
+
+  kdebug_println("go to sleep in");
 
   p = get_current_pcb();
 
@@ -93,10 +96,18 @@ go_to_sleep(uint32_t time)
 
   pcb_set_state(p, SLEEPING);
   pcb_set_sleep(p, time * timer_msec);
-  pcls_move_pcb(&pclsrunning, &pclsready, p);
+  pcls_move_pcb(&pclsrunning, &pclswaiting, p);
+
+  //tmp = &(pcls_search_pcb(&pclswaiting, p)->p);
+  /*
+   * update the current_pcb to his new value
+   */
+  //set_current_pcb(tmp);
 
   /*
    * We need to schedule now
    */
   schedule();
+
+  kdebug_println("go to sleep out");
 }

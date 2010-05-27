@@ -11,6 +11,6 @@
 void
 test_coquille()
 {
-	kprintln("Tests de coquille.c");
-	coquille();
+  kprintln("Tests de coquille.c");
+  coquille();
 }

@@ -4,17 +4,18 @@
 #include "asm_regs.h"
 
 #----------------------------------------------------------------------------
-# Exception handler code
+# Exception handler
 # - if there is currently a process running we save his context. Otherwise
 #   it's mean that the kernel was running. We save the stack and pc only
 # - go to the interrupt handler C code
-# - come back and loads the good context
+# - come back and loads the good context (kernel if no current pcb, the pcb
+#   context otherwise)
 #----------------------------------------------------------------------------
 
 	.data
 
-pc_kernel:		.word	0
-stack_kernel:	.word	0
+kpc:		.word	0
+kstack:	.word	0
 
 #----------------------------------------------------------------------------
 # We Save the context
@@ -64,8 +65,8 @@ exception_handler:
 
 ksave:                    # Save the stack and kernel pc
 	mfc0 t0, epc
-	sw t0, pc_kernel($0)
-	sw sp, stack_kernel($0)
+	sw t0, kpc($0)
+	sw sp, kstack($0)
 
 handler:                  
 	jal kexception         # jump to our C exeption handler
@@ -77,11 +78,11 @@ handler:
 	lw k0, current_pcb    # is there a pcb to load ?
 	beq k0,$0, kload      # nop, just reload the kernel
 
-	lw t0, REG_EPC(k0)        #sure there is !
-	mtc0 t0, epc
-	.set noat
+	.set noat        #sure there is !
 	lw $at, REG_AT(k0)
 	.set at
+	lw t0, REG_EPC(k0)
+	mtc0 t0, epc
 	lw v0,REG_V0(k0)
 	lw v1,REG_V1(k0)
 	lw a0,REG_A0(k0)
@@ -113,8 +114,8 @@ handler:
 	j end                 # ok go back to your job now !
 
 kload:                   # no process ? Just reload the kernel !
-	lw sp, stack_kernel($0)
-	lw t0, pc_kernel($0)
+	lw sp, kstack($0)
+	lw t0, kpc($0)
 	mtc0 t0, epc
 
 end:	# return from interrupt

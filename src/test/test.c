@@ -27,47 +27,48 @@
  * Print the result as OK/NOK and if it is NOK
  * print the return value of the tested function.
  */
-void test_unit(bool err, int res)
+void
+test_unit(bool err, int res)
 {
-	char resc[2];
-	if(err)
-		kprintln("OK");
-	else
-	{
-		kprint("NOK:");
-		kprintln(itos(res, resc));
-	}
+  char            resc[2];
+  if (err)
+    kprintln("OK");
+  else
+  {
+    kprint("NOK:");
+    kprintln(itos(res, resc));
+  }
 }
-	void
+void
 test()
 {
-	/*
-	 * Call  your test here
-	 */
+  /*
+   * Call  your test here
+   */
 
-	test_string();
+  test_string();
 
-	test_kpcb();
+  test_kpcb();
 
-	test_kprocess_list2();
+  test_kprocess_list2();
 
-	test_uart_fifo();
+  test_uart_fifo();
 
-	test_kprogram();
+  test_kprogram();
 
-	test_kprocess2();
+  test_kprocess2();
 
-	test_ksleep();
+  test_ksleep();
 
-	test_kscheduler();
+  test_kscheduler();
 
-	//test_kprocess();
+  //test_kprocess();
 
-	//test_kprocess_list();
-	
-	//test_kmsg();
+  //test_kprocess_list();
 
-	//test_kmsg_lst();
+  //test_kmsg();
 
-	test_coquille();
+  //test_kmsg_lst();
+
+  //test_coquille();
 }

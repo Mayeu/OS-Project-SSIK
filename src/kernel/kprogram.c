@@ -23,7 +23,7 @@ static prgm     prgm_ls[NUM_PROG] = {
    */
   {
    "init",
-   (uint32_t) init,
+   (uint32_t) & init,
    "Initialize the system."}
 };
 

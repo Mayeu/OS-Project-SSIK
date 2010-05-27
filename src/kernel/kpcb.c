@@ -291,15 +291,19 @@ pcb_set_register(pcb * p, registers_t * regs)
   uint32_t        i;
 
   p->registers.at_reg = regs->at_reg;
+
   for (i = 0; i < 2; i++)
     p->registers.v_reg[i] = regs->v_reg[i];
+
   for (i = 0; i < 4; i++)
     p->registers.a_reg[i] = regs->a_reg[i];
+
   for (i = 0; i < 10; i++)
     p->registers.t_reg[i] = regs->t_reg[0];
+
   for (i = 0; i < 8; i++)
     p->registers.s_reg[i] = regs->s_reg[i];
-  p->registers.sp_reg = regs->sp_reg;
+
   p->registers.fp_reg = regs->fp_reg;
   p->registers.ra_reg = regs->ra_reg;
   p->registers.sp_reg = regs->sp_reg;
