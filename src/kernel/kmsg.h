@@ -123,7 +123,7 @@ int32_t send_msg(uint32_t sdr_pid, msg_arg *args);
  *
  * \param recv_pid the pid of the receiver
  * \param args the arguments
- * \return an error code
+ * \return an error code or the pid of the sender
  */
 int32_t recv_msg(uint32_t recv_pid, msg_arg *args);
 

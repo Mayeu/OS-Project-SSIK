@@ -24,10 +24,10 @@ kexception()
   {
     registers_t    *reg;
     reg = (registers_t *) kget_registers();
+    reg->epc_reg += 4;          // Make epc point to the next instruction
 
     syscall_handler(reg);
 
-    reg->epc_reg += 4;          // Make epc point to the next instruction (after the syscall)
     kset_cause(~0x60, 0);       // Acknowledge
   }
   else if (cause.field.exc == 0)        // internal exception
