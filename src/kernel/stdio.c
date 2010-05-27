@@ -29,6 +29,14 @@ println(char *str)
 }
 
  /**
+ * Print the carriage return character.
+ */
+int printn(void)
+{
+	return println("\n");
+}
+
+ /**
  * Print the number n to the standard output.
  */
 int

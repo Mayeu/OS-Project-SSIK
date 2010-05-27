@@ -35,6 +35,14 @@ and return line.
 int             println(char *str);
 
  /**
+ * \fn int printn(void)
+ * \brief Print the carriage return character.
+ *
+ * \return the error identifier in case of any failure
+ */
+int             printn(void);
+
+ /**
  * \fn int printi(int n)
  * \brief Print the number n to the standard output.
  *
