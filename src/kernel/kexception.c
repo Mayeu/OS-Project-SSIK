@@ -7,6 +7,7 @@
  *
  */
 
+#include <string.h>
 #include "asm.h"
 #include "debug.h"
 #include "kinout.h"
@@ -16,9 +17,6 @@
 #include "kscheduler.h"
 #include "ksleep.h"
 #include "kprogram.h"
-
-
-cause_reg_t     cause;
 
 void
 kexception()
@@ -31,12 +29,11 @@ kexception()
   if (cause.field.exc == 8)     // external exception (syscall)
   {
     registers_t    *reg;
-    reg = (registers_t *) kget_registers();
+    reg = &(get_current_pcb()->registers);
 
     syscall_handler(reg);
 
     reg->epc_reg += 4;
-    //get_current_pcb()->registers.epc_reg += 4;  // Make epc point to the next instruction (after the syscall)
     kset_cause(~0x60, 0);       // Acknowledge
   }
   else if (cause.field.exc == 0)        // internal exception
@@ -56,7 +53,5 @@ kexception()
       kset_cause(~0x8000, 0);   //clear the flag for timer interrupt
     }
   }
-
   //kdebug_println("Exception out");
-
 }

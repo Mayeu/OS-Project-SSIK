@@ -17,19 +17,23 @@
 syscall_none:
 	move v0, a0
 	syscall
+	nop
 	jr ra			# Back in user mode, return to caller
 
 syscall_one:
 	move v0, a1
 	syscall
+	nop
 	jr ra			# Back in user mode, return to caller
 
 syscall_two:
 	move v0, a2
 	syscall
+	nop
 	jr ra			# Back in user mode, return to caller
 
 syscall_three:
 	move v0, a3
 	syscall
+	nop
 	jr ra			# Back in user mode, return to caller

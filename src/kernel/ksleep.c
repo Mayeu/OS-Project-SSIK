@@ -35,6 +35,8 @@ process_sleep()
   last = NULL;
   it = pclswaiting.start;
 
+  //kprintln("Time to remove time");
+
   while (it != NULL)
   {
     /*
@@ -85,29 +87,29 @@ process_sleep()
 void
 go_to_sleep(uint32_t time)
 {
-  pcb            *p;            //, *tmp;
+  pcb            *p, *tmp;
 
   kdebug_println("go to sleep in");
 
   p = get_current_pcb();
 
-  if (p != NULL)
+  if (p == NULL)
+  {
+    kprintln("bubuuu");
     return;
+  }
 
   pcb_set_state(p, SLEEPING);
   pcb_set_sleep(p, time * timer_msec);
   pcls_move_pcb(&pclsrunning, &pclswaiting, p);
 
-  //tmp = &(pcls_search_pcb(&pclswaiting, p)->p);
   /*
    * update the current_pcb to his new value
    */
-  //set_current_pcb(tmp);
-
-  /*
-   * We need to schedule now
-   */
-  schedule();
+  tmp = &(pcls_search_pcb(&pclswaiting, p)->p);
+  set_current_pcb(tmp);
 
   kdebug_println("go to sleep out");
+
+  return;
 }

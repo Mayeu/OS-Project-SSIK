@@ -29,10 +29,9 @@ syscall_handler(registers_t * regs)
   int32_t         syscall = regs->v_reg[0];     // code of the syscall
   pcb            *p;
   //msg_arg        *mres;
-  char            buf[3];
+  //char            buf[3];
 
-  //kdebug_println("syscal in");
-  kprintln(itos(syscall, buf));
+  kdebug_println("syscal in");
 
   switch (syscall)
   {
@@ -57,6 +56,7 @@ syscall_handler(registers_t * regs)
   case SLEEP:
     //prunning.current->wait = regs->a_reg[0] * timer_msec;
     go_to_sleep(regs->a_reg[0]);
+    schedule();
     break;
   case BLOCK:
     break;
@@ -127,4 +127,6 @@ syscall_handler(registers_t * regs)
   //kdebug_println("syscal out");
   // saves the return code
   regs->v_reg[0] = res;
+
+  return;
 }

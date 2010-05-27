@@ -124,19 +124,11 @@ init()
   /*
    * Print the splash screen
    */
-
   splash();
 
-  while (1)
-  {
-    kprintln("Hey! I'm going to sleep a little :)");
-    sleep(5000);
-  }
-}
+  println("Hey! I'm going to sleep a little :)");
+  sleep(1000);
+  println("Maybe");
 
-void
-pinit()
-{
-  kprintln("FAIL");
-  while (1);
+  //while (1);
 }

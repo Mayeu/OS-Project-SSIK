@@ -23,7 +23,7 @@ schedule()
   //pcb *p;
   //char c;
 
-  kdebug_println("Scheduler in");
+  //kdebug_println("Scheduler in");
 
   /*
    * Real first
@@ -33,6 +33,7 @@ schedule()
   {
     p_error = &kerror;
     set_current_pcb(NULL);
+    //kprintln("Scheduler: Nothing to do");
     return;
   }
 
@@ -83,7 +84,7 @@ schedule()
   /*
    * Is the pclsrunning list empty ?
    */
-  if (pclsrunning.length == 0)
+  if (pclsrunning.start == NULL)
   {
     /*
      * Set the current pcb to null
@@ -142,5 +143,5 @@ schedule()
    * Ok we are done ! (maybe)
    */
 
-  kdebug_println("Scheduler out");
+  //kdebug_println("Scheduler out");
 }
