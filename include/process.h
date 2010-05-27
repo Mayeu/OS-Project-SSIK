@@ -121,14 +121,23 @@ not critical information is given to the user.
 int             get_proc_info(int pid, pcbinfo * res);
 
  /**
- * \fn int chgpri(int pid, int newprio)
+ * \fn int chg_pri(int pid, int newprio)
  * \brief Changes the priority of the process from the old one to the new priority ’prio’.
  *
  * \param pid the pid of the process
  * \param newprio the new priority of the process
  * \return the error identifier in case of any failure
  */
-int             chgpri(int pid, int newprio);
+int             chg_pri(int pid, int newprio);
+
+ /**
+ * \fn int get_pri(int pid)
+ * \brief Get the priority f the process pid.
+ *
+ * \param pid the pid of the process
+ * \return the process pid if ok, an error code otherwise
+ */
+int             get_pri(int pid);
 
  /**
  * \fn int get_pid(void)

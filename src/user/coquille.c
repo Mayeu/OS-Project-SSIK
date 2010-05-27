@@ -79,7 +79,7 @@ coquille(void)
 		proc_info(2, (char**)proc_inf);
 
     println("changed prio to 30");
-    chgpri(pid, 30);
+    chg_pri(pid, 30);
     printiln(gerror());
     perror("Erreur !");
 

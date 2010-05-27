@@ -107,9 +107,17 @@ get_proc_info(int pid, pcbinfo * res)
  * Changes the priority of the process from the old one to the new priority 'prio'.
  */
 int
-chgpri(int pid, int newprio)
+chg_pri(int pid, int newprio)
 {
   return syscall_two(pid, newprio, CHGPPRI);
+}
+
+ /**
+ * \brief Get the priority f the process pid.
+ */
+int get_pri(int pid)
+{
+	return syscall_one(pid, GETPRI);
 }
 
  /**

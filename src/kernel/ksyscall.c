@@ -103,6 +103,10 @@ syscall_handler(registers_t * regs)
     p = searchall(regs->a_reg[0]);
     res = get_pinfo(p, (pcbinfo *) regs->a_reg[1]);
     break;
+  case GETPRI:
+    p = searchall(regs->a_reg[0]);
+    res = p->pri;
+    break;
   case GETPID:
     res = prunning.current->pid;
     break;

@@ -27,7 +27,7 @@ int chg_prio(int argc, char* argv[])
 	prio = stoi(get_arg(argv, 2));
 
 	exit(0);
-	return chgpri(pid, prio);
+	return chg_pri(pid, prio);
 }
 
 // params: no param
