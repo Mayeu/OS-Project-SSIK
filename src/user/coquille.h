@@ -9,7 +9,6 @@
 #ifndef __COQUILLE_H
 #define __COQUILLE_H
 
-
 #define MAX_SHELL_ARG 5
 #define MAX_CHAR 20
 

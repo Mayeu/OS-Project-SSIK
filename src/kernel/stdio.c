@@ -39,9 +39,6 @@ println(char *str)
   return e;
 }
 
-<<<<<<< HEAD:src/kernel/stdio.c
-/**
-=======
  /**
  * Print the carriage return character.
  */

@@ -1,18 +1,18 @@
 /**
- * \file shell.c
+ * \file coquille.c
  * \brief shell functions
  * \author Adrien Forest
  * \version 0.1
  * \date 21 Mai 2010
  */
 
-#include <coquille.h>
 #include <string.h>
 #include <stdio.h>
 #include <process.h>
 #include <error.h>
 #include <message.h>
 
+#include "coquille.h"
 #include "coquille_up.h"
 
 #include "scroll.h"
@@ -28,7 +28,6 @@ coquille(void)
   int             nb_arg, pid;
   char            prompt_line[255];
 	char 						ibuf[3];
-  char            prog_name[20];
   char            *command = "init arg1 arg2 arg3 arg4";
 	char						proc_inf[2][20];
 	char						scroll_inf[3][20];
@@ -84,9 +83,6 @@ coquille(void)
     perror("Erreur !");
 
 		proc_info(2, (char**)proc_inf);
-
-    // send(prog_name, CHAR_PTR, 5);
-    // send((void *) 42, INT_T, 2);
   }
 
 /*

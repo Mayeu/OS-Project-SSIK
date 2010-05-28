@@ -28,8 +28,6 @@ syscall_handler(registers_t * regs)
   int32_t         res = 0;
   int32_t         syscall = regs->v_reg[0];     // code of the syscall
   pcb            *p;
-	msg_arg 			 *mres;
-	char					 	buf[3];
 	
   switch (syscall)
   {
@@ -106,7 +104,7 @@ syscall_handler(registers_t * regs)
     res = get_pinfo(p, (pcbinfo *) regs->a_reg[1]);
     break;
   case GETPRI:
-    p = searchall(regs->a_reg[0]);
+    p = search_all_list(regs->a_reg[0]);
     res = p->pri;
     break;
   case GETPID:
