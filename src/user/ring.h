@@ -7,7 +7,7 @@
  */
 
 #ifndef __RING_H
-#ifndef __RING_H
+#define __RING_H
 
 int ring(int argc, char *argv[]);
 
