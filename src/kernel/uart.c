@@ -111,14 +111,13 @@ get_fifo_buffer()
  * UART management functions
  */
 
-// function called by the interrupt handler. 
 void
 uart_exception()
 {
   switch (mode)
   {
   case UART_READ:
-    //uart_read();
+    /*uart_read();*/
     break;
 
   case UART_PRINT:
@@ -188,7 +187,7 @@ uart_give_to(pcb * p)
        * Set back the state
        */
       pcb_set_state(p, RUNNING);
-      return FAILNOOB;          //fatal error here
+      return FAILNOOB;
     }
 
     /*
@@ -286,9 +285,6 @@ uart_print(void)
       }
     }
 
-    //kprint("print a char:'");
-    //kprint_char(c);
-    //kprintln("'");
     /*
      * Print the char
      */
@@ -321,11 +317,6 @@ int32_t
 end_of_printing(int32_t code)
 {
   /*
-   * Set the return value
-   */
-  //pcb_get_registers(user)->v_reg[0] = code;
-
-  /*
    * UART unused now
    */
   mode = UART_UNUSED;
@@ -333,7 +324,7 @@ end_of_printing(int32_t code)
   /*
    * Since it's unused we stop the interrupt
    */
-  tty->ier.field.etbei = 0;     //stop interrupting whenever the device is ready to print
+  tty->ier.field.etbei = 0;     
 
   /*
    * Reset everything and release
@@ -362,7 +353,7 @@ uart_release(int32_t code)
      * Set back the state
      */
     pcb_set_state(user, WAITING_IO);
-    return FAILNOOB;            //fatal error here
+    return FAILNOOB;            
   }
 
   /*
@@ -392,7 +383,7 @@ uart_release(int32_t code)
        * Set back the state
        */
       pcb_set_state(&(it->p), RUNNING);
-      return FAILNOOB;          //fatal error here
+      return FAILNOOB;          
     }
 
     user = &(it->p);

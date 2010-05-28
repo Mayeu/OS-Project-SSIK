@@ -26,24 +26,26 @@
 /**
  * @brief A bounded fifo char structure
  */
-
 typedef struct
 {
-  char            buffer[UART_FIFO_SIZE];
-  uint32_t        length;
-  uint32_t        in;
-  uint32_t        out;
+  char            buffer[UART_FIFO_SIZE]; /*!< A buffer to keep the character to print */
+  uint32_t        length; /*!< length of the buffer */
+  uint32_t        in; /*!< the in position */
+  uint32_t        out; /*!< the out position */
 } fifo_buffer;
 
 /**
  * UART state
  */
 
+/**
+ * @brief UART possible Status
+ */
 enum
 {
-  UART_UNUSED,
-  UART_PRINT,
-  UART_READ
+  UART_UNUSED, /*!< Uart is unused */
+  UART_PRINT, /*!< Currently printing */
+  UART_READ /*!< Currently running */
 };
 
 /*
@@ -96,21 +98,51 @@ fifo_buffer    *get_fifo_buffer();
  */
 void            uart_init(void);
 
-/*
- *
+/**
+ * @brief Give the uart to the pcb, or if in use, block the pcb to wait
+ * @param the pcb
+ * @return OMGROXX if ok, FAILNOOB if the pcb is block
  */
 int32_t         uart_give_to(pcb * p);
 
+/**
+ * @brief set the mode of the uart
+ * @param The mode to set
+ */
 void            uart_set_mode(int32_t mode, char *str, uint32_t len);
-/* prints a character from out_buffer and sets the device to interrupt when it is done printing (only if there are remaining characters to print) */
+
+/**
+ * @brief Print a string using interupt
+ * @param the string to print
+ */
+
 void            uart_print();
-/* ends the use of the device by its current owner by waking it up. It also release the device and put the return value in the PCB */
+
+/**
+ * @brief Terminated the current printing
+ * @param an error code to set in the current pcb
+ */
 int32_t         end_of_printing(int32_t code);
 
+/**
+ * @brief Clean the register of the uart
+ */
 void            clean_uart();
 
+/**
+ * @brief Release the uart from is current user, and try to find a new user
+ */
 int32_t         uart_release(int32_t code);
+
+/**
+ * @brief This function is called by the exception
+ */
 void            uart_exception();
+
+/**
+ * @brief Set the current uart user
+ * @param a pcb
+ */
 void            set_uart_user(pcb * p);
 
 #endif /* __UART_H */
