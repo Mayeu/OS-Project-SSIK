@@ -6,7 +6,8 @@
 
 #include <string.h>
 #include <stdio.h>
-#include <coquille.h>
+
+#include "../user/coquille.h"
 
 void
 test_coquille()

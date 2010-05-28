@@ -108,7 +108,7 @@ int proc_info(int argc, char* argv[])
 		print("\tname:\t\t\t");println(res.name);
 		print("\tpriority:\t\t");printiln(res.pri);
 		print("\tsupervised processes:\t");
-		for (i=0; i<NSUPERVISED; i++)
+		for (i=0; i<MAXPCB; i++)
 		{
 			if (res.supervised[i] != -1)
 			{

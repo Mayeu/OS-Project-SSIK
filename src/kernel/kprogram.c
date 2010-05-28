@@ -10,6 +10,9 @@
 #include "../user/fibonacci.h"
 #include "../user/philosopher.h"
 #include "../user/increment.h"
+#include "../user/coquille_up.h"
+#include "../user/increment.h"
+#include "../user/scroll.h"
 
 /*
  * Define
