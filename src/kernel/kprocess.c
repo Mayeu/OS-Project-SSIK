@@ -45,7 +45,8 @@ static uint32_t pcb_counter = 0;
 uint32_t        stack[MAXPCB * SIZE_STACK];
 
 /**
- * @brief Array to hold the used part of the stack. We store -1 if not use, and the pid otherwise
+ * @brief Array to hold the used part of the stack. We store -1 if not use,
+ * and the pid otherwise
  */
 static uint32_t used_stack[MAXPCB];
 
@@ -65,12 +66,20 @@ int32_t         get_next_pid();
  * Functions
  */
 
+/**
+ * @brief Return the pcb currently running
+ * @return A pointer to the pcb
+ */
 pcb            *
 get_current_pcb()
 {
   return current_pcb;
 }
 
+/**
+ * @brief Set the currently running pcb
+ * @param the pcb to set
+ */
 void
 set_current_pcb(pcb * p)
 {
@@ -88,7 +97,7 @@ create_proc(char *name, uint32_t prio, char **params)
   pcb             p;
   prgm           *prg;
 
-  kdebug_println("Create process in");
+  //kdebug_println("Create process in");
 
   if (name == NULL)
     return NULLPTR;
@@ -145,7 +154,7 @@ create_proc(char *name, uint32_t prio, char **params)
     /*
      * Set the parameters of the function
      */
-    p.registers.a_reg[0] = 0;   //argc; /* the first element of **param is the number of arg */
+    p.registers.a_reg[0] = 0;   
     p.registers.a_reg[1] = (uint32_t) & params; /* the adresse of the first arg */
 
     /*
@@ -197,7 +206,7 @@ create_proc(char *name, uint32_t prio, char **params)
   else
     return OUTOMEM;
 
-  kdebug_println("Create process out");
+  //kdebug_println("Create process out");
 
   return pid;
 }
@@ -231,25 +240,6 @@ search_all_list(uint32_t pid)
     return &(p->p);
 
   return NULL;
-
-/*void
-create_pcb(pcb *p, int32_t pid, char *name, uint32_t pc, int32_t supervisor, uint32_t prio, char **params)
-{
-	int i;
-	p->pid = pid;
-  	strcpy(name, p->name);
- 	p->pri = prio;
-	p->supervisor = supervisor;
-	for (i = 0; i < NSUPERVISED; i++)
-        p->supervised[i] = -1;
-            ** TODO: init the registers *
-	p->registers.epc_reg = pc;
-	// init the parameters
-	p->registers.a_reg[0] = (uint32_t) params;
-	init_msg_lst(&p->messages);
-	p->wait = 0;
-	p->error = OMGROXX;
-	p->empty = FALSE;*/
 }
 
 /**
@@ -291,24 +281,13 @@ uint32_t
 get_pinfo(pcb * p, pcbinfo * pi)
 {
   kprint("DEPRECATED: get_pinfo don't do anything anymore !");
-  /* uint32_t        i;
-     if (p == NULL || pi == NULL)
-     return NULLPTR;
-
-     pi->pid = p->pid;
-     strcpy(p->name, pi->name);
-     pi->pri = p->pri;
-     for (i = 0; i < MAXPCB; i++)
-     pi->supervised[i] = p->supervised[i];
-     pi->supervisor = p->supervisor;
-     pi->wait = p->wait;
-     pi->wait = p->wait_for;
-     pi->empty = p->empty;
-     return OMGROXX; */
 
   return FAILNOOB;
 }
 
+/**
+ * copy and give the information of a pcb into a pcbinfo.
+ */
 uint32_t
 get_pinfo2(pcb * p, pcbinfo2 * pi)
 {
@@ -369,86 +348,6 @@ rm_psupervised(pcb * p, uint32_t pid)
 
   return OMGROXX;
 }
-
-/**
- * add a pid to the supervisor list of a process;
- */
-uint32_t
-add_psupervisor(pcb * p, uint32_t pid)
-{
-  kprintln
-    ("DEPRECATED: add_psupervisor is sooooo lame! No more list of supervisor dude!");
-  if (p == NULL)
-    return NULLPTR;
-
-  if (p->supervisor != -1)
-    return INVARG;
-
-  return add_psupervised(search_all_list(pid), p->pid);
-}
-
-/**
- * remove the pid from the supervisor a process.
- */
-uint32_t
-rm_psupervisor(pcb * p, uint32_t pid)
-{
-  kprintln
-    ("DEPRECATED: rm_psupervisor is sooooo lame! No more list of supervisor dude!");
-  if (p == NULL)
-    return NULLPTR;
-
-  rm_psupervised(search_all_list(pid), p->pid);
-  return OMGROXX;
-
-}
-
-/**
- * move a pcb inside an other.
- */
-/*
-uint32_t
-move_p(pcb * psrc, pcb * pdest)
-{
-  uint32_t        i;
-  if (psrc == NULL || pdest == NULL)
-    return NULLPTR;
-  if (psrc->empty == TRUE)
-    return INVARG;
-
-  pdest->pid = psrc->pid;
-  strcpy(psrc->name, pdest->name);
-  pdest->pri = psrc->pri;
-  for (i = 0; i < NSUPERVISED; i++)
-    pdest->supervised[i] = psrc->supervised[i];
-  pdest->supervisor = psrc->supervisor;
-	** TODO: move the registers *
-  pdest->registers.at_reg = psrc->registers.at_reg;  
-	for(i=0 ; i<2 ; i++)           
-  pdest->registers.v_reg[i] = psrc->registers.v_reg[i];
-	for(i=0 ; i<4 ; i++)           
-  pdest->registers.a_reg[i] = psrc->registers.a_reg[i];
-	for(i=0 ; i<10 ; i++)      
-  	pdest->registers.t_reg[i] = psrc->registers.t_reg[0];  
-	for(i=0 ; i<8 ; i++)      
-  pdest->registers.s_reg[i] = psrc->registers.s_reg[i];
-  pdest->registers.sp_reg = psrc->registers.sp_reg;
-  pdest->registers.fp_reg = psrc->registers.fp_reg;
-  pdest->registers.ra_reg = psrc->registers.ra_reg;
-  pdest->registers.sp_reg = psrc->registers.sp_reg;
-  pdest->registers.epc_reg = psrc->registers.epc_reg;
-  pdest->registers.gp_reg = psrc->registers.gp_reg;
-
-	move_msg_lst(&psrc->messages, &pdest->messages);
-  pdest->wait = psrc->wait;
-  pdest->wait = psrc->wait_for;
-  pdest->error = psrc->error;
-  pdest->empty = psrc->empty;
-
-  psrc->empty = TRUE;
-  return OMGROXX;
-}*/
-
 
 /**
  * Return whether the pcb is empty or not.
@@ -578,37 +477,4 @@ char           *
 argn(char **data, int num)
 {
   return (char *) (data + num * (ARG_SIZE / sizeof(char *)));
-}
-
-/*
- * Deprecated
- */
-
-/**
- * copy a pcb inside an other.
- */
-uint32_t
-move_p(pcb * psrc, pcb * pdest)
-{
-  kprint
-    ("DEPRECATED: move_p in kprocess is redondant with pcb_move in kprocess_list");
-  uint32_t        i;
-  if (psrc == NULL || pdest == NULL)
-    return NULLPTR;
-  if (psrc->empty == TRUE)
-    return INVARG;
-
-  pdest->pid = psrc->pid;
-  strcpy(psrc->name, pdest->name);
-  pdest->pri = psrc->pri;
-  for (i = 0; i < MAXPCB; i++)
-    pdest->supervised[i] = psrc->supervised[i];
-  pdest->supervisor = psrc->supervisor;
-  pdest->registers.a_reg[0] = psrc->registers.a_reg[0];                 /** TODO: copy the registers */
-  pdest->sleep = psrc->sleep;
-  pdest->error = psrc->error;
-  pdest->empty = psrc->empty;
-
-  psrc->empty = TRUE;
-  return OMGROXX;
 }

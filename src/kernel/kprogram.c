@@ -6,12 +6,16 @@
 #include <string.h>
 #include "kprogram.h"
 #include "kernel.h"
+#include "../user/coquille.h"
+#include "../user/fibonacci.h"
+#include "../user/philosopher.h"
+#include "../user/increment.h"
 
 /*
  * Define
  */
 
-#define NUM_PROG 1
+#define NUM_PROG 5
 
 /*
  * Global variable
@@ -23,8 +27,45 @@ static prgm     prgm_ls[NUM_PROG] = {
    */
   {
    "init",
-   (uint32_t) & init,
-   "Initialize the system."}
+   (uint32_t) init,
+   "Initialize the system."
+  },
+
+  /*
+	* The shell program
+	*/
+  {
+	  "coquille",
+	  (uint32_t) coquille,
+	  "The shell program"
+  },
+
+  /*
+	* Fibonacci program
+	*/
+  {
+	  "fibonacci",
+	  (uint32_t) fibonacci,
+	  "Fibonacci computation program"
+  },
+
+  /*
+	* Increment program
+	*/
+  {
+	  "increment",
+	  (uint32_t) increment,
+	  "Increment a number to a limit"
+  },
+
+  /*
+	* Philosopher
+	*/
+  {
+	  "philosopher",
+	  (uint32_t) philosopher,
+	  "The philosopher problem"
+  }
 };
 
 /**

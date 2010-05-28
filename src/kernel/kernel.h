@@ -61,6 +61,4 @@ void            kinit();
  */
 void            init();
 
-void            pinit();
-
 #endif

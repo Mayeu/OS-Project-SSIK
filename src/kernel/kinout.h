@@ -16,6 +16,7 @@
  * @return void
  */
 void            kmaltaprint8(const char *str);
+
 /**
  * @brief Print a char on the tty
  * @param the string
@@ -47,10 +48,17 @@ void            kprintln(char *text);
 /**
  * @brief Print function using interrupt.
  * @param the string to print
- * @return
+ * @return OMGROXX if everything goes well
  */
 uint32_t        print_string(char *str);
+
+/*
+ * @brief Read function using interrupt
+ * @param the length of the string
+ * @param the string to print
+ */
 uint32_t        read_string(uint32_t length, char *buf);
+
 #endif
 
 /* end of file kinout.h*/
