@@ -13,30 +13,37 @@
 #include "include/registers.h"
 #include "include/types.h"
 
+/**
+ * @brief the list of syscall code
+ */
 enum
 {
-  FOURCHETTE,
-  PRINT,
-  PRINTLN,
-  FPRINT,
-  SLEEP,
-  BLOCK,
-  WAKEUP,
-  WAIT,
-  SEND,
-  RECV,
-  PERROR,
-  GERROR,
-  SERROR,
-  GETPINFO,
-	GETPRI,
-	GETPID,
-	GETPS,
-  CHGPPRI,
-  KILL,
-  EXIT
+  FOURCHETTE, /*!< Create a new process */
+  PRINT, /*!< Print a line */
+  //PRINTLN, /*!<*/
+  //FPRINT, /*!<*/
+  SLEEP, /*!< Go to sleep */
+  BLOCK, /*!< Block the current process  */
+  WAKEUP, /*!< Wake up the current test */
+  WAIT, /*!< The process wait for an other process */
+  SEND, /*!< Send a message to a process */
+  RECV, /*!< Receive a message */
+  PERROR, /*!< Print the current error */
+  GERROR, /*!< Get the current error */
+  SERROR, /*!< Set the current error */
+  GETPINFO, /*!< Get info of a pcb */
+	GETPRI, /*!< Get the priority of a process */
+	GETPID, /*!< Get the pid of the current process */
+	GETPS, /*!< Get an array of the current process of the system */
+  CHGPPRI, /*!< Change the priority of a process */
+  KILL, /*!< Kill a process */
+  EXIT /*!< Exit the current process */
 };
 
+/**
+ * @brief Syscal without argument
+ * @param a Syscall code
+ */
 int32_t         syscall_none(int32_t scode);
 int32_t         syscall_one(int32_t p1, int32_t scode);
 int32_t         syscall_two(int32_t p1, int32_t p2, int32_t scode);
