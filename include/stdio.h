@@ -9,10 +9,13 @@
 #ifndef __STDIO_H
 #define __STDIO_H
 
+/**
+ * \brief enum of the different outputs provided by the OS.
+ */
 enum
 {
-  CONSOLE,
-  MALTA
+  CONSOLE,						/*!< Output for the console */
+  MALTA								/*!< Output for the malta LCD */
 };
 
  /**

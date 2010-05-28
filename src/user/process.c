@@ -12,7 +12,7 @@
 #include "../kernel/ksyscall.h"
 
  /**
- * return the argument i from the char* array of arguments.
+ * Return the argument i from the char* array of arguments.
  */
 char           *
 get_arg(char *argv[], int i)

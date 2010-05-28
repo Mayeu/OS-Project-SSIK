@@ -51,7 +51,11 @@ typedef struct
 
  /**
  * \fn char* get_arg(char* argv[], int i)
- * return the argument i from the char* array of arguments.
+ * \brief Return the argument i from the char* array of arguments.
+ *
+ * \param argv the array of arguments
+ * \param i the index of the char* that will be returned
+ * \return the argument i
  */
 char           *get_arg(char *argv[], int i);
 
@@ -112,8 +116,7 @@ int             wait(int pid, int *status);
 
  /**
  * \fn int fourchette(char *name, int argc, char *argv[])
- * \brief Creates a new process with the program identified by its name 'name'. The
-program must be stored in the program list of the OS.
+ * \brief Creates a new process with the program identified by its name 'name'. The program must be stored in the program list of the OS.
  *
  * \param name the process name
  * \param prio the priority of the process to create

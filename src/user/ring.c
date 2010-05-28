@@ -1,6 +1,6 @@
 /**
  * \file ring.c
- * \brief blabla
+ * \brief Ring user program.
  * \author Christophe Carasco
  * \version 0.1
  * \date 25 mai 2010
@@ -10,6 +10,8 @@
 #include <string.h>
 #include <message.h>
 #include <process.h>
+
+#include "ring.h"
 
 #define MAX 	 10
 #define TIMER 500

@@ -1,6 +1,6 @@
 /**
  * \file scroll.h
- * \brief blabla
+ * \brief Scroll user program.
  * \author Adrien Forest
  * \version 0.1
  * \date 26 mai 2010

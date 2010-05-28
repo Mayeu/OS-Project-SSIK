@@ -13,32 +13,40 @@
 #define MAX_MPRI 30
 #define BAS_MPRI 15
 
-// all the data type we can send
+/**
+ * \brief enum of all the types of data a user can send using messages functions.
+It must be specified when sending or receiving messages.
+ */
 typedef enum
 {
-  INT_T,
-  CHAR_PTR,
+  INT_T,											/*!< Type integer */
+  CHAR_PTR,										/*!< Type char* */
   //OTHER_T
 } msg_t;
 
-// type of message priority
+/**
+ * \brief enum of all the type of message filters.
+ */
 typedef enum
 {
-	FPRI,
-	FPID,
-	FTYPE,	
-	FNONE
+	FPRI,												/*!< Filter message by priority */
+	FPID,												/*!< Filter message by pid */
+	FTYPE,											/*!< Filter message by type (msg_t structure) */
+	FNONE												/*!< No filter */
 } msg_filter;
 
-// arguments to pass to the send/recv functions
+/**
+ * \brief structure used in all the send and receive functions.
+It includes all the requiered fields used for message communication.
+ */
 typedef struct
-{
-  void           *data;
-  msg_t           datatype;
-  int             pid;
-  int             pri;
-  int             timeout;
-  msg_filter      filter;
+{	
+  void           *data;				/*!< User data */
+  msg_t           datatype;		/*!< Type of message */
+  int             pid;				/*!< Pid of the sender/receiver */
+  int             pri;				/*!< Priority of the message */
+  int             timeout;		/*!< Message timeout */
+  msg_filter      filter;			/*!< Message filter to apply */
 } msg_arg;
 
 /**

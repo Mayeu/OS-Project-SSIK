@@ -87,8 +87,8 @@ int help(int argc, char* argv[])
 	println("ps: print the list of all the running processes.");
 	print("chg_prio p pri: Change the priority of the process of pid p ");
 		println("with the new priority pri.");
-	println("tuer p: Kill the process of priority p.");
-	println("malta str: Print the string str on the malta LCD.");
+	println("tuer p: Kill the process of pid p.");
+	println("malta: Allow the user to change the malta LCD message.");
 
 	exit(0);
 	return 0;

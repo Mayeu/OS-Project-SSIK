@@ -1,6 +1,6 @@
 /**
  * \file increment.h
- * \brief blabla
+ * \brief Increment user program.
  * \author Christophe Carasco
  * \version 0.1
  * \date 26 mai 2010
