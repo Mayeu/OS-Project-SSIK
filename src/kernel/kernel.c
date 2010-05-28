@@ -107,6 +107,7 @@ kinit()
    */
   kload_timer(QUANTUM);
 
+  uart_init();
   /* Forever do nothing. */
   while (1);
 
