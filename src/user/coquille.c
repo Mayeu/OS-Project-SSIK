@@ -13,6 +13,13 @@
 #include <error.h>
 #include <message.h>
 
+#include "coquille_up.h"
+
+#include "scroll.h"
+#include "increment.h"
+#include "fibonacci.h"
+
+
 char            command_arg[MAX_SHELL_ARG][MAX_CHAR];
 
 void
@@ -20,45 +27,63 @@ coquille(void)
 {
   int             nb_arg, pid;
   char            prompt_line[255];
-  char            buffer[255];
-  //char            prog_name[20];
-  char           *command = "init arg1 arg2 arg3 arg4";
-  pcbinfo         pcbi;
+	char 						ibuf[3];
+  char            prog_name[20];
+  char            *command = "init arg1 arg2 arg3 arg4";
+	char						proc_inf[2][20];
+	char						scroll_inf[3][20];
+	char						incr_inf[2][20];
+	char						fib_inf[2][20];
+
+	strcpy("proc_info", proc_inf[0]);
+
+	strcpy("scroll", scroll_inf[0]);
+	strcpy("phrase qui scroll!", scroll_inf[1]);
+	strcpy(itos(500, ibuf), scroll_inf[2]);
+
+	strcpy("increment", incr_inf[0]);
+	strcpy(itos(10, ibuf), incr_inf[1]);
+
+	strcpy("fibonacci", fib_inf[0]);
+	strcpy(itos(8, ibuf), fib_inf[1]);
 
   strcpy("coquille> ", prompt_line);
 
   print(prompt_line);
 
-  fprint(MALTA, "ABC DEF");
-
   nb_arg = split_args(command, command_arg);
 
   println(command);
 
+	ps(1, NULL);
+
+	help(1, NULL);
+
+	// INCREMENT
+	increment(2, (char**)incr_inf);
+
+	// FIBONACCI
+	fibonacci(2, (char**)fib_inf);
+
+	// TEST SCROLL
+	//scroll(3, (char**)scroll_inf);
+
   if (nb_arg != -1)
   {
-    pid = fourchette(command_arg[0], nb_arg, (char **) command_arg);
+    pid = fourchette(command_arg[0], BAS_PRI, nb_arg, (char**) command_arg);
 
-    // print the new pid
-    print("pid : ");
-    println(itos(pid, buffer));
+		// FAIRE WAIT SUR LE PID (???)
 
-    get_proc_info(pid, &pcbi);
-    printiln(pcbi.empty);
-    printiln(pcbi.pid);
-    printiln(pcbi.pri);
-    println(pcbi.name);
+		strcpy(itos(pid, ibuf), proc_inf[1]);
+		
+		proc_info(2, (char**)proc_inf);
 
     println("changed prio to 30");
-    chgpri(pid, 30);
+    chg_pri(pid, 30);
     printiln(gerror());
     perror("Erreur !");
 
-    get_proc_info(pid, &pcbi);
-    printiln(pcbi.empty);
-    printiln(pcbi.pid);
-    printiln(pcbi.pri);
-    println(pcbi.name);
+		proc_info(2, (char**)proc_inf);
 
     // send(prog_name, CHAR_PTR, 5);
     // send((void *) 42, INT_T, 2);

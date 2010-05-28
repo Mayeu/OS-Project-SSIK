@@ -1,10 +1,9 @@
 /**
  * \file philosopher.c
  * \brief blabla
- * \author Christophe Carasco
+ * \author Adrien Forest
  * \version 0.1
- * \date 25 mai 2010
- *
+ * \date 26 mai 2010
  */
 
 #include <stdio.h>

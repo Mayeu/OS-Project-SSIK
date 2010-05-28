@@ -39,7 +39,19 @@ println(char *str)
   return e;
 }
 
+<<<<<<< HEAD:src/kernel/stdio.c
 /**
+=======
+ /**
+ * Print the carriage return character.
+ */
+int printn(void)
+{
+	return println("\n");
+}
+
+ /**
+>>>>>>> dev:src/kernel/stdio.c
  * Print the number n to the standard output.
  */
 int

@@ -296,9 +296,9 @@ get_pinfo2(pcb * p, pcbinfo2 * pi)
   if (p == NULL || pi == NULL)
     return NULLPTR;
 
-  pi->pid = pcb_get_pid(p);
-  strcpy(pcb_get_name(p), pi->name);
-  pi->pri = pcb_get_pri(p);
+  pi->pid = p->pid;
+  strcpy(p->name, pi->name);
+  pi->pri = p->pri;
 
   for (i = 0; i < MAXPCB; i++)
     pi->supervised[i] = pcb_get_supervised(p)[i];

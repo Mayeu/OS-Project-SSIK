@@ -24,9 +24,10 @@ typedef enum
 // type of message priority
 typedef enum
 {
-  FPRI,
-  FPID,
-  FTYPE
+	FPRI,
+	FPID,
+	FTYPE,	
+	FNONE
 } msg_filter;
 
 // arguments to pass to the send/recv functions
@@ -69,7 +70,7 @@ int             sendp(void *data, msg_t tdata, int pid, int prio);
  * \param data the data to send
  * \param tdata data type of the 'data' variable
  * \param timeout time to wait before stopping receive process
- * \return an error code
+ * \return the pid of the receiver or an error code otherwise
  */
 int             recv(void *data, msg_t tdata, int timeout);
 
@@ -81,7 +82,7 @@ int             recv(void *data, msg_t tdata, int timeout);
  * \param tdata data type of the 'data' variable
  * \param pid the pid of the receiver
  * \param timeout time to wait before stopping receive process
- * \return an error code
+ * \return the pid of the receiver or an error code otherwise
  */
 int             recv_from_pid(void *data, msg_t tdata, int pid, int timeout);
 
@@ -93,7 +94,7 @@ int             recv_from_pid(void *data, msg_t tdata, int pid, int timeout);
  * \param tdata data type of the 'data' variable
  * \param pri the priority of the message to wait
  * \param timeout time to wait before stopping receive process
- * \return an error code
+ * \return the pid of the receiver or an error code otherwise
  */
 int             recv_fromp_pri(void *data, msg_t tdata, int pri, int timeout);
 

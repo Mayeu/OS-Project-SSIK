@@ -16,6 +16,7 @@
 #define ARG_SIZE 20
 #define MAXPCB 40
 
+
 #include <stdlib.h>
 
 /**
@@ -32,8 +33,6 @@ typedef struct
   int             pri;          /*!< Process priority. */
   int             supervised[MAXPCB];   /*!< List of supervised processes. */
   int             supervisor;   /*!< List of supervisor processes. */
-  int             wait;
-  bool            empty;
 } pcbinfo;
 
 typedef struct
@@ -117,11 +116,12 @@ int             wait(int pid, int *status);
 program must be stored in the program list of the OS.
  *
  * \param name the process name
+ * \param prio the priority of the process to create
  * \param argc the number of arguments in the argv array
  * \param the arguments list (first arg is the name of the program)
  * \return the process pid (>0) or an negative error in case of any failure
  */
-int             fourchette(char *name, int argc, char *argv[]);
+int             fourchette(char *name, int prio, int argc, char *argv[]);
 
  /**
  * \fn int get_proc_info(int pid)
@@ -135,14 +135,23 @@ not critical information is given to the user.
 int             get_proc_info(int pid, pcbinfo * res);
 
  /**
- * \fn int chgpri(int pid, int newprio)
+ * \fn int chg_pri(int pid, int newprio)
  * \brief Changes the priority of the process from the old one to the new priority ’prio’.
  *
  * \param pid the pid of the process
  * \param newprio the new priority of the process
  * \return the error identifier in case of any failure
  */
-int             chgpri(int pid, int newprio);
+int             chg_pri(int pid, int newprio);
+
+ /**
+ * \fn int get_pri(int pid)
+ * \brief Get the priority f the process pid.
+ *
+ * \param pid the pid of the process
+ * \return the process pid if ok, an error code otherwise
+ */
+int             get_pri(int pid);
 
  /**
  * \fn int get_pid(void)
@@ -151,5 +160,16 @@ int             chgpri(int pid, int newprio);
  * \return the process pid
  */
 int             get_pid(void);
+
+ /**
+ * \fn int get_ps(char *pnames[ARG_SIZE], int *pid)
+ * \brief Fill the char* array with the name of all the processes running and
+the int array with all the corresponding pids.
+ *
+ * \param pnames the array of processes name to fill
+ * \param pid  the array of processes pid to fill
+ * \return the size of the arrays (obviously the same in both arrays)
+ */
+int             get_ps(char *pnames[ARG_SIZE], int *pid);
 
 #endif //__PROCESS_H
