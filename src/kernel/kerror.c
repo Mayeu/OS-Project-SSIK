@@ -12,6 +12,21 @@
 #include "kinout.h"
 #include "kernel.h"
 
+char err_msgs[12][255] = {
+	"No error occured",
+	"General error",
+	"Invalid ID",
+	"Invalid argument",
+	"Null pointer error",
+	"Out of mid (number of messages is limited)",
+	"Out of pid (number of processes is limited)",
+	"Invalid priority",
+	"Unknown mid (message identifier)",
+	"Unknown pid (process identifier)",
+	"Out of memory",
+	"These are not the droid you are looking for"
+};
+
  /**
  * Print the specified err_msg followed by the description of the error according to the global
 variable perror.
@@ -20,15 +35,22 @@ void
 kperror(char *error_msg)
 {
   char            res[255];
-  char            num[10];
+  char            num[3];
+	int							err_num = (int) p_error;
 
   if (error_msg != NULL)
   {
     strcpy(error_msg, res);
     strcat(res, " : ");
   }
-  itos((int) p_error, num);
+
+	strcat(res, err_msgs[-err_num]);
+	strcat(res, " (");
+
+  itos(err_num, num);
   strcat(res, num);
+
+	strcat(res, ")");
 
   kprint(res);
   kprintn();
