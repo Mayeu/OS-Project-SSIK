@@ -1,5 +1,5 @@
 /**
- * \file kprocess.h
+ * \file kprocess.c
  * \brief Process related functions
  * \author Christophe Carasco
  * \version 0.1
@@ -243,7 +243,8 @@ search_all_list(uint32_t pid)
 }
 
 /**
- * deallocate a pcb.
+ * @brief tohautnhenot
+ * @private
  */
 uint32_t
 rm_p(pcb * p)
@@ -285,7 +286,7 @@ get_pinfo(pcb * p, pcbinfo * pi)
   return FAILNOOB;
 }
 
-/**
+/*
  * copy and give the information of a pcb into a pcbinfo.
  */
 uint32_t
@@ -313,7 +314,7 @@ get_pinfo2(pcb * p, pcbinfo2 * pi)
   return OMGROXX;
 }
 
-/**
+/*
  * add a pid to the supervise list of a process;
  */
 
@@ -335,7 +336,7 @@ add_psupervised(pcb * p, uint32_t pid)
   return pcb_set_supervised(p, pid);
 }
 
-/**
+/*
  * remove a pid from the supervised list of a process
  */
 uint32_t
@@ -349,7 +350,7 @@ rm_psupervised(pcb * p, uint32_t pid)
   return OMGROXX;
 }
 
-/**
+/*
  * Return whether the pcb is empty or not.
  */
 bool
