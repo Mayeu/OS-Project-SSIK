@@ -15,7 +15,7 @@
  */
 
 /**
- * @brief Possible state of a process
+ * @brief Possible state of a process. This is hold by the pcb.
  */
 enum
 {
