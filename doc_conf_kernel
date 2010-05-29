@@ -1,3 +1,5 @@
 INPUT = src/kernel/
 FILE_PATTERNS = *.h
 OUTPUT_DIRECTORY = doc/kernel
+OPTIMIZE_OUTPUT_FOR_C = yes
+GENERATE_HTML = no

@@ -1,3 +1,5 @@
 INPUT = include/
 FILE_PATTERNS = *.h
 OUTPUT_DIRECTORY = doc/user
+OPTIMIZE_OUTPUT_FOR_C = yes
+GENERATE_HTML = no
