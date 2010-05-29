@@ -117,7 +117,7 @@ uart_exception()
   switch (mode)
   {
   case UART_READ:
-    /*uart_read();*/
+    /*uart_read(); */
     break;
 
   case UART_PRINT:
@@ -324,7 +324,7 @@ end_of_printing(int32_t code)
   /*
    * Since it's unused we stop the interrupt
    */
-  tty->ier.field.etbei = 0;     
+  tty->ier.field.etbei = 0;
 
   /*
    * Reset everything and release
@@ -353,7 +353,7 @@ uart_release(int32_t code)
      * Set back the state
      */
     pcb_set_state(user, WAITING_IO);
-    return FAILNOOB;            
+    return FAILNOOB;
   }
 
   /*
@@ -383,7 +383,7 @@ uart_release(int32_t code)
        * Set back the state
        */
       pcb_set_state(&(it->p), RUNNING);
-      return FAILNOOB;          
+      return FAILNOOB;
     }
 
     user = &(it->p);

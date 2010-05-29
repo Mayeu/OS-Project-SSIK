@@ -154,7 +154,7 @@ create_proc(char *name, uint32_t prio, char **params)
     /*
      * Set the parameters of the function
      */
-    p.registers.a_reg[0] = 0;   
+    p.registers.a_reg[0] = 0;
     p.registers.a_reg[1] = (uint32_t) & params; /* the adresse of the first arg */
 
     /*

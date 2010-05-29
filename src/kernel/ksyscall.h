@@ -18,26 +18,26 @@
  */
 enum
 {
-  FOURCHETTE, /*!< Create a new process */
-  PRINT, /*!< Print a line */
-  PRINTLN, /*!<*/
-  FPRINT, /*!<*/
-  SLEEP, /*!< Go to sleep */
-  BLOCK, /*!< Block the current process  */
-  WAKEUP, /*!< Wake up the current test */
-  WAIT, /*!< The process wait for an other process */
-  SEND, /*!< Send a message to a process */
-  RECV, /*!< Receive a message */
-  PERROR, /*!< Print the current error */
-  GERROR, /*!< Get the current error */
-  SERROR, /*!< Set the current error */
-  GETPINFO, /*!< Get info of a pcb */
-	GETPRI, /*!< Get the priority of a process */
-	GETPID, /*!< Get the pid of the current process */
-	GETPS, /*!< Get an array of the current process of the system */
-  CHGPPRI, /*!< Change the priority of a process */
-  KILL, /*!< Kill a process */
-  EXIT /*!< Exit the current process */
+  FOURCHETTE,                   /*!< Create a new process */
+  PRINT,                        /*!< Print a line */
+  PRINTLN,                      /*!< */
+  FPRINT,                       /*!< */
+  SLEEP,                        /*!< Go to sleep */
+  BLOCK,                        /*!< Block the current process  */
+  WAKEUP,                       /*!< Wake up the current test */
+  WAIT,                         /*!< The process wait for an other process */
+  SEND,                         /*!< Send a message to a process */
+  RECV,                         /*!< Receive a message */
+  PERROR,                       /*!< Print the current error */
+  GERROR,                       /*!< Get the current error */
+  SERROR,                       /*!< Set the current error */
+  GETPINFO,                     /*!< Get info of a pcb */
+  GETPRI,                       /*!< Get the priority of a process */
+  GETPID,                       /*!< Get the pid of the current process */
+  GETPS,                        /*!< Get an array of the current process of the system */
+  CHGPPRI,                      /*!< Change the priority of a process */
+  KILL,                         /*!< Kill a process */
+  EXIT                          /*!< Exit the current process */
 };
 
 /**

@@ -12,13 +12,14 @@
 
 #include "increment.h"
 
-int increment(int argc, char *argv[])
+int
+increment(int argc, char *argv[])
 {
-  int i = 1;
-	int n = stoi(get_arg(argv, 1));
+  int             i = 1;
+  int             n = stoi(get_arg(argv, 1));
   for (; i <= n; i++)
     printiln(i);
 
-	exit(0);
-	return 0; 
+  exit(0);
+  return 0;
 }

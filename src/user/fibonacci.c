@@ -12,11 +12,12 @@
 
 #include "fibonacci.h"
 
-int fibonacci(int argc, char *argv[])
+int
+fibonacci(int argc, char *argv[])
 {
-  int i = 2;
-  int f0 = 1, f1 = 1, f;
-	int n = stoi(get_arg(argv, 1));
+  int             i = 2;
+  int             f0 = 1, f1 = 1, f;
+  int             n = stoi(get_arg(argv, 1));
 
   printiln(f0);
   printiln(f1);
@@ -29,6 +30,6 @@ int fibonacci(int argc, char *argv[])
     printiln(f1);
     i++;
   }
-	exit(0);
-	return 0;
+  exit(0);
+  return 0;
 }

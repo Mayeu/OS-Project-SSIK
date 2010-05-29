@@ -27,24 +27,24 @@ coquille(void)
 {
   int             nb_arg, pid;
   char            prompt_line[255];
-	char 						ibuf[3];
-  char            *command = "init arg1 arg2 arg3 arg4";
-	char						proc_inf[2][20];
-	char						scroll_inf[3][20];
-	char						incr_inf[2][20];
-	char						fib_inf[2][20];
+  char            ibuf[3];
+  char           *command = "init arg1 arg2 arg3 arg4";
+  char            proc_inf[2][20];
+  char            scroll_inf[3][20];
+  char            incr_inf[2][20];
+  char            fib_inf[2][20];
 
-	strcpy("proc_info", proc_inf[0]);
+  strcpy("proc_info", proc_inf[0]);
 
-	strcpy("scroll", scroll_inf[0]);
-	strcpy("phrase qui scroll!", scroll_inf[1]);
-	strcpy(itos(500, ibuf), scroll_inf[2]);
+  strcpy("scroll", scroll_inf[0]);
+  strcpy("phrase qui scroll!", scroll_inf[1]);
+  strcpy(itos(500, ibuf), scroll_inf[2]);
 
-	strcpy("increment", incr_inf[0]);
-	strcpy(itos(10, ibuf), incr_inf[1]);
+  strcpy("increment", incr_inf[0]);
+  strcpy(itos(10, ibuf), incr_inf[1]);
 
-	strcpy("fibonacci", fib_inf[0]);
-	strcpy(itos(8, ibuf), fib_inf[1]);
+  strcpy("fibonacci", fib_inf[0]);
+  strcpy(itos(8, ibuf), fib_inf[1]);
 
   strcpy("coquille> ", prompt_line);
 
@@ -54,35 +54,35 @@ coquille(void)
 
   println(command);
 
-	ps(1, NULL);
+  ps(1, NULL);
 
-	help(1, NULL);
+  help(1, NULL);
 
-	// INCREMENT
-	increment(2, (char**)incr_inf);
+  // INCREMENT
+  increment(2, (char **) incr_inf);
 
-	// FIBONACCI
-	fibonacci(2, (char**)fib_inf);
+  // FIBONACCI
+  fibonacci(2, (char **) fib_inf);
 
-	// TEST SCROLL
-	//scroll(3, (char**)scroll_inf);
+  // TEST SCROLL
+  //scroll(3, (char**)scroll_inf);
 
   if (nb_arg != -1)
   {
-    pid = fourchette(command_arg[0], BAS_PRI, nb_arg, (char**) command_arg);
+    pid = fourchette(command_arg[0], BAS_PRI, nb_arg, (char **) command_arg);
 
-		// FAIRE WAIT SUR LE PID (???)
+    // FAIRE WAIT SUR LE PID (???)
 
-		strcpy(itos(pid, ibuf), proc_inf[1]);
-		
-		proc_info(2, (char**)proc_inf);
+    strcpy(itos(pid, ibuf), proc_inf[1]);
+
+    proc_info(2, (char **) proc_inf);
 
     println("changed prio to 30");
     chg_pri(pid, 30);
     printiln(gerror());
     perror("Erreur !");
 
-		proc_info(2, (char**)proc_inf);
+    proc_info(2, (char **) proc_inf);
   }
 
 /*

@@ -81,18 +81,18 @@ kinit()
    * Launch test
    */
 
-	test();
+  test();
 
-	pcls_reset(&pclsready);
-	pcls_reset(&pclsrunning);
-	pcls_reset(&pclswaiting);
-	pcls_reset(&pclsterminate);
+  pcls_reset(&pclsready);
+  pcls_reset(&pclsrunning);
+  pcls_reset(&pclswaiting);
+  pcls_reset(&pclsterminate);
 
-	reset_next_pid();
-	reset_used_stack();
+  reset_next_pid();
+  reset_used_stack();
 
-	set_current_pcb(NULL);
-	p_error = &kerror;
+  set_current_pcb(NULL);
+  p_error = &kerror;
 
   char            arg[4][20];
 

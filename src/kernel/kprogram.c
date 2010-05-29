@@ -31,44 +31,39 @@ static prgm     prgm_ls[NUM_PROG] = {
   {
    "init",
    (uint32_t) init,
-   "Initialize the system."
-  },
+   "Initialize the system."},
 
   /*
-	* The shell program
-	*/
+   * The shell program
+   */
   {
-	  "coquille",
-	  (uint32_t) coquille,
-	  "The shell program"
-  },
+   "coquille",
+   (uint32_t) coquille,
+   "The shell program"},
 
   /*
-	* Fibonacci program
-	*/
+   * Fibonacci program
+   */
   {
-	  "fibonacci",
-	  (uint32_t) fibonacci,
-	  "Fibonacci computation program"
-  },
+   "fibonacci",
+   (uint32_t) fibonacci,
+   "Fibonacci computation program"},
 
   /*
-	* Increment program
-	*/
+   * Increment program
+   */
   {
-	  "increment",
-	  (uint32_t) increment,
-	  "Increment a number to a limit"
-  },
+   "increment",
+   (uint32_t) increment,
+   "Increment a number to a limit"},
 
   /*
-	* Philosopher
-	*/
+   * Philosopher
+   */
   {
-	  "philosopher",
-	  (uint32_t) philosopher,
-	  "The philosopher problem"
-  }
+   "philosopher",
+   (uint32_t) philosopher,
+   "The philosopher problem"}
 };
 
 /**

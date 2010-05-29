@@ -42,9 +42,10 @@ println(char *str)
  /**
  * Print the carriage return character.
  */
-int printn(void)
+int
+printn(void)
 {
-	return println("\n");
+  return println("\n");
 }
 
  /**

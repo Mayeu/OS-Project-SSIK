@@ -79,18 +79,19 @@ wait(int pid, int *status)
  * Creates a new process with the program identified by its name 'name'. The
 program must be stored in the program list of the OS.
  */
-int fourchette(char *name, int prio, int argc, char *argv[])
+int
+fourchette(char *name, int prio, int argc, char *argv[])
 {
-	int i;
-	char pr[3];
-	char new_args[MAX_ARG+1][ARG_SIZE];
+  int             i;
+  char            pr[3];
+  char            new_args[MAX_ARG + 1][ARG_SIZE];
 
-	// add the process priority to the new arg array
-	strcpy(itos(prio, pr), new_args[0]);
-	// copy all the arguments
-	for (i=0; i<argc; i++)
-		strcpy(get_arg(argv, i), new_args[i+1]);
-	
+  // add the process priority to the new arg array
+  strcpy(itos(prio, pr), new_args[0]);
+  // copy all the arguments
+  for (i = 0; i < argc; i++)
+    strcpy(get_arg(argv, i), new_args[i + 1]);
+
   return syscall_three((int32_t) name, argc, (int32_t) new_args, FOURCHETTE);
 }
 
@@ -116,9 +117,10 @@ chg_pri(int pid, int newprio)
  /**
  * \brief Get the priority f the process pid.
  */
-int get_pri(int pid)
+int
+get_pri(int pid)
 {
-	return syscall_one(pid, GETPRI);
+  return syscall_one(pid, GETPRI);
 }
 
  /**
@@ -134,7 +136,8 @@ get_pid(void)
  * Fill the char* array with the name of all the processes running and
 the int array with all the corresponding pids.
  */
-int get_ps(char *pnames[ARG_SIZE], int *pid)
+int
+get_ps(char *pnames[ARG_SIZE], int *pid)
 {
-	return syscall_two((int32_t)pnames, (int32_t)pid, GETPS);
+  return syscall_two((int32_t) pnames, (int32_t) pid, GETPS);
 }

@@ -19,8 +19,8 @@ It must be specified when sending or receiving messages.
  */
 typedef enum
 {
-  INT_T,											/*!< Type integer */
-  CHAR_PTR,										/*!< Type char* */
+  INT_T,                        /*!< Type integer */
+  CHAR_PTR,                     /*!< Type char* */
   //OTHER_T
 } msg_t;
 
@@ -29,10 +29,10 @@ typedef enum
  */
 typedef enum
 {
-	FPRI,												/*!< Filter message by priority */
-	FPID,												/*!< Filter message by pid */
-	FTYPE,											/*!< Filter message by type (msg_t structure) */
-	FNONE												/*!< No filter */
+  FPRI,                         /*!< Filter message by priority */
+  FPID,                         /*!< Filter message by pid */
+  FTYPE,                        /*!< Filter message by type (msg_t structure) */
+  FNONE                         /*!< No filter */
 } msg_filter;
 
 /**
@@ -40,13 +40,13 @@ typedef enum
 It includes all the requiered fields used for message communication.
  */
 typedef struct
-{	
-  void           *data;				/*!< User data */
-  msg_t           datatype;		/*!< Type of message */
-  int             pid;				/*!< Pid of the sender/receiver */
-  int             pri;				/*!< Priority of the message */
-  int             timeout;		/*!< Message timeout */
-  msg_filter      filter;			/*!< Message filter to apply */
+{
+  void           *data;         /*!< User data */
+  msg_t           datatype;     /*!< Type of message */
+  int             pid;          /*!< Pid of the sender/receiver */
+  int             pri;          /*!< Priority of the message */
+  int             timeout;      /*!< Message timeout */
+  msg_filter      filter;       /*!< Message filter to apply */
 } msg_arg;
 
 /**

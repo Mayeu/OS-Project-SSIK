@@ -10,6 +10,6 @@
 #ifndef __PHILOSOPHER_H
 #define __PHILOSOPHER_H
 
-int philosopher(int argc, char *argv[]);
+int             philosopher(int argc, char *argv[]);
 
 #endif //__PHILOSOPHER_H

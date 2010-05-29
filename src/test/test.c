@@ -39,6 +39,7 @@ test_unit(bool err, int res)
     kprintln(itos(res, resc));
   }
 }
+
 void
 test()
 {

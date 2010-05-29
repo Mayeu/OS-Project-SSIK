@@ -26,11 +26,11 @@
  */
 typedef struct
 {
-	uint32_t sdr_pid;			/*!< Sender process identifier. */
-	uint32_t recv_pid;		/*!< Receiver process identifier. */
-	uint32_t pri;				/*!< Priority. */
-	void *data;					/*!< data (content of the message). */
-	msg_t datatype;			/*!< Sender process identifier. */
+  uint32_t        sdr_pid;      /*!< Sender process identifier. */
+  uint32_t        recv_pid;     /*!< Receiver process identifier. */
+  uint32_t        pri;          /*!< Priority. */
+  void           *data;         /*!< data (content of the message). */
+  msg_t           datatype;     /*!< Sender process identifier. */
 } msg;
 
 /**
@@ -43,14 +43,14 @@ typedef struct
  */
 typedef struct
 {
-  msg             ls[MAX_MSG];/*!< list of messages. */
-  int32_t         status;		/*!< the status of the list (type of message expected, see above). */
-  uint32_t        length;		/*!< number of elements */
-  uint32_t        in;			/*!< index where to push */
-  uint32_t        out;			/*!< first element to pop */
-  msg_filter filter;				/*!< filter type */
-  int32_t filtervalue;			/*!< value of the filter */
-  int32_t timeout;				/*!< timeout before cancelling the receiving */
+  msg             ls[MAX_MSG];  /*!< list of messages. */
+  int32_t         status;       /*!< the status of the list (type of message expected, see above). */
+  uint32_t        length;       /*!< number of elements */
+  uint32_t        in;           /*!< index where to push */
+  uint32_t        out;          /*!< first element to pop */
+  msg_filter      filter;       /*!< filter type */
+  int32_t         filtervalue;  /*!< value of the filter */
+  int32_t         timeout;      /*!< timeout before cancelling the receiving */
 } mls;
 
 /**
@@ -59,7 +59,7 @@ typedef struct
  * \param m the list of messages
  * \return void
  */
-void            reset_mls(mls *m);
+void            reset_mls(mls * m);
 
 /**
  * \fn uint32_t push_mls(mls* m, msg *mess)
@@ -69,7 +69,7 @@ void            reset_mls(mls *m);
  * \param mess the list of messages
  * \return an error code
  */
-uint32_t        push_mls(mls* m, msg *mess);
+uint32_t        push_mls(mls * m, msg * mess);
 
 
 /**
@@ -80,7 +80,7 @@ uint32_t        push_mls(mls* m, msg *mess);
  * \param mess the list of messages
  * \return an error code
  */
-uint32_t        pop_mls(mls* m, msg *mess);
+uint32_t        pop_mls(mls * m, msg * mess);
 
 /**
  * \fn int32_t create_msg(msg *m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri, void *data, msg_t datatype)
@@ -94,7 +94,8 @@ uint32_t        pop_mls(mls* m, msg *mess);
  * \param datatype the type of the content
  * \return an error code
  */
-int32_t create_msg(msg *m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri, void *data, msg_t datatype);
+int32_t         create_msg(msg * m, uint32_t sdr_pid, uint32_t recv_pid,
+                           uint32_t pri, void *data, msg_t datatype);
 
 /**
  * \fn int32_t copy_msg(msg * src, msg * dest)
@@ -104,7 +105,7 @@ int32_t create_msg(msg *m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri, vo
  * \param dest the location of the destination message
  * \return an error code
  */
-int32_t copy_msg(msg * src, msg * dest);
+int32_t         copy_msg(msg * src, msg * dest);
 
 /**
  * \fn int32_t send_msg(uint32_t sdr_pid, msg_arg *args)
@@ -114,7 +115,7 @@ int32_t copy_msg(msg * src, msg * dest);
  * \param args the arguments
  * \return an error code
  */
-int32_t send_msg(uint32_t sdr_pid, msg_arg *args);
+int32_t         send_msg(uint32_t sdr_pid, msg_arg * args);
 
 /**
  * \fn int32_t recv_msg(uint32_t sdr_pid, msg_arg *args)
@@ -125,7 +126,7 @@ int32_t send_msg(uint32_t sdr_pid, msg_arg *args);
  * \param args the arguments
  * \return an error code or the pid of the sender
  */
-int32_t recv_msg(uint32_t recv_pid, msg_arg *args);
+int32_t         recv_msg(uint32_t recv_pid, msg_arg * args);
 
 /**
  * \fn bool search_msg_filtered(msg_filter filter, int32_t filtervalue, msg *m, msg_t datatype)
@@ -138,7 +139,8 @@ int32_t recv_msg(uint32_t recv_pid, msg_arg *args);
  * \param datatype the type of the message
  * \return TRUE if a message with the good filter is found, FALSE otherwise
  */
-bool search_msg_filtered(msg_filter filter, int32_t filtervalue, msg *m, msg_t datatype);
+bool            search_msg_filtered(msg_filter filter, int32_t filtervalue,
+                                    msg * m, msg_t datatype);
 
 /**
  * \fn int32_t copy_mls(mls * src, mls * dest)
@@ -148,6 +150,6 @@ bool search_msg_filtered(msg_filter filter, int32_t filtervalue, msg *m, msg_t d
  * \param dest the dest message list
  * \return an error code
  */
-int32_t copy_mls(mls * src, mls * dest);
+int32_t         copy_mls(mls * src, mls * dest);
 
 #endif

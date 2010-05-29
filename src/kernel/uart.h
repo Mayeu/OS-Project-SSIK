@@ -28,10 +28,10 @@
  */
 typedef struct
 {
-  char            buffer[UART_FIFO_SIZE]; /*!< A buffer to keep the character to print */
-  uint32_t        length; /*!< length of the buffer */
-  uint32_t        in; /*!< the in position */
-  uint32_t        out; /*!< the out position */
+  char            buffer[UART_FIFO_SIZE];       /*!< A buffer to keep the character to print */
+  uint32_t        length;       /*!< length of the buffer */
+  uint32_t        in;           /*!< the in position */
+  uint32_t        out;          /*!< the out position */
 } fifo_buffer;
 
 /**
@@ -43,9 +43,9 @@ typedef struct
  */
 enum
 {
-  UART_UNUSED, /*!< Uart is unused */
-  UART_PRINT, /*!< Currently printing */
-  UART_READ /*!< Currently running */
+  UART_UNUSED,                  /*!< Uart is unused */
+  UART_PRINT,                   /*!< Currently printing */
+  UART_READ                     /*!< Currently running */
 };
 
 /*

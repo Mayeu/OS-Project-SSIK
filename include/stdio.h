@@ -14,8 +14,8 @@
  */
 enum
 {
-  CONSOLE,						/*!< Output for the console */
-  MALTA								/*!< Output for the malta LCD */
+  CONSOLE,                      /*!< Output for the console */
+  MALTA                         /*!< Output for the malta LCD */
 };
 
  /**
