@@ -28,7 +28,7 @@ typedef struct linked_item
 } pcls_item;
 
 /**
- * \struct pls
+ * \struct pcls
  * \brief List of processes.
  *
  */
@@ -108,7 +108,7 @@ void            pcls_item_cpy_pcb(pcb * p, pcls_item * it);
  */
 
 /**
- * \struct pls
+ * \struct pcls
  * \brief List of processes.
  *
  */
@@ -116,17 +116,17 @@ void            pcls_item_cpy_pcb(pcb * p, pcls_item * it);
 {
 	pcb ls[MAXPCB];
 	pcb *current;
-} pls;
+} pcls;
 */
 
 /**
- * \fn int create_pls(pls *ls)
+ * \fn int create_pcls(pcls *ls)
  * \brief initialize a list of pcb
  *
  * \param ls a pointer to a list
  * \return an error code
  */
-//uint32_t        create_pls(pls * ls);
+//uint32_t        create_pcls(pcls * ls);
 
 /**
  * \fn create_proc(char *name, uint32_t prio, char **params)
@@ -144,63 +144,63 @@ void            pcls_item_cpy_pcb(pcb * p, pcls_item * it);
 uint32_t        create_proc(char *name, uint32_t prio, char **params);
 
 /**
- * \fn int rm_pls(pls *ls)
+ * \fn int rm_pcls(pcls *ls)
  * \brief delete a list of pcb
  *
  * \param ls a pointer to a list
  * \return an error code
  */
-//uint32_t        rm_pls(pls * ls);
+//uint32_t        rm_pcls(pcls * ls);
 
 /**
- * \fn void rm_all_pls()
+ * \fn void rm_all_pcls()
  * \brief remove all the lists and reset next_pid
  */
-//void            rm_all_pls();
+//void            rm_all_pcls();
 
 /**
- * \fn void create_all_pls()
+ * \fn void create_all_pcls()
  * \brief create all the lists and reset next_pid
  */
-//void            create_all_pls();
+//void            create_all_pcls();
 
 /**
- * \fn int rm_from_pls(pcb *p, pls *ls)
+ * \fn int rm_from_pcls(pcb *p, pcls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
  * \param p the pcb to remove
  * \param ls a pointer to a list
  * \return an error code
  */
-//uint32_t        rm_from_pls(int32_t pid, pls * ls);
+//uint32_t        rm_from_pcls(int32_t pid, pcls * ls);
 
 /**
- * \fn pcb* empty_space(pls *ls)
+ * \fn pcb* empty_space(pcls *ls)
  * \brief return the first empty space in a process list
  *
  * \param ls a pointer to a list
  * \return the first empty pcb
  */
-//pcb            *empty_space(pls * ls);
+//pcb            *empty_space(pcls * ls);
 
 /**
- * \fn bool pls_is_empty(pls *ls)
+ * \fn bool pcls_is_empty(pcls *ls)
  * \brief Return whether the list is empty or not
  *
  * \param ls a pointer to the list
  * \return a boolean
  */
-//bool            pls_is_empty(pls * ls);
+//bool            pcls_is_empty(pcls * ls);
 
 /**
- * \fn pcb* search(int pid, pls *ls)
+ * \fn pcb* search(int pid, pcls *ls)
  * \brief search for a process in a list
  *
  * \param pid the pid ot the process to search
  * \param ls a pointer to the list
  * \return a pcb
  */
-//pcb            *search_pcb(uint32_t pid, pls * ls);
+//pcb            *search_pcb(uint32_t pid, pcls * ls);
 
 /**
  * \fn pcb* searchall(int pid)
@@ -212,7 +212,7 @@ uint32_t        create_proc(char *name, uint32_t prio, char **params);
 //pcb            *searchall(uint32_t pid);
 
 /**
- * \fn int move(int pid, pls *src, pls *dest)
+ * \fn int move(int pid, pcls *src, pcls *dest)
  * \brief move a process from a list to another (will search to ensure that the
  *			pcb is in the list)
  *
@@ -221,16 +221,16 @@ uint32_t        create_proc(char *name, uint32_t prio, char **params);
  * \param dest the destination list
  * \return an error code
  */
-//uint32_t        move(uint32_t pid, pls * src, pls * dest);
+//uint32_t        move(uint32_t pid, pcls * src, pcls * dest);
 
 /**
- * \fn int sort(pls *ls)
+ * \fn int sort(pcls *ls)
  * \brief sort a process list by priority (highest to lowest)
  *
  * \param ls the list to sort
  * \return an error code
  */
-//uint32_t        sort(pls * ls);
+//uint32_t        sort(pcls * ls);
 /**
  * \fn int add_psupervise(pcb *p, int pid)
  * \brief add a pid to the supervise list of a process
