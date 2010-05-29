@@ -15,7 +15,7 @@
 #include "kpcb.h"
 
 /**
- * \struct pls
+ * \struct pcls
  * \brief List of processes.
  *
  */
