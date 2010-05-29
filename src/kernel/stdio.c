@@ -25,7 +25,7 @@ print(char *str)
 }
 
 /**
- * \brief Print the string str to the standard output.
+ * Print the string str to the standard output.
  and return line.
  */
 int
@@ -49,7 +49,6 @@ printn(void)
 }
 
  /**
->>>>>>> dev:src/kernel/stdio.c
  * Print the number n to the standard output.
  */
 int
@@ -89,7 +88,9 @@ getc(void)
 }
 
 /**
- * Reads characters from stream and stores them as a string into str until (num-1) characters have.
+ * Reads characters from stream and stores them as a string into str until (num-1) characters have
+been readen or either a newline or a the End-of-File is reached, whichever comes first. stream
+(keyboard). A null character is added to the end.
  */
 int
 gets(char *str, int num)

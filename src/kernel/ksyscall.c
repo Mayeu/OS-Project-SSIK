@@ -46,11 +46,6 @@ syscall_handler(registers_t * regs)
   case PRINT:
     res = print_string((char *) regs->a_reg[0]);
     break;
-    //case PRINTLN:
-    //kprintln("Want to print");
-    //res = print_string((char *) regs->a_reg[0]);
-    //res = print_string("\n");
-    //break;
   case FPRINT:
     if (regs->a_reg[0] == CONSOLE)
       kprint((char *) regs->a_reg[1]);
@@ -59,7 +54,6 @@ syscall_handler(registers_t * regs)
     break;
   case SLEEP:
     res = go_to_sleep(regs->a_reg[0]);
-    schedule();
     break;
   case BLOCK:
     break;
@@ -100,12 +94,12 @@ syscall_handler(registers_t * regs)
     kserror(regs->a_reg[0]);
     break;
   case GETPINFO:
-    p = search_all_list(regs->a_reg[0]);
-    res = get_pinfo(p, (pcbinfo *) regs->a_reg[1]);
+    // TODO : get_pinfo() TAKES A PID INSTEAD OF A PCB
+    //res = get_pinfo(regs->a_reg[0], (pcbinfo *) regs->a_reg[1]);
     break;
   case GETPRI:
-    p = search_all_list(regs->a_reg[0]);
-    res = p->pri;
+    // TODO : int kgetpri(int pid)
+    //res = kgetpri(regs->a_reg[0]);
     break;
   case GETPID:
     res = pcb_get_pid(get_current_pcb());
@@ -129,17 +123,19 @@ syscall_handler(registers_t * regs)
       break;
     }
   case CHGPPRI:
-    p = search_all_list(regs->a_reg[0]);
-    res = chg_ppri(p, regs->a_reg[1]);
+    // TODO : chg_ppri() TAKES A PID INSTEAD OF A PCB
+    //res = chg_ppri(regs->a_reg[0], regs->a_reg[1]);
     break;
   case KILL:
-    p = search_all_list(regs->a_reg[0]);
-    res = rm_p(p);
-    schedule();
+    // TODO : rm_p() TAKES A PID INSTEAD OF A PCB
+    //res = kkill(regs->a_reg[0]);
     break;
   case EXIT:
     // NOTIFY THE SUPERVISOR OF THE EXITING PROCESS !
     //kprint("proc exiting with value "); kprint(itos(regs->a_reg[0], buf));kprintn();
+
+    // TODO : int kexit()
+    //res = kexit()
 /*
     p = search_pcb(prunning.current->pid, &prunning);
 		p->registers.v_reg[0] = regs->a_reg[0];

@@ -12,19 +12,19 @@
 #include "kinout.h"
 #include "kernel.h"
 
-char err_msgs[12][255] = {
-	"No error occured",
-	"General error",
-	"Invalid ID",
-	"Invalid argument",
-	"Null pointer error",
-	"Out of mid (number of messages is limited)",
-	"Out of pid (number of processes is limited)",
-	"Invalid priority",
-	"Unknown mid (message identifier)",
-	"Unknown pid (process identifier)",
-	"Out of memory",
-	"These are not the droid you are looking for"
+char            err_msgs[12][255] = {
+  "No error occured",
+  "General error",
+  "Invalid ID",
+  "Invalid argument",
+  "Null pointer error",
+  "Out of mid (number of messages is limited)",
+  "Out of pid (number of processes is limited)",
+  "Invalid priority",
+  "Unknown mid (message identifier)",
+  "Unknown pid (process identifier)",
+  "Out of memory",
+  "These are not the droid you are looking for"
 };
 
  /**
@@ -36,7 +36,7 @@ kperror(char *error_msg)
 {
   char            res[255];
   char            num[3];
-	int							err_num = (int) p_error;
+  int             err_num = (int) p_error;
 
   if (error_msg != NULL)
   {
@@ -44,13 +44,13 @@ kperror(char *error_msg)
     strcat(res, " : ");
   }
 
-	strcat(res, err_msgs[-err_num]);
-	strcat(res, " (");
+  strcat(res, err_msgs[-err_num]);
+  strcat(res, " (");
 
   itos(err_num, num);
   strcat(res, num);
 
-	strcat(res, ")");
+  strcat(res, ")");
 
   kprint(res);
   kprintn();
