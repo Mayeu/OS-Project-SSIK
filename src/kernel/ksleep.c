@@ -21,7 +21,7 @@
 void
 process_sleep()
 {
-  pls_item      *it, *last;
+  pls_item       *it, *last;
 
   /*
    * First : maybe we don't have anything to do ?

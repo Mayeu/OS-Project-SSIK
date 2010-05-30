@@ -135,7 +135,7 @@ int32_t         kblock(pcb * p, int32_t state);
  * @param pid the pid to wait
  * @return an error code
  */
-int32_t waitfor(uint32_t pid);
+int32_t         waitfor(uint32_t pid);
 
 /**
  * @brief Kill the current process
@@ -147,7 +147,7 @@ int32_t waitfor(uint32_t pid);
  * @param pid the pid of the process to kill
  * @return an error code
  */
-int32_t kkill(uint32_t pid);
+int32_t         kkill(uint32_t pid);
 
 /**
  * @brief exit the current process and set the return value in the register
@@ -157,7 +157,7 @@ int32_t kkill(uint32_t pid);
  *
  * @param the returned value to set
  */
-void kexit(int32_t return_value);
+void            kexit(int32_t return_value);
 
 /*
  * Private functions

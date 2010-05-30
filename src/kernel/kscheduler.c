@@ -19,7 +19,7 @@ void
 schedule()
 {
   uint32_t        pri;
-  pls_item      *it;
+  pls_item       *it;
   //pcb *p;
   //char c;
 

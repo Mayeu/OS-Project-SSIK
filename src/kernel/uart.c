@@ -338,7 +338,7 @@ int32_t
 uart_release(int32_t code)
 {
   //pcb            *p;
-  pls_item      *it;
+  pls_item       *it;
 
   pcb_get_register(user)->v_reg[0] = code;
 

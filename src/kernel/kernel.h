@@ -25,10 +25,10 @@
  * declarationo of the pcb lists
  */
 
-pls            plsready;      /*!< @brief List of ready process */
-pls            plsrunning;    /*!< @brief List of running process */
-pls            plswaiting;    /*!< @brief List of waiting process */
-pls            plsterminate;  /*!< @brief List of terminate process */
+pls             plsready;       /*!< @brief List of ready process */
+pls             plsrunning;     /*!< @brief List of running process */
+pls             plswaiting;     /*!< @brief List of waiting process */
+pls             plsterminate;   /*!< @brief List of terminate process */
 
 
 /**

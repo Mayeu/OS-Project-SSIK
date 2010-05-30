@@ -217,7 +217,7 @@ create_proc(char *name, uint32_t prio, char **params)
 pcb            *
 search_all_list(uint32_t pid)
 {
-  pls_item      *p;
+  pls_item       *p;
 
   p = pls_search_pid(&plsready, pid);
 
