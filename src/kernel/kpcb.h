@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <types.h>
 #include <registers.h>
+#include "kmsg.h"
 
 /*
  * Define
@@ -49,6 +50,10 @@ typedef struct
   uint32_t        pri;          /*!< Process priority. */
   int32_t         supervised[MAXPCB];   /*!< List of supervised processes. */
   int32_t         supervisor;   /*!< supervisor. */
+  mls             messages;     /*!< List of incoming messages. */
+  uint32_t        prev;         /*!< pointer to the previous process(pcb) in the list where the process is */
+  uint32_t        next;         /*!< Pointer to the next process(pcb) in the list where the process is. */
+  uint32_t        head;         /*!< Pointer to the first element of the list in which the process is. */
   uint32_t        state;        /*!< Current state of the process */
   uint32_t        sleep;        /*!< Time to sleep, if state == SLEEPING */
   uint32_t        waitfor;      /*!< pid of the process you are waiting for */
@@ -87,6 +92,36 @@ char           *pcb_get_name(pcb * p);
 uint32_t        pcb_get_pri(pcb * p);
 
 /**
+ * \brief Get the messages of the process
+ * \param the pcb to read
+ * @return the messages of the pcb
+ */
+mls            *pcb_get_messages(pcb * p);
+
+/**
+ * \brief Get the next process in the same list
+ * \param the pcb to read
+ * @return the next process
+ */
+mls            *pcb_get_next(pcb * p);
+
+/**
+ * \brief Get the previous process in the same list
+ * \param the pcb to read
+ * @return the previous process
+ */
+mls            *pcb_get_prev(pcb * p);
+
+/**
+ * \brief Get the first process of the list in which the process is 
+ *
+ * the first process is the same as the address of the list.
+ * \param the pcb to read
+ * @return the messages of the pcb
+ */
+mls            *pcb_get_head(pcb * p);
+
+/**
  * @brief Return a pointer to the list of supervised process. !!!WARNING!!!
  * Don't give this pointer to anybody !
  * @param the pcb to read
@@ -108,6 +143,20 @@ int32_t         pcb_get_supervisor(pcb * p);
  * @return a pointer to a registers_t structure
  */
 registers_t    *pcb_get_register(pcb * p);
+
+/**
+ * @brief Return the value of the epc register.
+ * @param the pcb to read
+ * @return the value of epc
+ */
+uint32_t        pcb_get_epc(pcb * p);
+
+/**
+ * @brief Return the value of the sp register.
+ * @param the pcb to read
+ * @return the value of sp
+ */
+uint32_t        pcb_get_sp(pcb * p);
 
 /**
  * @brief Return the current state of the process
@@ -193,6 +242,27 @@ void            pcb_set_name(pcb * p, char *name);
 void            pcb_set_pri(pcb * p, int32_t pri);
 
 /**
+ * \brief Set the next process in the same list
+ * \param the pcb to read
+ * \param the next process address
+ */
+void            pcb_set_next(pcb * p, int32_t next);
+
+/**
+ * \brief Set the previous process in the same list
+ * \param the pcb to read
+ * \param the previous process address
+ */
+void            pcb_set_prev(pcb * p, int32_t prev);
+
+/**
+ * \brief Set the first process in the same list
+ * \param the pcb to read
+ * \param the first process address
+ */
+void            pcb_set_head(pcb * p, int32_t next);
+
+/**
  * @brief Reset the list of supervised process to -1.
  * @param the pcb to write
  */
@@ -227,6 +297,20 @@ void            pcb_set_supervisor(pcb * p, int32_t pid);
  * @param the new status of the pcb
  */
 void            pcb_set_state(pcb * p, int32_t status);
+
+/**
+ * @brief Set the epc register of the process
+ * @param the pcb to write
+ * @param the new value of the epc of the pcb
+ */
+void            pcb_set_epc(pcb * p, uint32_t epc);
+
+/**
+ * @brief Set the sp register of the process
+ * @param the pcb to write
+ * @param the new value of the sp of the pcb
+ */
+void            pcb_set_sp(pcb * p, uint32_t sp);
 
 /**
  * @brief Set the sleeping time of the process. Not relevante if the process

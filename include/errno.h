@@ -29,4 +29,7 @@ enum
   OMGROXX                       /*!< No error occured */
 };
 
+// DON'T FORGET TO ADD THE CORRESPONDING ERROR MESSAGE 
+// IN kerror.c IN THE ARRAY err_msgs
+
 #endif //__ERRNO_H

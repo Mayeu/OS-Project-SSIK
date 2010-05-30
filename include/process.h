@@ -32,22 +32,14 @@ typedef struct
   char            name[ARG_SIZE];       /*!< Process name. */
   int             pri;          /*!< Process priority. */
   int             supervised[MAXPCB];   /*!< List of supervised processes. */
-  int             supervisor;   /*!< List of supervisor processes. */
-} pcbinfo;
-
-typedef struct
-{
-  int             pid;          /*!< Process identifier. */
-  char            name[ARG_SIZE];       /*!< Process name. */
-  int             pri;          /*!< Process priority. */
-  int             supervised[MAXPCB];   /*!< List of supervised processes. */
   int             supervisor;   /*!< supervisor. */
   int             state;        /*!< Current state of the process */
   int             sleep;        /*!< Time to sleep, if state == SLEEPING */
   int             waitfor;      /*!< pid of the process you are waiting for */
   int             error;        /*!< Last error the process encountered. */
   bool            empty;        /*!< is this pcb empty ? */
-} pcbinfo2;
+  int             nb_msg;       /*!< number of messages */
+} pcbinfo;
 
  /**
  * \fn char* get_arg(char* argv[], int i)

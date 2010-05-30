@@ -105,8 +105,7 @@ uint32_t        rm_psupervised(pcb * p, uint32_t pid);
  * @param time the time to sleep
  * @return an error code
  */
-uint32_t
-go_to_sleep(uint32_t time);
+uint32_t        go_to_sleep(uint32_t time);
 
 /**
  * @brief Block a pcb. A blocked pcb can not execute code until he wake up
@@ -123,7 +122,7 @@ go_to_sleep(uint32_t time);
  * @param state the state to set the process
  * @return an error code
  */
-int32_t kblock(pcb * p, int32_t state);
+int32_t         kblock(pcb * p, int32_t state);
 
 /**
  * @brief Set the currently used pcb to wait for an other pcb to terminate
@@ -172,14 +171,14 @@ void kexit(int32_t return_value);
  *
  * @return a pointer to a pcb
  */
-pcb * alloc_pcb();
+pcb            *alloc_pcb();
 
 /**
  * @brief Deallocte a pcb.
  * @param p the pcb to dealloc
  * @return void
  */
-void dealloc_pcb(pcb * p);
+void            dealloc_pcb(pcb * p);
 
 /**
  * @brief Return the next avaible pid, or an error code

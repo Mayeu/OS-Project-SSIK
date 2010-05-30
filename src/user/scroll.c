@@ -1,5 +1,5 @@
 /**
- * \file scroll.h
+ * \file scroll.c
  * \brief blabla
  * \author Adrien Forest
  * \version 0.1
@@ -23,8 +23,6 @@ scroll(int argc, char *argv[])
 
   strcpy(str, buf);
   strcat(buf, "      ");        // SIZE - 2 spaces
-
-  println(str);
 
   len = pos_space = strlen(str) + MALTA_SIZE - 2;
   sleept = stoi(get_arg(argv, 1));
