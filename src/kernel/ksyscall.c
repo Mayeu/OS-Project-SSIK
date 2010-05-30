@@ -7,7 +7,6 @@
  *
  */
 
-// used to get the BAS_PRI variable
 #include <stdio.h>
 #include <string.h>             // for debug
 #include <process.h>

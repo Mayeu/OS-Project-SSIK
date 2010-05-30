@@ -12,7 +12,7 @@
 #include "kinout.h"
 #include "kernel.h"
 
-char            err_msgs[12][255] = {
+char            err_msgs[13][255] = {
   "No error occured",
   "General error",
   "Invalid ID",
@@ -24,7 +24,8 @@ char            err_msgs[12][255] = {
   "Unknown mid (message identifier)",
   "Unknown pid (process identifier)",
   "Out of memory",
-  "These are not the droid you are looking for"
+  "These are not the droid you are looking for",
+	"Process has been killed"
 };
 
  /**
