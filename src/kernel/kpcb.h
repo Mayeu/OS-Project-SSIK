@@ -74,6 +74,13 @@ uint32_t        pcb_get_pri(pcb * p);
 mls            *pcb_get_messages(pcb * p);
 
 /**
+ * Get the list where the process is
+ * \param the pcb to read
+ * \return the list
+ */
+struct _PLS    *pcb_get_head(pcb * p);
+
+/**
  * \brief Get the next process in the same list
  * \param the pcb to read
  * @return the next process
@@ -212,6 +219,13 @@ void            pcb_set_name(pcb * p, char *name);
  * @param the new priority to set
  */
 void            pcb_set_pri(pcb * p, int32_t pri);
+
+/**
+ * \brief Set the list in which the process is
+ * \param the pcb to read
+ * \param the list
+ */
+void            pcb_set_head(pcb * p, struct _PLS *pls);
 
 /**
  * \brief Set the next process in the same list

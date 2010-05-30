@@ -11,6 +11,7 @@
 #include "kinout.h"
 #include "kpcb.h"
 
+struct _PLS;
 
 /**
  * \struct pcb
@@ -29,6 +30,7 @@ struct _PCB
   int32_t         supervised[MAXPCB];   /*!< List of supervised processes. */
   int32_t         supervisor;   /*!< supervisor. */
   mls             messages;     /*!< List of incoming messages. */
+  struct _PLS    *head;
   pcb            *prev;         /*!< pointer to the previous process(pcb) in the list where the process is */
   pcb            *next;         /*!< Pointer to the next process(pcb) in the list where the process is. */
   uint32_t        state;        /*!< Current state of the process */
@@ -87,6 +89,16 @@ mls            *
 pcb_get_messages(pcb * p)
 {
   return &p->messages;
+}
+
+/**
+ * \private
+ * Get the list where the process is
+ */
+struct _PLS    *
+pcb_get_head(pcb * p)
+{
+  return p->head;
 }
 
 /**
@@ -313,6 +325,16 @@ void
 pcb_set_pri(pcb * p, int32_t pri)
 {
   p->pri = pri;
+}
+
+/**
+ * \private
+ * \brief Set the list in which the process is
+ */
+void
+pcb_set_head(pcb * p, struct _PLS *pls)
+{
+  p->head = pls;
 }
 
 /**
