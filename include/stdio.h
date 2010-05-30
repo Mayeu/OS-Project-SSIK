@@ -28,16 +28,6 @@ enum
 int             print(char *str);
 
  /**
- * \fn int println(char *str)
- * \brief Print the string str to the standard output.
-and return line.
- *
- * \param str the string to print
- * \return the error identifier in case of any failure
- */
-int             println(char *str);
-
- /**
  * \fn int printn(void)
  * \brief Print the carriage return character.
  *
@@ -53,16 +43,6 @@ int             printn(void);
  * \return the error identifier in case of any failure
  */
 int             printi(int n);
-
- /**
- * \fn int printiln(char *str)
- * \brief Print the number n to the standard output.
-and return line.
- *
- * \param n the number to print
- * \return the error identifier in case of any failure
- */
-int             printiln(int n);
 
  /**
  * \fn int fprintf(int out, char *str)
