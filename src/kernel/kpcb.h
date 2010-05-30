@@ -88,15 +88,6 @@ pcb            *pcb_get_next(pcb * p);
 pcb            *pcb_get_prev(pcb * p);
 
 /**
- * \brief Get the first process of the list in which the process is 
- *
- * the first process is the same as the address of the list.
- * \param the pcb to read
- * @return the messages of the pcb
- */
-pcb            *pcb_get_head(pcb * p);
-
-/**
  * @brief Return a pointer to the list of supervised process. !!!WARNING!!!
  * Don't give this pointer to anybody !
  * @param the pcb to read
@@ -235,13 +226,6 @@ void            pcb_set_next(pcb * p, pcb * next);
  * \param the previous process address
  */
 void            pcb_set_prev(pcb * p, pcb * prev);
-
-/**
- * \brief Set the first process in the same list
- * \param the pcb to read
- * \param the first process address
- */
-void            pcb_set_head(pcb * p, pcb * head);
 
 /**
  * @brief Reset the list of supervised process to -1.
