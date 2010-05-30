@@ -11,6 +11,34 @@
 #include "kinout.h"
 #include "kpcb.h"
 
+
+/**
+ * \struct pcb
+ * \brief Process representation.
+ *
+ * A process is represented by its PCB which is made of
+ * various value
+ */
+struct _PCB
+{
+  registers_t     registers;    /*!< Some data that has to be saved between
+                                   a context switch. */
+  uint32_t        pid;          /*!< Process identifier. */
+  char            name[ARG_SIZE];       /*!< Process name. */
+  uint32_t        pri;          /*!< Process priority. */
+  int32_t         supervised[MAXPCB];   /*!< List of supervised processes. */
+  int32_t         supervisor;   /*!< supervisor. */
+  mls             messages;     /*!< List of incoming messages. */
+  pcb            *prev;         /*!< pointer to the previous process(pcb) in the list where the process is */
+  pcb            *next;         /*!< Pointer to the next process(pcb) in the list where the process is. */
+  pcb            *head;         /*!< Pointer to the first element of the list in which the process is. */
+  uint32_t        state;        /*!< Current state of the process */
+  uint32_t        sleep;        /*!< Time to sleep, if state == SLEEPING */
+  uint32_t        waitfor;      /*!< pid of the process you are waiting for */
+  int32_t         error;        /*!< Last error the process encountered. */
+  bool            empty;        /*!< is this pcb empty ? */
+};
+
 /*
  * Functions
  */
@@ -48,6 +76,45 @@ pcb_get_pri(pcb * p)
 }
 
 /**
+ * \brief Get the messages of the process
+ * \param the pcb to read
+ * @return the messages of the pcb
+ */
+mls            *
+pcb_get_messages(pcb * p)
+{
+  return &p->messages;
+}
+
+/**
+ * Get the next process in the same list
+ */
+pcb            *
+pcb_get_next(pcb * p)
+{
+  return p->next;
+}
+
+/**
+ * Get the previous process in the same list
+ */
+pcb            *
+pcb_get_prev(pcb * p)
+{
+  return p->prev;
+}
+
+/**
+ * Get the first process of the list in which the process is 
+ * the first process is the same as the address of the list.
+ */
+pcb            *
+pcb_get_head(pcb * p)
+{
+  return p->head;
+}
+
+/**
  * @brief Return a pointer to the list of supervised process. !!!WARNING!!!
  * Don't give this pointer to anybody !
  */
@@ -74,6 +141,39 @@ registers_t    *
 pcb_get_register(pcb * p)
 {
   return &(p->registers);
+}
+
+/**
+ * @brief Return the value of the epc register.
+ * @param the pcb to read
+ * @return the value of epc
+ */
+uint32_t
+pcb_get_epc(pcb * p)
+{
+  return p->registers.epc_reg;
+}
+
+/**
+ * @brief Return the value of the sp register.
+ * @param the pcb to read
+ * @return the value of sp
+ */
+uint32_t
+pcb_get_sp(pcb * p)
+{
+  return p->registers.sp_reg;
+}
+
+/**
+ * @brief Return the value of the v0 register.
+ * @param the pcb to read
+ * @return the value of v0
+ */
+uint32_t
+pcb_get_v0(pcb * p)
+{
+  return p->registers.v_reg[0];
 }
 
 /**
@@ -205,6 +305,39 @@ pcb_set_pri(pcb * p, int32_t pri)
 }
 
 /**
+ * \brief Set the next process in the same list
+ * \param the pcb to read
+ * \param the next process address
+ */
+void
+pcb_set_next(pcb * p, pcb * next)
+{
+  p->next = next;
+}
+
+/**
+ * \brief Set the previous process in the same list
+ * \param the pcb to read
+ * \param the previous process address
+ */
+void
+pcb_set_prev(pcb * p, pcb * prev)
+{
+  p->prev = prev;
+}
+
+/**
+ * \brief Set the first process in the same list
+ * \param the pcb to read
+ * \param the first process address
+ */
+void
+pcb_set_head(pcb * p, pcb * head)
+{
+  p->head = head;
+}
+
+/**
  * @brief Reset the list of supervised process to -1.
  */
 void
@@ -328,6 +461,39 @@ void
 pcb_set_state(pcb * p, int32_t status)
 {
   p->state = status;
+}
+
+/**
+ * @brief Set the epc register of the process
+ * @param the pcb to write
+ * @param the new value of the epc of the pcb
+ */
+void
+pcb_set_epc(pcb * p, uint32_t epc)
+{
+  p->registers.epc_reg = epc;
+}
+
+/**
+ * @brief Set the sp register of the process
+ * @param the pcb to write
+ * @param the new value of the sp of the pcb
+ */
+void
+pcb_set_sp(pcb * p, uint32_t sp)
+{
+  p->registers.sp_reg = sp;
+}
+
+/**
+ * @brief Set the v0 register of the process
+ * @param the pcb to write
+ * @param the new value of the v0 of the pcb
+ */
+void
+pcb_set_v0(pcb * p, uint32_t v0)
+{
+  p->registers.v_reg[0] = v0;
 }
 
 /**
