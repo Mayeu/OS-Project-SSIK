@@ -37,8 +37,7 @@ ring(int argc, char *argv[])
 
     if (argc < 2)
     {
-      println
-        ("Error: You must input the number of processes and the number of loops to do");
+      print("Error: You must input the number of processes and the number of loops to do\n");
       exit(-1);
     }
 
@@ -48,7 +47,8 @@ ring(int argc, char *argv[])
     if (nb_proc > MAX)
     {
       print("Error: Number of processes must be at most ");
-      printiln(MAX);
+      printi(MAX);
+			printn();
       exit(-1);
     }
 
@@ -98,16 +98,19 @@ ring(int argc, char *argv[])
         printi(get_pid());
         print("sent '");
         print(mess);
-        println("' to Process ");
-        printiln(pid_next);
+        print("' to Process ");
+        printi(pid_next);
+				printn();
         sleep(TIMER);
         recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, -1);
         print("Process ");
         printi(get_pid());
         print("received '");
         print(rcv);
-        println("' from Process ");
-        printiln(pid_prev);
+        print("' from Process ");
+        printi(pid_prev);
+				printn();
+
         sleep(TIMER);
       }
       // if not, receive then send
@@ -118,16 +121,18 @@ ring(int argc, char *argv[])
         printi(get_pid());
         print("received '");
         print(rcv);
-        println("' from Process ");
-        printiln(pid_prev);
+        print("' from Process ");
+        printi(pid_prev);
+				printn();
         sleep(TIMER);
         send(mess, CHAR_PTR, pid_next);
         print("Process ");
         printi(get_pid());
         print("sent '");
         print(mess);
-        println("' to Process ");
-        printiln(pid_next);
+        print("' to Process ");
+        printi(pid_next);
+				printn();
         sleep(TIMER);
       }
     }
