@@ -25,7 +25,7 @@ char            err_msgs[13][255] = {
   "Unknown pid (process identifier)",
   "Out of memory",
   "These are not the droid you are looking for",
-	"Process has been killed"
+  "Process has been killed"
 };
 
  /**
