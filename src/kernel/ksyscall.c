@@ -113,12 +113,12 @@ syscall_handler(registers_t * regs)
   case GETPS:
     {
 /*
-		pcls_item* p;
+		pls_item* p;
 		char **pnames = (char**)regs->a_reg[0];
 		int *pid = (int*)regs->a_reg[1];
 		int i = 0;
 
-		for (p = pclsready.start; p != pclsready.end; p = p->next, i++)
+		for (p = plsready.start; p != plsready.end; p = p->next, i++)
 		{
 			strcpy(pcb_get_name(p), get_arg(pnames, i));
 			pid[i] = pcb_get_pid(p);

@@ -14,26 +14,26 @@
 #include "ksleep.h"
 
 /**
- * @brief Decrement sleeping time of the process in pclswaiting.
+ * @brief Decrement sleeping time of the process in plswaiting.
  *
- * If a process as to be waking up, he is moved to the pclsready list.
+ * If a process as to be waking up, he is moved to the plsready list.
  */
 void
 process_sleep()
 {
-  pcls_item      *it, *last;
+  pls_item      *it, *last;
 
   /*
    * First : maybe we don't have anything to do ?
    */
-  if (pclswaiting.length == 0)
+  if (plswaiting.length == 0)
     return;
 
   /*
    * Ok the list contains stuff
    */
   last = NULL;
-  it = pclswaiting.start;
+  it = plswaiting.start;
 
   //kprintln("Time to remove time");
 
@@ -59,13 +59,13 @@ process_sleep()
          */
         pcb_set_sleep(p, 0);
         pcb_set_state(p, READY);
-        pcls_move_pcb(&pclswaiting, &pclsready, p);
+        pls_move_pcb(&plswaiting, &plsready, p);
 
         /*
          * set it to the "real" next one but don't update last !
          */
         if (last == NULL)
-          it = pclswaiting.start;
+          it = plswaiting.start;
         else
           it = last;
 
@@ -101,12 +101,12 @@ go_to_sleep(uint32_t time)
 
   pcb_set_state(p, SLEEPING);
   pcb_set_sleep(p, time * timer_msec);
-  pcls_move_pcb(&pclsrunning, &pclswaiting, p);
+  pls_move_pcb(&plsrunning, &plswaiting, p);
 
   /*
    * update the current_pcb to his new value
    */
-  tmp = &(pcls_search_pcb(&pclswaiting, p)->p);
+  tmp = &(pls_search_pcb(&plswaiting, p)->p);
   set_current_pcb(tmp);
 
   //kdebug_println("go to sleep out");

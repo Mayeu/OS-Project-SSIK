@@ -15,7 +15,7 @@
 #include "kpcb.h"
 
 /**
- * \struct pcls
+ * \struct pls
  * \brief List of processes.
  *
  */
@@ -23,7 +23,7 @@ typedef struct
 {
   pcb            *start;        /*!< First pcb of the list */
   uint32_t        length;       /*!< number of processes currently in the list */
-} pcls;
+} pls;
 
 /**
  * \brief Reset the list to his default value
@@ -31,7 +31,7 @@ typedef struct
  * This function reset all the pcb in the list, and all the pointer to NULL
  * \param a pointer to the pcb to add to the list
  */
-void            pcls_reset(pcls * ls);
+void            pls_reset(pls * ls);
 
 /**
  * \brief Add an element to the list.
@@ -43,7 +43,7 @@ void            pcls_reset(pcls * ls);
  * \param a pointer to the pcb to add to the list
  * \return OMGROXX if everything goes well.
  */
-int32_t         pcls_add(pcls * ls, pcb * p);
+int32_t         pls_add(pls * ls, pcb * p);
 
 /**
  * \brief Delete a pcb from a list. (Reset it to his default value)
@@ -52,7 +52,7 @@ int32_t         pcls_add(pcls * ls, pcb * p);
  * \param a pointer to the pcb to delete from the list
  * \return OMGROXX if everything goes well.
  */
-uint32_t        pcls_delete_pcb(pcls * ls, pcb * p);
+uint32_t        pls_delete_pcb(pls * ls, pcb * p);
 
 /**
  * \brief Move a PCB from a list to an other
@@ -62,21 +62,21 @@ uint32_t        pcls_delete_pcb(pcls * ls, pcb * p);
  * \param a pointer to the pcb to move
  * \return OMGROXX if everything goes well.
  */
-int32_t         pcls_move_pcb(pcls * src, pcls * dest, pcb * p);
+int32_t         pls_move_pcb(pls * src, pls * dest, pcb * p);
 
 /**
  * @brief Search a pid in a list and return the associated pcb
  * @param a list
  * @param the pid to found
- * @return NULL if not found, the pcls_item otherwise
+ * @return NULL if not found, the pls_item otherwise
  */
-pcb            *pcls_search_pid(pcls * ls, uint32_t pid);
+pcb            *pls_search_pid(pls * ls, uint32_t pid);
 
 /**
- * @brief Copy a pcb in a pcls_item
+ * @brief Copy a pcb in a pls_item
  * @param the source pcb
  * @param the destination pcb
  */
-void            pcls_cpy_pcb(pcb * src, pcb * dest);
+void            pls_cpy_pcb(pcb * src, pcb * dest);
 
 #endif

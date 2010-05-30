@@ -187,7 +187,7 @@ create_proc(char *name, uint32_t prio, char **params)
     /*
      * Now we can add the pcb to the ready list
      */
-    if (pcls_add(&pclsready, &p) == OUTOMEM)
+    if (pls_add(&plsready, &p) == OUTOMEM)
     {
       /*
        * Adding fail, don't forget to dealloc every allocated stuff
@@ -217,24 +217,24 @@ create_proc(char *name, uint32_t prio, char **params)
 pcb            *
 search_all_list(uint32_t pid)
 {
-  pcls_item      *p;
+  pls_item      *p;
 
-  p = pcls_search_pid(&pclsready, pid);
-
-  if (p)
-    return &(p->p);
-
-  p = pcls_search_pid(&pclsrunning, pid);
+  p = pls_search_pid(&plsready, pid);
 
   if (p)
     return &(p->p);
 
-  p = pcls_search_pid(&pclswaiting, pid);
+  p = pls_search_pid(&plsrunning, pid);
 
   if (p)
     return &(p->p);
 
-  p = pcls_search_pid(&pclsterminate, pid);
+  p = pls_search_pid(&plswaiting, pid);
+
+  if (p)
+    return &(p->p);
+
+  p = pls_search_pid(&plsterminate, pid);
 
   if (p)
     return &(p->p);
@@ -252,7 +252,7 @@ rm_p(pcb * p)
   if (p == NULL)
     return NULLPTR;
 
-  //pcls_delete_pcb(p);
+  //pls_delete_pcb(p);
 
   pcb_counter--;
 

@@ -15,7 +15,7 @@
 #include "kprogram.h"
 #include "debug.h"
 
-//void            print_pcls(pcls * ls);    // Internal function (see the bottom of the file
+//void            print_pls(pls * ls);    // Internal function (see the bottom of the file
 
 /**
  * @brief Reset the list to his default value
@@ -23,7 +23,7 @@
  * This function reset all the pcb in the list, and all the pointer to NULL
  */
 void
-pcls_reset(pcls * ls)
+pls_reset(pls * ls)
 {
   uint32_t        i;
 
@@ -32,7 +32,7 @@ pcls_reset(pcls * ls)
   ls->length = 0;
 
   for (i = 0; i < MAXPCB; i++)
-    pcls_item_reset(&(ls->ls[i]), i);
+    pls_item_reset(&(ls->ls[i]), i);
 }
 
 /**
@@ -46,16 +46,16 @@ pcls_reset(pcls * ls)
  * @return OMGROXX if everything goes well.
  */
 int32_t
-pcls_add(pcls * ls, pcb * p)
+pls_add(pls * ls, pcb * p)
 {
-  pcls_item      *it, *last_it, *next_it;
+  pls_item      *it, *last_it, *next_it;
 
-  it = pcls_item_alloc(ls);
+  it = pls_item_alloc(ls);
 
   if (!it)
     return OUTOMEM;
 
-  pcls_item_cpy_pcb(p, it);
+  pls_item_cpy_pcb(p, it);
 
   /*
    * Found the position of the element
@@ -108,9 +108,9 @@ pcls_add(pcls * ls, pcb * p)
  * @brief Delete a pcb from a list. (Reset it to his default value)
  */
 uint32_t
-pcls_delete_pcb(pcls * ls, pcb * p)
+pls_delete_pcb(pls * ls, pcb * p)
 {
-  pcls_item      *next, *last;
+  pls_item      *next, *last;
 
   if (ls->length == 0)
     return NOTFOUND;
@@ -130,7 +130,7 @@ pcls_delete_pcb(pcls * ls, pcb * p)
       ls->start = next->next;
     else
       last->next = next->next;
-    pcls_item_reset(next, next->item_id);
+    pls_item_reset(next, next->item_id);
   }
   else
     return NOTFOUND;
@@ -144,14 +144,14 @@ pcls_delete_pcb(pcls * ls, pcb * p)
  * @brief Move a PCB from a list to an other
  */
 int32_t
-pcls_move_pcb(pcls * src, pcls * dest, pcb * p)
+pls_move_pcb(pls * src, pls * dest, pcb * p)
 {
   int32_t         e;
-  pcls_item      *it_src;
+  pls_item      *it_src;
 
   e = OMGROXX;
 
-  it_src = pcls_search_pcb(src, p);
+  it_src = pls_search_pcb(src, p);
 
   if (!it_src)
     return NOTFOUND;
@@ -159,7 +159,7 @@ pcls_move_pcb(pcls * src, pcls * dest, pcb * p)
   /*
    * we add the pcb in the list
    */
-  e = pcls_add(dest, p);
+  e = pls_add(dest, p);
 
   if (e != OMGROXX)
     return e;
@@ -167,24 +167,24 @@ pcls_move_pcb(pcls * src, pcls * dest, pcb * p)
   /*
    * We delete the old pcb
    */
-  e = pcls_delete_pcb(src, p);
+  e = pls_delete_pcb(src, p);
 
   return e;
 }
 
 /**
- * @brief Search a pcb in a list and return the pcls_item associated
+ * @brief Search a pcb in a list and return the pls_item associated
  *
  * Use the pid to found the good pcb
  *
  * @param a list
  * @param the pcb to found
- * @return NULL if not found, the pcls_item otherwise
+ * @return NULL if not found, the pls_item otherwise
  */
-pcls_item      *
-pcls_search_pcb(pcls * ls, pcb * p)
+pls_item      *
+pls_search_pcb(pls * ls, pcb * p)
 {
-  pcls_item      *last;
+  pls_item      *last;
 
   if (ls->length == 0)
     return NULL;
@@ -202,15 +202,15 @@ pcls_search_pcb(pcls * ls, pcb * p)
 }
 
 /**
- * @brief Search a pid in a list and return the pcls_item associated
+ * @brief Search a pid in a list and return the pls_item associated
  * @param a list
  * @param the pid to found
- * @return NULL if not found, the pcls_item otherwise
+ * @return NULL if not found, the pls_item otherwise
  */
-pcls_item      *
-pcls_search_pid(pcls * ls, uint32_t pid)
+pls_item      *
+pls_search_pid(pls * ls, uint32_t pid)
 {
-  pcls_item      *last;
+  pls_item      *last;
 
   if (ls->length == 0)
     return NULL;
@@ -231,7 +231,7 @@ pcls_search_pid(pcls * ls, uint32_t pid)
  * @brief Reset an list element to it's default value.
  */
 void
-pcls_item_reset(pcls_item * it, uint32_t id)
+pls_item_reset(pls_item * it, uint32_t id)
 {
   it->item_id = id;
   it->next = NULL;
@@ -239,12 +239,12 @@ pcls_item_reset(pcls_item * it, uint32_t id)
 }
 
 /**
- * @brief Return the first empty pcls_item in the static array of pcls
+ * @brief Return the first empty pls_item in the static array of pls
  * @param a list
  * @return the adress or NULL if no space
  */
-pcls_item      *
-pcls_item_alloc(pcls * ls)
+pls_item      *
+pls_item_alloc(pls * ls)
 {
   uint32_t        i;
 
@@ -256,12 +256,12 @@ pcls_item_alloc(pcls * ls)
 }
 
 /**
- * @brief Copy a pcb in a pcls_item
+ * @brief Copy a pcb in a pls_item
  * @param the source pcb
  * @param the destination item
  */
 void
-pcls_item_cpy_pcb(pcb * p, pcls_item * it)
+pls_item_cpy_pcb(pcb * p, pls_item * it)
 {
   pcb_cpy(p, &(it->p));
 }
@@ -272,10 +272,10 @@ pcls_item_cpy_pcb(pcb * p, pcls_item * it)
 
 // Internal function (see the bottom of the file)
 //int32_t         get_next_pid(uint32_t * npid);
-//void            print_pcls(pcls * ls);
+//void            print_pls(pls * ls);
 
 /**
- * \fn int create_pcls(pcls *ls)
+ * \fn int create_pls(pls *ls)
  * \brief initialize a list of pcb
  *
  * \param ls a pointer to a list
@@ -283,11 +283,11 @@ pcls_item_cpy_pcb(pcb * p, pcls_item * it)
  */
 /*
 uint32_t
-create_pcls(pcls * ls)
+create_pls(pls * ls)
 {
   int             i;
   kprintln
-    ("DEPRECATED: create_pcls is deprecated, pleaze refers to the kprocess_list.h for new functions");
+    ("DEPRECATED: create_pls is deprecated, pleaze refers to the kprocess_list.h for new functions");
   if (ls == NULL)
     return NULLPTR;
 
@@ -344,7 +344,7 @@ create_proc(char *name, uint32_t prio, char **params)
 }
 */
 /**
- * \fn int rm_pcls(pcls *ls)
+ * \fn int rm_pls(pls *ls)
  * \brief delete a list of pcb
  *
  * \param ls a pointer to a list
@@ -352,11 +352,11 @@ create_proc(char *name, uint32_t prio, char **params)
  */
 /*
 uint32_t
-rm_pcls(pcls * ls)
+rm_pls(pls * ls)
 {
   int             i;
   kprintln
-    ("DEPRECATED: rm_pcls is deprecated, pleaze refers to the kprocess_list.h for new functions");
+    ("DEPRECATED: rm_pls is deprecated, pleaze refers to the kprocess_list.h for new functions");
   if (ls == NULL)
     return NULLPTR;
 
@@ -367,41 +367,41 @@ rm_pcls(pcls * ls)
 }
 */
 /**
- * \fn void rm_all_pcls()
+ * \fn void rm_all_pls()
  * \brief remove all the lists and reset next_pid
  */
 /*
 void
-rm_all_pcls()
+rm_all_pls()
 {
   kprintln
-    ("DEPRECATED: rm_all_pcls is deprecated, pleaze refers to the kprocess_list.h for new functions");
-  rm_pcls(&pready);
-  rm_pcls(&prunning);
-  rm_pcls(&pwaiting);
-  rm_pcls(&pterminate);
+    ("DEPRECATED: rm_all_pls is deprecated, pleaze refers to the kprocess_list.h for new functions");
+  rm_pls(&pready);
+  rm_pls(&prunning);
+  rm_pls(&pwaiting);
+  rm_pls(&pterminate);
   reset_next_pid();
 }
 */
 /**
- * \fn void create_all_pcls()
+ * \fn void create_all_pls()
  * \brief create all the lists and reset next_pid
  */
 /*
 void
-create_all_pcls()
+create_all_pls()
 {
   kprintln
     ("DEPRECATED: create_all is deprecated, pleaze refers to the kprocess_list.h for new functions");
-  create_pcls(&pready);
-  create_pcls(&prunning);
-  create_pcls(&pwaiting);
-  create_pcls(&pterminate);
+  create_pls(&pready);
+  create_pls(&prunning);
+  create_pls(&pwaiting);
+  create_pls(&pterminate);
   reset_next_pid();
 }
 */
 /**
- * \fn int rm_from_pcls(pcb *p, pcls *ls)
+ * \fn int rm_from_pls(pcb *p, pls *ls)
  * \brief delete a pcb from a list and reorder the list
  *
  * \param pid the pid of the process to remove
@@ -410,11 +410,11 @@ create_all_pcls()
  */
 /*
 uint32_t
-rm_from_pcls(int32_t pid, pcls * ls)
+rm_from_pls(int32_t pid, pls * ls)
 {
   pcb            *to_rm;
   kprintln
-    ("DEPRECATED: rm_from_pcls is deprecated, pleaze refers to the kprocess_list.h for new functions");
+    ("DEPRECATED: rm_from_pls is deprecated, pleaze refers to the kprocess_list.h for new functions");
   if (ls == NULL)
     return NULLPTR;
 
@@ -424,7 +424,7 @@ rm_from_pcls(int32_t pid, pcls * ls)
 }
 */
 /**
- * \fn pcb* empty_space(pcls *ls)
+ * \fn pcb* empty_space(pls *ls)
  * \brief return the first empty space in a process list
  *
  * \param ls a pointer to a list
@@ -432,7 +432,7 @@ rm_from_pcls(int32_t pid, pcls * ls)
  */
 /*
 pcb            *
-empty_space(pcls * ls)
+empty_space(pls * ls)
 {
   int             i = 0;
   kprintln
@@ -448,7 +448,7 @@ empty_space(pcls * ls)
 }
 */
 /**
- * \fn bool is_empty(pcls *ls)
+ * \fn bool is_empty(pls *ls)
  * \brief Return whether the list is empty or not
  *
  * \param ls a pointer to the list
@@ -456,11 +456,11 @@ empty_space(pcls * ls)
  *
 
 bool
-pcls_is_empty(pcls * ls)
+pls_is_empty(pls * ls)
 {
   int             i;
   kprintln
-    ("DEPRECATED: pcls_is_empty is deprecated, pleaze refers to the kprocess_list.h for new functions");
+    ("DEPRECATED: pls_is_empty is deprecated, pleaze refers to the kprocess_list.h for new functions");
   if (ls == NULL)
     return FALSE;
 
@@ -474,7 +474,7 @@ pcls_is_empty(pcls * ls)
 }
 */
 /**
- * \fn pcb* search_pcb(int pid, pcls *ls)
+ * \fn pcb* search_pcb(int pid, pls *ls)
  * \brief search for a process in a list
  *
  * \param pid the pid ot the process to search
@@ -482,7 +482,7 @@ pcls_is_empty(pcls * ls)
  * \return a pcb
  *
 pcb            *
-search_pcb(uint32_t pid, pcls * ls)
+search_pcb(uint32_t pid, pls * ls)
 {
   int             i = 0;
   kprintln
@@ -528,7 +528,7 @@ searchall(uint32_t pid)
 }
 */
 /**
- * \fn int move(int pid, pcls *src, pcls *dest)
+ * \fn int move(int pid, pls *src, pls *dest)
  * \brief move a process from a list to another (will search to ensure that the
  *			pcb is in the list)
  *
@@ -539,7 +539,7 @@ searchall(uint32_t pid)
  */
 /*
 uint32_t
-move(uint32_t pid, pcls * src, pcls * dest)
+move(uint32_t pid, pls * src, pls * dest)
 {
   uint32_t        ret;
   pcb            *src_space, *dest_space;
@@ -556,14 +556,14 @@ move(uint32_t pid, pcls * src, pcls * dest)
 }
 */
 /**
- * \fn int sort(pcls *ls)
+ * \fn int sort(pls *ls)
  * \brief sort a process list by priority (highest to lowest)
  *
  * \param ls the list to sort
  * \return an error code
  *
 uint32_t
-sort(pcls * ls)
+sort(pls * ls)
 {
   bool            ordered = FALSE;
   int             i;
@@ -681,12 +681,12 @@ reset_next_pid()
 
 /* Internal functions *
 void
-print_pcls(pcls * ls)
+print_pls(pls * ls)
 {
   int             i = 0;
   char            resc[10];
   kprintln
-    ("DEPRECATED: print_pcls is deprecated, pleaze refers to the kprocess_list.h for new functions");
+    ("DEPRECATED: print_pls is deprecated, pleaze refers to the kprocess_list.h for new functions");
   for (; i < MAXPCB; i++)
   {
     if (ls->ls[i].empty == FALSE)
@@ -719,7 +719,7 @@ int32_t get_next_pid(uint32_t * pmid)
   return OMGROXX;
 }
 
-void print_pcls(pcls *ls)
+void print_pls(pls *ls)
 {
   int             i = 0;
   char            resc[10];
