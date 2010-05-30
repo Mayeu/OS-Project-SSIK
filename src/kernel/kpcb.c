@@ -11,6 +11,35 @@
 #include "kinout.h"
 #include "kpcb.h"
 
+struct _PLS;
+
+/**
+ * \struct pcb
+ * \brief Process representation.
+ *
+ * A process is represented by its PCB which is made of
+ * various value
+ */
+struct _PCB
+{
+  registers_t     registers;    /*!< Some data that has to be saved between
+                                   a context switch. */
+  uint32_t        pid;          /*!< Process identifier. */
+  char            name[ARG_SIZE];       /*!< Process name. */
+  uint32_t        pri;          /*!< Process priority. */
+  int32_t         supervised[MAXPCB];   /*!< List of supervised processes. */
+  int32_t         supervisor;   /*!< supervisor. */
+  mls             messages;     /*!< List of incoming messages. */
+  struct _PLS    *head;
+  pcb            *prev;         /*!< pointer to the previous process(pcb) in the list where the process is */
+  pcb            *next;         /*!< Pointer to the next process(pcb) in the list where the process is. */
+  uint32_t        state;        /*!< Current state of the process */
+  uint32_t        sleep;        /*!< Time to sleep, if state == SLEEPING */
+  uint32_t        waitfor;      /*!< pid of the process you are waiting for */
+  int32_t         error;        /*!< Last error the process encountered. */
+  bool            empty;        /*!< is this pcb empty ? */
+};
+
 /*
  * Functions
  */
@@ -20,6 +49,7 @@
  */
 
 /**
+ * \private
  * @brief Get the pid of the pcb
  */
 uint32_t
@@ -29,6 +59,7 @@ pcb_get_pid(pcb * p)
 }
 
 /**
+ * \private
  * @brief Get a pointer to the pcb name. !!!WARNING!!! Not safe if you don't
  * do a strcpy just after.
  */
@@ -39,6 +70,7 @@ pcb_get_name(pcb * p)
 }
 
 /**
+ * \private
  * @brief Get the priority of the process
  */
 uint32_t
@@ -48,6 +80,49 @@ pcb_get_pri(pcb * p)
 }
 
 /**
+ * \private
+ * \brief Get the messages of the process
+ * \param the pcb to read
+ * @return the messages of the pcb
+ */
+mls            *
+pcb_get_messages(pcb * p)
+{
+  return &p->messages;
+}
+
+/**
+ * \private
+ * Get the list where the process is
+ */
+struct _PLS    *
+pcb_get_head(pcb * p)
+{
+  return p->head;
+}
+
+/**
+ * \private
+ * Get the next process in the same list
+ */
+pcb            *
+pcb_get_next(pcb * p)
+{
+  return p->next;
+}
+
+/**
+ * \private
+ * Get the previous process in the same list
+ */
+pcb            *
+pcb_get_prev(pcb * p)
+{
+  return p->prev;
+}
+
+/**
+ * \private
  * @brief Return a pointer to the list of supervised process. !!!WARNING!!!
  * Don't give this pointer to anybody !
  */
@@ -58,6 +133,7 @@ pcb_get_supervised(pcb * p)
 }
 
 /**
+ * \private
  * @brief Return the supervisor of the process, if any return -1
  */
 int32_t
@@ -67,6 +143,7 @@ pcb_get_supervisor(pcb * p)
 }
 
 /**
+ * \private
  * @brief Return a pointer to the registers struct of the process. !!!WARNING!!!
  * Don't give this pointer to anybody !
  */
@@ -77,6 +154,43 @@ pcb_get_register(pcb * p)
 }
 
 /**
+ * \private
+ * @brief Return the value of the epc register.
+ * @param the pcb to read
+ * @return the value of epc
+ */
+uint32_t
+pcb_get_epc(pcb * p)
+{
+  return p->registers.epc_reg;
+}
+
+/**
+ * \private
+ * @brief Return the value of the sp register.
+ * @param the pcb to read
+ * @return the value of sp
+ */
+uint32_t
+pcb_get_sp(pcb * p)
+{
+  return p->registers.sp_reg;
+}
+
+/**
+ * \private
+ * @brief Return the value of the v0 register.
+ * @param the pcb to read
+ * @return the value of v0
+ */
+uint32_t
+pcb_get_v0(pcb * p)
+{
+  return p->registers.v_reg[0];
+}
+
+/**
+ * \private
  * @brief Return the current state of the process
  */
 uint32_t
@@ -86,6 +200,7 @@ pcb_get_state(pcb * p)
 }
 
 /**
+ * \private
  * @brief return the sleeping time of the process. Not relevante if the process
  * is not sleeping.
  */
@@ -96,6 +211,7 @@ pcb_get_sleep(pcb * p)
 }
 
 /**
+ * \private
  * @brief return who the process is waiting for. Not relevante if the process
  * don't wait anybody
  */
@@ -106,6 +222,7 @@ pcb_get_waitfor(pcb * p)
 }
 
 /**
+ * \private
  * @brief return the last error encounter by the process
  */
 int32_t
@@ -115,6 +232,7 @@ pcb_get_error(pcb * p)
 }
 
 /**
+ * \private
  * @brief return if the process is empty or not
  */
 bool
@@ -128,6 +246,7 @@ pcb_get_empty(pcb * p)
  */
 
 /**
+ * \private
  * @brief Set a pcb to it's default value
  */
 void
@@ -146,6 +265,7 @@ pcb_reset(pcb * p)
 }
 
 /**
+ * \private
  * @brief Copy a pcb in an other
  */
 void
@@ -172,6 +292,7 @@ pcb_cpy(pcb * src, pcb * dest)
 }
 
 /**
+ * \private
  * @brief Set the pid of the pcb
  */
 void
@@ -181,6 +302,7 @@ pcb_set_pid(pcb * p, uint32_t pid)
 }
 
 /**
+ * \private
  * @brief Set the pcb name. 
  */
 void
@@ -196,6 +318,7 @@ pcb_set_name(pcb * p, char *name)
 }
 
 /**
+ * \private
  * @brief Set the priority of the process
  */
 void
@@ -205,6 +328,41 @@ pcb_set_pri(pcb * p, int32_t pri)
 }
 
 /**
+ * \private
+ * \brief Set the list in which the process is
+ */
+void
+pcb_set_head(pcb * p, struct _PLS *pls)
+{
+  p->head = pls;
+}
+
+/**
+ * \private
+ * \brief Set the next process in the same list
+ * \param the pcb to read
+ * \param the next process address
+ */
+void
+pcb_set_next(pcb * p, pcb * next)
+{
+  p->next = next;
+}
+
+/**
+ * \private
+ * \brief Set the previous process in the same list
+ * \param the pcb to read
+ * \param the previous process address
+ */
+void
+pcb_set_prev(pcb * p, pcb * prev)
+{
+  p->prev = prev;
+}
+
+/**
+ * \private
  * @brief Reset the list of supervised process to -1.
  */
 void
@@ -221,6 +379,7 @@ pcb_reset_supervised(pcb * p)
 }
 
 /**
+ * \private
  * @brief Add a pid to the list of supervised process.
  */
 int32_t
@@ -263,6 +422,7 @@ pcb_set_supervised(pcb * p, int32_t pid)
 }
 
 /**
+ * \private
  * @brief Remove a pid from the list of supervised process.
  */
 void
@@ -285,6 +445,10 @@ pcb_rm_supervised(pcb * p, uint32_t pid)
    */
 }
 
+/**
+ * \private
+ * Set the registers of the pcb
+ */
 void
 pcb_set_register(pcb * p, registers_t * regs)
 {
@@ -309,10 +473,10 @@ pcb_set_register(pcb * p, registers_t * regs)
   p->registers.sp_reg = regs->sp_reg;
   p->registers.epc_reg = regs->epc_reg;
   p->registers.gp_reg = regs->gp_reg;
-
 }
 
 /**
+ * \private
  * @brief Set the supervisor of the process
  */
 void
@@ -322,6 +486,7 @@ pcb_set_supervisor(pcb * p, int32_t pid)
 }
 
 /**
+ * \private
  * @brief Set the current state of the process
  */
 void
@@ -331,7 +496,38 @@ pcb_set_state(pcb * p, int32_t status)
 }
 
 /**
- * @brief Set the sleeping time of the process. Not relevante if the process
+ * \private
+ * @brief SSet the epc register of the process
+ */
+void
+pcb_set_epc(pcb * p, uint32_t epc)
+{
+  p->registers.epc_reg = epc;
+}
+
+/**
+ *\private
+ * @brief SSet the sp register of the process
+ */
+void
+pcb_set_sp(pcb * p, uint32_t sp)
+{
+  p->registers.sp_reg = sp;
+}
+
+/**
+ * \private
+ * @brief SSet the v0 register of the process
+ */
+void
+pcb_set_v0(pcb * p, uint32_t v0)
+{
+  p->registers.v_reg[0] = v0;
+}
+
+/**
+ * \private
+ * @brief SSet the sleeping time of the process. Not relevante if the process
  * is not sleeping.
  */
 void
@@ -341,7 +537,8 @@ pcb_set_sleep(pcb * p, uint32_t time)
 }
 
 /**
- * @brief Set who the process is waiting for. Not relevante if the process
+ * \private
+ * @brief SSet who the process is waiting for. Not relevante if the process
  * don't wait anybody
  */
 void
@@ -351,7 +548,8 @@ pcb_set_waitfor(pcb * p, uint32_t pid)
 }
 
 /**
- * @brief Set the last error encounter by the process
+ * \private
+ * @brief SSet the last error encounter by the process
  */
 void
 pcb_set_error(pcb * p, int32_t e)
@@ -360,6 +558,7 @@ pcb_set_error(pcb * p, int32_t e)
 }
 
 /**
+ * \private
  * @brief Set if the process is empty or not
  */
 void
