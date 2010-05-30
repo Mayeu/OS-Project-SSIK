@@ -133,7 +133,7 @@ pls_add(pls * ls, pcb * p)
 /**
  * @brief Delete a pcb from a list. (Reset it to his default value)
  */
-  uint32_t pls_delete_pcb(pcb * p)
+  uint32_t        pls_delete_pcb(pcb * p)
   {
 
     if (!p)
@@ -172,7 +172,7 @@ pls_add(pls * ls, pcb * p)
 /**
  * @brief Move a PCB from a list to an other
  */
-  int32_t pls_move_pcb(pcb * p, pls * dest)
+  int32_t         pls_move_pcb(pcb * p, pls * dest)
   {
     int32_t         e;
     pls_item       *it_src;

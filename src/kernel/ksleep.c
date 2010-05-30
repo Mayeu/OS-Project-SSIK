@@ -80,36 +80,3 @@ process_sleep()
     it = last->next;
   }
 }
-
-/*
- * @brief sleep the current_process
- */
-uint32_t
-go_to_sleep(uint32_t time)
-{
-  pcb            *p, *tmp;
-
-  //kdebug_println("go to sleep in");
-
-  p = get_current_pcb();
-
-  if (p == NULL)
-  {
-    //kprintln("bubuuu");
-    return FAILNOOB;
-  }
-
-  pcb_set_state(p, SLEEPING);
-  pcb_set_sleep(p, time * timer_msec);
-  pls_move_pcb(&plsrunning, &plswaiting, p);
-
-  /*
-   * update the current_pcb to his new value
-   */
-  tmp = &(pls_search_pcb(&plswaiting, p)->p);
-  set_current_pcb(tmp);
-
-  //kdebug_println("go to sleep out");
-
-  return OMGROXX;
-}

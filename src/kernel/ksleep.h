@@ -13,10 +13,4 @@
  */
 void            process_sleep();
 
-/**
- * @brief The current process will go to sleep
- * @param the time to sleep
- */
-uint32_t        go_to_sleep(uint32_t time);
-
 #endif
