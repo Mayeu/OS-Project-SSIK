@@ -19,7 +19,7 @@
  * \brief List of processes.
  *
  */
-typedef struct
+typedef struct _PLS
 {
   pcb            *start;        /*!< First pcb of the list */
   uint32_t        length;       /*!< number of processes currently in the list */
@@ -52,17 +52,18 @@ int32_t         pls_add(pls * ls, pcb * p);
  * \param a pointer to the pcb to delete from the list
  * \return OMGROXX if everything goes well.
  */
-uint32_t        pls_delete_pcb(pls * ls, pcb * p);
+uint32_t        pls_delete_pcb(pcb * p);
 
 /**
  * \brief Move a PCB from a list to an other
  *
- * \param src the source list
- * \param dest the destination list
+ * 
+ *
  * \param a pointer to the pcb to move
+ * \param dest the destination list
  * \return OMGROXX if everything goes well.
  */
-int32_t         pls_move_pcb(pls * src, pls * dest, pcb * p);
+int32_t         pls_move_pcb(pcb * p, pls * dest);
 
 /**
  * @brief Search a pid in a list and return the associated pcb
