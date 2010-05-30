@@ -67,10 +67,10 @@ kinit()
   /*
    * Init the four list of pcb
    */
-  pcls_reset(&pclsready);
-  pcls_reset(&pclsrunning);
-  pcls_reset(&pclswaiting);
-  pcls_reset(&pclsterminate);
+  pls_reset(&plsready);
+  pls_reset(&plsrunning);
+  pls_reset(&plswaiting);
+  pls_reset(&plsterminate);
 
   reset_used_stack();
 
@@ -83,10 +83,10 @@ kinit()
 
   test();
 
-  pcls_reset(&pclsready);
-  pcls_reset(&pclsrunning);
-  pcls_reset(&pclswaiting);
-  pcls_reset(&pclsterminate);
+  pls_reset(&plsready);
+  pls_reset(&plsrunning);
+  pls_reset(&plswaiting);
+  pls_reset(&plsterminate);
 
   reset_next_pid();
   reset_used_stack();

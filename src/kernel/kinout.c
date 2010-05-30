@@ -138,7 +138,7 @@ print_string(char *str)
      */
     pcb_set_state(caller, DOING_IO);
 
-    if (pcls_move_pcb(&pclsrunning, &pclswaiting, caller) != OMGROXX)
+    if (pls_move_pcb(&plsrunning, &plswaiting, caller) != OMGROXX)
     {
       //kprintln("Dude! just go in wait!");
       /*
@@ -151,7 +151,7 @@ print_string(char *str)
     /*
      * Update the current pcb
      */
-    tmp = &(pcls_search_pcb(&pclswaiting, caller)->p);
+    tmp = &(pls_search_pcb(&plswaiting, caller)->p);
     set_current_pcb(tmp);
     set_uart_user(tmp);
     kdebug_assert_at(tmp != NULL, "kinout.c", 157);

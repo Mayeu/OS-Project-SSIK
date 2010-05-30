@@ -181,7 +181,7 @@ uart_give_to(pcb * p)
      */
     pcb_set_state(p, WAITING_IO);
 
-    if (pcls_move_pcb(&pclsrunning, &pclswaiting, p) != OMGROXX)
+    if (pls_move_pcb(&plsrunning, &plswaiting, p) != OMGROXX)
     {
       /*
        * Set back the state
@@ -193,7 +193,7 @@ uart_give_to(pcb * p)
     /*
      * Update the current pcb
      */
-    tmp = &(pcls_search_pcb(&pclswaiting, p)->p);
+    tmp = &(pls_search_pcb(&plswaiting, p)->p);
     set_current_pcb(tmp);
 
     schedule();
@@ -338,7 +338,7 @@ int32_t
 uart_release(int32_t code)
 {
   //pcb            *p;
-  pcls_item      *it;
+  pls_item       *it;
 
   pcb_get_register(user)->v_reg[0] = code;
 
@@ -347,7 +347,7 @@ uart_release(int32_t code)
    */
   pcb_set_state(user, READY);
 
-  if (pcls_move_pcb(&pclswaiting, &pclsready, user) != OMGROXX)
+  if (pls_move_pcb(&plswaiting, &plsready, user) != OMGROXX)
   {
     /*
      * Set back the state
@@ -364,7 +364,7 @@ uart_release(int32_t code)
   /*
    * Search the first process in the queu waiting for IO
    */
-  it = pclswaiting.start;
+  it = plswaiting.start;
 
   while (it != NULL && pcb_get_state(&(it->p)) != WAITING_IO);
   it = it->next;
@@ -377,7 +377,7 @@ uart_release(int32_t code)
   {
     pcb_set_state(&(it->p), WAITING_IO);
 
-    if (pcls_move_pcb(&pclswaiting, &pclsrunning, &(it->p)) != OMGROXX)
+    if (pls_move_pcb(&plswaiting, &plsrunning, &(it->p)) != OMGROXX)
     {
       /*
        * Set back the state

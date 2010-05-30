@@ -116,12 +116,48 @@ uint32_t        go_to_sleep(uint32_t time);
  *     - WAITING_IO
  *     - DOING_IO
  * Only this state are accepted as blocked.
+ * If the pcb wich is blocked is the current pcb, schedule is called.
  *
  * @param p the process to block
  * @param state the state to set the process
  * @return an error code
  */
 int32_t         kblock(pcb * p, int32_t state);
+
+/**
+ * @brief Set the currently used pcb to wait for an other pcb to terminate
+ *
+ * The waitfor field in the pcb will be get the pid to wait.
+ * And the process will be move in the waiting list with the state
+ * WAITING_PCB.
+ * After this sechedule is called.
+ *
+ * @param pid the pid to wait
+ * @return an error code
+ */
+int32_t         waitfor(uint32_t pid);
+
+/**
+ * @brief Kill the current process
+ *
+ * The process passed in arg is moved in the terminated list and get the zombie
+ * state. Waiting for his parent to read the return register.
+ * The return register is set to the KILLED error code.
+ * 
+ * @param pid the pid of the process to kill
+ * @return an error code
+ */
+int32_t         kkill(uint32_t pid);
+
+/**
+ * @brief exit the current process and set the return value in the register
+ *
+ * The process caling exit is moved to the terminated list and is return value
+ * is set in the apropriate register. The process get the state OMG_ZOMBIE.
+ *
+ * @param the returned value to set
+ */
+void            kexit(int32_t return_value);
 
 /*
  * Private functions
