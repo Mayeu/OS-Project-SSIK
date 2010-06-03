@@ -16,7 +16,6 @@
 #define ARG_SIZE 20
 #define MAXPCB 40
 
-
 #include <stdlib.h>
 
 /**
@@ -87,13 +86,13 @@ void            sleep(int time);
 int             block(int pid);
 
  /**
- * \fn int wake_up(int pid)
- * \brief Wake up the process with the pid 'pid'.
+ * \fn int unblock(int pid)
+ * \brief Unblock the process with the pid 'pid'.
  *
  * \param pid the pid of the process to wake up
  * \return the error identifier in case of any failure
  */
-int             wake_up(int pid);
+int             unblock(int pid);
 
  /**
  * \fn int wait(int pid, int *status)
@@ -140,15 +139,6 @@ int             get_proc_info(int pid, pcbinfo * res);
 int             chg_pri(int pid, int newprio);
 
  /**
- * \fn int get_pri(int pid)
- * \brief Get the priority f the process pid.
- *
- * \param pid the pid of the process
- * \return the process pid if ok, an error code otherwise
- */
-int             get_pri(int pid);
-
- /**
  * \fn int get_pid(void)
  * \brief Get the current process pid.
  *
@@ -157,14 +147,12 @@ int             get_pri(int pid);
 int             get_pid(void);
 
  /**
- * \fn int get_ps(char *pnames[ARG_SIZE], int *pid)
- * \brief Fill the char* array with the name of all the processes running and
-the int array with all the corresponding pids.
+ * \fn int get_ps(int *pid)
+ * \brief Fill the int array with all the corresponding pids.
  *
- * \param pnames the array of processes name to fill
  * \param pid  the array of processes pid to fill
- * \return the size of the arrays (obviously the same in both arrays)
+ * \return the size of the array
  */
-int             get_ps(char *pnames[ARG_SIZE], int *pid);
+int             get_ps(int *pid);
 
 #endif //__PROCESS_H

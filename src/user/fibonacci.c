@@ -19,15 +19,15 @@ fibonacci(int argc, char *argv[])
   int             f0 = 1, f1 = 1, f;
   int             n = stoi(get_arg(argv, 1));
 
-  printiln(f0);
-  printiln(f1);
+  printi(f0); printn();
+  printi(f1); printn();
 
   while (i <= n)
   {
     f = f0 + f1;
     f0 = f1;
     f1 = f;
-    printiln(f1);
+    printi(f1); printn();
     i++;
   }
   exit(0);
