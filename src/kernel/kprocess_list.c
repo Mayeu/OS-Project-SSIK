@@ -181,7 +181,6 @@ pls_delete_pcb(pcb * p)
 int32_t
 pls_move_pcb(pcb * p, pls * dest)
 {
-
   if (!p || !dest)
     return NULLPTR;
 
