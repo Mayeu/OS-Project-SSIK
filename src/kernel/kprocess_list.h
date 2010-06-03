@@ -67,17 +67,11 @@ int32_t         pls_move_pcb(pcb * p, pls * dest);
 
 /**
  * @brief Search a pid in a list and return the associated pcb
+ * 
  * @param a list
  * @param the pid to found
  * @return NULL if not found, the pls_item otherwise
  */
 pcb            *pls_search_pid(pls * ls, uint32_t pid);
-
-/**
- * @brief Copy a pcb in a pls_item
- * @param the source pcb
- * @param the destination pcb
- */
-void            pls_cpy_pcb(pcb * src, pcb * dest);
 
 #endif
