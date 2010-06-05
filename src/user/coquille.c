@@ -52,7 +52,8 @@ coquille(void)
 
   nb_arg = split_args(command, command_arg);
 
-  print(command); printn();
+  print(command);
+  printn();
 
   ps(1, NULL);
 
@@ -79,7 +80,8 @@ coquille(void)
 
     print("changed prio to 30\n");
     chg_pri(pid, 30);
-    printi(gerror()); printn();
+    printi(gerror());
+    printn();
     perror("Erreur !");
 
     proc_info(2, (char **) proc_inf);

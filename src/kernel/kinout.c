@@ -106,7 +106,7 @@ kprintln(char *text)
 uint32_t
 print_string(char *str)
 {
-  pcb            *caller, *tmp;
+  pcb            *caller;
   uint32_t        e;
 
   //kprintln("k, let's go!");
@@ -135,26 +135,12 @@ print_string(char *str)
     //kprintln("You receive the uart! Enjoy");
     /*
      * The caller is the owner of the uart
+     * We move it to the wait list
      */
-    pcb_set_state(caller, DOING_IO);
 
-    if (pls_move_pcb(&plsrunning, &plswaiting, caller) != OMGROXX)
-    {
+    if (pls_move_pcb(caller, &plswaiting) != OMGROXX)
       //kprintln("Dude! just go in wait!");
-      /*
-       * Set back the state
-       */
-      pcb_set_state(caller, RUNNING);
       return FAILNOOB;
-    }
-
-    /*
-     * Update the current pcb
-     */
-    tmp = &(pls_search_pcb(&plswaiting, caller)->p);
-    set_current_pcb(tmp);
-    set_uart_user(tmp);
-    kdebug_assert_at(tmp != NULL, "kinout.c", 157);
 
     /*
      * Reschedule

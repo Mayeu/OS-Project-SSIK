@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <process.h>
 #include "../kernel/kpcb.h"
 
 uint32_t        test_pcb_set_get_pid();

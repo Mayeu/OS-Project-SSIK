@@ -26,7 +26,6 @@ syscall_handler(registers_t * regs)
 {
   int32_t         res = 0;
   int32_t         syscall = regs->v_reg[0];     // code of the syscall
-  pcb            *p;
 
   switch (syscall)
   {
@@ -55,10 +54,10 @@ syscall_handler(registers_t * regs)
     res = go_to_sleep(regs->a_reg[0]);
     break;
   case BLOCK:
-    res = kblock(regs->a_reg[0]);
+    res = kblock(regs->a_reg[0], BLOCKED);
     break;
   case UNBLOCK:
-    res = kwakeup(regs->a_reg[0]);
+    kwakeup(regs->a_reg[0]);
     break;
   case WAIT:
     res = waitfor(regs->a_reg[0]);

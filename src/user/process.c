@@ -126,7 +126,8 @@ get_pid(void)
  /**
  * Fill the int array with all the corresponding pids.
  */
-int             get_ps(int *pid)
+int
+get_ps(int *pid)
 {
   return syscall_one((int32_t) pid, GETALLPID);
 }

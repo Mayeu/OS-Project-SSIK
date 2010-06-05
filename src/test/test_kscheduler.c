@@ -48,11 +48,11 @@ test_schedule()
 
   pcb             p;
 
-  pcls_reset(&pclsready);
-  pcls_reset(&pclsrunning);
+  pls_reset(&plsready);
+  pls_reset(&plsrunning);
 
   /*
-   * We add the pri42 to pclsready
+   * We add the pri42 to plsready
    */
   pcb_reset(&p);
   pcb_set_name(&p, "pri41");
@@ -60,21 +60,21 @@ test_schedule()
   pcb_set_state(&p, READY);
   pcb_set_empty(&p, FALSE);
   p.registers.epc_reg = (uint32_t) init;
-  pcls_add(&pclsready, &p);
+  pls_add(&plsready, &p);
 
   /*
    * Go Go Scheduler!
    */
   schedule();
 
-  if (strcmp(pcb_get_name(&(pclsrunning.start->p)), "pri41") != 0
-      || pcb_get_state(&(pclsrunning.start->p)) != RUNNING)
+  if (strcmp(pcb_get_name(&(plsrunning.start->p)), "pri41") != 0
+      || pcb_get_state(&(plsrunning.start->p)) != RUNNING)
     return -1;
 
-  if (pclsready.start != NULL)
+  if (plsready.start != NULL)
     return -2;
 
-  if (get_current_pcb() != &(pclsrunning.start->p))
+  if (get_current_pcb() != &(plsrunning.start->p))
     return -3;
 
   /*
@@ -83,14 +83,14 @@ test_schedule()
    */
   schedule();
 
-  if (strcmp(pcb_get_name(&(pclsrunning.start->p)), "pri41") != 0
-      || pcb_get_state(&(pclsrunning.start->p)) != RUNNING)
+  if (strcmp(pcb_get_name(&(plsrunning.start->p)), "pri41") != 0
+      || pcb_get_state(&(plsrunning.start->p)) != RUNNING)
     return -142;
 
-  if (pclsready.start != NULL)
+  if (plsready.start != NULL)
     return -242;
 
-  if (get_current_pcb() != &(pclsrunning.start->p))
+  if (get_current_pcb() != &(plsrunning.start->p))
     return -342;
 
   kdebug_assert_at(get_current_pcb()->registers.epc_reg == (uint32_t) init,
@@ -104,19 +104,19 @@ test_schedule()
   pcb_set_pri(&p, 2);
   pcb_set_state(&p, READY);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclsready, &p);
+  pls_add(&plsready, &p);
 
   schedule();
 
-  if (strcmp(pcb_get_name(&(pclsready.start->p)), "pri2") != 0
-      || pcb_get_state(&(pclsready.start->p)) != READY)
+  if (strcmp(pcb_get_name(&(plsready.start->p)), "pri2") != 0
+      || pcb_get_state(&(plsready.start->p)) != READY)
     return -4;
 
-  if (strcmp(pcb_get_name(&(pclsrunning.start->p)), "pri41") != 0
-      || pcb_get_state(&(pclsrunning.start->p)) != RUNNING)
+  if (strcmp(pcb_get_name(&(plsrunning.start->p)), "pri41") != 0
+      || pcb_get_state(&(plsrunning.start->p)) != RUNNING)
     return -5;
 
-  if (get_current_pcb() != &(pclsrunning.start->p))
+  if (get_current_pcb() != &(plsrunning.start->p))
     return -6;
 
   /*
@@ -128,23 +128,23 @@ test_schedule()
   pcb_set_pri(&p, 41);
   pcb_set_state(&p, READY);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclsready, &p);
+  pls_add(&plsready, &p);
 
   schedule();
 
-  if (strcmp(pcb_get_name(&(pclsready.start->p)), "pri2") != 0
-      || pcb_get_state(&(pclsready.start->p)) != READY)
+  if (strcmp(pcb_get_name(&(plsready.start->p)), "pri2") != 0
+      || pcb_get_state(&(plsready.start->p)) != READY)
     return -7;
 
-  if (strcmp(pcb_get_name(&(pclsrunning.start->p)), "pri412") != 0
-      || pcb_get_state(&(pclsrunning.start->p)) != RUNNING)
+  if (strcmp(pcb_get_name(&(plsrunning.start->p)), "pri412") != 0
+      || pcb_get_state(&(plsrunning.start->p)) != RUNNING)
     return -8;
 
-  if (strcmp(pcb_get_name(&(pclsrunning.start->next->p)), "pri41") != 0
-      || pcb_get_state(&(pclsrunning.start->next->p)) != RUNNING)
+  if (strcmp(pcb_get_name(&(plsrunning.start->next->p)), "pri41") != 0
+      || pcb_get_state(&(plsrunning.start->next->p)) != RUNNING)
     return -9;
 
-  if (get_current_pcb() != &(pclsrunning.start->next->p))
+  if (get_current_pcb() != &(plsrunning.start->next->p))
     return -10;
 
 
@@ -157,28 +157,28 @@ test_schedule()
   pcb_set_pri(&p, 42);
   pcb_set_state(&p, READY);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclsready, &p);
+  pls_add(&plsready, &p);
 
   schedule();
 
-  if (strcmp(pcb_get_name(&(pclsready.start->p)), "pri41") != 0
-      || pcb_get_state(&(pclsready.start->p)) != READY)
+  if (strcmp(pcb_get_name(&(plsready.start->p)), "pri41") != 0
+      || pcb_get_state(&(plsready.start->p)) != READY)
     return -11;
 
-  if (strcmp(pcb_get_name(&(pclsready.start->next->p)), "pri412") != 0
-      || pcb_get_state(&(pclsready.start->next->p)) != READY)
+  if (strcmp(pcb_get_name(&(plsready.start->next->p)), "pri412") != 0
+      || pcb_get_state(&(plsready.start->next->p)) != READY)
     return -12;
 
-  if (strcmp(pcb_get_name(&(pclsready.start->next->next->p)), "pri2") != 0
-      || pcb_get_state(&(pclsready.start->next->next->p)) != READY)
+  if (strcmp(pcb_get_name(&(plsready.start->next->next->p)), "pri2") != 0
+      || pcb_get_state(&(plsready.start->next->next->p)) != READY)
     return -13;
 
-  if (strcmp(pcb_get_name(&(pclsrunning.start->p)), "pri42") != 0
-      || pcb_get_state(&(pclsrunning.start->p)) != RUNNING)
+  if (strcmp(pcb_get_name(&(plsrunning.start->p)), "pri42") != 0
+      || pcb_get_state(&(plsrunning.start->p)) != RUNNING)
     return -14;
 
-  pcls_reset(&pclsready);
-  pcls_reset(&pclsrunning);
+  pls_reset(&plsready);
+  pls_reset(&plsrunning);
 
   schedule();
 

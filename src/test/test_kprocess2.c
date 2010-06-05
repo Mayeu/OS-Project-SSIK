@@ -98,7 +98,7 @@ test_get_next_pid()
    */
   pcb_reset(&p);
   pcb_set_pid(&p, get_next_pid());
-  pcls_add(&pclsready, &p);
+  pls_add(&plsready, &p);
 
   /*
    * Now gimme mooaaaaaare
@@ -109,7 +109,7 @@ test_get_next_pid()
   /*
    * Reset everything
    */
-  pcls_reset(&pclsready);
+  pls_reset(&plsready);
   pcb_reset(&p);
 
   /*

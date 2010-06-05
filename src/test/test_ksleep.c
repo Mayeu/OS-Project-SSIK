@@ -37,25 +37,25 @@ test_process_sleep()
 {
   /*
    * We set the following list :
-   * pclsready :
+   * plsready :
    * Name       Pri       State     time to sleep
    * Pri42      42        READY     0
    * Pri2       2         READY     0
    *
-   * pclswaiting:
+   * plswaiting:
    * PRI41      41        SLEEP     QUANTUM - 1
    * PRI32      32        SLEEP     2*QUANTUM
    * PRI21      21        BLOCK     0
    * PRI12      12        SLEEP     3*QUANTUM
    *
    * After the test the list will look like this:
-   * pclsready :
+   * plsready :
    * Name       Pri       State     time to sleep
    * Pri42      42        READY     0
    * PRI41      41        READY     0
    * Pri2       2         READY     0
    *
-   * pclswaiting:
+   * plswaiting:
    * PRI32      32        SLEEP     QUANTUM
    * PRI21      21        BLOCK     0
    * PRI12      12        SLEEP     2*QUANTUM
@@ -63,8 +63,8 @@ test_process_sleep()
 
   pcb             p;
 
-  pcls_reset(&pclsready);
-  pcls_reset(&pclswaiting);
+  pls_reset(&plsready);
+  pls_reset(&plswaiting);
   /*
    * First populate the list
    */
@@ -73,14 +73,14 @@ test_process_sleep()
   pcb_set_pri(&p, 42);
   pcb_set_state(&p, READY);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclsready, &p);
+  pls_add(&plsready, &p);
 
   pcb_reset(&p);
   pcb_set_name(&p, "pri2");
   pcb_set_pri(&p, 2);
   pcb_set_state(&p, READY);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclsready, &p);
+  pls_add(&plsready, &p);
 
   pcb_reset(&p);
   pcb_set_name(&p, "pri41");
@@ -88,7 +88,7 @@ test_process_sleep()
   pcb_set_state(&p, SLEEPING);
   pcb_set_sleep(&p, QUANTUM - 1);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclswaiting, &p);
+  pls_add(&plswaiting, &p);
 
   pcb_reset(&p);
   pcb_set_name(&p, "pri32");
@@ -96,14 +96,14 @@ test_process_sleep()
   pcb_set_state(&p, SLEEPING);
   pcb_set_sleep(&p, 2 * QUANTUM);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclswaiting, &p);
+  pls_add(&plswaiting, &p);
 
   pcb_reset(&p);
   pcb_set_name(&p, "pri21");
   pcb_set_pri(&p, 21);
   pcb_set_state(&p, BLOCKED);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclswaiting, &p);
+  pls_add(&plswaiting, &p);
 
   pcb_reset(&p);
   pcb_set_name(&p, "pri12");
@@ -111,7 +111,7 @@ test_process_sleep()
   pcb_set_state(&p, SLEEPING);
   pcb_set_sleep(&p, 3 * QUANTUM);
   pcb_set_empty(&p, FALSE);
-  pcls_add(&pclswaiting, &p);
+  pls_add(&plswaiting, &p);
 
   /*
    * Ok, fire in the hole!
@@ -122,28 +122,28 @@ test_process_sleep()
    * Now the long and painfull check
    */
 
-  if (strcmp(pcb_get_name(&(pclsready.start->p)), "pri42") != 0)
+  if (strcmp(pcb_get_name(&(plsready.start->p)), "pri42") != 0)
     return -1;
 
-  if (strcmp(pcb_get_name(&(pclsready.start->next->p)), "pri41") != 0
-      || pcb_get_sleep(&(pclsready.start->next->p)) != 0
-      || pcb_get_state(&(pclsready.start->next->p)) != READY)
+  if (strcmp(pcb_get_name(&(plsready.start->next->p)), "pri41") != 0
+      || pcb_get_sleep(&(plsready.start->next->p)) != 0
+      || pcb_get_state(&(plsready.start->next->p)) != READY)
     return -2;
 
-  if (strcmp(pcb_get_name(&(pclsready.start->next->next->p)), "pri2") != 0)
+  if (strcmp(pcb_get_name(&(plsready.start->next->next->p)), "pri2") != 0)
     return -3;
 
-  if (strcmp(pcb_get_name(&(pclswaiting.start->p)), "pri32") != 0
-      || pcb_get_sleep(&(pclswaiting.start->p)) != QUANTUM
-      || pcb_get_state(&(pclswaiting.start->p)) != SLEEPING)
+  if (strcmp(pcb_get_name(&(plswaiting.start->p)), "pri32") != 0
+      || pcb_get_sleep(&(plswaiting.start->p)) != QUANTUM
+      || pcb_get_state(&(plswaiting.start->p)) != SLEEPING)
     return -4;
 
-  if (strcmp(pcb_get_name(&(pclswaiting.start->next->p)), "pri21") != 0)
+  if (strcmp(pcb_get_name(&(plswaiting.start->next->p)), "pri21") != 0)
     return -5;
 
-  if (strcmp(pcb_get_name(&(pclswaiting.start->next->next->p)), "pri12") != 0
-      || pcb_get_sleep(&(pclswaiting.start->next->next->p)) != 2 * QUANTUM
-      || pcb_get_state(&(pclswaiting.start->next->next->p)) != SLEEPING)
+  if (strcmp(pcb_get_name(&(plswaiting.start->next->next->p)), "pri12") != 0
+      || pcb_get_sleep(&(plswaiting.start->next->next->p)) != 2 * QUANTUM
+      || pcb_get_state(&(plswaiting.start->next->next->p)) != SLEEPING)
     return -6;
 
 

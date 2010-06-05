@@ -15,6 +15,7 @@
 #include "kprogram.h"
 #include "kernel.h"
 #include "kinout.h"
+#include "kscheduler.h"
 
 /*
  * Define
@@ -42,7 +43,7 @@ static uint32_t pcb_counter = 0;
 /**
  * @brief A big stack for everybody
  */
-static uint32_t        stack[MAXPCB * SIZE_STACK];
+static uint32_t stack[MAXPCB * SIZE_STACK];
 
 /**
  * @brief Array to hold the used part of the stack. We store -1 if not use,
@@ -53,7 +54,7 @@ static uint32_t used_stack[MAXPCB];
 /**
  * @brief the current pcb
  */
-static pcb            *current_pcb;
+pcb            *current_pcb;
 
 /*
  * \private
@@ -222,27 +223,27 @@ create_proc(char *name, uint32_t prio, char **params)
 pcb            *
 search_all_list(uint32_t pid)
 {
-  pls_item       *p;
+  pcb            *p;
 
   p = pls_search_pid(&plsready, pid);
 
   if (p)
-    return &(p->p);
+    return p;
 
   p = pls_search_pid(&plsrunning, pid);
 
   if (p)
-    return &(p->p);
+    return p;
 
   p = pls_search_pid(&plswaiting, pid);
 
   if (p)
-    return &(p->p);
+    return p;
 
   p = pls_search_pid(&plsterminate, pid);
 
   if (p)
-    return &(p->p);
+    return p;
 
   return NULL;
 }
@@ -270,28 +271,23 @@ rm_p(pcb * p)
  * change the priority of a process.
  */
 uint32_t
-chg_ppri(pcb * p, uint32_t pri)
+chg_ppri(uint32_t pid, uint32_t pri)
 {
+  pcb            *p;
   if (p == NULL)
     return NULLPTR;
 
   if (pri > MAX_PRI || pri < MIN_PRI)
     return INVARG;
 
+  p = search_all_list(pid);
+
+  if (p == NULL)
+    return NOTFOUND;
+
   pcb_set_pri(p, pri);
+
   return OMGROXX;
-}
-
-/**
- * \private
- * copy and give the information of a pcb into a pcbinfo.
- */
-uint32_t
-get_pinfo(pcb * p, pcbinfo * pi)
-{
-  kprint("DEPRECATED: get_pinfo don't do anything anymore !");
-
-  return FAILNOOB;
 }
 
 /*
@@ -299,9 +295,12 @@ get_pinfo(pcb * p, pcbinfo * pi)
  * copy and give the information of a pcb into a pcbinfo.
  */
 uint32_t
-get_pinfo2(pcb * p, pcbinfo2 * pi)
+get_pinfo(uint32_t pid, pcbinfo * pi)
 {
+  pcb            *p;
   uint32_t        i;
+
+  p = search_all_list(pid);
 
   if (p == NULL || pi == NULL)
     return NULLPTR;
@@ -329,9 +328,10 @@ get_pinfo2(pcb * p, pcbinfo2 * pi)
  * \param tab the table of pids
  * \return the number of pids
  */
-uint32_t        get_all_pid(uint32_t *tab)
+uint32_t
+get_all_pid(uint32_t * tab)
 {
-	return pcb_counter;
+  return pcb_counter;
 }
 
 
@@ -395,7 +395,7 @@ go_to_sleep(uint32_t time)
   pcb_set_sleep(p, time * timer_msec);
   pls_move_pcb(p, &plswaiting);
 
-	schedule();
+  schedule();
 
   //kdebug_println("go to sleep out");
 
@@ -417,10 +417,11 @@ go_to_sleep(uint32_t time)
  * @param state the state to set the process
  * @return an error code
  */
-int32_t         kblock(uint32_t pid, int32_t state)
+int32_t
+kblock(uint32_t pid, int32_t state)
 {
-	pcb *p = search_all_list(pid);
-	return kblock_pcb(p, state);
+  pcb            *p = search_all_list(pid);
+  return kblock_pcb(p, state);
 }
 
 /**
@@ -438,7 +439,8 @@ int32_t         kblock(uint32_t pid, int32_t state)
  * @param state the state to set the process
  * @return an error code
  */
-int32_t         kblock_pcb(pcb *p, int32_t state)
+int32_t
+kblock_pcb(pcb * p, int32_t state)
 {
   if (p == NULL)
     return FAILNOOB;
@@ -446,8 +448,8 @@ int32_t         kblock_pcb(pcb *p, int32_t state)
   pcb_set_state(p, state);
   pls_move_pcb(p, &plswaiting);
 
-	if(get_current_pcb() == pcb_get_pid(p))
-		schedule();
+  if (pcb_get_pid(get_current_pcb()) == pcb_get_pid(p))
+    schedule();
 
   return OMGROXX;
 }
@@ -463,22 +465,18 @@ int32_t         kblock_pcb(pcb *p, int32_t state)
  * @param pid the pid to wait
  * @return an error code
  */
-int32_t         waitfor(uint32_t pid)
+int32_t
+waitfor(uint32_t pid)
 {
-  pcb            *tmp;
-	pcb *p = search_all_list(pid);
+  pcb            *p;
+
+  p = search_all_list(pid);
 
   if (p == NULL)
     return FAILNOOB;
 
   pcb_set_state(p, WAITING_PCB);
   pls_move_pcb(p, &plswaiting);
-
-  /*
-   * update the current_pcb to its new value
-   */
-  tmp = &(pls_search_pcb(&plswaiting, p)->p);
-  set_current_pcb(tmp);
 
   return OMGROXX;
 }
@@ -493,10 +491,11 @@ int32_t         waitfor(uint32_t pid)
  * @param pid the pid of the process to kill
  * @return an error code
  */
-int32_t         kkill(uint32_t pid)
+int32_t
+kkill(uint32_t pid)
 {
-	pcb *p = search_all_list(pid);
-	kkill_pcb(p);
+  pcb            *p = search_all_list(pid);
+  return kkill_pcb(p);
 }
 
 /**
@@ -509,25 +508,29 @@ int32_t         kkill(uint32_t pid)
  * @param pid the pid of the process to kill
  * @return an error code
  */
-int32_t         kkill_pcb(pcb *p)
+int32_t
+kkill_pcb(pcb * p)
 {
-	int i = 0;
-	pcb *pi = plswaiting.start;
+  //int i = 0;
+  pcb            *pi = plswaiting.start;
 
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
-	while(pi != NULL)
-	{
-		/* Check for the supervisor to wake it up */
-		if(pcb_get_state(pi) == WAITING_PCB && pcb_get_waitfor(pi) == pcb_get_pid(p))
-		{
-			kwakeup(pcb_get_pid(pi));
-			return OMGROXX;
-		}
-	}
+  while (pi != NULL)
+  {
+    /* Check for the supervisor to wake it up */
+    if (pcb_get_state(pi) == WAITING_PCB
+        && pcb_get_waitfor(pi) == pcb_get_pid(p))
+    {
+      kwakeup(pcb_get_pid(pi));
+      return OMGROXX;
+    }
+  }
 
-	/* TODO : make the child adopted by the init */
+  /* TODO : make the child adopted by the init */
+
+  return OMGROXX;
 }
 
 /**
@@ -538,28 +541,31 @@ int32_t         kkill_pcb(pcb *p)
  *
  * @param the returned value to set
  */
-void            kexit(int32_t return_value)
+void
+kexit(int32_t return_value)
 {
-	/* TODO */
+  /* TODO */
 }
 
 /**
  * @brief 
  * @param the returned value to set
  */
-void            kwakeup_pcb(pcb *p)
+void
+kwakeup_pcb(pcb * p)
 {
-	/* TODO */
+  /* TODO */
 }
 
 /**
  * @brief 
  * @param the returned value to set
  */
-void            kwakeup(uint32_t pid)
+void
+kwakeup(uint32_t pid)
 {
-	pcb *p = search_all_list(pid);
-	kwakeup_pcb(p);
+  pcb            *p = search_all_list(pid);
+  kwakeup_pcb(p);
 }
 
 /*

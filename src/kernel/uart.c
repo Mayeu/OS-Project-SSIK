@@ -172,7 +172,6 @@ set_uart_user(pcb * p)
 int32_t
 uart_give_to(pcb * p)
 {
-  pcb            *tmp;
 
   if (user != NULL && pcb_get_pid(p) != pcb_get_pid(user))
   {
@@ -181,7 +180,7 @@ uart_give_to(pcb * p)
      */
     pcb_set_state(p, WAITING_IO);
 
-    if (pls_move_pcb(&plsrunning, &plswaiting, p) != OMGROXX)
+    if (pls_move_pcb(p, &plswaiting) != OMGROXX)
     {
       /*
        * Set back the state
@@ -193,8 +192,8 @@ uart_give_to(pcb * p)
     /*
      * Update the current pcb
      */
-    tmp = &(pls_search_pcb(&plswaiting, p)->p);
-    set_current_pcb(tmp);
+    //tmp = &(pls_search_pcb(&plswaiting, p)->p);
+    //set_current_pcb(tmp);
 
     schedule();
 
@@ -337,8 +336,7 @@ end_of_printing(int32_t code)
 int32_t
 uart_release(int32_t code)
 {
-  //pcb            *p;
-  pls_item       *it;
+  pcb            *p;
 
   pcb_get_register(user)->v_reg[0] = code;
 
@@ -347,7 +345,7 @@ uart_release(int32_t code)
    */
   pcb_set_state(user, READY);
 
-  if (pls_move_pcb(&plswaiting, &plsready, user) != OMGROXX)
+  if (pls_move_pcb(user, &plsready) != OMGROXX)
   {
     /*
      * Set back the state
@@ -364,29 +362,29 @@ uart_release(int32_t code)
   /*
    * Search the first process in the queu waiting for IO
    */
-  it = plswaiting.start;
+  p = plswaiting.start;
 
-  while (it != NULL && pcb_get_state(&(it->p)) != WAITING_IO);
-  it = it->next;
+  while (p != NULL && pcb_get_state(p) != WAITING_IO)
+    p = pcb_get_next(p);
 
   /*
    * If we found some one, we wake it up
    * we set the owner
    */
-  if (it != NULL)
+  if (p != NULL)
   {
-    pcb_set_state(&(it->p), WAITING_IO);
+    pcb_set_state(p, WAITING_IO);
 
-    if (pls_move_pcb(&plswaiting, &plsrunning, &(it->p)) != OMGROXX)
+    if (pls_move_pcb(p, &plsrunning) != OMGROXX)
     {
       /*
        * Set back the state
        */
-      pcb_set_state(&(it->p), RUNNING);
+      pcb_set_state(p, RUNNING);
       return FAILNOOB;
     }
 
-    user = &(it->p);
+    user = p;
   }
 
   return OMGROXX;

@@ -6,14 +6,14 @@
 #include "../kernel/test.h"
 #include "test_string.c"
 //#include "test_kprocess.c"
-#include "test_kprocess2.c"
+//#include "test_kprocess2.c"
 #include "test_kpcb.c"
 #include "test_uart_fifo.c"
 #include "test_kprogram.c"
 //#include "test_kprocess_list.c"
-#include "test_kprocess_list2.c"
-#include "test_ksleep.c"
-#include "test_kscheduler.c"
+//#include "test_kprocess_list2.c"
+//#include "test_ksleep.c"
+//#include "test_kscheduler.c"
 #include "test_coquille.c"
 //#include "test_kmsg.c"
 //#include "test_kmsg_lst.c"
@@ -51,17 +51,17 @@ test()
 
   test_kpcb();
 
-  test_kprocess_list2();
+  //test_kprocess_list2();
 
   test_uart_fifo();
 
   test_kprogram();
 
-  test_kprocess2();
+  //test_kprocess2();
 
-  test_ksleep();
+  //test_ksleep();
 
-  test_kscheduler();
+  //test_kscheduler();
 
   //test_kprocess();
 
