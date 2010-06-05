@@ -104,25 +104,24 @@ schedule()
     /*
      * The current pcb is in the list of running process ?
      */
-    if (get_current_pcb() != NULL)
+    if (get_current_pcb() != NULL
+        && pcb_get_head(get_current_pcb()) == &plsrunning)
     {
-      //it = pls_search_pcb(&plsrunning, get_current_pcb());
+
+      p = get_current_pcb();
+
       if (pcb_get_next(p) != NULL)
-      {
         /*
          * We set the current pcb to the next element of the list
          */
         set_current_pcb(pcb_get_next(p));
-      }
 
       /*
        * hey ! p is null :/
        * DON'T PANIC ! Just take the first element in the running list ;)
        */
       else
-      {
         set_current_pcb(plsrunning.start);
-      }
     }
 
     /*

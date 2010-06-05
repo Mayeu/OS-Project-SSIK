@@ -233,6 +233,8 @@ pcb_reset(pcb * p)
   pcb_set_waitfor(p, 0);
   pcb_set_error(p, OMGROXX);
   pcb_set_empty(p, TRUE);
+  pcb_set_next(p, NULL);
+  pcb_set_prev(p, NULL);
 }
 
 /**
