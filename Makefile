@@ -17,7 +17,7 @@ BUILD=build
 OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o exception.o debug.o kpcb.o kpcb_fifo.o kprocess.o kinout.o kerror.o kprogram.o kscheduler.o syscall.o ksyscall.o kexception.o uart.o splash.o ksleep.o  kprocess_list.o )
 OBJS_USER= $(addprefix $(BUILD)/, string.o process.o increment.o fibonacci.o stdio.o error.o coquille.o message.o ring.o philosopher.o scroll.o coquille_up.o)
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
-TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c test_kpcb.c test_kprocess2.c test_kprocess.c test_kprocess_list2.c test_kprocess_list.c test_ksleep.c test_kscheduler.c)
+TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c test_kpcb.c test_kprocess2.c test_kprocess.c test_kprocess_list2.c test_kprocess_list.c test_ksleep.c test_kscheduler.c test_kpcb_fifo.c)
 
 # GCC prefix
 MIPS_PREFIX=/it/sw/cross/mips-idt/bin/mips-idt-elf
@@ -69,7 +69,7 @@ $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER) $(OBJS_TEST)
 	$(LD) $(ARCH) -o $@ $^
 
 # Run the program
-run: indent link
+run: link
 	bash $(PROJECT_DIR)/scripts/run.sh $(BIN)/ssik
 
 # Indent everything

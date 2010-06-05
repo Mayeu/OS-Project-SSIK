@@ -92,18 +92,9 @@ pls_add(pls * ls, pcb * p)
     /*
      * are we at the end of the list ?
      */
-    if (pcb_get_next(next) == NULL)
+    if (pcb_get_pri(next) < pcb_get_pri(p))
     {
-      /*
-       * Yes
-       */
-      pcb_set_next(next, p);
-      pcb_set_next(p, NULL);
-      pcb_set_prev(p, next);
-    }
-
-    else
-    {
+      //kprintln("I should pass here");
       /*
        * no
        */
@@ -119,16 +110,28 @@ pls_add(pls * ls, pcb * p)
       }
       else
       {
-        pcb_set_next(p, pcb_get_next(next));
-        pcb_set_prev(pcb_get_next(next), p);
-        pcb_set_next(next, p);
-        pcb_set_prev(p, next);
+        pcb_set_next(pcb_get_prev(next), p);
+        pcb_set_prev(p, pcb_get_prev(next));
+        pcb_set_next(p, next);
+        pcb_set_prev(next, p);
       }
     }
 
-    pcb_set_head(p, ls);
-    ls->length++;
+    else
+    {
+      /*
+       * Yes
+       */
+      pcb_set_next(next, p);
+      pcb_set_next(p, NULL);
+      pcb_set_prev(p, next);
+    }
+
+
   }
+
+  pcb_set_head(p, ls);
+  ls->length++;
 
   return OMGROXX;
 }
@@ -150,7 +153,8 @@ pls_delete_pcb(pcb * p)
   if (pcb_get_prev(p) == NULL)
   {
     pcb_get_head(p)->start = pcb_get_next(p);
-    pcb_set_prev(pcb_get_next(p), NULL);
+    if (pcb_get_next(p) != NULL)
+      pcb_set_prev(pcb_get_next(p), NULL);
   }
   /*
    * otherwise
@@ -158,7 +162,8 @@ pls_delete_pcb(pcb * p)
   else
   {
     pcb_set_next(pcb_get_prev(p), pcb_get_next(p));
-    pcb_set_prev(pcb_get_next(p), pcb_get_prev(p));
+    if (pcb_get_next(p) != NULL)
+      pcb_set_prev(pcb_get_next(p), pcb_get_prev(p));
   }
 
   /*
@@ -194,7 +199,8 @@ pls_move_pcb(pcb * p, pls * dest)
   if (pcb_get_prev(p) == NULL)
   {
     pcb_get_head(p)->start = pcb_get_next(p);
-    pcb_set_prev(pcb_get_next(p), NULL);
+    if (pcb_get_next(p) != NULL)
+      pcb_set_prev(pcb_get_next(p), NULL);
   }
   /*
    * otherwise
@@ -202,7 +208,8 @@ pls_move_pcb(pcb * p, pls * dest)
   else
   {
     pcb_set_next(pcb_get_prev(p), pcb_get_next(p));
-    pcb_set_prev(pcb_get_next(p), pcb_get_prev(p));
+    if (pcb_get_next(p) != NULL)
+      pcb_set_prev(pcb_get_next(p), pcb_get_prev(p));
   }
 
   /*

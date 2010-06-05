@@ -57,15 +57,23 @@ push_fifo_p(pcb * p)
  * \param mess the list of messages
  * \return an error code
  */
-uint32_t
-pop_fifo_p(pcb * p)
+pcb            *
+pop_fifo_p()
 {
-  if (fifo_pcb.length >= MAXPCB)
-    return OUTOMEM;
+  pcb            *p;
 
-  fifo_pcb.buffer[fifo_pcb.in] = p;
-  fifo_pcb.length++;
-  fifo_pcb.in = (fifo_pcb.in + 1) % MAXPCB;
+  if (fifo_pcb.length == 0)
+    return NULL;
 
-  return OMGROXX;
+  p = fifo_pcb.buffer[fifo_pcb.out];
+  fifo_pcb.length--;
+  fifo_pcb.out = (fifo_pcb.out + 1) % MAXPCB;
+
+  return p;
+}
+
+fifo_p         *
+get_fifo_p()
+{
+  return &fifo_pcb;
 }
