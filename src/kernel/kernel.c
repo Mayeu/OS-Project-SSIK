@@ -74,6 +74,7 @@ kinit()
 
   reset_next_pid();
   reset_used_stack();
+  init_mem();
 
   set_current_pcb(NULL);
   p_error = &kerror;
@@ -121,14 +122,39 @@ kinit()
 void
 init()
 {
+  int             pid, st;
+  char            c[20] = { '\0' };
   /*
    * Print the splash screen
    */
   splash();
 
-  print("Hey! I'm going to sleep a little :)\n");
-  sleep(1000);
-  print("Maybe\n");
+  print("I spawn a quitting program, and wait for it to finish!\n");
 
-  //while (1);
+  pid = get_pid();
+
+  if (pid != 0)
+    while (1);
+
+  itos(pid, c);
+  print(c);
+  print("!\n");
+
+  pid = create_proc("quit", BAS_PRI, NULL);
+
+  //sleep(5000);
+
+  //print("Waking-up\n");
+
+  if (pid < 1)
+    print("OMG! No child for me :'(\n");
+  else
+  {
+    if (wait(pid, &st) == OMGROXX)
+      print("My child exit :)");
+    else
+      print("My child get lost :(");
+  }
+
+  while (1);
 }

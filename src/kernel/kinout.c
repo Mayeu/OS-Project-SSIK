@@ -140,7 +140,7 @@ print_string(char *str)
      */
     kblock_pcb(caller, DOING_IO);
 
-    kdebug_assert_at(!get_current_pcb(), "kinout.c", 142);
+    //kdebug_assert_at(!get_current_pcb(), "kinout.c", 142);
 
     /*
      * Set the uart in read mode

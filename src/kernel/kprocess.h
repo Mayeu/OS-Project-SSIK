@@ -160,7 +160,7 @@ int32_t         kblock_pcb(pcb * p, int32_t state);
  * @param pid the pid to wait
  * @return an error code
  */
-int32_t         waitfor(uint32_t pid);
+int32_t         waitfor(uint32_t pid, int32_t * status);
 
 /**
  * @brief Kill the current process

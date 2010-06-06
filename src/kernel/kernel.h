@@ -15,7 +15,7 @@
 #include "kprocess_list.h"
 
 /* Time of one clock tick */
-#define QUANTUM 10*timer_msec
+#define QUANTUM 100*timer_msec
 
 /*
  * global variable

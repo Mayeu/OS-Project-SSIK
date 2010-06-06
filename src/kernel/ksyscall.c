@@ -43,6 +43,7 @@ syscall_handler(registers_t * regs)
     }
   case PRINT:
     res = print_string((char *) regs->a_reg[0]);
+    return;                     /* We save the good return value in the pcb */
     break;
   case FPRINT:
     if (regs->a_reg[0] == CONSOLE)
@@ -60,7 +61,7 @@ syscall_handler(registers_t * regs)
     kwakeup(regs->a_reg[0]);
     break;
   case WAIT:
-    res = waitfor(regs->a_reg[0]);
+    res = waitfor(regs->a_reg[0], (int32_t *) regs->a_reg[1]);
     break;
   case SEND:
     //mres = (msg_arg *) regs->a_reg[0];

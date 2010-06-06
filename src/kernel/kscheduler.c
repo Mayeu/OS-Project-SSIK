@@ -46,6 +46,7 @@ schedule()
   }
   else
   {
+    //kprintln("Pass here1");
     pri = 0;
   }
 
@@ -57,6 +58,7 @@ schedule()
    */
   if (plsready.start != NULL && pri < pcb_get_pri(plsready.start))
   {
+    //kprintln("Pass here2");
     p = plsrunning.start;
 
     while (p != NULL)
@@ -76,10 +78,11 @@ schedule()
    * the first part of the element.
    */
   p = plsready.start;
-  kdebug_assert_at(pcb_get_next(p) == NULL, "schedule()", 84);
+  //kdebug_assert_at(pcb_get_next(p) == NULL, "schedule()", 84);
 
   while (p != NULL && pcb_get_pri(p) == pri)
   {
+    //kprintln("Pass here3");
     pcb_set_state(p, RUNNING);
     pls_move_pcb(p, &plsrunning);
     p = plsready.start;
@@ -106,6 +109,7 @@ schedule()
    */
   else
   {
+    //kprintln("Pass here4");
     /*
      * The current pcb is in the list of running process ?
      */
@@ -146,5 +150,5 @@ schedule()
    * Ok we are done ! (maybe)
    */
 
-  // kdebug_println("Scheduler out");
+  //kdebug_println("Scheduler out");
 }

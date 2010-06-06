@@ -109,7 +109,7 @@ create_proc(char *name, uint32_t prio, char **params)
   pcb            *p;
   prgm           *prg;
 
-  //kdebug_println("Create process in");
+  kdebug_println("Create process in");
 
   if (name == NULL)
     return NULLPTR;
@@ -129,7 +129,7 @@ create_proc(char *name, uint32_t prio, char **params)
       return OUTOMEM;
 
     /*
-     * Reset the tmp pcb
+     * Reset the pcb
      */
     pcb_reset(p);
 
@@ -228,7 +228,7 @@ create_proc(char *name, uint32_t prio, char **params)
   else
     return OUTOMEM;
 
-  //kdebug_println("Create process out");
+  kdebug_println("Create process out");
 
   return pid;
 }
@@ -244,22 +244,22 @@ search_all_list(uint32_t pid)
 
   p = pls_search_pid(&plsready, pid);
 
-  if (p)
+  if (p != NULL)
     return p;
 
   p = pls_search_pid(&plsrunning, pid);
 
-  if (p)
+  if (p != NULL)
     return p;
 
   p = pls_search_pid(&plswaiting, pid);
 
-  if (p)
+  if (p != NULL)
     return p;
 
   p = pls_search_pid(&plsterminate, pid);
 
-  if (p)
+  if (p != NULL)
     return p;
 
   return NULL;
@@ -482,22 +482,42 @@ kblock_pcb(pcb * p, int32_t state)
  * After this sechedule is called.
  *
  * @param pid the pid to wait
+ * @param *status return status of the pcb
  * @return an error code
  */
 int32_t
-waitfor(uint32_t pid)
+waitfor(uint32_t pid, int32_t * status)
 {
   pcb            *p;
+
+  //kdebug_println("Waitfor: in");
 
   p = search_all_list(pid);
 
   if (p == NULL)
-    return FAILNOOB;
+  {
+    //kdebug_println("Waitfor: bad out");
+    return NOTFOUND;
+  }
 
-  pcb_set_state(p, WAITING_PCB);
-  pls_move_pcb(p, &plswaiting);
+  if (pcb_get_head(p) == &plsterminate)
+  {
+    *status = pcb_get_v0(p);
+    pcb_rm_supervised(get_current_pcb(), pcb_get_pid(p));
+    rm_p(p);
+    //kdebug_println("Waitfor: good out");
+    return OMGROXX;
+  }
 
-  return OMGROXX;
+  pcb_set_state(get_current_pcb(), WAITING_PCB);
+  pcb_set_waitfor(get_current_pcb(), pid);
+  pls_move_pcb(get_current_pcb(), &plswaiting);
+
+  //kdebug_println("Waitfor: call the scheduler");
+  schedule();
+
+  //kdebug_println("Waitfor: wait out");
+  return FAILNOOB;
 }
 
 /**
@@ -557,13 +577,70 @@ kkill_pcb(pcb * p)
  *
  * The process caling exit is moved to the terminated list and is return value
  * is set in the apropriate register. The process get the state OMG_ZOMBIE.
+ * If the supervisor wait for the process, we wake it up.
+ * If the process have some supervised child, init will adopt all of them.
  *
  * @param the returned value to set
  */
 void
 kexit(int32_t return_value)
 {
-  /* TODO */
+  pcb            *p, *s, *tmp;
+  uint32_t        i;
+
+  p = get_current_pcb();
+
+  pcb_set_v0(p, return_value);
+  pcb_set_state(p, OMG_ZOMBIE);
+  pls_move_pcb(p, &plsterminate);
+
+  /*
+   * Now we can warn the supervisor
+   * (if it's not the kernel)
+   */
+  if (pcb_get_supervisor(p) != -1)
+  {
+    s = search_all_list(pcb_get_supervisor(p));
+
+    /*
+     * Hey, the supervisor is waiting for me !
+     * Wake it up!
+     */
+    if (pcb_get_state(s) == WAITING_PCB
+        && pcb_get_waitfor(s) == pcb_get_pid(p))
+    {
+      kwakeup_pcb(s);
+    }
+  }
+
+  /*
+   * Init adopt all the supervised process
+   */
+  s = search_all_list(0);
+
+  if (s == NULL)
+  {
+    /*
+     * Ultra fatal error ! Init not here Oo
+     */
+    kprintln
+      ("OMG! No more init process Oo Computer will explode in 5..4..3...");
+    while (1);
+  }
+
+  for (i = 0; i < MAXPCB; i++)
+  {
+    pcb_set_supervised(s, pcb_get_supervised(p)[i]);
+    tmp = search_all_list(pcb_get_supervised(p)[i]);
+
+    if (tmp != NULL)
+      pcb_set_supervisor(p, 0);
+  }
+
+  /*
+   * Reschedule
+   */
+  schedule();
 }
 
 /**
@@ -716,7 +793,7 @@ alloc_pcb()
   uint32_t        i;
 
   i = 0;
-  while (pcb_get_empty(&pmem[i]) && i < MAXPCB)
+  while (pcb_get_empty(&pmem[i]) == FALSE && i < MAXPCB)
     i++;
 
   if (i >= MAXPCB)
