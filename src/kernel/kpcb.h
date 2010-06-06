@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <types.h>
 #include <registers.h>
+#include <process.h>
 #include "kmsg.h"
 
 /*

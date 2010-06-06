@@ -41,9 +41,13 @@ schedule()
    * In running everybody have the same priority
    */
   if (plsrunning.start != NULL)
+  {
     pri = pcb_get_pri(plsrunning.start);
+  }
   else
+  {
     pri = 0;
+  }
 
   /*
    * Is the first element of the ready list more prioritary ?
@@ -72,6 +76,7 @@ schedule()
    * the first part of the element.
    */
   p = plsready.start;
+  kdebug_assert_at(pcb_get_next(p) == NULL, "schedule()", 84);
 
   while (p != NULL && pcb_get_pri(p) == pri)
   {
@@ -141,5 +146,5 @@ schedule()
    * Ok we are done ! (maybe)
    */
 
-  //kdebug_println("Scheduler out");
+  // kdebug_println("Scheduler out");
 }

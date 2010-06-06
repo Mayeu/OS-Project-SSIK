@@ -1,9 +1,10 @@
-
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include "../kernel/kprocess.h"
 #include "../kernel/kernel.h"
+#include "../kernel/kinout.h"
+#include "../kernel/kprocess.h"
+#include "test_kprocess2.h"
 
 uint32_t        test_get_next_pid();
 uint32_t        test_reset_next_pid();
@@ -12,11 +13,18 @@ uint32_t        test_reset_used_stack();
 uint32_t        test_alloc_dealloc();
 uint32_t        test_create_proc();
 
+static pcb      pcb_array[MAXPCB];
+
 void
 test_kprocess2()
 {
   int             e;
   char            c;
+
+  pls_reset(&plsready);
+  pls_reset(&plsrunning);
+  pls_reset(&plswaiting);
+  pls_reset(&plsterminate);
 
   kprintln("----------TEST MODULE KPROCESS V2 BEGIN----------");
 
@@ -70,7 +78,7 @@ test_kprocess2()
     kprintln(itos(e, &c));
   }
 
-  kprintln("-----------TEST MODULE KPROCESS V2 END------------");
+  kprintln("-----------TEST MODULE KPROCESS V2 END------------\n");
 }
 
 /*
@@ -79,7 +87,7 @@ test_kprocess2()
 uint32_t
 test_get_next_pid()
 {
-  pcb             p;
+  pcb            *p;
 
   /*
    * What the next pid ?
@@ -96,9 +104,10 @@ test_get_next_pid()
   /*
    * now I use it
    */
-  pcb_reset(&p);
-  pcb_set_pid(&p, get_next_pid());
-  pls_add(&plsready, &p);
+  p = &pcb_array[0];
+  pcb_reset(p);
+  pcb_set_pid(p, get_next_pid());
+  pls_add(&plsready, p);
 
   /*
    * Now gimme mooaaaaaare
@@ -110,7 +119,7 @@ test_get_next_pid()
    * Reset everything
    */
   pls_reset(&plsready);
-  pcb_reset(&p);
+  pcb_reset(p);
 
   /*
    * The next_pid will be reset in the next test
@@ -134,16 +143,16 @@ test_reset_next_pid()
 uint32_t
 test_reset_used_stack()
 {
-  int32_t        *p;
+  int32_t        *stack;
   uint32_t        i;
 
   reset_used_stack();
 
-  p = get_used_stack();
+  stack = get_used_stack();
 
   for (i = 0; i < MAXPCB; i++)
-    if (p[i] != -1)
-      return i;
+    if (stack[i] != -1)
+      return -1 * i;
 
   return OMGROXX;
 }
@@ -151,20 +160,20 @@ test_reset_used_stack()
 uint32_t
 test_alloc_dealloc()
 {
-  int32_t        *t;
-  uint32_t       *a;
+  int32_t        *stack;
+  uint32_t       *a_stack;
 
-  t = get_used_stack();
+  stack = get_used_stack();
 
-  a = allocate_stack(32);
+  a_stack = allocate_stack(32);
 
-  if (t[0] != 32)
+  if (stack[0] != 32)
     return -1;
 
   if (deallocate_stack(32) != OMGROXX)
     return -2;
 
-  if (t[0] != -1)
+  if (stack[0] != -1)
     return -3;
 
   if (deallocate_stack(32) != NOTFOUND)
@@ -172,6 +181,7 @@ test_alloc_dealloc()
 
   return OMGROXX;
 }
+
 
 uint32_t
 test_create_proc()
@@ -200,6 +210,9 @@ test_create_proc()
 
   if (create_proc("init", 12, (char **) arg) < 0)
     return -5;
+
+  if (strcmp(pcb_get_name(plsready.start), "init") != 0)
+    return -42;
 
   for (i = 0; i < MAXPCB - 1; i++)
     if (create_proc("init", 12, (char **) arg) < 0)

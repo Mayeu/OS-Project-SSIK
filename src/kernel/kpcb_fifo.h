@@ -10,8 +10,8 @@
 #include <stdlib.h>
 #include <process.h>
 #include <errno.h>
-#include "kprocess.h"
-#include "include/types.h"
+#include <types.h>
+#include "kpcb.h"
 
 /**
  * \struct mls
@@ -55,4 +55,5 @@ uint32_t        push_fifo_p(pcb * p);
 pcb            *pop_fifo_p();
 
 fifo_p         *get_fifo_p();
+
 #endif

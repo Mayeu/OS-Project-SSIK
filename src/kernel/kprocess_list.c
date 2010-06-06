@@ -5,11 +5,7 @@
 
 #include <string.h>
 #include <errno.h>
-#include "kernel.h"
-#include "kpcb.h"
 #include "kprocess_list.h"
-#include "kinout.h"
-#include "kprogram.h"
 #include "debug.h"
 
 /*

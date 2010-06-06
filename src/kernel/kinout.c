@@ -133,21 +133,14 @@ print_string(char *str)
   if (e == OMGROXX)
   {
     //kprintln("You receive the uart! Enjoy");
+
     /*
      * The caller is the owner of the uart
-     * We move it to the wait list
+     * We move it to the waiting list
      */
+    kblock_pcb(caller, DOING_IO);
 
-    if (pls_move_pcb(caller, &plswaiting) != OMGROXX)
-      //kprintln("Dude! just go in wait!");
-      return FAILNOOB;
-
-    /*
-     * Reschedule
-     */
-    //kprintln("Reschedule");
-    schedule();
-    kdebug_assert_at(!get_current_pcb(), "kinout.c", 162);
+    kdebug_assert_at(!get_current_pcb(), "kinout.c", 142);
 
     /*
      * Set the uart in read mode

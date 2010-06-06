@@ -88,9 +88,7 @@ test_uart_push_fifo(void)
   fifo = get_fifo_buffer();
 
   if (push_fifo_buffer('a') != OMGROXX)
-  {
     return -1;
-  }
 
   if (fifo->buffer[fifo->out] != 'a')
     return -2;

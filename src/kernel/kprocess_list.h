@@ -11,7 +11,6 @@
 #define __KPROCESS_LIST_H
 
 #include <stdlib.h>
-#include "kprocess.h"
 #include "kpcb.h"
 
 /**

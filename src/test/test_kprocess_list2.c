@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <string.h>
 #include "../kernel/kprocess_list.h"
+#include "../kernel/debug.h"
 
 
 uint32_t        test_pls_reset();
@@ -21,7 +22,7 @@ uint32_t        test_pls_item_cpy_pcb();
 static pls      ls1;
 static pls      ls2;
 static uint32_t pid_loc = 0;
-static pcb      parray[MAXPCB]; // A set of pcb for the test
+static pcb      p_array[MAXPCB];        // A set of pcb for the test
 
 void
 test_kprocess_list2()
@@ -119,13 +120,14 @@ test_pls_add()
   //uint32_t        i;
   pcb            *p, *p2;       /* we use it to quickly access the array */
 
-  p = &parray[0];
+  p = &p_array[0];
 
   pcb_reset(p);                 /* default value */
   pcb_set_name(p, "pri21");
   pcb_set_pri(p, 21);
   pcb_set_pid(p, pid_loc++);
   pcb_set_empty(p, FALSE);
+
 
   if (pls_add(&ls1, p) != OMGROXX)
     return -1;
@@ -139,7 +141,7 @@ test_pls_add()
   if (ls1.length != 1)
     return -4;
 
-  p = &parray[1];
+  p = &p_array[1];
 
   pcb_reset(p);                 /* default value */
   pcb_set_name(p, "pri22");
@@ -150,7 +152,7 @@ test_pls_add()
   if (pls_add(&ls2, p) != OMGROXX)
     return -5;
 
-  p = &parray[2];
+  p = &p_array[2];
 
   pcb_reset(p);                 /* default value */
   pcb_set_name(p, "pri42");
@@ -182,7 +184,7 @@ test_pls_add()
    * we add pri32
    */
 
-  p = &parray[3];
+  p = &p_array[3];
 
   pcb_reset(p);                 /* default value */
   pcb_set_name(p, "pri32");
@@ -221,7 +223,7 @@ test_pls_add()
    * It should be place after the first 22 priority process
    */
 
-  p2 = &parray[4];
+  p2 = &p_array[4];
 
   pcb_reset(p2);                /* default value */
   pcb_set_name(p2, "pri22-2");
@@ -302,7 +304,7 @@ test_pls_delete_pcb()
    * We readd it
    */
 
-  p = &parray[3];
+  p = &p_array[3];
 
   pcb_reset(p);                 /* default value */
   pcb_set_name(p, "pri32");

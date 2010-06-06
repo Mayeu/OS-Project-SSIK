@@ -6,8 +6,9 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include "../kernel/debug.h"
 #include "../kernel/kprocess.h"
+#include "../kernel/kprogram.h"
+#include "../kernel/kernel.h"
 #include "../kernel/kscheduler.h"
 
 int32_t         test_schedule();

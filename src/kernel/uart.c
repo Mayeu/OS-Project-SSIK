@@ -8,7 +8,7 @@
 #include "malta.h"
 #include "uart.h"
 #include "kprocess_list.h"
-#include "kpcb.h"
+#include "kpcb_fifo.h"
 #include "kscheduler.h"
 
 /*
@@ -149,6 +149,7 @@ uart_init(void)
   /* Some obscure bit that need to be set for UART interrupts to work. */
   tty->mcr.field.out2 = 1;
   reset_fifo_buffer();
+  reset_fifo_p();
 
   user = NULL;
 
@@ -176,27 +177,18 @@ uart_give_to(pcb * p)
   if (user != NULL && pcb_get_pid(p) != pcb_get_pid(user))
   {
     /*
-     * We set the new state of the pcb
+     * Try to add the pcb to the internal fifo list, and to move
+     * it to the waiting list
      */
-    pcb_set_state(p, WAITING_IO);
 
-    if (pls_move_pcb(p, &plswaiting) != OMGROXX)
+    if (push_fifo_p(p) != OMGROXX || kblock_pcb(p, WAITING_IO))
     {
-      /*
-       * Set back the state
-       */
-      pcb_set_state(p, RUNNING);
       return FAILNOOB;
     }
 
     /*
-     * Update the current pcb
+     * We did not succeed to give you the UART !
      */
-    //tmp = &(pls_search_pcb(&plswaiting, p)->p);
-    //set_current_pcb(tmp);
-
-    schedule();
-
     return FAILNOOB;
   }
 
@@ -338,21 +330,12 @@ uart_release(int32_t code)
 {
   pcb            *p;
 
-  pcb_get_register(user)->v_reg[0] = code;
+  pcb_set_v0(user, code);
 
   /*
-   * Move the pcb to ready
+   * Wake up the owner
    */
-  pcb_set_state(user, READY);
-
-  if (pls_move_pcb(user, &plsready) != OMGROXX)
-  {
-    /*
-     * Set back the state
-     */
-    pcb_set_state(user, WAITING_IO);
-    return FAILNOOB;
-  }
+  kwakeup_pcb(user);
 
   /*
    * Set back the user to null
@@ -360,29 +343,19 @@ uart_release(int32_t code)
   user = NULL;
 
   /*
-   * Search the first process in the queu waiting for IO
+   * We pop the new user from the fifo list
    */
-  p = plswaiting.start;
-
-  while (p != NULL && pcb_get_state(p) != WAITING_IO)
-    p = pcb_get_next(p);
+  p = pop_fifo_p();
 
   /*
-   * If we found some one, we wake it up
-   * we set the owner
+   * If we found some one, we wake it up, and we set it
+   * as the user
    */
   if (p != NULL)
   {
     pcb_set_state(p, WAITING_IO);
 
-    if (pls_move_pcb(p, &plsrunning) != OMGROXX)
-    {
-      /*
-       * Set back the state
-       */
-      pcb_set_state(p, RUNNING);
-      return FAILNOOB;
-    }
+    kwakeup_pcb(p);
 
     user = p;
   }
