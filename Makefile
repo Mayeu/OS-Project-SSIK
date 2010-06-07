@@ -14,7 +14,7 @@ BIN=bin
 BUILD=build
 
 # Object files for the examples
-OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o exception.o debug.o kpcb.o kpcb_fifo.o kprocess.o kinout.o kerror.o kprogram.o kscheduler.o syscall.o ksyscall.o kexception.o uart.o splash.o ksleep.o  kprocess_list.o )
+OBJS_KERNEL= $(addprefix $(BUILD)/, kernel.o asm.o exception.o debug.o kpcb.o kpcb_fifo.o kprocess.o kinout.o kerror.o kprogram.o kscheduler.o syscall.o ksyscall.o kexception.o uart.o splash.o ksleep.o  kprocess_list.o kmsg.o)
 OBJS_USER= $(addprefix $(BUILD)/, string.o process.o increment.o fibonacci.o stdio.o error.o coquille.o message.o ring.o philosopher.o scroll.o coquille_up.o quit.o)
 OBJS_TEST= $(addprefix $(BUILD)/, test.o)
 TEST_DEPS= $(addprefix $(SRC_TEST)/, test_string.c test_uart_fifo.c test_kprogram.c test_kpcb.c test_kprocess2.c test_kprocess_list2.c test_ksleep.c test_kscheduler.c test_kpcb_fifo.c)

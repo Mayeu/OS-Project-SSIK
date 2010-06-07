@@ -112,7 +112,7 @@ int32_t
 send_msg(uint32_t sdr_pid, msg_arg * args)
 {
   pcb            *receiver;
-  msg             m;
+//  msg             m;
   uint32_t        pri = args->pri;
   uint32_t        recv_pid = args->pid;
   int32_t         res;
@@ -120,12 +120,12 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
     return NULLPTR;
   if (pri >= MAX_MPRI && pri <= MIN_MPRI)
     return INVPRI;
-  receiver = searchall(recv_pid);
+  receiver = search_all_list(recv_pid);
   if (receiver == NULL)
     return UNKNPID;
-  res = create_msg(&m, sdr_pid, recv_pid, pri, args->data, args->datatype);
+  res = create_msg(&receiver->messages.ls[receiver->messages.in], sdr_pid, recv_pid, pri, args->data, args->datatype);
 
-  res = push_mls(&receiver->messages, &m);
+  //res = push_mls(&receiver->messages, &m);
   if (res != OMGROXX)
     return res;
 
@@ -167,7 +167,7 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   {
     filtervalue = (int) args->datatype;
   }
-  p = searchall(recv_pid);
+  p = search_all_list(recv_pid);
   if (p == NULL)
     return UNKNPID;
   // look for a message according to the filter.
