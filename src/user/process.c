@@ -96,7 +96,7 @@ fourchette(char *name, int prio, int argc, char *argv[])
   strcpy(itos(prio, pr), new_args[0]);
   // copy all the arguments
   for (i = 0; i < argc; i++)
-    strcpy(get_arg(argv, i), new_args[i + 1]);
+    strcpy(get_arg(argv, i+1), new_args[i + 1]);
 
   return syscall_three((int32_t) name, argc, (int32_t) new_args, FOURCHETTE);
 }

@@ -9,10 +9,11 @@
 #include <stdio.h>
 #include <process.h>
 #include <string.h>
+#include <errno.h>
 
 #include "increment.h"
 
-int
+void
 increment(int argc, char *argv[])
 {
   int             i = 1;
@@ -23,6 +24,5 @@ increment(int argc, char *argv[])
     printn();
   }
 
-  exit(0);
-  return 0;
+  exit(OMGROXX);
 }

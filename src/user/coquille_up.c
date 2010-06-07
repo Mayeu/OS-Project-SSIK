@@ -9,14 +9,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <process.h>
+#include <error.h>
 
 #include "coquille_up.h"
 
 // params: int pid, int new_prio
-int
+void
 chg_prio(int argc, char *argv[])
 {
-  int             pid, prio;
+  int pid = stoi(get_arg(argv, 1));
+	int prio = stoi(get_arg(argv, 2));
+	//char buf[15];
 
   if (argc < 3)
   {
@@ -24,19 +27,23 @@ chg_prio(int argc, char *argv[])
     exit(-1);
   }
 
-  pid = stoi(get_arg(argv, 1));
-  prio = stoi(get_arg(argv, 2));
+	/*printi((int)get_arg(argv, 0));
+	printi((int)get_arg(argv, 1));
+	print(get_arg(argv, 0));*/
 
+  pid  = 7;
+  prio = 37;
+
+  printi(chg_pri(pid, prio));
   exit(0);
-  return chg_pri(pid, prio);
 }
 
 // params: no param
-int
+void
 ps(int argc, char *argv[])
 {
   int             pid[MAXPCB];
-  int             i, len, my_pid;
+  int             i, len;
   pcbinfo         pinf;
 
   // init the pid list
@@ -48,23 +55,22 @@ ps(int argc, char *argv[])
   printi(len);
   printn();
 
-  //my_pid = get_pid();
-  my_pid = 185;
-
   print("PID\tNAME\n");
   print("________________\n");
   for (i = 0; i < len; i++)
   {
+		if (pid[i] != -1)
+		{
     get_proc_info(pid[i], &pinf);
     printi(pid[i]);
     print("\t");
     print(pinf.name);
     printn();
+		}
   }
   print("________________\n");
 
   exit(47);
-  return 0;
 }
 
 // params: int pid
@@ -75,14 +81,15 @@ tuer(int argc, char *argv[])
 }
 
 // params: char* text
-int
+void
 malta(int argc, char *argv[])
 {
-  return fprint(MALTA, get_arg(argv, 1));
+	fprint(MALTA, get_arg(argv, 1));
+	exit(0);
 }
 
 // params: no param
-int
+void
 help(int argc, char *argv[])
 {
   print("List of available user programs\n");
@@ -104,11 +111,10 @@ help(int argc, char *argv[])
   print("malta: Allow the user to change the malta LCD message.\n");
 
   exit(0);
-  return 0;
 }
 
 // params: int pid
-int
+void
 proc_info(int argc, char *argv[])
 {
   int             pid, err, i;
@@ -144,5 +150,4 @@ proc_info(int argc, char *argv[])
     print(")\n");
   }
   exit(0);
-  return 0;
 }
