@@ -116,8 +116,7 @@ kinit()
 
 /**
  * @brief The ancestor of the ancestor.
- *
- * First process to be launched
+ * \private
  */
 void
 init()

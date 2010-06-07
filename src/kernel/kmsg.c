@@ -14,6 +14,7 @@
 
 /**
  * reset the fifo buffer to default value
+ * \private
  */
 void
 reset_mls(mls * m)
@@ -25,6 +26,7 @@ reset_mls(mls * m)
 
 /**
  * push a char in the fifo buffer
+ * \private
  */
 uint32_t
 push_mls(mls * m, msg * mess)
@@ -43,6 +45,7 @@ push_mls(mls * m, msg * mess)
 
 /**
  * pop a char from the fifo buffer
+ * \private
  */
 uint32_t
 pop_mls(mls * m, msg * mess)
@@ -64,6 +67,7 @@ pop_mls(mls * m, msg * mess)
 
 /**
  * Create the msg object.
+ * \private
  */
 int32_t
 create_msg(msg * m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri,
@@ -83,6 +87,7 @@ create_msg(msg * m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri,
 
 /**
  * Copy the src message to dest
+ * \private
  */
 int32_t
 copy_msg(msg * src, msg * dest)
@@ -101,6 +106,7 @@ copy_msg(msg * src, msg * dest)
 
 /**
  * Send the msg object.
+ * \private
  */
 int32_t
 send_msg(uint32_t sdr_pid, msg_arg * args)
@@ -136,6 +142,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
                                                                                                                 /** TODO:  IMPLEMENT RECV_MSG */
 /**
  * Wait fot a message with the specified priority.
+ * \private
  */
 int32_t
 recv_msg(uint32_t recv_pid, msg_arg * args)
@@ -214,6 +221,7 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
 
 /**
  * Search for the message with a specific filter
+ * \private
  */
 bool
 search_msg_filtered(msg_filter filter, int32_t filtervalue, msg * m,
@@ -232,6 +240,7 @@ search_msg_filtered(msg_filter filter, int32_t filtervalue, msg * m,
 
 /**
  * Copy the src message list to dest list
+ * \private
  */
 int32_t
 copy_mls(mls * src, mls * dest)

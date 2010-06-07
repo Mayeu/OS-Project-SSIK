@@ -21,6 +21,10 @@
 #include "ksleep.h"
 #include "asm.h"
 
+/**
+ * Call by the exeption to handle the syscall
+ * \private
+ */
 void
 syscall_handler(registers_t * regs)
 {

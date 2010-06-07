@@ -20,7 +20,7 @@
 #include "kpcb.h"
 
 /*
- * Functiuns
+ * Functions
  */
 
 /**
@@ -197,14 +197,14 @@ int32_t         kkill_pcb(pcb * p);
 void            kexit(int32_t return_value);
 
 /**
- * @brief 
- * @param the returned value to set
+ * @brief wake up a pcb.
+ * @param the pcb to wake up
  */
 void            kwakeup_pcb(pcb * p);
 
 /**
- * @brief 
- * @param the returned value to set
+ * @brief wake up a pcb.
+ * @param the pid of the pcb to wake up
  */
 void            kwakeup(uint32_t pid);
 
@@ -212,6 +212,9 @@ void            kwakeup(uint32_t pid);
  * Private functions
  */
 
+/*
+ * \brief Init the memory for the pcb
+ */
 void            init_mem();
 
 /**

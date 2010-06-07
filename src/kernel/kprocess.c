@@ -341,9 +341,7 @@ get_pinfo(uint32_t pid, pcbinfo * pi)
 
 /**
  * \brief Returns an array of all the processes in the system (in all lists).
- *
- * \param tab the table of pids
- * \return the number of pids
+ * \private
  */
 uint32_t
 get_all_pid(uint32_t * tab)
@@ -392,6 +390,7 @@ rm_psupervised(pcb * p, uint32_t pid)
 
 /*
  * @brief sleep the current_process
+ * \private
  */
 uint32_t
 go_to_sleep(uint32_t time)
@@ -420,20 +419,8 @@ go_to_sleep(uint32_t time)
 }
 
 /**
- * @private
  * @brief Block a pcb. A blocked pcb can not execute code until he wake up
- *
- * Block take different kind of state in argument to allow different kind
- * of blocking (state describe in kpcb.h) :
- *     - BLOCKED
- *     - WAITING_IO
- *     - DOING_IO
- * Only this state are accepted as blocked.
- * If the pcb wich is blocked is the current pcb, schedule is called.
- *
- * @param p the process to block
- * @param state the state to set the process
- * @return an error code
+ * \private
  */
 int32_t
 kblock(uint32_t pid, int32_t state)
@@ -443,20 +430,8 @@ kblock(uint32_t pid, int32_t state)
 }
 
 /**
- * @private
  * @brief Block a pcb. A blocked pcb can not execute code until he wake up
- *
- * Block take different kind of state in argument to allow different kind
- * of blocking (state describe in kpcb.h) :
- *     - BLOCKED
- *     - WAITING_IO
- *     - DOING_IO
- * Only this state are accepted as blocked.
- * If the pcb wich is blocked is the current pcb, schedule is called.
- *
- * @param p the process to block
- * @param state the state to set the process
- * @return an error code
+ * \private
  */
 int32_t
 kblock_pcb(pcb * p, int32_t state)
@@ -475,15 +450,7 @@ kblock_pcb(pcb * p, int32_t state)
 
 /**
  * @brief Set the currently used pcb to wait for an other pcb to terminate
- *
- * The waitfor field in the pcb will be get the pid to wait.
- * And the process will be move in the waiting list with the state
- * WAITING_PCB.
- * After this sechedule is called.
- *
- * @param pid the pid to wait
- * @param *status return status of the pcb
- * @return an error code
+ * \private
  */
 int32_t
 waitfor(uint32_t pid, int32_t * status)
@@ -522,13 +489,7 @@ waitfor(uint32_t pid, int32_t * status)
 
 /**
  * @brief Kill the current process
- *
- * The process passed in arg is moved in the terminated list and get the zombie
- * state. Waiting for his parent to read the return register.
- * The return register is set to the KILLED error code.
- * 
- * @param pid the pid of the process to kill
- * @return an error code
+ * \private
  */
 int32_t
 kkill(uint32_t pid)
@@ -539,13 +500,7 @@ kkill(uint32_t pid)
 
 /**
  * @brief Kill the current process
- *
- * The process passed in arg is moved in the terminated list and get the zombie
- * state. Waiting for his parent to read the return register.
- * The return register is set to the KILLED error code.
- * 
- * @param pid the pid of the process to kill
- * @return an error code
+ * \private
  */
 int32_t
 kkill_pcb(pcb * p)
@@ -574,13 +529,7 @@ kkill_pcb(pcb * p)
 
 /**
  * @brief exit the current process and set the return value in the register
- *
- * The process caling exit is moved to the terminated list and is return value
- * is set in the apropriate register. The process get the state OMG_ZOMBIE.
- * If the supervisor wait for the process, we wake it up.
- * If the process have some supervised child, init will adopt all of them.
- *
- * @param the returned value to set
+ * \private
  */
 void
 kexit(int32_t return_value)
@@ -644,8 +593,8 @@ kexit(int32_t return_value)
 }
 
 /**
- * @brief 
- * @param the returned value to set
+ * wake up a pcb.
+ * \private
  */
 void
 kwakeup_pcb(pcb * p)
@@ -660,8 +609,8 @@ kwakeup_pcb(pcb * p)
 }
 
 /**
- * @brief 
- * @param the returned value to set
+ * wake up a pcb.
+ * \private
  */
 void
 kwakeup(uint32_t pid)
@@ -682,6 +631,10 @@ p_is_empty(pcb * pcb)
   return pcb_get_empty(pcb);
 }
 
+/*
+ * Init the memory for the pcb
+ * \private
+ */
 void
 init_mem()
 {
