@@ -15,13 +15,20 @@ void
 quit_main(int argc, char **argv)
 {
   int             mypid;
+	char						ibuf[3];
   char            c[20];
 
   mypid = get_pid();
 
+	strcpy("Hello from ", c);
+	strcat(c, itos(mypid, ibuf));
+	strcat(c, "!\n");
+
+	print(c);
+/*
   print("Hello from ");
   print(itos(mypid, c));
   print("!\n");
-
+*/
   exit(OMGROXX);
 }

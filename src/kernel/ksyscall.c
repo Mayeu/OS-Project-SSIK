@@ -19,6 +19,7 @@
 #include "kerror.h"
 #include "debug.h"
 #include "ksleep.h"
+#include "kmsg.h"
 #include "asm.h"
 
 /**
@@ -41,7 +42,13 @@ syscall_handler(registers_t * regs)
       char          **argv = (char **) regs->a_reg[2];
       int             prio = stoi(get_arg(argv, 0));
 
-      strcpy(name, get_arg(argv, 0));
+			char buf[15];
+			itos((int)regs->a_reg[1], buf);
+
+      strcpy(buf, get_arg(argv, 0));
+			/*kdebug_println(get_arg(argv, 0));
+			kdebug_println(get_arg(argv, 1));
+			kdebug_println(get_arg(argv, 2));*/
       res = create_proc(name, prio, argv);
       break;
     }
@@ -78,10 +85,10 @@ syscall_handler(registers_t * regs)
     //kprint(" to process pid = ");
     //kprintln(itos(mres->pid, buf));
     //kprintln((char*)mres->data);
-    // res = send_msg(prunning.current->pid, msg_arg);
+    res = send_msg(pcb_get_pid(get_current_pcb()), (msg_arg *)regs->a_reg[0]);
     break;
   case RECV:
-    // res = recv_msg(prunning.current->pid, msg_arg);
+    res = recv_msg(pcb_get_pid(get_current_pcb()), (msg_arg *)regs->a_reg[0]);
     break;
   case PERROR:
     kperror((char *) regs->a_reg[0]);
@@ -102,8 +109,11 @@ syscall_handler(registers_t * regs)
     res = get_all_pid((int *) regs->a_reg[0]);
     break;
   case CHGPPRI:
+		{
+		//char buf[3];
     res = chg_ppri(regs->a_reg[0], regs->a_reg[1]);
     break;
+		}
   case KILL:
     res = kkill(regs->a_reg[0]);
     break;

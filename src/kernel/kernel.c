@@ -124,6 +124,8 @@ init()
   int             pid, st, lspid[5];
   int             i;
   char            c[30] = { '\0' };
+	char						scroll_param[3][ARG_SIZE];
+	
   /*
    * Print the splash screen
    */
@@ -160,6 +162,23 @@ init()
   }
 
   print("\nGreat :)\n");
+
+  if (create_proc("coquille", MAX_PRI, (char **) NULL) < 0)
+  {
+    kprintln("FAILNOOB");
+    while (1);
+  }
+
+	
+	strcpy("3", scroll_param[0]);
+	strcpy("scrolling text!", scroll_param[1]);
+	strcpy("200", scroll_param[2]);
+
+  if (create_proc("scroll", MAX_PRI, (char **) scroll_param) < 0)
+  {
+    kprintln("FAILNOOB");
+    while (1);
+  }
 
   while (1);
 }
