@@ -17,6 +17,9 @@
  * Define
  */
 
+/**
+ * @brief Size of the buffer for the uart
+ */
 #define UART_FIFO_SIZE 30
 
 /**
@@ -115,7 +118,6 @@ void            uart_set_mode(int32_t mode, char *str, uint32_t len);
  * @brief Print a string using interupt
  * @param the string to print
  */
-
 void            uart_print();
 
 /**
@@ -131,6 +133,7 @@ void            clean_uart();
 
 /**
  * @brief Release the uart from is current user, and try to find a new user
+ * @param an error code to set in the current pcb
  */
 int32_t         uart_release(int32_t code);
 
@@ -144,9 +147,14 @@ void            uart_exception();
  * @param a pcb
  */
 void            set_uart_user(pcb * p);
-
+/**
+ * @brief Read a string using interupt
+ */
 void            uart_read();
-
+/**
+ * @brief Terminate the current reading
+ * @param an error code to set in the current pcb
+ */
 int32_t         end_reading(int32_t code);
 
 #endif /* __UART_H */
