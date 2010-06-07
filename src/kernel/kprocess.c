@@ -108,8 +108,9 @@ create_proc(char *name, uint32_t prio, char **params)
   int32_t         pid;
   pcb            *p;
   prgm           *prg;
+	//char buf[15];
 
-  kdebug_println("Create process in");
+  //kdebug_println("Create process in");
 
   if (name == NULL)
     return NULLPTR;
@@ -176,8 +177,31 @@ create_proc(char *name, uint32_t prio, char **params)
     /*
      * Set the parameters of the function
      */
-    p->registers.a_reg[0] = 0;
-    p->registers.a_reg[1] = (uint32_t) & params;        /* the adresse of the first arg */
+    //p->registers.a_reg[0] = (params == NULL) ? 0 : stoi(get_arg(params, 0)) + 1;
+		//p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
+    
+		if (params != NULL)
+		{
+			//char buf[15];
+			p->registers.a_reg[0] = stoi(get_arg(params, 0)) + 1;
+			
+			strcpy(name, get_arg(params, 0));
+			/*kdebug_println(get_arg(params, 0));
+			kdebug_println(get_arg(params, 1));
+			kdebug_println(get_arg(params, 2));
+
+			itos((int)params, buf);
+			kdebug_println(buf);
+			itos((int)get_arg(params, 1), buf);
+			kdebug_println(buf);*/
+
+			p->registers.a_reg[1] = (uint32_t) params;
+		}
+		else
+		{
+			p->registers.a_reg[0] = 0;
+			p->registers.a_reg[1] = 0;
+		}
 
     /*
      * Set the stack pointer
@@ -228,7 +252,7 @@ create_proc(char *name, uint32_t prio, char **params)
   else
     return OUTOMEM;
 
-  kdebug_println("Create process out");
+  //kdebug_println("Create process out");
 
   return pid;
 }
