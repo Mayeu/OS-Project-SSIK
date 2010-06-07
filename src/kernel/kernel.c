@@ -14,7 +14,7 @@
 #include "kernel.h"
 #include "kinout.h"
 #include "kprocess.h"
-#include "test.h"
+//#include "test.h"
 #include "uart.h"
 #include "splash.h"
 #include "kscheduler.h"
@@ -72,7 +72,9 @@ kinit()
   pls_reset(&plswaiting);
   pls_reset(&plsterminate);
 
+  reset_next_pid();
   reset_used_stack();
+  init_mem();
 
   set_current_pcb(NULL);
   p_error = &kerror;
@@ -80,7 +82,7 @@ kinit()
   /*
    * Launch test
    */
-
+/*
   test();
 
   pls_reset(&plsready);
@@ -93,7 +95,7 @@ kinit()
 
   set_current_pcb(NULL);
   p_error = &kerror;
-
+*/
   char            arg[4][20];
 
   if (create_proc("init", MAX_PRI, (char **) arg) < 0)
@@ -110,7 +112,6 @@ kinit()
   uart_init();
   /* Forever do nothing. */
   while (1);
-
 }
 
 /**
@@ -121,14 +122,45 @@ kinit()
 void
 init()
 {
+  int             pid, st, lspid[5];
+  int             i;
+  char            c[30] = { '\0' };
   /*
    * Print the splash screen
    */
   splash();
 
-  print("Hey! I'm going to sleep a little :)\n");
-  sleep(1000);
-  print("Maybe\n");
+  print("I spawn a quitting program, and wait for it to finish!\n");
 
-  //while (1);
+  pid = get_pid();
+
+  if (pid != 0)
+    while (1);
+
+  for (i = 0; i < 5; i++)
+    lspid[i] = create_proc("quit", BAS_PRI, NULL);
+
+  for (i = 0; i < 5; i++)
+    if (lspid[i] < 1)
+      print("OMG! This child failed :/\n");
+    else
+    {
+      if (wait(lspid[i], &st) == OMGROXX)
+        print("My child exit :)\n");
+      else
+        print("My child get lost :(\n");
+    }
+
+  print("Say something: ");
+  gets(c, 30);
+
+  while (strcmp(c, "something") != 0)
+  {
+    print("\nNo, say something: ");
+    gets(c, 30);
+  }
+
+  print("\nGreat :)\n");
+
+  while (1);
 }

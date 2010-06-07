@@ -35,17 +35,18 @@ chg_prio(int argc, char *argv[])
 int
 ps(int argc, char *argv[])
 {
-  int           pid[MAXPCB];
-  int           i, len, my_pid;
-	pcbinfo 			pinf;
+  int             pid[MAXPCB];
+  int             i, len, my_pid;
+  pcbinfo         pinf;
 
-	// init the pid list
-	for (i=0; i<MAXPCB; i++)
-		pid[i] = -1;
+  // init the pid list
+  for (i = 0; i < MAXPCB; i++)
+    pid[i] = -1;
 
   len = get_ps(pid);
 
-  printi(len); printn();
+  printi(len);
+  printn();
 
   //my_pid = get_pid();
   my_pid = 185;
@@ -54,11 +55,11 @@ ps(int argc, char *argv[])
   print("________________\n");
   for (i = 0; i < len; i++)
   {
-		get_proc_info(pid[i], &pinf);
+    get_proc_info(pid[i], &pinf);
     printi(pid[i]);
     print("\t");
     print(pinf.name);
-		printn();
+    printn();
   }
   print("________________\n");
 
@@ -134,7 +135,7 @@ proc_info(int argc, char *argv[])
     }
     print("\n\tsupervisor process:\t");
     printi(res.supervisor);
-		printn();
+    printn();
   }
   else
   {

@@ -160,7 +160,7 @@ int32_t         kblock_pcb(pcb * p, int32_t state);
  * @param pid the pid to wait
  * @return an error code
  */
-int32_t         waitfor(uint32_t pid);
+int32_t         waitfor(uint32_t pid, int32_t * status);
 
 /**
  * @brief Kill the current process
@@ -212,6 +212,8 @@ void            kwakeup(uint32_t pid);
  * Private functions
  */
 
+void            init_mem();
+
 /**
  * @brief Allocate a space for a pcb, and reset the pcb
  *
@@ -229,12 +231,6 @@ pcb            *alloc_pcb();
  */
 void            dealloc_pcb(pcb * p);
 
-/**
- * @brief Return the next avaible pid, or an error code
- * @return the next avaible pid
- */
-int32_t         get_next_pid();
-
  /**
  * \brief reset the next_pid variable to 0
  * @return void
@@ -246,25 +242,6 @@ void            reset_next_pid();
  * @return void
  */
 void            reset_used_stack();
-
-/**
- * @brief Get the array showing which part of the
- * stack is in use. This functions is here for test purpose only !
- */
-int32_t        *get_used_stack();
-
-/**
- * @brief Allocate the stack for a pcbs. In our case keep in an array which
- * part of the stack is used
- * @param the pid of the process who need a stack
- */
-uint32_t       *allocate_stack(uint32_t pid);
-
-/**
- * @brief Deallocate the stack for a certain pid
- * @param the pid of the pcb
- */
-int32_t         deallocate_stack(uint32_t pid);
 
 #endif /* __KPROCESS_H */
 

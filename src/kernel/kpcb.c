@@ -11,35 +11,6 @@
 #include "kinout.h"
 #include "kpcb.h"
 
-struct _PLS;
-
-/**
- * \struct pcb
- * \brief Process representation.
- *
- * A process is represented by its PCB which is made of
- * various value
- */
-struct _PCB
-{
-  registers_t     registers;    /*!< Some data that has to be saved between
-                                   a context switch. */
-  uint32_t        pid;          /*!< Process identifier. */
-  char            name[ARG_SIZE];       /*!< Process name. */
-  uint32_t        pri;          /*!< Process priority. */
-  int32_t         supervised[MAXPCB];   /*!< List of supervised processes. */
-  int32_t         supervisor;   /*!< supervisor. */
-  mls             messages;     /*!< List of incoming messages. */
-  struct _PLS    *head;
-  pcb            *prev;         /*!< pointer to the previous process(pcb) in the list where the process is */
-  pcb            *next;         /*!< Pointer to the next process(pcb) in the list where the process is. */
-  uint32_t        state;        /*!< Current state of the process */
-  uint32_t        sleep;        /*!< Time to sleep, if state == SLEEPING */
-  uint32_t        waitfor;      /*!< pid of the process you are waiting for */
-  int32_t         error;        /*!< Last error the process encountered. */
-  bool            empty;        /*!< is this pcb empty ? */
-};
-
 /*
  * Functions
  */
@@ -252,16 +223,18 @@ pcb_get_empty(pcb * p)
 void
 pcb_reset(pcb * p)
 {
-  pcb_set_pid(p, 0);
-  pcb_set_name(p, "");
-  pcb_set_pri(p, 0);
+  //pcb_set_pid(p, 0);
+  //pcb_set_name(p, "");
+  //pcb_set_pri(p, 0);
   pcb_reset_supervised(p);
   pcb_set_supervisor(p, -1);
-  pcb_set_state(p, 0);
-  pcb_set_sleep(p, 0);
-  pcb_set_waitfor(p, 0);
+  //pcb_set_state(p, 0);
+  //pcb_set_sleep(p, 0);
+  //pcb_set_waitfor(p, 0);
   pcb_set_error(p, OMGROXX);
   pcb_set_empty(p, TRUE);
+  pcb_set_next(p, NULL);
+  pcb_set_prev(p, NULL);
 }
 
 /**

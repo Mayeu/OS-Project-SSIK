@@ -21,7 +21,7 @@
 void
 process_sleep()
 {
-  pls_item       *it, *last;
+  pcb            *p, *last;
 
   /*
    * First : maybe we don't have anything to do ?
@@ -33,19 +33,17 @@ process_sleep()
    * Ok the list contains stuff
    */
   last = NULL;
-  it = plswaiting.start;
+  p = plswaiting.start;
 
   //kprintln("Time to remove time");
 
-  while (it != NULL)
+  while (p != NULL)
   {
     /*
      * Is the pcb sleeping ?
      */
-    if (pcb_get_state(&(it->p)) == SLEEPING)
+    if (pcb_get_state(p) == SLEEPING)
     {
-      pcb            *p = &(it->p);
-
       /*
        * Can we remove a QUANTUM from is sleeping time ?
        */
@@ -59,15 +57,15 @@ process_sleep()
          */
         pcb_set_sleep(p, 0);
         pcb_set_state(p, READY);
-        pls_move_pcb(&plswaiting, &plsready, p);
+        pls_move_pcb(p, &plsready);
 
         /*
          * set it to the "real" next one but don't update last !
          */
         if (last == NULL)
-          it = plswaiting.start;
+          p = plswaiting.start;
         else
-          it = last;
+          p = last;
 
         continue;
       }
@@ -76,7 +74,7 @@ process_sleep()
     /*
      * These are not the droids you are looking for
      */
-    last = it;
-    it = last->next;
+    last = p;
+    p = pcb_get_next(last);
   }
 }

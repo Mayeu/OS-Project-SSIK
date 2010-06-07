@@ -9,6 +9,7 @@
 #include <process.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 #include "../kernel/ksyscall.h"
 
  /**
@@ -72,7 +73,12 @@ variable with its exit code.
 int
 wait(int pid, int *status)
 {
-  return syscall_two(pid, (int32_t) status, WAIT);
+  int             r;
+  do
+    r = syscall_two(pid, (int32_t) status, WAIT);
+  while (r != OMGROXX && r != NOTFOUND);
+
+  return r;
 }
 
  /**
@@ -126,7 +132,8 @@ get_pid(void)
  /**
  * Fill the int array with all the corresponding pids.
  */
-int             get_ps(int *pid)
+int
+get_ps(int *pid)
 {
   return syscall_one((int32_t) pid, GETALLPID);
 }

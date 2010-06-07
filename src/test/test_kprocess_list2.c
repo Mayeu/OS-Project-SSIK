@@ -3,24 +3,26 @@
 #include <errno.h>
 #include <string.h>
 #include "../kernel/kprocess_list.h"
+#include "../kernel/debug.h"
 
 
-uint32_t        test_pcls_reset();
-uint32_t        test_pcls_add();
-uint32_t        test_pcls_delete_pcb();
-uint32_t        test_pcls_move_pcb();
-uint32_t        test_pcls_item_reset();
-uint32_t        test_pcls_search_pcb();
-uint32_t        test_pcls_search_pid();
-uint32_t        test_pcls_item_alloc();
-uint32_t        test_pcls_item_cpy_pcb();
+uint32_t        test_pls_reset();
+uint32_t        test_pls_add();
+uint32_t        test_pls_delete_pcb();
+uint32_t        test_pls_move_pcb();
+uint32_t        test_pls_item_reset();
+uint32_t        test_pls_search_pcb();
+uint32_t        test_pls_search_pid();
+uint32_t        test_pls_item_alloc();
+uint32_t        test_pls_item_cpy_pcb();
 
 /*
  * List use for the test
  */
-static pcls     ls1;
-static pcls     ls2;
+static pls      ls1;
+static pls      ls2;
 static uint32_t pid_loc = 0;
+static pcb      p_array[MAXPCB];        // A set of pcb for the test
 
 void
 test_kprocess_list2()
@@ -30,8 +32,8 @@ test_kprocess_list2()
 
   kprintln("--------TEST MODULE KPROCESS LIST V2 BEGIN--------");
 
-  kprint("Test pcls_reset\t\t\t\t\t");
-  e = test_pcls_reset();
+  kprint("Test pls_reset\t\t\t\t\t");
+  e = test_pls_reset();
   if (e == OMGROXX)
     kprintln("OK");
   else
@@ -40,8 +42,8 @@ test_kprocess_list2()
     kprintln(itos(e, &c));
   }
 
-  kprint("Test pcls_add\t\t\t\t\t");
-  e = test_pcls_add();
+  kprint("Test pls_add\t\t\t\t\t");
+  e = test_pls_add();
   if (e == OMGROXX)
     kprintln("OK");
   else
@@ -50,8 +52,8 @@ test_kprocess_list2()
     kprintln(itos(e, &c));
   }
 
-  kprint("Test pcls_search_pcb\t\t\t\t");
-  e = test_pcls_search_pcb();
+  kprint("Test pls_search_pid\t\t\t\t");
+  e = test_pls_search_pid();
   if (e == OMGROXX)
     kprintln("OK");
   else
@@ -60,8 +62,8 @@ test_kprocess_list2()
     kprintln(itos(e, &c));
   }
 
-  kprint("Test pcls_search_pid\t\t\t\t");
-  e = test_pcls_search_pid();
+  kprint("Test pls_delete_pcb\t\t\t\t");
+  e = test_pls_delete_pcb();
   if (e == OMGROXX)
     kprintln("OK");
   else
@@ -70,8 +72,8 @@ test_kprocess_list2()
     kprintln(itos(e, &c));
   }
 
-  kprint("Test pcls_delete_pcb\t\t\t\t");
-  e = test_pcls_delete_pcb();
+  kprint("Test pls_move_pcb\t\t\t\t");
+  e = test_pls_move_pcb();
   if (e == OMGROXX)
     kprintln("OK");
   else
@@ -80,47 +82,7 @@ test_kprocess_list2()
     kprintln(itos(e, &c));
   }
 
-  kprint("Test pcls_move_pcb\t\t\t\t");
-  e = test_pcls_move_pcb();
-  if (e == OMGROXX)
-    kprintln("OK");
-  else
-  {
-    kprint("FAIL: ");
-    kprintln(itos(e, &c));
-  }
-
-  kprint("Test pcls_item_reset\t\t\t\t");
-  e = test_pcls_item_reset();
-  if (e == OMGROXX)
-    kprintln("OK");
-  else
-  {
-    kprint("FAIL: ");
-    kprintln(itos(e, &c));
-  }
-
-  kprint("Test pcls_item_alloc\t\t\t\t");
-  e = test_pcls_item_alloc();
-  if (e == OMGROXX)
-    kprintln("OK");
-  else
-  {
-    kprint("FAIL: ");
-    kprintln(itos(e, &c));
-  }
-
-  kprint("Test pcls_item_cpy_pcb\t\t\t\t");
-  e = test_pcls_item_cpy_pcb();
-  if (e == OMGROXX)
-    kprintln("OK");
-  else
-  {
-    kprint("FAIL: ");
-    kprintln(itos(e, &c));
-  }
-
-  kprintln("---------TEST MODULE KPROCESS LIST V2 END---------");
+  kprintln("---------TEST MODULE KPROCESS LIST V2 END---------\n");
 
 }
 
@@ -128,34 +90,23 @@ test_kprocess_list2()
  * First we reset the two list
  */
 uint32_t
-test_pcls_reset()
+test_pls_reset()
 {
-  uint32_t        i;
 
-  pcls_reset(&ls1);
-  pcls_reset(&ls2);
+  pls_reset(&ls1);
+  pls_reset(&ls2);
 
-  for (i = 0; i < MAXPCB; i++)
-  {
-    if (pcb_get_pid(&((ls1.ls[i]).p)) != 0)
-      return -1;
-    if (strcmp(pcb_get_name(&((ls1.ls[i]).p)), "") != 0)
-      return -2;
-    if (pcb_get_pri(&((ls1.ls[i]).p)) != 0)
-      return -3;
-    if (pcb_get_supervisor(&((ls1.ls[i]).p)) != -1)
-      return -4;
-    if (pcb_get_state(&((ls1.ls[i]).p)) != 0)
-      return -5;
-    if (pcb_get_sleep(&((ls1.ls[i]).p)) != 0)
-      return -6;
-    if (pcb_get_waitfor(&((ls1.ls[i]).p)) != 0)
-      return -7;
-    if (pcb_get_error(&((ls1.ls[i]).p)) != OMGROXX)
-      return -8;
-    if (pcb_get_empty(&((ls1.ls[i]).p)) != TRUE)
-      return -9;
-  }
+  if (ls1.start != NULL)
+    return -1;
+
+  if (ls1.length != 0)
+    return -2;
+
+  if (ls2.start != NULL)
+    return -3;
+
+  if (ls2.length != 0)
+    return -4;
 
   return OMGROXX;
 }
@@ -164,80 +115,68 @@ test_pcls_reset()
  * We add some element in the list
  */
 uint32_t
-test_pcls_add()
+test_pls_add()
 {
-  uint32_t        i;
-  pcb             p;            /* the process we will use */
+  //uint32_t        i;
+  pcb            *p, *p2;       /* we use it to quickly access the array */
 
-  pcb_reset(&p);                /* default value */
-  pcb_set_name(&p, "pri21");
-  pcb_set_pri(&p, 21);
-  pcb_set_pid(&p, pid_loc++);
-  pcb_set_empty(&p, FALSE);
+  p = &p_array[0];
 
-  if (pcls_add(&ls1, &p) != OMGROXX)
+  pcb_reset(p);                 /* default value */
+  pcb_set_name(p, "pri21");
+  pcb_set_pri(p, 21);
+  pcb_set_pid(p, pid_loc++);
+  pcb_set_empty(p, FALSE);
+
+
+  if (pls_add(&ls1, p) != OMGROXX)
     return -1;
 
-  if (strcmp(pcb_get_name(&((ls1.start)->p)), "pri21") != 0)
+  if (strcmp(pcb_get_name(ls1.start), "pri21") != 0)
     return -2;
 
-  pcb_reset(&p);                /* default value */
-  pcb_set_name(&p, "pri22");
-  pcb_set_pri(&p, 22);
-  pcb_set_pid(&p, pid_loc++);
-  pcb_set_empty(&p, FALSE);
-
-  if (pcls_add(&ls2, &p) != OMGROXX)
+  if (pcb_get_head(ls1.start) != &ls1)
     return -3;
 
-  /*
-   * We check that the data are copied and not pointed by checking the first list again
-   */
-  if (strcmp(pcb_get_name(&((ls1.start)->p)), "pri21") != 0
-      || pcb_get_pri(&((ls1.start)->p)) != 21)
+  if (ls1.length != 1)
     return -4;
 
-  if (strcmp(pcb_get_name(&((ls2.start)->p)), "pri22") != 0
-      || pcb_get_pri(&((ls2.start)->p)) != 22)
+  p = &p_array[1];
+
+  pcb_reset(p);                 /* default value */
+  pcb_set_name(p, "pri22");
+  pcb_set_pri(p, 22);
+  pcb_set_pid(p, pid_loc++);
+  pcb_set_empty(p, FALSE);
+
+  if (pls_add(&ls2, p) != OMGROXX)
     return -5;
 
-  pcb_reset(&p);                /* default value */
-  pcb_set_name(&p, "pri42");
-  pcb_set_pri(&p, 42);
-  pcb_set_pid(&p, pid_loc++);
-  p.registers.epc_reg = (uint32_t) init;
-  pcb_set_empty(&p, FALSE);
+  p = &p_array[2];
+
+  pcb_reset(p);                 /* default value */
+  pcb_set_name(p, "pri42");
+  pcb_set_pri(p, 42);
+  pcb_set_pid(p, pid_loc++);
+  pcb_set_empty(p, FALSE);
 
   /*
    * We add a process that should be add to the front
    */
-  if (pcls_add(&ls2, &p) != OMGROXX)
+  if (pls_add(&ls2, p) != OMGROXX)
     return -6;
 
-  if (pcb_get_register(&((ls2.start)->p))->epc_reg != (uint32_t) init)
+  if (strcmp(pcb_get_name(ls2.start), "pri42") != 0
+      || pcb_get_pri(ls2.start) != 42)
     return -7;
-
-  if (strcmp(pcb_get_name(&((ls2.start)->p)), "pri42") != 0
-      || pcb_get_pri(&((ls2.start)->p)) != 42)
-    return -8;
 
   /*
    * We check that pri22 is after pri42
    */
-  if (strcmp(pcb_get_name(&(((ls2.start)->next)->p)), "pri22") != 0
-      || pcb_get_pri(&(((ls2.start)->next)->p)) != 22)
-    return -9;
+  if (strcmp(pcb_get_name(pcb_get_next(ls2.start)), "pri22") != 0
+      || pcb_get_pri(pcb_get_next(ls2.start)) != 22)
+    return -8;
 
-  //pcb_reset(&p); /* default value */
-  //pcb_set_name(&p, "pri0");
-  //pcb_set_pri(&p, 0);
-  //pcb_set_pid(&p, pid_loc++);
-  //pcb_set_empty(&p, FALSE);
-
-//if(pcls_add(&ls2, &p) != OMGROXX
-//              || strcmp( pcb_get_name(&(ls2.start->next->next->p)), "pri0") != 0 
-//              ||(ls2.start)->next->next->next != NULL)
-//              return -42;
 
   /*
    * list 2 look like:
@@ -245,182 +184,175 @@ test_pcls_add()
    * we add pri32
    */
 
-  pcb_reset(&p);                /* default value */
-  pcb_set_name(&p, "pri32");
-  pcb_set_pri(&p, 32);
-  pcb_set_pid(&p, pid_loc++);
-  pcb_set_empty(&p, FALSE);
+  p = &p_array[3];
 
-  if (pcls_add(&ls2, &p) != OMGROXX)
+  pcb_reset(p);                 /* default value */
+  pcb_set_name(p, "pri32");
+  pcb_set_pri(p, 32);
+  pcb_set_pid(p, pid_loc++);
+  pcb_set_empty(p, FALSE);
+
+  if (pls_add(&ls2, p) != OMGROXX)
+    return -9;
+
+  //kprintln("I should pass here");
+  if (strcmp(pcb_get_name(ls2.start), "pri42") != 0
+      || pcb_get_pri(ls2.start) != 42)
     return -10;
-
-  if (strcmp(pcb_get_name(&((ls2.start)->p)), "pri42") != 0
-      || pcb_get_pri(&((ls2.start)->p)) != 42)
-    return -11;
 
   /*
    * We check that pri32 is after pri42
    */
-  if (strcmp(pcb_get_name(&(ls2.start->next->p)), "pri32") != 0
-      || pcb_get_pri(&(ls2.start->next->p)) != 32)
-    return -12;
+
+  p = pcb_get_next(ls2.start);
+
+  if (strcmp(pcb_get_name(p), "pri32") != 0 || pcb_get_pri(p) != 32)
+    return -11;
 
   /*
    * We check that pri22 is after pri32
    */
-  if (strcmp(pcb_get_name(&(ls2.start->next->next->p)), "pri22") != 0
-      || pcb_get_pri(&(ls2.start->next->next->p)) != 22)
+
+  p = pcb_get_next(p);
+
+  if (strcmp(pcb_get_name(p), "pri22") != 0 || pcb_get_pri(p) != 22)
+    return -12;
+
+  /*
+   * We add a new process with the 22 priority
+   * It should be place after the first 22 priority process
+   */
+
+  p2 = &p_array[4];
+
+  pcb_reset(p2);                /* default value */
+  pcb_set_name(p2, "pri22-2");
+  pcb_set_pri(p2, 22);
+  pcb_set_pid(p2, pid_loc++);
+  pcb_set_empty(p2, FALSE);
+
+  if (pls_add(&ls2, p2) != OMGROXX)
     return -13;
 
-  /*
-   * We reset ls1
-   * and we fill it
-   */
+  p = pcb_get_next(p);
 
-  pcls_reset(&ls1);
+  if (strcmp(pcb_get_name(p), "pri22-2") != 0 || pcb_get_pri(p) != 22)
+    return -14;
 
-  for (i = 0; i < MAXPCB; i++)
-  {
-    pcb_reset(&p);              /* default value */
-    pcb_set_pri(&p, i);
-    pcb_set_pid(&p, pid_loc++);
-    pcb_set_empty(&p, FALSE);
-
-    if (pcls_add(&ls1, &p) != OMGROXX)
-      return -14;
-  }
-
-  /*
-   * And we add one more value
-   */
-  pcb_reset(&p);                /* default value */
-  pcb_set_pri(&p, 42);
-  pcb_set_pid(&p, pid_loc++);
-  pcb_set_empty(&p, FALSE);
-
-  if (pcls_add(&ls1, &p) != OUTOMEM)
+  if (ls2.length != 4)
     return -15;
 
   return OMGROXX;
 }
 
 uint32_t
-test_pcls_search_pid()
+test_pls_search_pid()
 {
   /*
    * Try to found an "impossible" pid
    */
-  if (pcls_search_pid(&ls1, 1000000) != NULL)
+  if (pls_search_pid(&ls1, 1000000) != NULL)
     return -1;
 
   /*
    * Try to found an existing pid
    */
-  if (pcls_search_pid(&ls1, 42) == NULL)
+  if (pls_search_pid(&ls2, 2) == NULL)
     return -2;
 
   /*
    * Try to found an existing pid in the wrong list
    */
-  if (pcls_search_pid(&ls2, 42) != NULL)
+  if (pls_search_pid(&ls1, 2) != NULL)
     return -3;
 
   return OMGROXX;
 }
 
 uint32_t
-test_pcls_search_pcb()
-{
-  pcb             p;
-  /*
-   * Try to found an "impossible" pid
-   */
-  pcb_reset(&p);
-  pcb_set_pid(&p, 1000000);
-  if (pcls_search_pcb(&ls1, &p) != NULL)
-    return -1;
-
-  /*
-   * Try to found an existing pid
-   */
-  pcb_set_pid(&p, 42);
-  if (pcls_search_pcb(&ls1, &p) == NULL)
-    return -2;
-
-  /*
-   * Try to found an existing pid in the wrong list
-   */
-  if (pcls_search_pcb(&ls2, &p) != NULL)
-    return -3;
-
-  return OMGROXX;
-}
-
-uint32_t
-test_pcls_delete_pcb()
+test_pls_delete_pcb()
 {
 
-  pcb             p;
+  pcb            *p, *prev, *next;
 
-  pcb_reset(&p);
-  pcb_set_pid(&p, 43);
+  p = pls_search_pid(&ls2, 3);  //pri = 32
+  prev = pcb_get_prev(p);
+  next = pcb_get_next(p);
 
   /*
    * Try to remove 43 from the list
    */
-  if (pcls_delete_pcb(&ls1, &p) != OMGROXX)
+  if (pls_delete_pcb(p) != OMGROXX)
     return -1;
 
-  if (pcls_search_pcb(&ls1, &p) != NULL)
+  if (pcb_get_empty(p) != TRUE)
     return -2;
 
-  return OMGROXX;
-}
-
-uint32_t
-test_pcls_move_pcb()
-{
-
-  pcb             p;            //, *tmp;
-
-  pcb_reset(&p);
-  pcb_set_pid(&p, 42);
-
-  /*
-   * Try to remove 42 from the list
-   */
-  if (pcls_move_pcb(&ls1, &ls2, &p) != OMGROXX)
-    return -1;
-
-  //if(pcb_get_register(&((ls2.start)->p))->epc_reg != (uint32_t) init)
-//  return -7;
-
-  if (pcls_search_pcb(&ls1, &p) != NULL)
-    return -2;
-
-  if (pcls_search_pcb(&ls2, &p) == NULL)
+  if (pls_search_pid(&ls2, 3) != NULL)
     return -3;
 
+  if (ls2.length != 3)
+    return -4;
+
+  if (pcb_get_next(prev) != next)
+    return -5;
+
+  if (pcb_get_prev(next) != prev)
+    return -6;
+
+  /*
+   * We readd it
+   */
+
+  p = &p_array[3];
+
+  pcb_reset(p);                 /* default value */
+  pcb_set_name(p, "pri32");
+  pcb_set_pri(p, 32);
+  pcb_set_pid(p, pid_loc++);
+  pcb_set_empty(p, FALSE);
+
+  /*
+   * Try to delete the head of the list
+   */
+
+  p = pls_search_pid(&ls2, pcb_get_pid(ls2.start));
+  next = pcb_get_next(p);
+
+  if (pls_delete_pcb(p) != OMGROXX)
+    return -7;
+
+  if (pcb_get_empty(p) != TRUE)
+    return -8;
+
+  if (ls2.start != next)
+    return -9;
+
+  if (pcb_get_prev(next) != NULL)
+    return -10;
+
   return OMGROXX;
 }
 
 uint32_t
-test_pcls_item_reset()
+test_pls_move_pcb()
 {
-  /* Auto tested in pcls_reset */
-  return OMGROXX;
-}
 
-uint32_t
-test_pcls_item_alloc()
-{
-  /* Auto tested in pcls_add */
-  return OMGROXX;
-}
+  pcb            *p;            //, *tmp;
 
-uint32_t
-test_pcls_item_cpy_pcb()
-{
-  /* Auto tested in pcls_add */
+  p = pls_search_pid(&ls1, 0);
+
+  /*
+   * Try to remove 0 from the list
+   */
+  if (pls_move_pcb(p, &ls2) != OMGROXX)
+    return -1;
+
+  if (pls_search_pid(&ls1, 0) != NULL)
+    return -2;
+
+  if (pls_search_pid(&ls2, 0) == NULL)
+    return -3;
+
   return OMGROXX;
 }

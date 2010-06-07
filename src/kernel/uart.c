@@ -8,7 +8,7 @@
 #include "malta.h"
 #include "uart.h"
 #include "kprocess_list.h"
-#include "kpcb.h"
+#include "kpcb_fifo.h"
 #include "kscheduler.h"
 
 /*
@@ -26,9 +26,9 @@ static pcb     *user;
  * Print and read buffer
  */
 static char    *print_buffer;
-static uint32_t print_index;
 static char    *read_buffer;
 static uint32_t read_buffer_length;
+static uint32_t index;
 
 static bool     end_read;
 
@@ -117,7 +117,7 @@ uart_exception()
   switch (mode)
   {
   case UART_READ:
-    /*uart_read(); */
+    uart_read();
     break;
 
   case UART_PRINT:
@@ -149,11 +149,12 @@ uart_init(void)
   /* Some obscure bit that need to be set for UART interrupts to work. */
   tty->mcr.field.out2 = 1;
   reset_fifo_buffer();
+  reset_fifo_p();
 
   user = NULL;
 
   print_buffer = NULL;
-  print_index = 0;
+  index = 0;
   read_buffer = NULL;
   read_buffer_length = 0;
   end_read = FALSE;
@@ -172,32 +173,22 @@ set_uart_user(pcb * p)
 int32_t
 uart_give_to(pcb * p)
 {
-  pcb            *tmp;
 
   if (user != NULL && pcb_get_pid(p) != pcb_get_pid(user))
   {
     /*
-     * We set the new state of the pcb
+     * Try to add the pcb to the internal fifo list, and to move
+     * it to the waiting list
      */
-    pcb_set_state(p, WAITING_IO);
 
-    if (pls_move_pcb(&plsrunning, &plswaiting, p) != OMGROXX)
+    if (push_fifo_p(p) != OMGROXX || kblock_pcb(p, WAITING_IO))
     {
-      /*
-       * Set back the state
-       */
-      pcb_set_state(p, RUNNING);
       return FAILNOOB;
     }
 
     /*
-     * Update the current pcb
+     * We did not succeed to give you the UART !
      */
-    tmp = &(pls_search_pcb(&plswaiting, p)->p);
-    set_current_pcb(tmp);
-
-    schedule();
-
     return FAILNOOB;
   }
 
@@ -213,7 +204,7 @@ uart_set_mode(int32_t new_mode, char *str, uint32_t len)
   {
   case UART_PRINT:
     print_buffer = str;
-    print_index = 0;
+    index = 0;
     mode = UART_PRINT;
     break;
 
@@ -222,6 +213,7 @@ uart_set_mode(int32_t new_mode, char *str, uint32_t len)
     read_buffer_length = len;
     end_read = FALSE;
     clean_uart();
+    index = 0;
     tty->ier.field.erbfi = 1;   /* interrupt when data is received */
     mode = UART_READ;
     break;
@@ -266,7 +258,7 @@ uart_print(void)
 
     else
     {
-      c = print_buffer[print_index++];
+      c = print_buffer[index++];
       /*
        * Special treatment for \n
        */
@@ -279,7 +271,7 @@ uart_print(void)
           /*
            * End the print with an error
            */
-          end_of_printing(FAILNOOB);
+          end_printing(FAILNOOB);
           return;
         }
       }
@@ -294,13 +286,13 @@ uart_print(void)
   /*
    * Is the next char the end ?
    */
-  if (print_buffer[print_index] == '\0' && uart_fifo.length == 0)
+  if (print_buffer[index] == '\0' && uart_fifo.length == 0)
   {
     //kprintln("End the print");
     /*
      * We end the print with no error
      */
-    end_of_printing(OMGROXX);
+    end_printing(OMGROXX);
   }
   /*
    * Not done, interrupt reactivate
@@ -314,7 +306,7 @@ uart_print(void)
 
 /* ends the use of the device by its current owner by waking it up. It also release the device and put the return value in the PCB */
 int32_t
-end_of_printing(int32_t code)
+end_printing(int32_t code)
 {
   /*
    * UART unused now
@@ -337,24 +329,14 @@ end_of_printing(int32_t code)
 int32_t
 uart_release(int32_t code)
 {
-  //pcb            *p;
-  pls_item       *it;
+  pcb            *p;
 
-  pcb_get_register(user)->v_reg[0] = code;
+  pcb_set_v0(user, code);
 
   /*
-   * Move the pcb to ready
+   * Wake up the owner
    */
-  pcb_set_state(user, READY);
-
-  if (pls_move_pcb(&plswaiting, &plsready, user) != OMGROXX)
-  {
-    /*
-     * Set back the state
-     */
-    pcb_set_state(user, WAITING_IO);
-    return FAILNOOB;
-  }
+  kwakeup_pcb(user);
 
   /*
    * Set back the user to null
@@ -362,34 +344,148 @@ uart_release(int32_t code)
   user = NULL;
 
   /*
-   * Search the first process in the queu waiting for IO
+   * We pop the new user from the fifo list
    */
-  it = plswaiting.start;
-
-  while (it != NULL && pcb_get_state(&(it->p)) != WAITING_IO);
-  it = it->next;
+  p = pop_fifo_p();
 
   /*
-   * If we found some one, we wake it up
-   * we set the owner
+   * If we found some one, we wake it up, and we set it
+   * as the user
    */
-  if (it != NULL)
+  if (p != NULL)
   {
-    pcb_set_state(&(it->p), WAITING_IO);
+    pcb_set_state(p, WAITING_IO);
 
-    if (pls_move_pcb(&plswaiting, &plsrunning, &(it->p)) != OMGROXX)
-    {
-      /*
-       * Set back the state
-       */
-      pcb_set_state(&(it->p), RUNNING);
-      return FAILNOOB;
-    }
+    kwakeup_pcb(p);
 
-    user = &(it->p);
+    user = p;
   }
 
   return OMGROXX;
+}
+
+void
+uart_read()
+{
+  char            c;
+
+  if (tty->lsr.field.dr && !end_read)
+  {
+    /*
+     * a char is available
+     */
+    c = tty->rbr;
+
+    /*
+     * Is this a end of line ?
+     */
+    if (c == '\r')
+    {
+      /*
+       * Yes, we don't need the device anymore, but maybe the
+       * internal buffer is not empty yet
+       */
+      end_read = 1;
+    }
+
+    else
+    {
+      /*
+       * We print the char
+       */
+      if (push_fifo_buffer(c) != OMGROXX)
+      {
+        /*
+         * Erf, something bad happend :/
+         */
+        end_reading(FAILNOOB);
+        return;
+      }
+
+      /*
+       * Backspace case
+       */
+      if (c == 8)
+      {
+        if (push_fifo_buffer(' ') != OMGROXX || push_fifo_buffer(8))
+        {
+          /*
+           * Erf, something bad happend :/
+           */
+          end_reading(FAILNOOB);
+          return;
+        }
+
+        if (index < read_buffer_length - 1)
+        {
+          /*
+           * Remove the previous char
+           */
+          index--;
+          if (index < 0)
+            index = 0;
+        }
+      }
+      else
+      {
+        /*
+         * Add it in the buffer
+         */
+        if (index < read_buffer_length - 1)
+        {
+          read_buffer[index++] = c;
+        }
+      }
+    }
+  }
+
+  /*
+   * Print time
+   */
+  if (uart_fifo.length)
+  {
+    /*
+     * The queue is not empty
+     */
+    if (tty->lsr.field.thre)
+    {
+      pop_fifo_buffer(&c);
+      tty->thr = c;
+    }
+
+    /*
+     * If needed we stop the interrupt (fifo buffer empty)
+     */
+    if (uart_fifo.length <= 0)
+      tty->ier.field.etbei = 0;
+    else
+      tty->ier.field.etbei = 1;
+  }
+  else if (end_read)
+    /*
+     * The fifo buffer is empty, and \r was typed.
+     */
+    end_reading(OMGROXX);
+}
+
+/* this function is end_printing but adds also a \0 character at the end of input */
+int32_t
+end_reading(int32_t code)
+{
+  /*
+   * Add the \0
+   */
+  read_buffer[index] = '\0';
+
+  /*
+   * Stop the interrupts
+   */
+  tty->ier.field.erbfi = 0;
+
+  /*
+   * After it's the same as printing
+   */
+  return end_printing(code);
 }
 
 /* end of file uart.c */

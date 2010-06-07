@@ -18,10 +18,10 @@ increment(int argc, char *argv[])
   int             i = 1;
   int             n = stoi(get_arg(argv, 1));
   for (; i <= n; i++)
-	{
+  {
     printi(i);
-		printn();
-	}
+    printn();
+  }
 
   exit(0);
   return 0;

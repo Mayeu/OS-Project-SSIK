@@ -37,7 +37,8 @@ ring(int argc, char *argv[])
 
     if (argc < 2)
     {
-      print("Error: You must input the number of processes and the number of loops to do\n");
+      print
+        ("Error: You must input the number of processes and the number of loops to do\n");
       exit(-1);
     }
 
@@ -48,7 +49,7 @@ ring(int argc, char *argv[])
     {
       print("Error: Number of processes must be at most ");
       printi(MAX);
-			printn();
+      printn();
       exit(-1);
     }
 
@@ -100,7 +101,7 @@ ring(int argc, char *argv[])
         print(mess);
         print("' to Process ");
         printi(pid_next);
-				printn();
+        printn();
         sleep(TIMER);
         recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, -1);
         print("Process ");
@@ -109,7 +110,7 @@ ring(int argc, char *argv[])
         print(rcv);
         print("' from Process ");
         printi(pid_prev);
-				printn();
+        printn();
 
         sleep(TIMER);
       }
@@ -123,7 +124,7 @@ ring(int argc, char *argv[])
         print(rcv);
         print("' from Process ");
         printi(pid_prev);
-				printn();
+        printn();
         sleep(TIMER);
         send(mess, CHAR_PTR, pid_next);
         print("Process ");
@@ -132,7 +133,7 @@ ring(int argc, char *argv[])
         print(mess);
         print("' to Process ");
         printi(pid_next);
-				printn();
+        printn();
         sleep(TIMER);
       }
     }

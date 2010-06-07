@@ -19,8 +19,7 @@ void
 schedule()
 {
   uint32_t        pri;
-  pls_item       *it;
-  //pcb *p;
+  pcb            *p;
   //char c;
 
   //kdebug_println("Scheduler in");
@@ -42,9 +41,14 @@ schedule()
    * In running everybody have the same priority
    */
   if (plsrunning.start != NULL)
-    pri = pcb_get_pri(&(plsrunning.start->p));
+  {
+    pri = pcb_get_pri(plsrunning.start);
+  }
   else
+  {
+    //kprintln("Pass here1");
     pri = 0;
+  }
 
   /*
    * Is the first element of the ready list more prioritary ?
@@ -52,18 +56,19 @@ schedule()
    * the first to know
    * If so we need to empty the running list
    */
-  if (plsready.start != NULL && pri < pcb_get_pri(&(plsready.start->p)))
+  if (plsready.start != NULL && pri < pcb_get_pri(plsready.start))
   {
-    it = plsrunning.start;
+    //kprintln("Pass here2");
+    p = plsrunning.start;
 
-    while (it != NULL)
+    while (p != NULL)
     {
-      pcb_set_state(&(it->p), READY);
-      pls_move_pcb(&plsrunning, &plsready, &(it->p));
-      it = plsrunning.start;
+      pcb_set_state(p, READY);
+      pls_move_pcb(p, &plsready);
+      p = plsrunning.start;
     }
 
-    pri = pcb_get_pri(&(plsready.start->p));
+    pri = pcb_get_pri(plsready.start);
   }
 
   /*
@@ -72,13 +77,15 @@ schedule()
    * Again since the list are ordered, we just have to take
    * the first part of the element.
    */
-  it = plsready.start;
+  p = plsready.start;
+  //kdebug_assert_at(pcb_get_next(p) == NULL, "schedule()", 84);
 
-  while (it != NULL && pcb_get_pri(&(it->p)) == pri)
+  while (p != NULL && pcb_get_pri(p) == pri)
   {
-    pcb_set_state(&(it->p), RUNNING);
-    pls_move_pcb(&plsready, &plsrunning, &(it->p));
-    it = plsready.start;
+    //kprintln("Pass here3");
+    pcb_set_state(p, RUNNING);
+    pls_move_pcb(p, &plsrunning);
+    p = plsready.start;
   }
 
   /*
@@ -102,28 +109,28 @@ schedule()
    */
   else
   {
+    //kprintln("Pass here4");
     /*
      * The current pcb is in the list of running process ?
      */
-    if (get_current_pcb() != NULL)
+    if (get_current_pcb() != NULL
+        && pcb_get_head(get_current_pcb()) == &plsrunning)
     {
-      it = pls_search_pcb(&plsrunning, get_current_pcb());
-      if (it->next != NULL)
-      {
+
+      p = get_current_pcb();
+
+      if (pcb_get_next(p) != NULL)
         /*
          * We set the current pcb to the next element of the list
          */
-        set_current_pcb(&(it->next->p));
-      }
+        set_current_pcb(pcb_get_next(p));
 
       /*
        * hey ! p is null :/
        * DON'T PANIC ! Just take the first element in the running list ;)
        */
       else
-      {
-        set_current_pcb(&(plsrunning.start->p));
-      }
+        set_current_pcb(plsrunning.start);
     }
 
     /*
@@ -131,7 +138,7 @@ schedule()
      * So just take the first of the runnig list :)
      */
     else
-      set_current_pcb(&(plsrunning.start->p));
+      set_current_pcb(plsrunning.start);
 
     /*
      * Now we set the error pointer

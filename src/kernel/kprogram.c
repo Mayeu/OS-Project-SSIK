@@ -13,12 +13,13 @@
 #include "../user/coquille_up.h"
 #include "../user/increment.h"
 #include "../user/scroll.h"
+#include "../user/quit.h"
 
 /*
  * Define
  */
 
-#define NUM_PROG 5
+#define NUM_PROG 6
 
 /*
  * Global variable
@@ -63,7 +64,15 @@ static prgm     prgm_ls[NUM_PROG] = {
   {
    "philosopher",
    (uint32_t) philosopher,
-   "The philosopher problem"}
+   "The philosopher problem"},
+
+  /*
+   * Quit, a test for quitting a program
+   */
+  {
+   "quit",
+   (uint32_t) quit_main,
+   "Quit, a test for quitting a program"}
 };
 
 /**
