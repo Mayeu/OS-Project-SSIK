@@ -24,28 +24,13 @@ print(char *str)
   return e;
 }
 
-/**
- * Print the string str to the standard output.
- and return line.
- */
-int
-println(char *str)
-{
-  int32_t         e;
-  do
-    e = syscall_one((int32_t) str, PRINTLN);
-  while (e != OMGROXX);
-
-  return e;
-}
-
  /**
  * Print the carriage return character.
  */
 int
 printn(void)
 {
-  return println("\n");
+  return print("\n");
 }
 
  /**
@@ -56,17 +41,6 @@ printi(int n)
 {
   char            buf[10];
   return print(itos(n, buf));
-}
-
-/**
- * Print the number n to the standard output.
- and return line.
- */
-int
-printiln(int n)
-{
-  char            buf[10];
-  return println(itos(n, buf));
 }
 
 /**

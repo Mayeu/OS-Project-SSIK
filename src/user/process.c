@@ -57,12 +57,12 @@ block(int pid)
 }
 
  /**
- * Wake up the process with the pid 'pid'.
+ * Unblock the process with the pid 'pid'.
  */
 int
-wake_up(int pid)
+unblock(int pid)
 {
-  return syscall_one(pid, WAKEUP);
+  return syscall_one(pid, UNBLOCK);
 }
 
  /**
@@ -115,15 +115,6 @@ chg_pri(int pid, int newprio)
 }
 
  /**
- * \brief Get the priority f the process pid.
- */
-int
-get_pri(int pid)
-{
-  return syscall_one(pid, GETPRI);
-}
-
- /**
  * Get the current process pid.
  */
 int
@@ -133,11 +124,9 @@ get_pid(void)
 }
 
  /**
- * Fill the char* array with the name of all the processes running and
-the int array with all the corresponding pids.
+ * Fill the int array with all the corresponding pids.
  */
-int
-get_ps(char *pnames[ARG_SIZE], int *pid)
+int             get_ps(int *pid)
 {
-  return syscall_two((int32_t) pnames, (int32_t) pid, GETPS);
+  return syscall_one((int32_t) pid, GETALLPID);
 }

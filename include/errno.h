@@ -15,7 +15,8 @@
  */
 enum
 {
-  NOTFOUND = -11,               /*!< These are not the droid you are looking for */
+	KILLED = -12,									/*!< Process has been killed */
+  NOTFOUND,              				/*!< These are not the droid you are looking for */
   OUTOMEM,                      /*!< Out of memory */
   UNKNPID,                      /*!< Unknown pid (process identifier) */
   UNKNMID,                      /*!< Unknown mid (message identifier) */

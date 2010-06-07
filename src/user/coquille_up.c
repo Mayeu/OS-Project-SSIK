@@ -20,7 +20,7 @@ chg_prio(int argc, char *argv[])
 
   if (argc < 3)
   {
-    println("Need two arguments (pid and new priority)");
+    print("Need two arguments (pid and new priority)\n");
     exit(-1);
   }
 
@@ -35,28 +35,32 @@ chg_prio(int argc, char *argv[])
 int
 ps(int argc, char *argv[])
 {
-  char           *pnames[ARG_SIZE];
-  int            *pid;
-  int             i, len, my_pid;
+  int           pid[MAXPCB];
+  int           i, len, my_pid;
+	pcbinfo 			pinf;
 
-  len = get_ps(pnames, pid);
+	// init the pid list
+	for (i=0; i<MAXPCB; i++)
+		pid[i] = -1;
 
-  printiln(len);
+  len = get_ps(pid);
+
+  printi(len); printn();
 
   //my_pid = get_pid();
   my_pid = 185;
 
-  println("PID\tNAME");
-  println("________________");
+  print("PID\tNAME\n");
+  print("________________\n");
   for (i = 0; i < len; i++)
   {
-    if (my_pid == pid[i])
-      print("* ");
+		get_proc_info(pid[i], &pinf);
     printi(pid[i]);
     print("\t");
-    println(pnames[i]);
+    print(pinf.name);
+		printn();
   }
-  println("________________");
+  print("________________\n");
 
   exit(47);
   return 0;
@@ -80,23 +84,23 @@ malta(int argc, char *argv[])
 int
 help(int argc, char *argv[])
 {
-  println("List of available user programs");
-  println("-------------------------------");
-  println("coquille: Spawn a new shell.");
-  println("increment n: Print a sequence from from 1 to n.");
-  println("fibonacci n: Print the fibonacci sequence up to n numbers.");
-  println
-    ("scroller: Create a process that scroll a predefined string of the LCD.");
-  println
-    ("ring nb_proc nb_loop: Create a ring of nb_proc communicating processes.");
+  print("List of available user programs\n");
+  print("-------------------------------\n");
+  print("coquille: Spawn a new shell.\n");
+  print("increment n: Print a sequence from from 1 to n.\n");
+  print("fibonacci n: Print the fibonacci sequence up to n numbers.\n");
+  print
+    ("scroller: Create a process that scroll a predefined string of the LCD.\n");
+  print
+    ("ring nb_proc nb_loop: Create a ring of nb_proc communicating processes.\n");
   print("philosopher nb_philo nb_loop: nb_philo philosophers ");
-  println("try to eat/think nb_loop times.");
-  println("supervision: demonstration of process supervision.");
-  println("ps: print the list of all the running processes.");
+  print("try to eat/think nb_loop times.\n");
+  print("supervision: demonstration of process supervision.\n");
+  print("ps: print the list of all the running processes.\n");
   print("chg_prio p pri: Change the priority of the process of pid p ");
-  println("with the new priority pri.");
-  println("tuer p: Kill the process of pid p.");
-  println("malta: Allow the user to change the malta LCD message.");
+  print("with the new priority pri.\n");
+  print("tuer p: Kill the process of pid p.\n");
+  print("malta: Allow the user to change the malta LCD message.\n");
 
   exit(0);
   return 0;
@@ -114,28 +118,29 @@ proc_info(int argc, char *argv[])
   if (err == 0)
   {
     print("Information about process pid = ");
-    printiln(pid);
-    print("\tname:\t\t\t");
-    println(res.name);
-    print("\tpriority:\t\t");
-    printiln(res.pri);
-    print("\tsupervised processes:\t");
+    printi(pid);
+    print("\n\tname:\t\t\t");
+    print(res.name);
+    print("\n\tpriority:\t\t");
+    printi(res.pri);
+    print("\n\tsupervised processes:\t");
     for (i = 0; i < MAXPCB; i++)
     {
       if (res.supervised[i] != -1)
       {
-        printiln(res.supervised[i]);
+        printi(res.supervised[i]);
         print(" ");
       }
     }
     print("\n\tsupervisor process:\t");
-    printiln(res.supervisor);
+    printi(res.supervisor);
+		printn();
   }
   else
   {
     print("An error occured! (code:");
     printi(err);
-    println(")");
+    print(")\n");
   }
   exit(0);
   return 0;
