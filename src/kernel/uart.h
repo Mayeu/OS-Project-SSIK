@@ -122,7 +122,7 @@ void            uart_print();
  * @brief Terminated the current printing
  * @param an error code to set in the current pcb
  */
-int32_t         end_of_printing(int32_t code);
+int32_t         end_printing(int32_t code);
 
 /**
  * @brief Clean the register of the uart
@@ -144,6 +144,10 @@ void            uart_exception();
  * @param a pcb
  */
 void            set_uart_user(pcb * p);
+
+void            uart_read();
+
+int32_t         end_reading(int32_t code);
 
 #endif /* __UART_H */
 

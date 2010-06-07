@@ -20,6 +20,7 @@ enum
 {
   FOURCHETTE,                   /*!< Create a new process */
   PRINT,                        /*!< Print a line */
+  READ,                        /*!< Print a line */
   FPRINT,                       /*!< Print a line in the specified output (malta or console) */
   SLEEP,                        /*!< Go to sleep */
   BLOCK,                        /*!< Block the process  */

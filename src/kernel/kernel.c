@@ -122,8 +122,9 @@ kinit()
 void
 init()
 {
-  int             pid, st;
-  char            c[20] = { '\0' };
+  int             pid, st, lspid[5];
+  int i;
+  char            c[30] = { '\0' };
   /*
    * Print the splash screen
    */
@@ -136,25 +137,30 @@ init()
   if (pid != 0)
     while (1);
 
-  itos(pid, c);
-  print(c);
-  print("!\n");
+  for(i = 0; i < 5; i++)
+  lspid[i] = create_proc("quit", BAS_PRI, NULL);
 
-  pid = create_proc("quit", BAS_PRI, NULL);
-
-  //sleep(5000);
-
-  //print("Waking-up\n");
-
-  if (pid < 1)
-    print("OMG! No child for me :'(\n");
+  for(i = 0; i < 5; i++)
+  if (lspid[i] < 1)
+    print("OMG! This child failed :/\n");
   else
   {
-    if (wait(pid, &st) == OMGROXX)
-      print("My child exit :)");
+    if (wait(lspid[i], &st) == OMGROXX)
+      print("My child exit :)\n");
     else
-      print("My child get lost :(");
+      print("My child get lost :(\n");
   }
+
+  print("Say something: ");
+  gets(c, 30);
+
+  while (strcmp(c, "something") != 0)
+  {
+	  print("\nNo, say something: ");
+  gets(c, 30);
+  }
+
+  print("\nGreat :)\n");
 
   while (1);
 }

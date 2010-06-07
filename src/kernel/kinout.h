@@ -57,7 +57,7 @@ uint32_t        print_string(char *str);
  * @param the length of the string
  * @param the string to print
  */
-uint32_t        read_string(uint32_t length, char *buf);
+uint32_t        read_string(char *buf, uint32_t length);
 
 #endif
 

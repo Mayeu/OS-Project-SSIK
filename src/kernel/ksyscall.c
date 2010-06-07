@@ -44,7 +44,9 @@ syscall_handler(registers_t * regs)
   case PRINT:
     res = print_string((char *) regs->a_reg[0]);
     return;                     /* We save the good return value in the pcb */
-    break;
+   case READ:
+    res = read_string((char *) regs->a_reg[0], regs->a_reg[1]);
+    return;                     /* We save the good return value in the pcb */
   case FPRINT:
     if (regs->a_reg[0] == CONSOLE)
       kprint((char *) regs->a_reg[1]);

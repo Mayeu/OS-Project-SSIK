@@ -169,10 +169,12 @@ print_string(char *str)
  * @return an error code, OMGROXX, INVARG, or any error returned by calling functions
  */
 uint32_t
-read_string(uint32_t length, char *buf)
+read_string(char *buf, uint32_t length)
 {
   pcb            *caller;
-  uint32_t        e;            /*error code */
+  uint32_t        e;
+
+  //kprintln("k, let's go!");
 
   /*
    * If length == 0 or buf == NULL we can not use the buffer
@@ -195,21 +197,35 @@ read_string(uint32_t length, char *buf)
    */
   caller = get_current_pcb();
 
-  /*e = uart_give_to(caller); *//*TODO: We try to give the uart to the caller */
+  e = uart_give_to(caller);
 
-  if (e == 1)
+  if (e == OMGROXX)
   {
+    //kprintln("You receive the uart! Enjoy");
+
     /*
      * The caller is the owner of the uart
+     * We move it to the waiting list
      */
-    /*pcb_wait(caller, PCB_WAIT_IO); *//*TODO: We block the process in the reading state */
-    /*uart_set_mode(UART_READ, buf, length); *//*TODO: set the uart in reading mode */
+    kblock_pcb(caller, DOING_IO);
+
+    //kdebug_assert_at(!get_current_pcb(), "kinout.c", 142);
 
     /*
-     * We can read! Finally!
+     * Set the uart in read mode
      */
-    /*uart_read(); */ /*TODO*/
-      return OMGROXX;
+    uart_set_mode(UART_READ, buf, length);
+
+    /*
+     * We can print! Finally!
+     */
+    uart_read();
+
+    /*
+     * This is not a "real" return value, since the good one will be inserted at the
+     * end of printing
+     */
+    return 3;
   }
 
   return e;

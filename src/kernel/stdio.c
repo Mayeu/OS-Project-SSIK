@@ -69,5 +69,10 @@ been readen or either a newline or a the End-of-File is reached, whichever comes
 int
 gets(char *str, int num)
 {
-  return 0;
+  int32_t         e;
+  do
+    e = syscall_two((int32_t) str, num, READ);
+  while (e != OMGROXX);
+
+  return e;
 }
