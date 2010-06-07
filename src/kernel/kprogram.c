@@ -14,12 +14,13 @@
 #include "../user/increment.h"
 #include "../user/scroll.h"
 #include "../user/quit.h"
+#include "../user/ring.h"
 
 /*
  * Define
  */
 
-#define NUM_PROG 6
+#define NUM_PROG 14
 
 /*
  * Global variable
@@ -33,6 +34,61 @@ static prgm     prgm_ls[NUM_PROG] = {
    "init",
    (uint32_t) init,
    "Initialize the system."},
+
+  /*
+   * The scroll program
+   */
+  {
+   "scroll",
+   (uint32_t) scroll,
+   "Scroll a string on the malta LCD."},
+
+  /*
+   * The chg_prio program
+   */
+  {
+   "chg_prio",
+   (uint32_t) chg_prio,
+   "Change the priority of a process."},
+
+  /*
+   * The ps program
+   */
+  {
+   "ps",
+   (uint32_t) ps,
+   "Give information about all the processes runing."},
+  /*
+   * The kill program
+   */
+  {
+   "tuer",
+   (uint32_t) tuer,
+   "Kill a process."},
+
+  /*
+   * The malta program
+   */
+  {
+   "malta",
+   (uint32_t) malta,
+   "Print a string on the malta LCD."},
+
+  /*
+   * The help program
+   */
+  {
+   "help",
+   (uint32_t) help,
+   "List all the commands available."},
+
+  /*
+   * The proc_info program
+   */
+  {
+   "proc_info",
+   (uint32_t) proc_info,
+   "Return information about a process."},
 
   /*
    * The shell program
@@ -57,6 +113,14 @@ static prgm     prgm_ls[NUM_PROG] = {
    "increment",
    (uint32_t) increment,
    "Increment a number to a limit"},
+
+  /*
+   * Ring
+   */
+  {
+   "ring",
+   (uint32_t) ring,
+   "The ring program"},
 
   /*
    * Philosopher
