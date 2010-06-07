@@ -123,7 +123,7 @@ void
 init()
 {
   int             pid, st, lspid[5];
-  int i;
+  int             i;
   char            c[30] = { '\0' };
   /*
    * Print the splash screen
@@ -137,27 +137,27 @@ init()
   if (pid != 0)
     while (1);
 
-  for(i = 0; i < 5; i++)
-  lspid[i] = create_proc("quit", BAS_PRI, NULL);
+  for (i = 0; i < 5; i++)
+    lspid[i] = create_proc("quit", BAS_PRI, NULL);
 
-  for(i = 0; i < 5; i++)
-  if (lspid[i] < 1)
-    print("OMG! This child failed :/\n");
-  else
-  {
-    if (wait(lspid[i], &st) == OMGROXX)
-      print("My child exit :)\n");
+  for (i = 0; i < 5; i++)
+    if (lspid[i] < 1)
+      print("OMG! This child failed :/\n");
     else
-      print("My child get lost :(\n");
-  }
+    {
+      if (wait(lspid[i], &st) == OMGROXX)
+        print("My child exit :)\n");
+      else
+        print("My child get lost :(\n");
+    }
 
   print("Say something: ");
   gets(c, 30);
 
   while (strcmp(c, "something") != 0)
   {
-	  print("\nNo, say something: ");
-  gets(c, 30);
+    print("\nNo, say something: ");
+    gets(c, 30);
   }
 
   print("\nGreat :)\n");
