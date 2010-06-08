@@ -63,7 +63,7 @@ test()
 
   //test_kprogram();
 
-  test_kmsg();
+  //test_kmsg();
 
   //test_kmsg_lst();
 

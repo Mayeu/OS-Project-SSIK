@@ -17,6 +17,12 @@
 
 #define MAX_MSG 20
 
+enum
+{
+	NO_WAIT,
+	WAIT_MSG
+};
+
 /**
  * \struct msg
  * \brief Message representation.
