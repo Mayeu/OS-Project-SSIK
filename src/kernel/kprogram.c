@@ -15,12 +15,13 @@
 #include "../user/scroll.h"
 #include "../user/quit.h"
 #include "../user/ring.h"
+#include "../user/supervisor.h"
 
 /*
  * Define
  */
 
-#define NUM_PROG 14
+#define NUM_PROG 15
 
 /*
  * Global variable
@@ -129,6 +130,14 @@ static prgm     prgm_ls[NUM_PROG] = {
    "philosopher",
    (uint32_t) philosopher,
    "The philosopher problem"},
+
+  /*
+   * Supervisor
+   */
+  {
+   "supervisor",
+   (uint32_t) supervisor,
+   "The supervisor demonstration"},
 
   /*
    * Quit, a test for quitting a program
