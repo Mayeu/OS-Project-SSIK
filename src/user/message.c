@@ -16,7 +16,7 @@
 int
 send(void *data, msg_t tdata, int pid)
 {
-  msg_arg         res = { data, tdata, pid, 0, 0 };
+  msg_arg         res = { data, tdata, pid, 0, -1, 0 };
   return syscall_one((int32_t) & res, SEND);
 }
 
@@ -56,6 +56,6 @@ recv_from_pid(void *data, msg_t tdata, int pid, int timeout)
 int
 recv_fromp_pri(void *data, msg_t tdata, int pri, int timeout)
 {
-  msg_arg         res = { data, tdata, 0, pri, 0, FPRI };
+  msg_arg         res = { data, tdata, 0, pri, timeout, FPRI };
   return syscall_one((int32_t) & res, RECV);
 }

@@ -18,10 +18,7 @@
 
 /**
  * @brief Display 8 char on the Malta display.
- *
- * If the data are too long (more than 8 char) only the 8th firts are printed
- * @param a string to print
- * @return void
+ * \private
  */
 void
 kmaltaprint8(const char *str)
@@ -45,8 +42,7 @@ kmaltaprint8(const char *str)
 
 /**
  * @brief Print a char on the tty
- * @param the string
- * @return void
+ * \private
  */
 void
 kprint_char(char c)
@@ -62,8 +58,7 @@ kprint_char(char c)
 
 /**
  * @brief Print a string on the tty
- * @param the string
- * @return void
+ * \private
  */
 void
 kprint(char *text)
@@ -77,8 +72,7 @@ kprint(char *text)
 
 /**
  * @brief Print a \n on the tty
- * @param void
- * @return void
+ * \private
  */
 void
 kprintn(void)
@@ -88,8 +82,7 @@ kprintn(void)
 
 /**
  * @brief Print a string on the tty with an \n at the end
- * @param the string
- * @return void
+ * \private
  */
 void
 kprintln(char *text)
@@ -100,8 +93,7 @@ kprintln(char *text)
 
 /**
  * @brief Print function using interrupt.
- * @param the string to print
- * @return
+ * \private
  */
 uint32_t
 print_string(char *str)
@@ -164,9 +156,7 @@ print_string(char *str)
 
 /**
  * @brief Read a string from the user input. Interrupt driven.
- * @param size of the reading
- * @param a buffer to keep the string
- * @return an error code, OMGROXX, INVARG, or any error returned by calling functions
+ * \private
  */
 uint32_t
 read_string(char *buf, uint32_t length)

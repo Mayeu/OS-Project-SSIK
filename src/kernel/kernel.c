@@ -14,7 +14,7 @@
 #include "kernel.h"
 #include "kinout.h"
 #include "kprocess.h"
-//#include "test.h"
+#include "test.h"
 #include "uart.h"
 #include "splash.h"
 #include "kscheduler.h"
@@ -82,7 +82,7 @@ kinit()
   /*
    * Launch test
    */
-/*
+
   test();
 
   pls_reset(&plsready);
@@ -95,7 +95,7 @@ kinit()
 
   set_current_pcb(NULL);
   p_error = &kerror;
-*/
+
   char            arg[4][20];
 
   if (create_proc("init", MAX_PRI, 0, (char **) arg) < 0)
@@ -116,8 +116,7 @@ kinit()
 
 /**
  * @brief The ancestor of the ancestor.
- *
- * First process to be launched
+ * \private
  */
 void
 init()

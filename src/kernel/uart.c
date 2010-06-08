@@ -15,25 +15,43 @@
  * Global variable
  */
 
+/**
+ * \brief The global buffer for the uart
+ */
 static fifo_buffer uart_fifo;
 
-/*
- * The current user of the pcb
+/**
+ * \brief The current user of the pcb
  */
 static pcb     *user;
 
-/*
- * Print and read buffer
+/**
+ * \brief Print buffer
  */
 static char    *print_buffer;
+
+/**
+ * \brief Read buffer
+ */
 static char    *read_buffer;
+
+/**
+ * \brief Read buffer size
+ */
 static uint32_t read_buffer_length;
+
+/**
+ * \brief buffer index
+ */
 static uint32_t index;
 
+/**
+ * \brief true if ended reading
+ */
 static bool     end_read;
 
-/*
- * Current uart mode
+/**
+ * \brief Current uart mode
  */
 static int32_t  mode;
 
@@ -45,6 +63,7 @@ static int32_t  mode;
  * @brief reset the fifo buffer to default value
  * @param void
  * @return void
+ * \private
  */
 void
 reset_fifo_buffer(void)
@@ -58,6 +77,7 @@ reset_fifo_buffer(void)
  * @brief push a char in the fifo buffer
  * @param the char to push
  * @return OMGROXX if there isan empty space OUTOMEM otherwise
+ * \private
  */
 uint32_t
 push_fifo_buffer(char c)
@@ -76,6 +96,7 @@ push_fifo_buffer(char c)
  * @brief pop a char from the fifo buffer
  * @parama a pointer to the char to pop
  * @return OMGROXX if the buffer is not empty, NULLPTR if the char given is null,  FAILNOOB otherwise
+ * \private
  */
 uint32_t
 pop_fifo_buffer(char *c)
@@ -100,6 +121,7 @@ pop_fifo_buffer(char *c)
  *
  * @param void
  * @return a pointer to the fifo buffer
+ * \private
  */
 fifo_buffer    *
 get_fifo_buffer()
@@ -107,33 +129,11 @@ get_fifo_buffer()
   return &uart_fifo;
 }
 
-/*
- * UART management functions
- */
-
-void
-uart_exception()
-{
-  switch (mode)
-  {
-  case UART_READ:
-    uart_read();
-    break;
-
-  case UART_PRINT:
-    uart_print();
-    break;
-
-  default:
-    ;
-  }
-}
-
-
 /**
  * @brief initialize the uart
  * @param void
  * @return void
+ * \private
  */
 void
 uart_init(void)
@@ -161,14 +161,11 @@ uart_init(void)
   mode = UART_UNUSED;
 }
 
-void
-set_uart_user(pcb * p)
-{
-  user = p;
-}
-
-/*
- *
+/**
+ * @brief Give the uart to the pcb, or if in use, block the pcb to wait
+ * @param the pcb
+ * @return OMGROXX if ok, FAILNOOB if the pcb is block
+ * \private
  */
 int32_t
 uart_give_to(pcb * p)
@@ -197,6 +194,11 @@ uart_give_to(pcb * p)
   return OMGROXX;
 }
 
+/**
+ * @brief set the mode of the uart
+ * @param The mode to set
+ * \private
+ */
 void
 uart_set_mode(int32_t new_mode, char *str, uint32_t len)
 {
@@ -223,17 +225,10 @@ uart_set_mode(int32_t new_mode, char *str, uint32_t len)
   }
 }
 
-/* cleans the uart's receiving buffer of any data that might be left in it */
-void
-clean_uart()
-{
-  char            c;
-  while (tty->lsr.field.dr)
-    c = tty->rbr;
-}
-
-
-/* prints a character from out_buffer and sets the device to interrupt when it is done printing (only if there are remaining characters to print) */
+/**
+ * prints a character from out_buffer and sets the device to interrupt when it is done printing (only if there are remaining characters to print)
+ * \private
+ */
 void
 uart_print(void)
 {
@@ -304,7 +299,11 @@ uart_print(void)
   }
 }
 
-/* ends the use of the device by its current owner by waking it up. It also release the device and put the return value in the PCB */
+/**
+ * ends the use of the device by its current owner by waking it up. It also release the device and put the return value in the PCB 
+ * @param an error code to set in the current pcb
+ * \private
+ */
 int32_t
 end_printing(int32_t code)
 {
@@ -326,6 +325,23 @@ end_printing(int32_t code)
   return uart_release(code);
 }
 
+/**
+ * cleans the uart's receiving buffer of any data that might be left in it
+ * \private
+ */
+void
+clean_uart()
+{
+  char            c;
+  while (tty->lsr.field.dr)
+    c = tty->rbr;
+}
+
+/*
+ * @brief Release the uart from is current user, and try to find a new user
+ * @param an error code to set in the current pcb
+ * \private
+ */
 int32_t
 uart_release(int32_t code)
 {
@@ -364,6 +380,47 @@ uart_release(int32_t code)
   return OMGROXX;
 }
 
+/*
+ * UART management functions
+ */
+
+/*
+ * @brief This function is called by the exception
+ * \private
+ */
+void
+uart_exception()
+{
+  switch (mode)
+  {
+  case UART_READ:
+    uart_read();
+    break;
+
+  case UART_PRINT:
+    uart_print();
+    break;
+
+  default:
+    ;
+  }
+}
+
+/*
+ * @brief Set the current uart user
+ * @param a pcb
+ * \private
+ */
+void
+set_uart_user(pcb * p)
+{
+  user = p;
+}
+
+/**
+ * @brief Read a string using interupt
+ * \private
+ */
 void
 uart_read()
 {
@@ -468,7 +525,11 @@ uart_read()
     end_reading(OMGROXX);
 }
 
-/* this function is end_printing but adds also a \0 character at the end of input */
+/* 
+ * this function is end_printing but adds also a \0 character at the end of input
+ * @param an error code to set in the current pcb
+ * \private
+ */
 int32_t
 end_reading(int32_t code)
 {

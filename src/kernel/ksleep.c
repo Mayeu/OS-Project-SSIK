@@ -14,9 +14,10 @@
 #include "ksleep.h"
 
 /**
- * @brief Decrement sleeping time of the process in plswaiting.
+ * Decrement sleeping time of the process in plswaiting.
  *
  * If a process as to be waking up, he is moved to the plsready list.
+ * \private
  */
 void
 process_sleep()

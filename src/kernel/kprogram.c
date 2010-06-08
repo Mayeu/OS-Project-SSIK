@@ -27,6 +27,9 @@
  * Global variable
  */
 
+/*
+ * Available programs
+ */
 static prgm     prgm_ls[NUM_PROG] = {
   /*
    * The init program
@@ -149,10 +152,8 @@ static prgm     prgm_ls[NUM_PROG] = {
 };
 
 /**
- * @brief Search a program into the program list
- * @param *name a pointer to a string, wich represent a possible
- * programm name
- * @return: a pointer to the program, or NULL if not found
+ * Search a program into the program list
+ * \private
  */
 prgm           *
 search_prgm(char *name)
@@ -167,9 +168,8 @@ search_prgm(char *name)
 }
 
 /**
- * @brief Print all the program with description
- * @param void
- * @return void
+ * all the program with description
+ * \private
  */
 void
 print_programs(void)

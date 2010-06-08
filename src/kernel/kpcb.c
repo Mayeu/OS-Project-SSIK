@@ -231,6 +231,7 @@ pcb_reset(pcb * p)
   //pcb_set_state(p, 0);
   //pcb_set_sleep(p, 0);
   //pcb_set_waitfor(p, 0);
+  reset_mls(&p->messages);
   pcb_set_error(p, OMGROXX);
   pcb_set_empty(p, TRUE);
   pcb_set_next(p, NULL);

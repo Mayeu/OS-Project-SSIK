@@ -9,6 +9,6 @@
 #ifndef __RING_H
 #define __RING_H
 
-void             ring(int argc, char *argv[]);
+void            ring(int argc, char *argv[]);
 
 #endif //__RING_H

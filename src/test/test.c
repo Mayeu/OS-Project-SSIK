@@ -13,7 +13,7 @@
 //#include "test_kprocess2.c"
 //#include "test_uart_fifo.c"
 //#include "test_kprogram.c"
-//#include "test_kmsg.c"
+#include "test_kmsg.c"
 //#include "test_kmsg_lst.c"
 
 
@@ -25,18 +25,18 @@
  * Print the result as OK/NOK and if it is NOK
  * print the return value of the tested function.
  */
-//void
-//test_unit(bool err, int res)
-//{
- // char            resc[2];
-  //if (err)
-   // kprintln("OK");
-  //else
-  //{
-   // kprint("NOK:");
-   // kprintln(itos(res, resc));
- // }
-//}
+void
+test_unit(bool err, int res)
+{
+  char            resc[2];
+  if (err)
+    kprintln("OK");
+  else
+  {
+    kprint("NOK:");
+    kprintln(itos(res, resc));
+  }
+}
 
 void
 test()

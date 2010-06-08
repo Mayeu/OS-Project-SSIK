@@ -14,7 +14,11 @@
 #include "kscheduler.h"
 #include "kprocess.h"
 
-
+/**
+ * Schedule the process
+ *
+ * \private
+ */
 void
 schedule()
 {
