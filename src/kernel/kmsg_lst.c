@@ -18,7 +18,10 @@ char            resc[2];
 /* Privates functions */
 int32_t         get_next_mid(uint32_t * nmid);
 
-
+/*
+ * Init the message list
+ * \private
+ */
 int32_t
 init_msg_lst(mls * ls)
 {
@@ -33,6 +36,7 @@ init_msg_lst(mls * ls)
 
 /**
  * Search for the message identified by mid in the list ls
+ * \private
  */
 msg            *
 search_msg(uint32_t mid, mls * ls)
@@ -48,6 +52,7 @@ search_msg(uint32_t mid, mls * ls)
 
 /**
  * Search for the message identified by mid in all lists
+ * \private
  */
 msg            *
 search_msg_all(uint32_t mid)
@@ -108,6 +113,7 @@ search_msg_filtered(msg_filter filter, int32_t filtervalue, mls * ls,
 
 /**
  * search the first empty space of the list
+ * \private
  */
 msg            *
 empty_msg_space(mls * ls)
@@ -125,6 +131,7 @@ empty_msg_space(mls * ls)
 
 /**
  * Return whether the list is empty or not
+ * \private
  */
 bool
 is_empty_mls(mls * ls)
@@ -143,6 +150,7 @@ is_empty_mls(mls * ls)
 
 /**
  * Send the msg object.
+ * \private
  */
 int32_t
 send_msg(uint32_t sdr_pid, msg_arg * args)
@@ -181,6 +189,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
                                                                                                                 /** TODO:  IMPLEMENT RECV_MSG */
 /**
  * Wait fot a message with the specified priority.
+ * \private
  */
 int32_t
 recv_msg(uint32_t recv_pid, msg_arg * args)
@@ -256,6 +265,7 @@ void func()
 
 /**
  * Move the mid message from src list to dest list
+ * \private
  */
 int32_t
 move_one_msg_lst(uint32_t mid, mls * src, mls * dest)
@@ -276,6 +286,7 @@ move_one_msg_lst(uint32_t mid, mls * src, mls * dest)
 
 /**
  * Move the src message list to dest list
+ * \private
  */
 int32_t
 move_msg_lst(mls * src, mls * dest)
@@ -292,6 +303,7 @@ move_msg_lst(mls * src, mls * dest)
 
 /**
  * Sort the list according to the priority
+ * \private
  */
 int32_t
 sort_msg(mls * ls)
@@ -321,6 +333,7 @@ sort_msg(mls * ls)
 
 /**
  * Reset the specified message list
+ * \private
  */
 int32_t
 reset_msg_lst(mls * ls)
@@ -336,6 +349,7 @@ reset_msg_lst(mls * ls)
 
  /**
  * reset the next_mid to 0
+ * \private
  */
 void
 reset_next_mid()
@@ -344,12 +358,11 @@ reset_next_mid()
 }
 
 
-
-
 /* private function */
 
 /**
  * set nmid to the next available value of mid
+ * \private
  */
 int32_t
 get_next_mid(uint32_t * nmid)

@@ -41,6 +41,11 @@ typedef struct
   int32_t         timeout;
 } mls;
 
+/**
+ * \brief Init the message list
+ * \param ls the message list
+ * \return an error code
+ */
 int32_t         init_msg_lst(mls * ls);
 
 /**

@@ -11,9 +11,11 @@
 #include "kmsg.h"
 #include "kprocess.h"
 #include "kprocess_list.h"
+#include "kinout.h"
 
 /**
  * reset the fifo buffer to default value
+ * \private
  */
 void
 reset_mls(mls * m)
@@ -21,10 +23,12 @@ reset_mls(mls * m)
   m->in = 0;
   m->out = 0;
   m->length = 0;
+  m->status = NO_WAIT;
 }
 
 /**
  * push a char in the fifo buffer
+ * \private
  */
 uint32_t
 push_mls(mls * m, msg * mess)
@@ -43,6 +47,7 @@ push_mls(mls * m, msg * mess)
 
 /**
  * pop a char from the fifo buffer
+ * \private
  */
 uint32_t
 pop_mls(mls * m, msg * mess)
@@ -64,6 +69,7 @@ pop_mls(mls * m, msg * mess)
 
 /**
  * Create the msg object.
+ * \private
  */
 int32_t
 create_msg(msg * m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri,
@@ -83,6 +89,7 @@ create_msg(msg * m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri,
 
 /**
  * Copy the src message to dest
+ * \private
  */
 int32_t
 copy_msg(msg * src, msg * dest)
@@ -101,6 +108,7 @@ copy_msg(msg * src, msg * dest)
 
 /**
  * Send the msg object.
+ * \private
  */
 int32_t
 send_msg(uint32_t sdr_pid, msg_arg * args)
@@ -110,6 +118,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
   uint32_t        pri = args->pri;
   uint32_t        recv_pid = args->pid;
   int32_t         res;
+//  char c[10];
   if (args->data == NULL)
     return NULLPTR;
   if (pri >= MAX_MPRI && pri <= MIN_MPRI)
@@ -123,12 +132,25 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
   if (res != OMGROXX)
     return res;
 
+  //kprint(itos(pri, c));
+  //kprint(itos((int)args->data, c));
+
   // Signal the recv_process that the message is arrived (if he wanted this one)
-  /*if(receiver->message.status ==  WAITING)
-     {
-     receiver->messages.timeout = 0;
-     receiver->messages.status = NOT_WAITING;
-     } */
+  if ((receiver->messages.status == WAIT_MSG))
+  {
+    kprint("wake for ");
+    if ((receiver->messages.filter == FTYPE
+         && receiver->messages.filtervalue == args->datatype)
+        || (receiver->messages.filter == FPRI
+            && receiver->messages.filtervalue == pri)
+        || (receiver->messages.filter == FPID
+            && receiver->messages.filtervalue == sdr_pid)
+        || (receiver->messages.filter == FNONE))
+    {
+      kprintln((char *) args->data);
+      kwakeup_pcb(receiver);
+    }
+  }
 
   return OMGROXX;
 }
@@ -136,6 +158,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
                                                                                                                 /** TODO:  IMPLEMENT RECV_MSG */
 /**
  * Wait fot a message with the specified priority.
+ * \private
  */
 int32_t
 recv_msg(uint32_t recv_pid, msg_arg * args)
@@ -145,14 +168,18 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   pcb            *p;
   msg             m;
   int32_t         res;
+  volatile uint32_t status;
   bool            res2;
+  char            c[10];
+  //kprint(itos(filter, c));
+
   if (filter == FPRI)
   {
     filtervalue = args->pri;
 
   }
   else if (filter == FPID)
-  {
+  {                             //kprint("pwet");
     filtervalue = args->pid;
 
   }
@@ -160,9 +187,17 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   {
     filtervalue = (int) args->datatype;
   }
+  //kprint(itos(filtervalue, c));
   p = search_all_list(recv_pid);
   if (p == NULL)
     return UNKNPID;
+
+  do
+  {
+    status = pcb_get_messages(p)->status;       //p->messages.status;
+  }
+  while (status != NO_WAIT);
+
   // look for a message according to the filter.
   do
   {
@@ -173,24 +208,40 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
       res2 = FALSE;
   }
   while (res2 == FALSE && p->messages.length != 0);
-/*	if(m == NULL)
-	{
-		// if not found
-		p->messages.status = WAITING;
-		p->messages.filter = filter;
-		p->messages.filtervalue = filtervalue;
-		p->messages.timeout = (args->timeout >=0 )? args->timeout : 0;
 
-		// WAIT NOW UNTIL THE MESSAGE IS IN THE MAILBOX
-		//if(timeout > 0)
-		//sleep (args->timeout);	// status WAITING
 
-		//check pk reveil
-		//return OMGROXX;
-		m = search_msg_filtered(filter, filtervalue, &p->messages, args->datatype);
-	}
-*/
-  if (res2 != FALSE)
+  /* message not in the mailbox yet, Go to sleep ^^ */
+  if (res2 == FALSE && args->timeout > 0)
+  {
+    // if not found
+    p->messages.status = WAIT_MSG;
+    p->messages.filter = filter;
+    p->messages.filtervalue = filtervalue;
+    p->messages.timeout = (args->timeout >= 0) ? args->timeout : 0;
+
+    // WAIT NOW UNTIL THE MESSAGE IS IN THE MAILBOX
+    kprintln("GO TO SLEEP FOR A MSG");
+    kprint(itos(args->timeout, c));
+    go_to_sleep(args->timeout);
+
+    if (pcb_get_sleep(p) <= 0)
+      return FAILNOOB;
+    kprintln("SIGNALED MSG");
+    p->messages.status = NO_WAIT;
+    //check apres reveil
+    do
+    {
+      res = pop_mls(&p->messages, &m);
+      if (res == OMGROXX)
+        res2 = search_msg_filtered(filter, filtervalue, &m, args->datatype);
+      else
+        res2 = FALSE;
+    }
+    while (res2 == FALSE && p->messages.length != 0);
+  }
+
+  /* if the message is found (with or without waiting time) */
+  if (res2 == TRUE)
   {
     if (args->datatype == CHAR_PTR)     // case char *
       strcpy(m.data, args->data);
@@ -214,6 +265,7 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
 
 /**
  * Search for the message with a specific filter
+ * \private
  */
 bool
 search_msg_filtered(msg_filter filter, int32_t filtervalue, msg * m,
@@ -232,6 +284,7 @@ search_msg_filtered(msg_filter filter, int32_t filtervalue, msg * m,
 
 /**
  * Copy the src message list to dest list
+ * \private
  */
 int32_t
 copy_mls(mls * src, mls * dest)

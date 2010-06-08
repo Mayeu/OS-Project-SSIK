@@ -7,9 +7,8 @@
 #include "splash.h"
 
 /**
- * @brief Print the splash screen
- * @param void
- * @return void
+ * Print the splash screen
+ * \private
  */
 void
 splash(void)

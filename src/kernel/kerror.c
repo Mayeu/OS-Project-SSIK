@@ -29,8 +29,8 @@ char            err_msgs[13][255] = {
 };
 
  /**
- * Print the specified err_msg followed by the description of the error according to the global
-variable perror.
+ * Print the specified err_msg followed by the description of the error according to the global variable perror.
+ * \private
  */
 void
 kperror(char *error_msg)
@@ -59,6 +59,7 @@ kperror(char *error_msg)
 
  /**
  * Return the error number.
+ * \private
  */
 uint32_t
 kgerror(void)
@@ -68,6 +69,7 @@ kgerror(void)
 
  /**
  * Set the current error code.
+ * \private
  */
 void
 kserror(uint32_t e)
