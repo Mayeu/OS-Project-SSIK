@@ -88,17 +88,7 @@ program must be stored in the program list of the OS.
 int
 fourchette(char *name, int prio, int argc, char *argv[])
 {
-  int             i;
-  char            pr[3];
-  char            new_args[MAX_ARG + 1][ARG_SIZE];
-
-  // add the process priority to the new arg array
-  strcpy(itos(prio, pr), new_args[0]);
-  // copy all the arguments
-  for (i = 0; i < argc; i++)
-    strcpy(get_arg(argv, i+1), new_args[i + 1]);
-
-  return syscall_three((int32_t) name, argc, (int32_t) new_args, FOURCHETTE);
+	return syscall_three(prio, argc, (int32_t) argv, FOURCHETTE);
 }
 
  /**

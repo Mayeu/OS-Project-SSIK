@@ -98,7 +98,7 @@ kinit()
 
   char            arg[4][20];
 
-  if (create_proc("init", MAX_PRI, (char **) arg) < 0)
+  if (create_proc("init", MAX_PRI, 0, (char **) arg) < 0)
   {
     kprintln("FAILNOOB");
     while (1);
@@ -121,7 +121,7 @@ kinit()
 void
 init()
 {
-  int             pid, st, lspid[5];
+  int             pid, st, lspid[5], status, shell;
   int             i;
   char            c[30] = { '\0' };
 	char						scroll_param[3][ARG_SIZE];
@@ -139,7 +139,7 @@ init()
     while (1);
 
   for (i = 0; i < 5; i++)
-    lspid[i] = create_proc("quit", BAS_PRI, NULL);
+    lspid[i] = create_proc("quit", BAS_PRI, 0, NULL);
 
   for (i = 0; i < 5; i++)
     if (lspid[i] < 1)
@@ -162,23 +162,25 @@ init()
   }
 
   print("\nGreat :)\n");
-
-  if (create_proc("coquille", MAX_PRI, (char **) NULL) < 0)
-  {
-    kprintln("FAILNOOB");
-    while (1);
-  }
-
 	
 	strcpy("3", scroll_param[0]);
 	strcpy("scrolling text!", scroll_param[1]);
 	strcpy("200", scroll_param[2]);
 
-  if (create_proc("scroll", MAX_PRI, (char **) scroll_param) < 0)
+  if (create_proc("scroll", MAX_PRI, 3, (char **) scroll_param) < 0)
   {
     kprintln("FAILNOOB");
     while (1);
   }
+
+	shell = create_proc("coquille", BAS_PRI, 0, (char **) NULL);
+  if (shell < 0)
+  {
+    kprintln("FAILNOOB");
+    while (1);
+  }
+	wait(shell, &status);
+
 
   while (1);
 }

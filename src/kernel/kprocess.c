@@ -102,7 +102,7 @@ set_current_pcb(pcb * p)
  * create a pcb with all the needed value at the specified location
  */
 uint32_t
-create_proc(char *name, uint32_t prio, char **params)
+create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
 {
   uint32_t       *i;
   int32_t         pid;
@@ -182,19 +182,7 @@ create_proc(char *name, uint32_t prio, char **params)
     
 		if (params != NULL)
 		{
-			//char buf[15];
-			p->registers.a_reg[0] = stoi(get_arg(params, 0)) + 1;
-			
-			strcpy(name, get_arg(params, 0));
-			/*kdebug_println(get_arg(params, 0));
-			kdebug_println(get_arg(params, 1));
-			kdebug_println(get_arg(params, 2));
-
-			itos((int)params, buf);
-			kdebug_println(buf);
-			itos((int)get_arg(params, 1), buf);
-			kdebug_println(buf);*/
-
+			p->registers.a_reg[0] = argc;
 			p->registers.a_reg[1] = (uint32_t) params;
 		}
 		else
@@ -315,8 +303,6 @@ uint32_t
 chg_ppri(uint32_t pid, uint32_t pri)
 {
   pcb            *p;
-  if (p == NULL)
-    return NULLPTR;
 
   if (pri > MAX_PRI || pri < MIN_PRI)
     return INVARG;

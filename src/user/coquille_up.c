@@ -21,6 +21,8 @@ chg_prio(int argc, char *argv[])
 	int prio = stoi(get_arg(argv, 2));
 	//char buf[15];
 
+	print(get_arg(argv, 0));
+
   if (argc < 3)
   {
     print("Need two arguments (pid and new priority)\n");
@@ -31,8 +33,8 @@ chg_prio(int argc, char *argv[])
 	printi((int)get_arg(argv, 1));
 	print(get_arg(argv, 0));*/
 
-  pid  = 7;
-  prio = 37;
+  //pid  = 7;
+  //prio = 37;
 
   printi(chg_pri(pid, prio));
   exit(0);

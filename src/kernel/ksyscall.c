@@ -38,18 +38,7 @@ syscall_handler(registers_t * regs)
     {
       // A CHANGER, POUR ENVOYER LE NB D'ARG STOQUE DS regs->a_reg[1]
       // NE PAS OUBLIER DE COPIER LES ARG DS LA STRUCT DU PCB !!
-      char           *name = (char *) regs->a_reg[0];
-      char          **argv = (char **) regs->a_reg[2];
-      int             prio = stoi(get_arg(argv, 0));
-
-			char buf[15];
-			itos((int)regs->a_reg[1], buf);
-
-      strcpy(buf, get_arg(argv, 0));
-			/*kdebug_println(get_arg(argv, 0));
-			kdebug_println(get_arg(argv, 1));
-			kdebug_println(get_arg(argv, 2));*/
-      res = create_proc(name, prio, argv);
+			res = create_proc(get_arg((char**)regs->a_reg[2], 0), regs->a_reg[0], regs->a_reg[1], (char**)regs->a_reg[2]);
       break;
     }
   case PRINT:
