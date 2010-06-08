@@ -20,7 +20,7 @@
 #include "fibonacci.h"
 
 
-char            command_arg[MAX_SHELL_ARG][MAX_CHAR];
+char            command_arg[MAX_SHELL_ARG][ARG_SIZE];
 
 void
 coquille(void)
