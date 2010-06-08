@@ -102,14 +102,15 @@ set_current_pcb(pcb * p)
  * create a pcb with all the needed value at the specified location
  */
 uint32_t
-create_proc(char *name, uint32_t prio, char **params)
+create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
 {
   uint32_t       *i;
   int32_t         pid;
   pcb            *p;
   prgm           *prg;
+	//char buf[15];
 
-  kdebug_println("Create process in");
+  //kdebug_println("Create process in");
 
   if (name == NULL)
     return NULLPTR;
@@ -176,8 +177,19 @@ create_proc(char *name, uint32_t prio, char **params)
     /*
      * Set the parameters of the function
      */
-    p->registers.a_reg[0] = 0;
-    p->registers.a_reg[1] = (uint32_t) & params;        /* the adresse of the first arg */
+    //p->registers.a_reg[0] = (params == NULL) ? 0 : stoi(get_arg(params, 0)) + 1;
+		//p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
+    
+		if (params != NULL)
+		{
+			p->registers.a_reg[0] = argc + 1;
+			p->registers.a_reg[1] = (uint32_t) params;
+		}
+		else
+		{
+			p->registers.a_reg[0] = 0;
+			p->registers.a_reg[1] = 0;
+		}
 
     /*
      * Set the stack pointer
@@ -228,7 +240,7 @@ create_proc(char *name, uint32_t prio, char **params)
   else
     return OUTOMEM;
 
-  kdebug_println("Create process out");
+  //kdebug_println("Create process out");
 
   return pid;
 }
@@ -291,8 +303,6 @@ uint32_t
 chg_ppri(uint32_t pid, uint32_t pri)
 {
   pcb            *p;
-  if (p == NULL)
-    return NULLPTR;
 
   if (pri > MAX_PRI || pri < MIN_PRI)
     return INVARG;

@@ -20,7 +20,7 @@ int             pid[MAX];
 
 // params: int nb_proc, int loop -> main program
 // params: int pidmain, int loop -> child programs
-int
+void
 ring(int argc, char *argv[])
 {
   int             i;
@@ -33,7 +33,7 @@ ring(int argc, char *argv[])
   if (strcmp(pcbi.name, "ring") != 0)
   {
     int             nb_proc;
-    char            args[2][ARG_SIZE];
+    char            args[3][ARG_SIZE];
 
     if (argc < 2)
     {
@@ -43,7 +43,7 @@ ring(int argc, char *argv[])
     }
 
     // number of proc in argv[0]
-    nb_proc = stoi(argv[0]);
+    nb_proc = stoi(get_arg(argv, 1));
 
     if (nb_proc > MAX)
     {
@@ -54,14 +54,16 @@ ring(int argc, char *argv[])
     }
 
     // fill the argument array for the childs
-    itos(get_pid(), args[0]);
-    strcpy(get_arg(argv, 2), args[1]);
+    strcpy("ring", args[0]);
+    itos(get_pid(), get_arg(argv, 1));
+    strcpy(get_arg(argv, 2), args[2]);
 
     // creating the children
     for (i = 0; i < nb_proc; i++)
-      pid[i] = fourchette("ring", BAS_PRI, 2, (char **) args);
+      pid[i] = fourchette("ring", MAX_PRI, 3, (char **) args);
 
     // data to send to all the children
+/*
     for (i = 0; i < nb_proc; i++)
     {
       // are you the first child process ?
@@ -70,7 +72,7 @@ ring(int argc, char *argv[])
       send((void *) pid[(i + 1) % nb_proc], INT_T, pid[i]);
       // pid of the process to wait the message
       send((void *) pid[(i - 1) % nb_proc], INT_T, pid[i]);
-    }
+    }*/
   }
   // if the supervisor process is the program ring, case child
   else
@@ -81,13 +83,17 @@ ring(int argc, char *argv[])
     char            mess[10] = "hello";
     char            rcv[10];
 
-    pidmain = stoi(argv[0]);
-    loop = stoi(argv[1]);
+    pidmain = stoi(get_arg(argv, 1));
+    loop = stoi(get_arg(argv, 2));
+
+		printi(get_pid());
 
     // params sent by the main process
     recv_from_pid((int *) &first, INT_T, pidmain, 0);
     recv_from_pid((int *) &pid_next, INT_T, pidmain, 0);
     recv_from_pid((int *) &pid_prev, INT_T, pidmain, 0);
+
+		print(" next "); printi(pid_next);
 
     for (i = 0; i < loop; i++)
     {
@@ -140,5 +146,4 @@ ring(int argc, char *argv[])
   }
 
   exit(0);
-  return 0;
 }

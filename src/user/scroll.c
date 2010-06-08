@@ -13,7 +13,7 @@
 #define MALTA_SIZE 8
 
 // params: char* message, int sleep
-int
+void
 scroll(int argc, char *argv[])
 {
   char            buf[255];
@@ -25,7 +25,7 @@ scroll(int argc, char *argv[])
   strcat(buf, "      ");        // SIZE - 2 spaces
 
   len = pos_space = strlen(str) + MALTA_SIZE - 2;
-  sleept = stoi(get_arg(argv, 1));
+  sleept = stoi(get_arg(argv, 2));
 
   while (1)
   {
@@ -44,8 +44,9 @@ scroll(int argc, char *argv[])
 
     pos_space = (pos_space) ? pos_space - 1 : len;
 
-    for (j = 0; j < 6000000; j++);
-    //sleep(sleept);
+    //for (j = 0; j < 6000000; j++);
+		j = 0;
+    sleep(sleept);
   }
 
   exit(0);

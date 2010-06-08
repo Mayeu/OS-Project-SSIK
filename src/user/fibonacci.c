@@ -9,30 +9,28 @@
 #include <stdio.h>
 #include <process.h>
 #include <string.h>
+#include <errno.h>
 
 #include "fibonacci.h"
 
-int
+void
 fibonacci(int argc, char *argv[])
 {
-  int             i = 2;
-  int             f0 = 1, f1 = 1, f;
-  int             n = stoi(get_arg(argv, 1));
+	int a=0,b=1,c,i=0;
+  int n;
 
-  printi(f0);
-  printn();
-  printi(f1);
-  printn();
+	if (argc < 2) exit(FAILNOOB);
 
-  while (i <= n)
-  {
-    f = f0 + f1;
-    f0 = f1;
-    f1 = f;
-    printi(f1);
-    printn();
-    i++;
-  }
-  exit(0);
-  return 0;
+	n = stoi(get_arg(argv, 1));
+
+	while(i<n)
+	{
+		c=a+b;
+		printi(c);
+		printn();
+		b=a;
+		a=c;
+		i++;
+	}
+  exit(OMGROXX);
 }

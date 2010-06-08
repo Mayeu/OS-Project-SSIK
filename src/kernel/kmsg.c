@@ -114,7 +114,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
     return NULLPTR;
   if (pri >= MAX_MPRI && pri <= MIN_MPRI)
     return INVPRI;
-  receiver = searchall(recv_pid);
+  receiver = search_all_list(recv_pid);
   if (receiver == NULL)
     return UNKNPID;
   res = create_msg(&m, sdr_pid, recv_pid, pri, args->data, args->datatype);
@@ -160,7 +160,7 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   {
     filtervalue = (int) args->datatype;
   }
-  p = searchall(recv_pid);
+  p = search_all_list(recv_pid);
   if (p == NULL)
     return UNKNPID;
   // look for a message according to the filter.

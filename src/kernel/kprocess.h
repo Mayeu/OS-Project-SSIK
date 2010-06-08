@@ -31,7 +31,7 @@
  * @return the pid of the process or a negative error code
  * (INVARG, OUTOMEM, FAILNOOB)
  */
-uint32_t        create_proc(char *name, uint32_t prio, char **params);
+uint32_t        create_proc(char *name, uint32_t prio, uint32_t argc, char **params);
 
 /**
  * @brief Return the pcb currently running

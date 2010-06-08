@@ -9,6 +9,6 @@
 #ifndef __FIBONACCI_H
 #define __FIBONACCI_H
 
-int             fibonacci(int argc, char *argv[]);
+void             fibonacci(int argc, char *argv[]);
 
 #endif //__FIBONACCI_H
