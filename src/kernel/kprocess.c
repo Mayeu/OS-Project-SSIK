@@ -182,7 +182,7 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     
 		if (params != NULL)
 		{
-			p->registers.a_reg[0] = argc;
+			p->registers.a_reg[0] = argc + 1;
 			p->registers.a_reg[1] = (uint32_t) params;
 		}
 		else
