@@ -182,6 +182,6 @@ init()
   }
 	wait(shell, &status);
 
-
+	print("\nYou can now shut down your computer ! :)");
   while (1);
 }
