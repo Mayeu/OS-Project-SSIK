@@ -25,7 +25,7 @@ char            command_arg[MAX_SHELL_ARG][MAX_CHAR];
 void
 coquille(void)
 {
-  int             nb_arg, pid, res, status;
+  int             nb_arg, pid, status;
   char            prompt_line[255];
   char            buffer[255];
  // char            ibuf[3];
@@ -42,16 +42,16 @@ coquille(void)
     // split the string
 		nb_arg = split_args(buffer, command_arg);
 
-    if (res != -1)
+    if (nb_arg != -1)
     {
-			pid = fourchette(command_arg[0], MAX_PRI, nb_arg, (char **) command_arg);
+			pid = fourchette(command_arg[0], BAS_PRI, nb_arg, (char **) command_arg);
 			if (pid > 0)
 				wait(pid, &status);
 			else
 				print(" command not found\n");
-			print("coquille> ");
     }
 
+		print("coquille> ");
   }
 
 }
