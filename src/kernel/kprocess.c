@@ -196,6 +196,8 @@ create_proc(char *name, uint32_t prio, char **params)
 			kdebug_println(buf);*/
 
 			p->registers.a_reg[1] = (uint32_t) params;
+
+			//kdebug_println(get_arg(params, 0));
 		}
 		else
 		{
@@ -315,8 +317,6 @@ uint32_t
 chg_ppri(uint32_t pid, uint32_t pri)
 {
   pcb            *p;
-  if (p == NULL)
-    return NULLPTR;
 
   if (pri > MAX_PRI || pri < MIN_PRI)
     return INVARG;

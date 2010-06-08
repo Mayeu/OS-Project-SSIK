@@ -122,7 +122,7 @@ kinit()
 void
 init()
 {
-  int             pid, st, lspid[5];
+  int             pid, st, lspid[5], status, shell;
   int             i;
   char            c[30] = { '\0' };
 	char						scroll_param[3][ARG_SIZE];
@@ -163,13 +163,6 @@ init()
   }
 
   print("\nGreat :)\n");
-
-  if (create_proc("coquille", MAX_PRI, (char **) NULL) < 0)
-  {
-    kprintln("FAILNOOB");
-    while (1);
-  }
-
 	
 	strcpy("3", scroll_param[0]);
 	strcpy("scrolling text!", scroll_param[1]);
@@ -180,6 +173,15 @@ init()
     kprintln("FAILNOOB");
     while (1);
   }
+
+	shell = create_proc("coquille", BAS_PRI, (char **) NULL);
+  if (shell < 0)
+  {
+    kprintln("FAILNOOB");
+    while (1);
+  }
+	wait(shell, &status);
+
 
   while (1);
 }
