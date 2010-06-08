@@ -19,8 +19,8 @@
 
 enum
 {
-	NO_WAIT,
-	WAIT_MSG
+  NO_WAIT,
+  WAIT_MSG
 };
 
 /**

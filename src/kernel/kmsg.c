@@ -132,19 +132,24 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
   if (res != OMGROXX)
     return res;
 
-	//kprint(itos(pri, c));
-	//kprint(itos((int)args->data, c));
+  //kprint(itos(pri, c));
+  //kprint(itos((int)args->data, c));
 
   // Signal the recv_process that the message is arrived (if he wanted this one)
-  if((receiver->messages.status ==  WAIT_MSG))
-  {kprint("wake for "); 
-		if((receiver->messages.filter == FTYPE && receiver->messages.filtervalue == args->datatype)
-		|| (receiver->messages.filter == FPRI && receiver->messages.filtervalue == pri)
-		|| (receiver->messages.filter == FPID && receiver->messages.filtervalue == sdr_pid)
-		|| (receiver->messages.filter == FNONE))
-		{kprintln((char *)args->data);
-			kwakeup_pcb(receiver);
-		}
+  if ((receiver->messages.status == WAIT_MSG))
+  {
+    kprint("wake for ");
+    if ((receiver->messages.filter == FTYPE
+         && receiver->messages.filtervalue == args->datatype)
+        || (receiver->messages.filter == FPRI
+            && receiver->messages.filtervalue == pri)
+        || (receiver->messages.filter == FPID
+            && receiver->messages.filtervalue == sdr_pid)
+        || (receiver->messages.filter == FNONE))
+    {
+      kprintln((char *) args->data);
+      kwakeup_pcb(receiver);
+    }
   }
 
   return OMGROXX;
@@ -163,10 +168,10 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   pcb            *p;
   msg             m;
   int32_t         res;
-	volatile uint32_t status;
+  volatile uint32_t status;
   bool            res2;
-//char c[10];
-	//kprint(itos(filter, c));
+  char            c[10];
+  //kprint(itos(filter, c));
 
   if (filter == FPRI)
   {
@@ -174,7 +179,7 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
 
   }
   else if (filter == FPID)
-  {//kprint("pwet");
+  {                             //kprint("pwet");
     filtervalue = args->pid;
 
   }
@@ -182,15 +187,16 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   {
     filtervalue = (int) args->datatype;
   }
-	//kprint(itos(filtervalue, c));
+  //kprint(itos(filtervalue, c));
   p = search_all_list(recv_pid);
   if (p == NULL)
     return UNKNPID;
 
-	do
-	{
-		status = pcb_get_messages(p)->status;//p->messages.status;
-	}	while(status != NO_WAIT);
+  do
+  {
+    status = pcb_get_messages(p)->status;       //p->messages.status;
+  }
+  while (status != NO_WAIT);
 
   // look for a message according to the filter.
   do
@@ -200,39 +206,42 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
       res2 = search_msg_filtered(filter, filtervalue, &m, args->datatype);
     else
       res2 = FALSE;
-  } while (res2 == FALSE && p->messages.length != 0);
+  }
+  while (res2 == FALSE && p->messages.length != 0);
 
 
-	/* message not in the mailbox yet, Go to sleep ^^ */
-	if(res2 == FALSE && args->timeout > 0)
-	{
-		// if not found
-		p->messages.status = WAIT_MSG;
-		p->messages.filter = filter;
-		p->messages.filtervalue = filtervalue;
-		p->messages.timeout = (args->timeout >=0 )? args->timeout : 0;
+  /* message not in the mailbox yet, Go to sleep ^^ */
+  if (res2 == FALSE && args->timeout > 0)
+  {
+    // if not found
+    p->messages.status = WAIT_MSG;
+    p->messages.filter = filter;
+    p->messages.filtervalue = filtervalue;
+    p->messages.timeout = (args->timeout >= 0) ? args->timeout : 0;
 
-		// WAIT NOW UNTIL THE MESSAGE IS IN THE MAILBOX
-		kprintln("GO TO SLEEP FOR A MSG");
-		go_to_sleep (args->timeout);
+    // WAIT NOW UNTIL THE MESSAGE IS IN THE MAILBOX
+    kprintln("GO TO SLEEP FOR A MSG");
+    kprint(itos(args->timeout, c));
+    go_to_sleep(args->timeout);
 
-		if(pcb_get_sleep(p) <= 0)
-			return FAILNOOB;
-		kprintln("SIGNALED MSG");
-		p->messages.status = NO_WAIT;
-		//check apres reveil
-      do
-      {
-        res = pop_mls(&p->messages, &m);
-        if (res == OMGROXX)
-          res2 = search_msg_filtered(filter, filtervalue, &m, args->datatype);
-        else
-          res2 = FALSE;
-      } while (res2 == FALSE && p->messages.length != 0);
-	}
+    if (pcb_get_sleep(p) <= 0)
+      return FAILNOOB;
+    kprintln("SIGNALED MSG");
+    p->messages.status = NO_WAIT;
+    //check apres reveil
+    do
+    {
+      res = pop_mls(&p->messages, &m);
+      if (res == OMGROXX)
+        res2 = search_msg_filtered(filter, filtervalue, &m, args->datatype);
+      else
+        res2 = FALSE;
+    }
+    while (res2 == FALSE && p->messages.length != 0);
+  }
 
-	/* if the message is found (with or without waiting time) */
-  if(res2 == TRUE)
+  /* if the message is found (with or without waiting time) */
+  if (res2 == TRUE)
   {
     if (args->datatype == CHAR_PTR)     // case char *
       strcpy(m.data, args->data);
