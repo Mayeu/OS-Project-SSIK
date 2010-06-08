@@ -69,7 +69,7 @@ $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER) $(OBJS_TEST)
 	$(LD) $(ARCH) -o $@ $^
 
 # Run the program
-run: link
+run: indent link
 	bash $(PROJECT_DIR)/scripts/run.sh $(BIN)/ssik
 
 # Indent everything
