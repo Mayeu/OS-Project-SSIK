@@ -165,13 +165,15 @@ waiter(int argc, char *argv[])  //int nb_philo
 
     if (code == FORK_L || code == FORK_R)
     {
-		bool t;
-		if (code == FORK_L)
-			t = (can_take_fork
-          (philo_id, philo_pid, fork, &forks_taken, nb_philo, code) == FALSE);
-		else
-			t = (can_take_fork
-          (philo_id, (philo_pid + 1)%nb_philo , fork, &forks_taken, nb_philo, code) == FALSE);
+      bool            t;
+      if (code == FORK_L)
+        t = (can_take_fork
+             (philo_id, philo_pid, fork, &forks_taken, nb_philo,
+              code) == FALSE);
+      else
+        t = (can_take_fork
+             (philo_id, (philo_pid + 1) % nb_philo, fork, &forks_taken,
+              nb_philo, code) == FALSE);
       if (t)
       {
         //fork taken or only one fork left. In the last case, it can only be taken by a philosopher who already has a fork. Since the left forks are requested first, this is not the case here. We put the request in the buffer
@@ -181,7 +183,8 @@ waiter(int argc, char *argv[])  //int nb_philo
       }
     }
     else if (code == RELEASE)
-    {print("tess");
+    {
+      print("tess");
       fork[philo_id] = 1;       // release the left fork
       fork[(philo_id + 1) % nb_philo] = 1;      // release the right fork
       forks_taken -= 2;
@@ -196,13 +199,15 @@ waiter(int argc, char *argv[])  //int nb_philo
 
         if (code == FORK_L || code == FORK_R)
         {
-				bool t;
-				if (code == FORK_L)
-					t = (can_take_fork
-          (philo_id, philo_pid, fork, &forks_taken, nb_philo, code) == TRUE);
-				else
-					t = (can_take_fork
-          (philo_id, (philo_pid + 1)%nb_philo , fork, &forks_taken, nb_philo, code) == TRUE);
+          bool            t;
+          if (code == FORK_L)
+            t = (can_take_fork
+                 (philo_id, philo_pid, fork, &forks_taken, nb_philo,
+                  code) == TRUE);
+          else
+            t = (can_take_fork
+                 (philo_id, (philo_pid + 1) % nb_philo, fork, &forks_taken,
+                  nb_philo, code) == TRUE);
           if (t)
             //this request has been satisfied
             do_packing = 1;
@@ -276,7 +281,7 @@ philosopher(int argc, char *argv[])
     strcat(text, "is thinking\n");
     print(text);
 
-              sleep(random((int)&count, (int)&loop)%2000);
+    sleep(random((int) &count, (int) &loop) % 2000);
 
     strcpy(proctext, text);
     strcat(text, "is hungry\n");
@@ -304,7 +309,7 @@ philosopher(int argc, char *argv[])
     strcat(text, "is eating\n");
     print(text);
 
-              sleep(random((int)&mess, (int)&waiter_pid)%2000);
+    sleep(random((int) &mess, (int) &waiter_pid) % 2000);
 
     send((void *) RELEASE, INT_T, waiter_pid);
 

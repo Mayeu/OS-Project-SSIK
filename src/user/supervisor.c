@@ -13,6 +13,10 @@
 
 #include "supervisor.h"
 
+/**
+ * Generate a random number
+ * \private
+ */
 unsigned int
 Rand32(void)
 /****************************************************************************
@@ -104,6 +108,11 @@ Rand32(void)
   return (ul);
 }
 
+/**
+ * Test the supervision mechanisms (exit with a return value
+ * and undersand what happenned).
+ * \private
+ */
 void
 supervisor(int argc, char *argv[])
 {

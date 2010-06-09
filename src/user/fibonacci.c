@@ -13,6 +13,10 @@
 
 #include "fibonacci.h"
 
+/**
+ * Program that prints the fibonacci sequence (the specified N first numbers)
+ * \private
+ */
 void
 fibonacci(int argc, char *argv[])
 {
