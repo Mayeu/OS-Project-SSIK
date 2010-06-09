@@ -47,21 +47,25 @@ ps(int argc, char *argv[])
   int             i;
   char            buf[255];
   char            num[15];
+  int             i, len;
   pcbinfo         pinf;
 
   // init the pid list
   for (i = 0; i < MAXPCB; i++)
     pid[i] = -1;
 
-  get_ps(pid);
+  len = get_ps(pid);
 
-  print("PID\tPRIO\tSTATUS\tNAME\n");
-  print("____________________________\n");
-  for (i = 0; i < MAXPCB; i++)
+  print("Process: ");
+  printi(len);
+  printn();
+  print("PID\tNAME\tSTATE\n");
+  print("_________________________\n");
+  for (i = 0; i < len; i++)
   {
     if (pid[i] != -1)
     {
-      get_proc_info(pid[i], &pinf);
+      get_proc_info(pid[i], &pinf);/*
       strcpy(itos(pid[i], num), buf);
       strcat(buf, "\t");
       strcat(buf, itos(pinf.pri, num));
@@ -70,10 +74,43 @@ ps(int argc, char *argv[])
       strcat(buf, "\t");
       strcat(buf, pinf.name);
       strcat(buf, "\n");
-      print(buf);
+      print(buf);*/
+      printi(pid[i]);
+      print("\t");
+      print(pinf.name);
+      print("\t");
+
+      switch (pinf.state)
+      {
+      case READY:
+        print("READY");
+        break;
+      case RUNNING:
+        print("RUNNING");
+        break;
+      case BLOCKED:
+        print("BLOCKED");
+        break;
+      case SLEEPING:
+        print("SLEEPING");
+        break;
+      case WAITING_IO:
+        print("WAITING_IO");
+        break;
+      case DOING_IO:
+        print("DOING_IO");
+        break;
+      case WAITING_PCB:
+        print("WAITING_PCB");
+        break;
+      case OMG_ZOMBIE:
+        print("OMG_ZOMBIE");
+        break;
+      }
+      printn();
     }
   }
-  print("____________________________\n");
+  print("_________________________\n");
 
   exit(0);
 }

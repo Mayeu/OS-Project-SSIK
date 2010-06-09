@@ -19,6 +19,8 @@
 /**
  * @brief Possible state of a process. This is hold by the pcb.
  */
+#ifndef __PROCESS_STATE
+#define __PROCESS_STATE
 enum
 {
   READY,
@@ -30,6 +32,7 @@ enum
   WAITING_PCB,
   OMG_ZOMBIE
 };
+#endif
 
 /*
  * Structure

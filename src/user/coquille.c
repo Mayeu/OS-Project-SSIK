@@ -65,7 +65,7 @@ coquille(void)
 }
 
 int
-split_args(char *str, char data[MAX_SHELL_ARG][MAX_CHAR])
+split_args(char *str, char data[MAX_SHELL_ARG][ARG_SIZE])
 {
   int             i = 0, cpt = 0;
   char           *next;

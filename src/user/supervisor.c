@@ -104,6 +104,11 @@ Rand32(void)
   return (ul);
 }
 
+typedef struct
+{
+  char            args[MAX_ARG][ARG_SIZE];
+} Arguments;
+
 void
 supervisor(int argc, char *argv[])
 {

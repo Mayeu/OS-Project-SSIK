@@ -104,11 +104,10 @@ set_current_pcb(pcb * p)
 uint32_t
 create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
 {
-  uint32_t       *i;
+  uint32_t       *i, j;
   int32_t         pid;
   pcb            *p;
   prgm           *prg;
-  //char buf[15];
 
   //kdebug_println("Create process in");
 
@@ -170,11 +169,15 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
      * This value is in the global variable current_pcb
      */
     if (current_pcb != NULL)
+    {
       pcb_set_supervisor(p, pcb_get_pid(current_pcb));
+      pcb_set_supervised(current_pcb, pid);
+    }
     else
       pcb_set_supervisor(p, -1);
 
     /*
+<<<<<<< HEAD:src/kernel/kprocess.c
      * Set the parameters of the function
      */
     //p->registers.a_reg[0] = (params == NULL) ? 0 : stoi(get_arg(params, 0)) + 1;
@@ -192,15 +195,62 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     }
 
     /*
+=======
+>>>>>>> 3e4887fd7d8130975ae6c220ed2077f5f2538be9:src/kernel/kprocess.c
      * Set the stack pointer
      */
-
     i = allocate_stack(pcb_get_pid(p));
 
     if (i == NULL)
       return OUTOMEM;
 
-    pcb_set_sp(p, (uint32_t) i);        /* set the stack pointer */
+    /*
+     * We add the arg on the stack
+     */
+    //kprint("sp set\n");
+
+    if (params != NULL)
+    {
+      //kprint((char *) params);
+      //kprint("params not null\n");
+      //kprint(itos((uint32_t) i, c));
+      //kprint("\n");
+      i = (uint32_t *) ((uint32_t) i - (ARG_SIZE * (argc + 1) * sizeof(char))); /* set the sp after the arg */
+      //kprint(itos((uint32_t) i, c));
+      //kprint("\n");
+      pcb_set_sp(p, (uint32_t) i);      /* set the stack pointer */
+
+      for (j = 0;
+           j < (argc + 1) * (ARG_SIZE * sizeof(char) / sizeof(uint32_t)); j++)
+      {
+        //kprint("Copy params\n");
+        *i = (uint32_t) * params;
+        //kprint("Param copied\n");
+        //i += ARG_SIZE * sizeof(char);
+        i++;
+        (uint32_t *) params++;
+      }
+      //kprint((char *) pcb_get_sp(p));
+    }
+    else
+      pcb_set_sp(p, (uint32_t) i);
+
+    //kprint("copy arg done\n");
+
+    /*
+     * Set the parameters of the function
+     * The begin of the parameters are pointed by the stack pointer
+     */
+    if (params != NULL)
+    {
+      p->registers.a_reg[0] = argc + 1;
+      p->registers.a_reg[1] = (uint32_t) pcb_get_sp(p);
+    }
+    else
+    {
+      p->registers.a_reg[0] = 0;
+      p->registers.a_reg[1] = 0;
+    }
 
     /*
      * Set the state
@@ -358,11 +408,53 @@ get_pinfo(uint32_t pid, pcbinfo * pi)
 uint32_t
 get_all_pid(uint32_t * tab)
 {
+/*
   int             i;
   for (i = 0; i < MAXPCB; i++)
   {
     tab[pmem[i].pid] = pmem[i].pid;
   }
+*/
+  pcb            *p;
+  uint32_t        i;
+
+  p = plsready.start;
+  i = 0;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plsrunning.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plswaiting.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plsterminate.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
   return pcb_counter;
 }
 

@@ -22,6 +22,8 @@ fibonacci(int argc, char *argv[])
   if (argc < 2)
     exit(FAILNOOB);
 
+  print((char *) argv);
+
   n = stoi(get_arg(argv, 1));
 
   while (i < n)

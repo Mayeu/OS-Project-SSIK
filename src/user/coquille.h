@@ -25,6 +25,6 @@ void            coquille(void);
  * \param str string to parse and split
  * \param char** array Output array where will be stored the different arguments
  */
-int             split_args(char *str, char[MAX_SHELL_ARG][MAX_CHAR]);
+int             split_args(char *str, char[MAX_SHELL_ARG][ARG_SIZE]);
 
 #endif //__COQUILLE_H
