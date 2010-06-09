@@ -9,6 +9,6 @@
 #ifndef __SCROLL_H
 #define __SCROLL_H
 
-void             scroll(int argc, char *argv[]);
+void            scroll(int argc, char *argv[]);
 
 #endif //__SCROLL_H

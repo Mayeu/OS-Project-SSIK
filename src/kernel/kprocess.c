@@ -108,7 +108,7 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
   int32_t         pid;
   pcb            *p;
   prgm           *prg;
-	//char buf[15];
+  //char buf[15];
 
   //kdebug_println("Create process in");
 
@@ -178,18 +178,18 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
      * Set the parameters of the function
      */
     //p->registers.a_reg[0] = (params == NULL) ? 0 : stoi(get_arg(params, 0)) + 1;
-		//p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
-    
-		if (params != NULL)
-		{
-			p->registers.a_reg[0] = argc + 1;
-			p->registers.a_reg[1] = (uint32_t) params;
-		}
-		else
-		{
-			p->registers.a_reg[0] = 0;
-			p->registers.a_reg[1] = 0;
-		}
+    //p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
+
+    if (params != NULL)
+    {
+      p->registers.a_reg[0] = argc + 1;
+      p->registers.a_reg[1] = (uint32_t) params;
+    }
+    else
+    {
+      p->registers.a_reg[0] = 0;
+      p->registers.a_reg[1] = 0;
+    }
 
     /*
      * Set the stack pointer
@@ -477,9 +477,14 @@ waitfor(uint32_t pid, int32_t * status)
     return NOTFOUND;
   }
 
+  if (status == NULL)
+  {
+    return NOTFOUND;
+  }
+
   if (pcb_get_head(p) == &plsterminate)
   {
-    *status = pcb_get_v0(p);
+    *status = pcb_get_ret(p);
     pcb_rm_supervised(get_current_pcb(), pcb_get_pid(p));
     rm_p(p);
     //kdebug_println("Waitfor: good out");
@@ -585,7 +590,7 @@ kexit(int32_t return_value)
 
   p = get_current_pcb();
 
-  pcb_set_v0(p, return_value);
+  pcb_set_ret(p, return_value);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 

@@ -37,8 +37,8 @@ ring(int argc, char *argv[])
   if (strcmp(pcbis.name, "ring") != 0)
   {
     int             nb_proc;
-	int loop;
-//	int status;
+    int             loop;
+//      int status;
     char            args[3][ARG_SIZE];
 
     if (argc < 3)
@@ -60,21 +60,21 @@ ring(int argc, char *argv[])
       print(text);
       exit(-1);
     }
-	if(loop < 0)
-		loop = 0;
+    if (loop < 0)
+      loop = 0;
 
-        strcpy("Program ring running ", text);
-        strcat(text, itos(nb_proc, tmp));
-        strcat(text, " process(es) for ");
-        strcat(text, itos(loop, tmp));
-        strcat(text, "loop(s)\n");
-        print(text);
+    strcpy("Program ring running ", text);
+    strcat(text, itos(nb_proc, tmp));
+    strcat(text, " process(es) for ");
+    strcat(text, itos(loop, tmp));
+    strcat(text, "loop(s)\n");
+    print(text);
 
     // fill the argument array for the childs
     strcpy("ring", args[0]);
     itos(get_pid(), args[1]);
     strcpy(get_arg(argv, 2), args[2]);
-    
+
 /*	strcpy("Args: progname->", text);
 	strcat(text, args[0]);
 	strcat(text, " -- pidmain->");
@@ -126,7 +126,7 @@ ring(int argc, char *argv[])
   else
   {
     int             pidmain, loop;
-	int res;
+    int             res;
     int             first = -1, pid_next = -1, pid_prev = -1;
     char            prog[20];
     char            mess[10];
@@ -155,14 +155,14 @@ ring(int argc, char *argv[])
 
     // params sent by the main process
     res = recv_from_pid((int *) &first, INT_T, pidmain, 10000);
-	/*if(res != pidmain)
-	{
-    strcpy("FAIL1", text);
-    strcat(text, itos(res, tmp));
-    strcat(text, "\n");
-		print(text);
-		exit(FAILNOOB);
-	}*/
+    /*if(res != pidmain)
+       {
+       strcpy("FAIL1", text);
+       strcat(text, itos(res, tmp));
+       strcat(text, "\n");
+       print(text);
+       exit(FAILNOOB);
+       } */
     res = recv_from_pid((int *) &pid_prev, INT_T, pidmain, 10000);
     res = recv_from_pid((int *) &pid_next, INT_T, pidmain, 10000);
 
@@ -181,7 +181,7 @@ ring(int argc, char *argv[])
       // if we are the first child, send then receive
       if (first == 0)
       {
-			strcpy("Hello", mess);
+        strcpy("Hello", mess);
         send(mess, CHAR_PTR, pid_next);
 
         strcpy(proctext, text);
@@ -193,7 +193,7 @@ ring(int argc, char *argv[])
         print(text);
 
         sleep(TIMER);
-		  res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 10000);
+        res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 10000);
 
         strcpy(proctext, text);
         strcat(text, "received '");

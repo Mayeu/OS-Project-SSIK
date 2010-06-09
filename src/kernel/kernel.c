@@ -124,8 +124,8 @@ init()
   int             pid, st, lspid[5], status, shell;
   int             i;
   char            c[30] = { '\0' };
-	char						scroll_param[3][ARG_SIZE];
-	
+  char            scroll_param[3][ARG_SIZE];
+
   /*
    * Print the splash screen
    */
@@ -147,7 +147,10 @@ init()
     else
     {
       if (wait(lspid[i], &st) == OMGROXX)
-        print("My child exit :)\n");
+      {
+        if (st == lspid[i])
+          print("My child exit :)\n");
+      }
       else
         print("My child get lost :(\n");
     }
@@ -162,10 +165,10 @@ init()
   }
 
   print("\nGreat :)\n");
-	
-	strcpy("3", scroll_param[0]);
-	strcpy("scrolling text!", scroll_param[1]);
-	strcpy("200", scroll_param[2]);
+
+  strcpy("3", scroll_param[0]);
+  strcpy("scrolling text!", scroll_param[1]);
+  strcpy("200", scroll_param[2]);
 
   if (create_proc("scroll", MAX_PRI, 3, (char **) scroll_param) < 0)
   {
@@ -173,14 +176,14 @@ init()
     while (1);
   }
 
-	shell = create_proc("coquille", BAS_PRI, 0, (char **) NULL);
+  shell = create_proc("coquille", BAS_PRI, 0, (char **) NULL);
   if (shell < 0)
   {
     kprintln("FAILNOOB");
     while (1);
   }
-	wait(shell, &status);
+  wait(shell, &status);
 
-	print("\nYou can now shut down your computer ! :)");
+  print("\nYou can now shut down your computer ! :)");
   while (1);
 }

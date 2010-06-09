@@ -17,11 +17,11 @@
 void
 chg_prio(int argc, char *argv[])
 {
-  int pid = stoi(get_arg(argv, 1));
-	int prio = stoi(get_arg(argv, 2));
-	//char buf[15];
+  int             pid = stoi(get_arg(argv, 1));
+  int             prio = stoi(get_arg(argv, 2));
+  //char buf[15];
 
-	print(get_arg(argv, 0));
+  print(get_arg(argv, 0));
 
   if (argc < 3)
   {
@@ -29,9 +29,9 @@ chg_prio(int argc, char *argv[])
     exit(-1);
   }
 
-	/*printi((int)get_arg(argv, 0));
-	printi((int)get_arg(argv, 1));
-	print(get_arg(argv, 0));*/
+  /*printi((int)get_arg(argv, 0));
+     printi((int)get_arg(argv, 1));
+     print(get_arg(argv, 0)); */
 
   //pid  = 7;
   //prio = 37;
@@ -61,14 +61,14 @@ ps(int argc, char *argv[])
   print("________________\n");
   for (i = 0; i < len; i++)
   {
-		if (pid[i] != -1)
-		{
-    get_proc_info(pid[i], &pinf);
-    printi(pid[i]);
-    print("\t");
-    print(pinf.name);
-    printn();
-		}
+    if (pid[i] != -1)
+    {
+      get_proc_info(pid[i], &pinf);
+      printi(pid[i]);
+      print("\t");
+      print(pinf.name);
+      printn();
+    }
   }
   print("________________\n");
 
@@ -86,8 +86,8 @@ tuer(int argc, char *argv[])
 void
 malta(int argc, char *argv[])
 {
-	fprint(MALTA, get_arg(argv, 1));
-	exit(0);
+  fprint(MALTA, get_arg(argv, 1));
+  exit(0);
 }
 
 // params: no param
