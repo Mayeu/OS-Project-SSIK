@@ -14,7 +14,7 @@
 #include "kernel.h"
 #include "kinout.h"
 #include "kprocess.h"
-#include "test.h"
+//#include "test.h"
 #include "uart.h"
 #include "splash.h"
 #include "kscheduler.h"
@@ -82,7 +82,7 @@ kinit()
   /*
    * Launch test
    */
-
+/*
   test();
 
   pls_reset(&plsready);
@@ -95,7 +95,7 @@ kinit()
 
   set_current_pcb(NULL);
   p_error = &kerror;
-
+*/
   char            arg[4][20];
 
   if (create_proc("init", MAX_PRI, 0, (char **) arg) < 0)
@@ -116,7 +116,8 @@ kinit()
 
 /**
  * @brief The ancestor of the ancestor.
- * \private
+ *
+ * First process to be launched
  */
 void
 init()
@@ -147,10 +148,7 @@ init()
     else
     {
       if (wait(lspid[i], &st) == OMGROXX)
-      {
-        if (st == lspid[i])
-          print("My child exit :)\n");
-      }
+        print("My child exit :)\n");
       else
         print("My child get lost :(\n");
     }
@@ -168,7 +166,7 @@ init()
 
   strcpy("3", scroll_param[0]);
   strcpy("scrolling text!", scroll_param[1]);
-  strcpy("200", scroll_param[2]);
+  strcpy("100", scroll_param[2]);
 
   if (create_proc("scroll", MAX_PRI, 3, (char **) scroll_param) < 0)
   {
