@@ -25,10 +25,6 @@ quit_main(int argc, char **argv)
   strcat(c, "!\n");
 
   print(c);
-/*
-  print("Hello from ");
-  print(itos(mypid, c));
-  print("!\n");
-*/
+
   exit(mypid);
 }

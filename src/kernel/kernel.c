@@ -138,7 +138,7 @@ init()
     else
     {
       if (wait(lspid[i], &st) == OMGROXX)
-        if (st == pid)
+        if (st == lspid[i])
           print("My child exit :)\n");
         else
           print("My child exit badly :/\n");

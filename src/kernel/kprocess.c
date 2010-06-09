@@ -582,7 +582,7 @@ waitfor(uint32_t pid, int32_t * status)
 
   if (pcb_get_head(p) == &plsterminate)
   {
-    *status = pcb_get_v0(p);
+    *status = pcb_get_ret(p);
     pcb_rm_supervised(get_current_pcb(), pcb_get_pid(p));
     rm_p(p);
     //kdebug_println("Waitfor: good out");
@@ -633,6 +633,7 @@ kkill_pcb(pcb * p)
   //int i = 0;
   pcb            *pi = plswaiting.start;
 
+  pcb_set_ret(p, KILLED);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
@@ -671,7 +672,7 @@ kexit(int32_t return_value)
   //char buf[3];
   p = get_current_pcb();
 
-  pcb_set_v0(p, return_value);
+  pcb_set_ret(p, return_value);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
