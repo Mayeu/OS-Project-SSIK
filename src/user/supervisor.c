@@ -111,7 +111,7 @@ int Rand32(void)
 
 void supervisor(int argc, char *argv[])
 {
-	int             i;
+	int             i, j;
 	int							pid[MAX_SUP];
   pcbinfo         pcbi;
 
@@ -161,6 +161,8 @@ void supervisor(int argc, char *argv[])
 		}
 
 		// wait for them and restard the dead ones
+		for (j = 0; j< nb_lives; j++)
+		{
 		for (i = 0; i < nb_proc; i++)
 		{
     	if (wait(pid[i], &status) == OMGROXX)
@@ -181,7 +183,7 @@ void supervisor(int argc, char *argv[])
 					strcat(buffer, " lives left)\n");
 
 					pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args);
-					i = 0;
+					//i = 0;
 				}
 				else
 				{
@@ -189,9 +191,14 @@ void supervisor(int argc, char *argv[])
 				}
 				print(buffer);
 			}
-      //else
-      //  print("My child get lost :(\n");
-    }
+      else
+			{
+				strcpy("My child ", buffer);
+				strcat(buffer, itos(i, num));
+      	strcpy(buffer, " get lost :(\n");
+				print(buffer);
+			}
+    } }
 
 		exit(0);
 
@@ -200,7 +207,7 @@ void supervisor(int argc, char *argv[])
 	{
 		int r;
 		r = Rand32() % 5;
-		printi(r);
+		//printi(r);
 		if (r < 2)
 			exit(-100);
 		else
