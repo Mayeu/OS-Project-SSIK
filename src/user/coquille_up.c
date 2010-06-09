@@ -64,16 +64,6 @@ ps(int argc, char *argv[])
   {
     if (pid[i] != -1)
     {
-      get_proc_info(pid[i], &pinf);     /*
-                                           strcpy(itos(pid[i], num), buf);
-                                           strcat(buf, "\t");
-                                           strcat(buf, itos(pinf.pri, num));
-                                           strcat(buf, "\t");
-                                           strcat(buf, itos(pinf.state, num));
-                                           strcat(buf, "\t");
-                                           strcat(buf, pinf.name);
-                                           strcat(buf, "\n");
-                                           print(buf); */
       printi(pid[i]);
       print("\t");
       print(pinf.name);

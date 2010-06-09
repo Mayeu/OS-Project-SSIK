@@ -177,6 +177,7 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
       pcb_set_supervisor(p, -1);
 
     /*
+<<<<<<< HEAD:src/kernel/kprocess.c
        <<<<<<< HEAD:src/kernel/kprocess.c
        * Set the parameters of the function
      */
@@ -198,6 +199,9 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
        =======
        >>>>>>> 3e4887fd7d8130975ae6c220ed2077f5f2538be9:src/kernel/kprocess.c
        * Set the stack pointer
+=======
+     * Set the stack pointer
+>>>>>>> ef0b08729fd10e82db039bea92d2ce232b3a027b:src/kernel/kprocess.c
      */
     i = allocate_stack(pcb_get_pid(p));
 
@@ -609,7 +613,7 @@ waitfor(uint32_t pid, int32_t * status)
 
   if (pcb_get_head(p) == &plsterminate)
   {
-    *status = pcb_get_v0(p);
+    *status = pcb_get_ret(p);
     pcb_rm_supervised(get_current_pcb(), pcb_get_pid(p));
     rm_p(p);
     //kdebug_println("Waitfor: good out");
@@ -660,6 +664,7 @@ kkill_pcb(pcb * p)
   //int i = 0;
   pcb            *pi = plswaiting.start;
 
+  pcb_set_ret(p, KILLED);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
@@ -698,7 +703,7 @@ kexit(int32_t return_value)
   //char buf[3];
   p = get_current_pcb();
 
-  pcb_set_v0(p, return_value);
+  pcb_set_ret(p, return_value);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
