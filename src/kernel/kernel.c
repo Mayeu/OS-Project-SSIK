@@ -14,7 +14,7 @@
 #include "kernel.h"
 #include "kinout.h"
 #include "kprocess.h"
-#include "test.h"
+//#include "test.h"
 #include "uart.h"
 #include "splash.h"
 #include "kscheduler.h"
@@ -80,25 +80,9 @@ kinit()
   p_error = &kerror;
 
   /*
-   * Launch test
+   * Launch Init
    */
-
-  test();
-
-  pls_reset(&plsready);
-  pls_reset(&plsrunning);
-  pls_reset(&plswaiting);
-  pls_reset(&plsterminate);
-
-  reset_next_pid();
-  reset_used_stack();
-
-  set_current_pcb(NULL);
-  p_error = &kerror;
-
-  char            arg[4][20];
-
-  if (create_proc("init", MAX_PRI, 0, (char **) arg) < 0)
+  if (create_proc("init", MAX_PRI, 0, NULL) < 0)
   {
     kprintln("FAILNOOB");
     while (1);
@@ -116,27 +100,34 @@ kinit()
 
 /**
  * @brief The ancestor of the ancestor.
- * \private
+ *
+ * First process to be launched
  */
 void
 init()
 {
   int             pid, st, lspid[5], status, shell;
   int             i;
-  char            c[30] = { '\0' };
-	char						scroll_param[3][ARG_SIZE];
-	
-  /*
-   * Print the splash screen
-   */
-  splash();
+  //char            c[30] = { '\0' };
+  char            scroll_param[3][ARG_SIZE];
+  char            arg[3][ARG_SIZE];
 
-  print("I spawn a quitting program, and wait for it to finish!\n");
+
+  strcpy("arg_test", arg[0]);
+  strcpy("arg1", arg[1]);
+  strcpy("arg2", arg[2]);
 
   pid = get_pid();
 
   if (pid != 0)
     while (1);
+  /*
+   * Print the splash screen
+   */
+  splash();
+
+  //print("I spawn a quitting program, and wait for it to finish!\n");
+
 
   for (i = 0; i < 5; i++)
     lspid[i] = create_proc("quit", BAS_PRI, 0, NULL);
@@ -147,40 +138,52 @@ init()
     else
     {
       if (wait(lspid[i], &st) == OMGROXX)
-        print("My child exit :)\n");
+        if (st == lspid[i])
+          print("My child exit :)\n");
+        else
+          print("My child exit badly :/\n");
       else
         print("My child get lost :(\n");
     }
 
-  print("Say something: ");
-  gets(c, 30);
-
-  while (strcmp(c, "something") != 0)
-  {
-    print("\nNo, say something: ");
-    gets(c, 30);
-  }
-
   print("\nGreat :)\n");
-	
-	strcpy("3", scroll_param[0]);
-	strcpy("scrolling text!", scroll_param[1]);
-	strcpy("200", scroll_param[2]);
+
+
+  // print("Spawn the test_arg process\n");
+  // pid = create_proc("arg_test", BAS_PRI, 3, (char **) arg);
+  // if (pid < 0)
+  // {
+  //   print("FAILNOOB\n");
+  //   while (1);
+  // }
+
+  // /* change the arg */
+  // strcpy("ton cul", arg[1]);
+
+  // //print("Wait for him\n");
+  // wait(pid, &st);
+  // if (st != OMGROXX)
+  //   print("Arg test fail !\n");
+
+  strcpy("3", scroll_param[0]);
+  strcpy("  SSIK  - The Simply and Stupidly Implemented Kernel",
+         scroll_param[1]);
+  strcpy("200", scroll_param[2]);
 
   if (create_proc("scroll", MAX_PRI, 3, (char **) scroll_param) < 0)
   {
-    kprintln("FAILNOOB");
+    print("FAILNOOB\n");
     while (1);
   }
 
-	shell = create_proc("coquille", BAS_PRI, 0, (char **) NULL);
+  shell = create_proc("coquille", BAS_PRI, 0, (char **) NULL);
   if (shell < 0)
   {
-    kprintln("FAILNOOB");
+    print("FAILNOOB\n");
     while (1);
   }
-	wait(shell, &status);
+  wait(shell, &status);
 
-	print("\nYou can now shut down your computer ! :)");
+  print("\nYou can now shut down your computer ! :)");
   while (1);
 }

@@ -9,16 +9,16 @@
 #ifndef __COQUILLE_UP_H
 #define __COQUILLE_UP_H
 
-void             chg_prio(int argc, char *argv[]);
+void            chg_prio(int argc, char *argv[]);
 
-void             ps(int argc, char *argv[]);
+void            ps(int argc, char *argv[]);
 
 int             tuer(int argc, char *argv[]);
 
-void             malta(int argc, char *argv[]);
+void            malta(int argc, char *argv[]);
 
-void             help(int argc, char *argv[]);
+void            help(int argc, char *argv[]);
 
-void             proc_info(int argc, char *argv[]);
+void            proc_info(int argc, char *argv[]);
 
 #endif //__COQUILLE_UP_H

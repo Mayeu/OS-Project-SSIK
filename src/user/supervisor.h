@@ -11,6 +11,6 @@
 
 #define MAX_SUP 10
 
-void             supervisor(int argc, char *argv[]);
+void            supervisor(int argc, char *argv[]);
 
 #endif //__SUPERVISOR_H

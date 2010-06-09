@@ -35,8 +35,10 @@ syscall_handler(registers_t * regs)
   switch (syscall)
   {
   case FOURCHETTE:
-			res = create_proc(get_arg((char**)regs->a_reg[2], 0), regs->a_reg[0], regs->a_reg[1], (char**)regs->a_reg[2]);
-      break;
+    res =
+      create_proc(get_arg((char **) regs->a_reg[2], 0), regs->a_reg[0],
+                  regs->a_reg[1], (char **) regs->a_reg[2]);
+    break;
   case PRINT:
     res = print_string((char *) regs->a_reg[0]);
     return;                     /* We save the good return value in the pcb */
@@ -62,13 +64,14 @@ syscall_handler(registers_t * regs)
     res = waitfor(regs->a_reg[0], (int32_t *) regs->a_reg[1]);
     break;
   case SEND:
-    res = send_msg(pcb_get_pid(get_current_pcb()), (msg_arg *)regs->a_reg[0]);
+    res =
+      send_msg(pcb_get_pid(get_current_pcb()), (msg_arg *) regs->a_reg[0]);
     break;
   case RECV:
     res =
       recv_msg(pcb_get_pid(get_current_pcb()), (msg_arg *) regs->a_reg[0]);
-	if(res == NOTFOUND)
-		go_to_sleep(((msg_arg *)regs->a_reg[0])->timeout);
+    if (res == NOTFOUND)
+      go_to_sleep(((msg_arg *) regs->a_reg[0])->timeout);
     break;
   case PERROR:
     kperror((char *) regs->a_reg[0]);

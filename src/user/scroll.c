@@ -45,7 +45,7 @@ scroll(int argc, char *argv[])
     pos_space = (pos_space) ? pos_space - 1 : len;
 
     //for (j = 0; j < 6000000; j++);
-		j = 0;
+    j = 0;
     sleep(sleept);
   }
 

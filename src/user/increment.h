@@ -9,6 +9,6 @@
 #ifndef __INCREMENT_H
 #define __INCREMENT_H
 
-void             increment(int argc, char *argv[]);
+void            increment(int argc, char *argv[]);
 
 #endif //__INCREMENT_H

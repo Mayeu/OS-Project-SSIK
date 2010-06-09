@@ -88,7 +88,7 @@ program must be stored in the program list of the OS.
 int
 fourchette(char *name, int prio, int argc, char *argv[])
 {
-	return syscall_three(prio, argc, (int32_t) argv, FOURCHETTE);
+  return syscall_three(prio, argc, (int32_t) argv, FOURCHETTE);
 }
 
  /**

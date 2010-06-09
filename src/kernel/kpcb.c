@@ -212,6 +212,16 @@ pcb_get_empty(pcb * p)
   return p->empty;
 }
 
+/**
+ * \private
+ * @brief return the ret value of the process
+ */
+int32_t
+pcb_get_ret(pcb * p)
+{
+  return p->ret;
+}
+
 /*
  * Setters
  */
@@ -236,6 +246,7 @@ pcb_reset(pcb * p)
   pcb_set_empty(p, TRUE);
   pcb_set_next(p, NULL);
   pcb_set_prev(p, NULL);
+  pcb_set_ret(p, 0);
 }
 
 /**
@@ -539,6 +550,16 @@ void
 pcb_set_empty(pcb * p, bool b)
 {
   p->empty = b;
+}
+
+  /**
+	* \private
+	* @brief set the return value of the pcb
+	*/
+void
+pcb_set_ret(pcb * p, int32_t r)
+{
+  p->ret = r;
 }
 
 /* end of file kpcb.h */

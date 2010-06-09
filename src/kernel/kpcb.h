@@ -19,6 +19,8 @@
 /**
  * @brief Possible state of a process. This is hold by the pcb.
  */
+#ifndef __PROCESS_STATE
+#define __PROCESS_STATE
 enum
 {
   READY,
@@ -30,6 +32,7 @@ enum
   WAITING_PCB,
   OMG_ZOMBIE
 };
+#endif
 
 /*
  * Structure
@@ -65,6 +68,7 @@ typedef struct _PCB
   uint32_t        waitfor;      /*!< pid of the process you are waiting for */
   int32_t         error;        /*!< Last error the process encountered. */
   bool            empty;        /*!< is this pcb empty ? */
+  int32_t         ret;          /*!< return value */
 } pcb;
 
 /*
@@ -205,6 +209,13 @@ int32_t         pcb_get_error(pcb * p);
  * @return TRUE if empty, FALSE otherwise
  */
 bool            pcb_get_empty(pcb * p);
+
+/**
+ * @brief return the ret value of the process
+ * @param the pcb to read
+ * @return the content of pcb->ret
+ */
+int32_t         pcb_get_ret(pcb * p);
 
 /*
  * Setters
@@ -358,6 +369,14 @@ void            pcb_set_error(pcb * p, int32_t e);
  * @param a boolean TRUE = empty
  */
 void            pcb_set_empty(pcb * p, bool b);
+
+/**
+ * \private
+ * @brief set the return value of the pcb
+ * @param the pcb to write
+ * @param r the return value
+ */
+void            pcb_set_ret(pcb * p, int32_t r);
 
 #endif /* __KPCB_H */
 

@@ -12,19 +12,19 @@
 #include <string.h>
 
 void
-quit_main(int argc, char **argv)
+arg_test_main(int argc, char **argv)
 {
   int             mypid;
-  char            ibuf[3];
-  char            c[20];
 
   mypid = get_pid();
 
-  strcpy("Hello from ", c);
-  strcat(c, itos(mypid, ibuf));
-  strcat(c, "!\n");
+  sleep(800);                   /* To ensure the father get the time to change the arg */
 
-  print(c);
+  print((char *) argv);
 
-  exit(mypid);
+  if (strcmp(get_arg(argv, 1), "arg1") != 0)
+    // || strcmp(argv[1], "arg1") != 0 || strcmp(argv[2], "arg2") != 0)
+    exit(FAILNOOB);
+
+  exit(OMGROXX);
 }

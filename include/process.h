@@ -13,7 +13,7 @@
 #define MAX_PRI 42
 #define BAS_PRI 21
 #define MAX_ARG 4
-#define ARG_SIZE 20
+#define ARG_SIZE 60
 #define MAXPCB 40
 
 #include <stdlib.h>
@@ -39,6 +39,21 @@ typedef struct
   bool            empty;        /*!< is this pcb empty ? */
   int             nb_msg;       /*!< number of messages */
 } pcbinfo;
+
+#ifndef __PROCESS_STATE
+#define __PROCESS_STATE
+enum
+{
+  READY,
+  RUNNING,
+  BLOCKED,
+  SLEEPING,
+  WAITING_IO,
+  DOING_IO,
+  WAITING_PCB,
+  OMG_ZOMBIE
+};
+#endif
 
  /**
  * \fn char* get_arg(char* argv[], int i)

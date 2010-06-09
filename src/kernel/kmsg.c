@@ -131,7 +131,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
 /*	kprint("SENT");
 	kprint(itos((int)m.data, c));
 	kprint(";");
-*/  res = push_mls(&receiver->messages, &m);
+*/ res = push_mls(&receiver->messages, &m);
   if (res != OMGROXX)
     return res;
 
@@ -139,18 +139,18 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
   // Signal the recv_process that the message is arrived (if he wanted this one)
   if ((receiver->messages.status == WAIT_MSG))
   {
- /*   kprint("wake for ");
-      kprint(itos(receiver->messages.filter, c));
-    kprint(" - ");
-      kprintln(itos(receiver->messages.filtervalue, c));
-	kprint(itos(sdr_pid, c));
-   */ if ((receiver->messages.filter == FTYPE
-         && receiver->messages.filtervalue == args->datatype)
-        || (receiver->messages.filter == FPRI
-            && receiver->messages.filtervalue == pri)
-        || (receiver->messages.filter == FPID
-            && receiver->messages.filtervalue == sdr_pid)
-        || (receiver->messages.filter == FNONE))
+    /*   kprint("wake for ");
+       kprint(itos(receiver->messages.filter, c));
+       kprint(" - ");
+       kprintln(itos(receiver->messages.filtervalue, c));
+       kprint(itos(sdr_pid, c));
+     */ if ((receiver->messages.filter == FTYPE
+             && receiver->messages.filtervalue == args->datatype)
+            || (receiver->messages.filter == FPRI
+                && receiver->messages.filtervalue == pri)
+            || (receiver->messages.filter == FPID
+                && receiver->messages.filtervalue == sdr_pid)
+            || (receiver->messages.filter == FNONE))
     {
       receiver->messages.status = NO_WAIT;
       kwakeup_pcb(receiver);
@@ -175,7 +175,7 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   int32_t         res;
   volatile uint32_t status;
   bool            res2;
-char c[10];
+  char            c[10];
 
   if (filter == FPRI)
     filtervalue = args->pri;
@@ -216,14 +216,14 @@ char c[10];
     p->messages.timeout = (args->timeout >= 0) ? args->timeout : 0;
 
     // WAIT NOW UNTIL THE MESSAGE IS IN THE MAILBOX
- //   kprintln("GO TO SLEEP FOR A MSG");
+    //   kprintln("GO TO SLEEP FOR A MSG");
 
     //go_to_sleep(args->timeout);
-	return NOTFOUND;		// go to sleep
+    return NOTFOUND;            // go to sleep
 
     //if (pcb_get_sleep(p) <= 0)
     //  return FAILNOOB;
- //   kprintln("SIGNALED MSG");
+    //   kprintln("SIGNALED MSG");
     //check apres reveil
     do
     {
@@ -252,8 +252,8 @@ char c[10];
 			kprintln(itos((int)args->data, resc));
 		}
 */
-	c[0] = '\0';
-	//kprint(itos((int)args->pid, c));
+    c[0] = '\0';
+    //kprint(itos((int)args->pid, c));
     return m.sdr_pid;
   }
 

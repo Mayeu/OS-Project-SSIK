@@ -16,12 +16,13 @@
 #include "../user/quit.h"
 #include "../user/ring.h"
 #include "../user/supervisor.h"
+#include "../user/arg_test.h"
 
 /*
  * Define
  */
 
-#define NUM_PROG 17
+#define NUM_PROG 18
 
 /*
  * Global variable
@@ -164,7 +165,15 @@ static prgm     prgm_ls[NUM_PROG] = {
   {
    "quit",
    (uint32_t) quit_main,
-   "Quit, a test for quitting a program"}
+   "Quit, a test for quitting a program"},
+
+  /*
+   * Arg test, a test for arg passing
+   */
+  {
+   "arg_test",
+   (uint32_t) arg_test_main,
+   ""}
 };
 
 /**

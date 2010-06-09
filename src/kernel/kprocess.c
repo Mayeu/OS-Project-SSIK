@@ -104,11 +104,10 @@ set_current_pcb(pcb * p)
 uint32_t
 create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
 {
-  uint32_t       *i;
+  uint32_t       *i, j;
   int32_t         pid;
   pcb            *p;
   prgm           *prg;
-	//char buf[15];
 
   //kdebug_println("Create process in");
 
@@ -170,37 +169,92 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
      * This value is in the global variable current_pcb
      */
     if (current_pcb != NULL)
+    {
       pcb_set_supervisor(p, pcb_get_pid(current_pcb));
+      pcb_set_supervised(current_pcb, pid);
+    }
     else
       pcb_set_supervisor(p, -1);
 
     /*
-     * Set the parameters of the function
+<<<<<<< HEAD:src/kernel/kprocess.c
+       <<<<<<< HEAD:src/kernel/kprocess.c
+       * Set the parameters of the function
      */
     //p->registers.a_reg[0] = (params == NULL) ? 0 : stoi(get_arg(params, 0)) + 1;
-		//p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
-    
-		if (params != NULL)
-		{
-			p->registers.a_reg[0] = argc + 1;
-			p->registers.a_reg[1] = (uint32_t) params;
-		}
-		else
-		{
-			p->registers.a_reg[0] = 0;
-			p->registers.a_reg[1] = 0;
-		}
+    //p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
+
+    if (params != NULL)
+    {
+      p->registers.a_reg[0] = argc + 1;
+      p->registers.a_reg[1] = (uint32_t) params;
+    }
+    else
+    {
+      p->registers.a_reg[0] = 0;
+      p->registers.a_reg[1] = 0;
+    }
 
     /*
+       =======
+       >>>>>>> 3e4887fd7d8130975ae6c220ed2077f5f2538be9:src/kernel/kprocess.c
+       * Set the stack pointer
+=======
      * Set the stack pointer
+>>>>>>> ef0b08729fd10e82db039bea92d2ce232b3a027b:src/kernel/kprocess.c
      */
-
     i = allocate_stack(pcb_get_pid(p));
 
     if (i == NULL)
       return OUTOMEM;
 
-    pcb_set_sp(p, (uint32_t) i);        /* set the stack pointer */
+    /*
+     * We add the arg on the stack
+     */
+    //kprint("sp set\n");
+
+    if (params != NULL)
+    {
+      //kprint((char *) params);
+      //kprint("params not null\n");
+      //kprint(itos((uint32_t) i, c));
+      //kprint("\n");
+      i = (uint32_t *) ((uint32_t) i - (ARG_SIZE * (argc + 1) * sizeof(char))); /* set the sp after the arg */
+      //kprint(itos((uint32_t) i, c));
+      //kprint("\n");
+      pcb_set_sp(p, (uint32_t) i);      /* set the stack pointer */
+
+      for (j = 0;
+           j < (argc + 1) * (ARG_SIZE * sizeof(char) / sizeof(uint32_t)); j++)
+      {
+        //kprint("Copy params\n");
+        *i = (uint32_t) * params;
+        //kprint("Param copied\n");
+        //i += ARG_SIZE * sizeof(char);
+        i++;
+        (uint32_t *) params++;
+      }
+      //kprint((char *) pcb_get_sp(p));
+    }
+    else
+      pcb_set_sp(p, (uint32_t) i);
+
+    //kprint("copy arg done\n");
+
+    /*
+     * Set the parameters of the function
+     * The begin of the parameters are pointed by the stack pointer
+     */
+    if (params != NULL)
+    {
+      p->registers.a_reg[0] = argc + 1;
+      p->registers.a_reg[1] = (uint32_t) pcb_get_sp(p);
+    }
+    else
+    {
+      p->registers.a_reg[0] = 0;
+      p->registers.a_reg[1] = 0;
+    }
 
     /*
      * Set the state
@@ -351,11 +405,60 @@ get_pinfo(uint32_t pid, pcbinfo * pi)
 
 /**
  * \brief Returns an array of all the processes in the system (in all lists).
- * \private
+ *
+ * \param tab the table of pids
+ * \return the number of pids
  */
 uint32_t
 get_all_pid(uint32_t * tab)
 {
+/*
+  int             i;
+  for (i = 0; i < MAXPCB; i++)
+  {
+    tab[pmem[i].pid] = pmem[i].pid;
+  }
+*/
+  pcb            *p;
+  uint32_t        i;
+
+  p = plsready.start;
+  i = 0;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plsrunning.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plswaiting.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plsterminate.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
   return pcb_counter;
 }
 
@@ -400,7 +503,6 @@ rm_psupervised(pcb * p, uint32_t pid)
 
 /*
  * @brief sleep the current_process
- * \private
  */
 uint32_t
 go_to_sleep(uint32_t time)
@@ -429,8 +531,20 @@ go_to_sleep(uint32_t time)
 }
 
 /**
+ * @private
  * @brief Block a pcb. A blocked pcb can not execute code until he wake up
- * \private
+ *
+ * Block take different kind of state in argument to allow different kind
+ * of blocking (state describe in kpcb.h) :
+ *     - BLOCKED
+ *     - WAITING_IO
+ *     - DOING_IO
+ * Only this state are accepted as blocked.
+ * If the pcb wich is blocked is the current pcb, schedule is called.
+ *
+ * @param p the process to block
+ * @param state the state to set the process
+ * @return an error code
  */
 int32_t
 kblock(uint32_t pid, int32_t state)
@@ -440,8 +554,20 @@ kblock(uint32_t pid, int32_t state)
 }
 
 /**
+ * @private
  * @brief Block a pcb. A blocked pcb can not execute code until he wake up
- * \private
+ *
+ * Block take different kind of state in argument to allow different kind
+ * of blocking (state describe in kpcb.h) :
+ *     - BLOCKED
+ *     - WAITING_IO
+ *     - DOING_IO
+ * Only this state are accepted as blocked.
+ * If the pcb wich is blocked is the current pcb, schedule is called.
+ *
+ * @param p the process to block
+ * @param state the state to set the process
+ * @return an error code
  */
 int32_t
 kblock_pcb(pcb * p, int32_t state)
@@ -460,7 +586,15 @@ kblock_pcb(pcb * p, int32_t state)
 
 /**
  * @brief Set the currently used pcb to wait for an other pcb to terminate
- * \private
+ *
+ * The waitfor field in the pcb will be get the pid to wait.
+ * And the process will be move in the waiting list with the state
+ * WAITING_PCB.
+ * After this sechedule is called.
+ *
+ * @param pid the pid to wait
+ * @param *status return status of the pcb
+ * @return an error code
  */
 int32_t
 waitfor(uint32_t pid, int32_t * status)
@@ -479,7 +613,7 @@ waitfor(uint32_t pid, int32_t * status)
 
   if (pcb_get_head(p) == &plsterminate)
   {
-    *status = pcb_get_v0(p);
+    *status = pcb_get_ret(p);
     pcb_rm_supervised(get_current_pcb(), pcb_get_pid(p));
     rm_p(p);
     //kdebug_println("Waitfor: good out");
@@ -499,7 +633,13 @@ waitfor(uint32_t pid, int32_t * status)
 
 /**
  * @brief Kill the current process
- * \private
+ *
+ * The process passed in arg is moved in the terminated list and get the zombie
+ * state. Waiting for his parent to read the return register.
+ * The return register is set to the KILLED error code.
+ * 
+ * @param pid the pid of the process to kill
+ * @return an error code
  */
 int32_t
 kkill(uint32_t pid)
@@ -510,72 +650,49 @@ kkill(uint32_t pid)
 
 /**
  * @brief Kill the current process
- * \private
+ *
+ * The process passed in arg is moved in the terminated list and get the zombie
+ * state. Waiting for his parent to read the return register.
+ * The return register is set to the KILLED error code.
+ * 
+ * @param pid the pid of the process to kill
+ * @return an error code
  */
 int32_t
 kkill_pcb(pcb * p)
 {
-  pcb            *s, *tmp;
-  uint32_t        i;
+  //int i = 0;
+  pcb            *pi = plswaiting.start;
 
-  pcb_set_v0(p, KILLED);
+  pcb_set_ret(p, KILLED);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
-  /*
-   * Now we can warn the supervisor
-   * (if it's not the kernel)
-   */
-  if (pcb_get_supervisor(p) != -1)
+  while (pi != NULL)
   {
-    s = search_all_list(pcb_get_supervisor(p));
-
-    /*
-     * Hey, the supervisor is waiting for me !
-     * Wake it up!
-     */
-    if (pcb_get_state(s) == WAITING_PCB
-        && pcb_get_waitfor(s) == pcb_get_pid(p))
+    /* Check for the supervisor to wake it up */
+    if (pcb_get_state(pi) == WAITING_PCB
+        && pcb_get_waitfor(pi) == pcb_get_pid(p))
     {
-      kwakeup_pcb(s);
+      kwakeup(pcb_get_pid(pi));
+      return OMGROXX;
     }
   }
 
-  /*
-   * Init adopt all the supervised process
-   */
-  s = search_all_list(0);
-
-  if (s == NULL)
-  {
-    /*
-     * Ultra fatal error ! Init not here Oo
-     */
-    kprintln
-      ("OMG! No more init process Oo Computer will explode in 5..4..3...");
-    while (1);
-  }
-
-  for (i = 0; i < MAXPCB; i++)
-  {
-    pcb_set_supervised(s, pcb_get_supervised(p)[i]);
-    tmp = search_all_list(pcb_get_supervised(p)[i]);
-
-    if (tmp != NULL)
-      pcb_set_supervisor(p, 0);
-  }
-
-  /*
-   * Reschedule
-   */
-  schedule();
+  /* TODO : make the child adopted by the init */
 
   return OMGROXX;
 }
 
 /**
  * @brief exit the current process and set the return value in the register
- * \private
+ *
+ * The process caling exit is moved to the terminated list and is return value
+ * is set in the apropriate register. The process get the state OMG_ZOMBIE.
+ * If the supervisor wait for the process, we wake it up.
+ * If the process have some supervised child, init will adopt all of them.
+ *
+ * @param the returned value to set
  */
 void
 kexit(int32_t return_value)
@@ -583,9 +700,10 @@ kexit(int32_t return_value)
   pcb            *p, *s, *tmp;
   uint32_t        i;
 
+  //char buf[3];
   p = get_current_pcb();
 
-  pcb_set_v0(p, return_value);
+  pcb_set_ret(p, return_value);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
@@ -639,8 +757,8 @@ kexit(int32_t return_value)
 }
 
 /**
- * wake up a pcb.
- * \private
+ * @brief 
+ * @param the returned value to set
  */
 void
 kwakeup_pcb(pcb * p)
@@ -655,8 +773,8 @@ kwakeup_pcb(pcb * p)
 }
 
 /**
- * wake up a pcb.
- * \private
+ * @brief 
+ * @param the returned value to set
  */
 void
 kwakeup(uint32_t pid)
@@ -677,10 +795,6 @@ p_is_empty(pcb * pcb)
   return pcb_get_empty(pcb);
 }
 
-/*
- * Init the memory for the pcb
- * \private
- */
 void
 init_mem()
 {

@@ -16,21 +16,24 @@
 void
 fibonacci(int argc, char *argv[])
 {
-	int a=0,b=1,c,i=0;
-  int n;
+  int             a = 0, b = 1, c, i = 0;
+  int             n;
 
-	if (argc < 2) exit(FAILNOOB);
+  if (argc < 2)
+    exit(FAILNOOB);
 
-	n = stoi(get_arg(argv, 1));
+  print((char *) argv);
 
-	while(i<n)
-	{
-		c=a+b;
-		printi(c);
-		printn();
-		b=a;
-		a=c;
-		i++;
-	}
+  n = stoi(get_arg(argv, 1));
+
+  while (i < n)
+  {
+    c = a + b;
+    printi(c);
+    printn();
+    b = a;
+    a = c;
+    i++;
+  }
   exit(OMGROXX);
 }
