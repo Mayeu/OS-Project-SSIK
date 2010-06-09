@@ -13,15 +13,7 @@
 
 #include "supervisor.h"
 
-int
-get_random(int m_z, int m_w)
-{
-  m_z = 36969 * (m_z & 65535) + (m_z >> 16);
-  m_w = 18000 * (m_w & 65535) + (m_w >> 16);
-  return (m_z << 16) + m_w;     /* 32-bit result */
-}
-
-int
+unsigned int
 Rand32(void)
 /****************************************************************************
  *
@@ -112,16 +104,13 @@ Rand32(void)
   return (ul);
 }
 
-typedef struct {
-	char args[MAX_ARG][ARG_SIZE];
-} Arguments;
-
-void supervisor(int argc, char *argv[])
+void
+supervisor(int argc, char *argv[])
 {
-	int             i, j;
-	int							pid[MAX_SUP];
+  int             i, j;
+  int             pid[MAX_SUP];
   pcbinfo         pcbi;
-	char            args[MAX_SUP][3][ARG_SIZE]; //nb_sup-nb_arg-arg_size
+  char            args[MAX_SUP][3][ARG_SIZE];   //nb_sup-nb_arg-arg_size
 
   get_proc_info(get_pid(), &pcbi);
   get_proc_info(pcbi.supervisor, &pcbi);
@@ -130,11 +119,11 @@ void supervisor(int argc, char *argv[])
   if (strcmp(pcbi.name, "supervisor") != 0)
   {
     int             nb_proc;
-		int							nb_lives;
-		char 						buffer[255];
-		char						num[3];
-		int 						status;
-		int							lives[MAX_SUP];
+    int             nb_lives;
+    char            buffer[255];
+    char            num[3];
+    int             status;
+    int             lives[MAX_SUP];
 
     // number of proc in argv[0]
     nb_proc = stoi(get_arg(argv, 1));
@@ -149,84 +138,74 @@ void supervisor(int argc, char *argv[])
       exit(-1);
     }
 
-    // fill the argument array for the childs
-    //strcpy("supervisor", args[0]);
-    //itos(get_pid(), args[1]);
-/*
-		pid[0] = fourchette("supervisor", BAS_PRI, 3, (char **) args);
-		wait(pid[0], &status);
-
-		printi(status);print(" hum\n");
-*/
-
     // creating the children
     for (i = 0; i < nb_proc; i++)
-		{
-   		strcpy("supervisor", args[i][0]);
-    	itos(get_pid(), args[i][1]);
-    	itos(i, args[i][2]);
+    {
+      strcpy("supervisor", args[i][0]);
+      itos(get_pid(), args[i][1]);
+      itos(i, args[i][2]);
 
-			lives[i] = nb_lives;
+      lives[i] = nb_lives;
       pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
-		}
+    }
 
-		// wait for them and restard the dead ones
-		for (j = 0; j< nb_lives; j++)
-		{
-		for (i = 0; i < nb_proc; i++)
-		{
-    	if (wait(pid[i], &status) == OMGROXX)
-			{
-				strcpy("My child ", buffer);
-				strcat(buffer, itos(i, num));
+    // wait for them and restard the dead ones
+    for (j = 0; j < nb_lives; j++)
+    {
+      for (i = 0; i < nb_proc; i++)
+      {
+        if (wait(pid[i], &status) == OMGROXX)
+        {
+          strcpy("My child ", buffer);
+          strcat(buffer, itos(i, num));
 
-				if (status < 0)
-					strcat(buffer, " died in a bad way ");
-				else
-					strcat(buffer, " died in a good way ");
+          if (status < 0)
+            strcat(buffer, " died in a bad way ");
+          else
+            strcat(buffer, " died in a good way ");
 
-				lives[i] = lives[i] - 1;
-				if (lives[i] >= 0)
-				{
-					strcat(buffer, "- Lets make him revive (");
-					strcat(buffer, itos(lives[i], num));
-					strcat(buffer, " lives left)\n");
+          lives[i] = lives[i] - 1;
+          if (lives[i] >= 0)
+          {
+            strcat(buffer, "- Lets make him come alive again (");
+            strcat(buffer, itos(lives[i], num));
+            strcat(buffer, " lives left)\n");
 
-					pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
-				}
-				else
-				{
-					strcat(buffer, " And doesn't have any life left :(\n");
-				}
-				print(buffer);
-			}
-      else
-			{
-				strcpy("My child ", buffer);
-				strcat(buffer, itos(i, num));
-      	strcpy(buffer, " get lost :(\n");
-				print(buffer);
-			}
-    } }
+            pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
+          }
+          else
+          {
+            strcat(buffer, " And doesn't have any life left :(\n");
+          }
+          print(buffer);
+        }
+        else
+        {
+          strcpy("My child ", buffer);
+          strcat(buffer, itos(i, num));
+          strcpy(buffer, " get lost :(\n");
+          print(buffer);
+        }
+      }
+    }
 
-		exit(0);
+    exit(0);
 
-	}
-	else
-	{
-		int r;
-		char fbuf[100];
-		
-		r = Rand32() % 5000;
+  }
+  else
+  {
+    int             r;
+    char            fbuf[100];
 
-		strcpy("Fils ", fbuf);
-		strcat(fbuf, get_arg(argv, 2));
-		strcat(fbuf, " : je meuuurs!\n");
-		print(fbuf);
-		//printi(r);
-		if (r < 2)
-			exit(-100);
-		else
-			exit(0);
-	}
+    r = Rand32() % 5000;
+
+    strcpy("Fils ", fbuf);
+    strcat(fbuf, get_arg(argv, 2));
+    strcat(fbuf, " : I'm dyinggg!\n");
+    print(fbuf);
+    if (r < 2000)
+      exit(-100);
+    else
+      exit(0);
+  }
 }
