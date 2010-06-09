@@ -13,15 +13,7 @@
 
 #include "supervisor.h"
 
-int
-get_random(int m_z, int m_w)
-{
-  m_z = 36969 * (m_z & 65535) + (m_z >> 16);
-  m_w = 18000 * (m_w & 65535) + (m_w >> 16);
-  return (m_z << 16) + m_w;     /* 32-bit result */
-}
-
-int
+unsigned int
 Rand32(void)
 /****************************************************************************
  *
@@ -151,16 +143,6 @@ supervisor(int argc, char *argv[])
       exit(-1);
     }
 
-    // fill the argument array for the childs
-    //strcpy("supervisor", args[0]);
-    //itos(get_pid(), args[1]);
-/*
-		pid[0] = fourchette("supervisor", BAS_PRI, 3, (char **) args);
-		wait(pid[0], &status);
-
-		printi(status);print(" hum\n");
-*/
-
     // creating the children
     for (i = 0; i < nb_proc; i++)
     {
@@ -190,7 +172,7 @@ supervisor(int argc, char *argv[])
           lives[i] = lives[i] - 1;
           if (lives[i] >= 0)
           {
-            strcat(buffer, "- Lets make him revive (");
+            strcat(buffer, "- Lets make him come alive again (");
             strcat(buffer, itos(lives[i], num));
             strcat(buffer, " lives left)\n");
 
@@ -224,10 +206,9 @@ supervisor(int argc, char *argv[])
 
     strcpy("Fils ", fbuf);
     strcat(fbuf, get_arg(argv, 2));
-    strcat(fbuf, " : je meuuurs!\n");
+    strcat(fbuf, " : I'm dyinggg!\n");
     print(fbuf);
-    //printi(r);
-    if (r < 2)
+    if (r < 2000)
       exit(-100);
     else
       exit(0);

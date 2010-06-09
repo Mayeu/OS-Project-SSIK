@@ -14,7 +14,7 @@
 #include "kernel.h"
 #include "kinout.h"
 #include "kprocess.h"
-#include "test.h"
+//#include "test.h"
 #include "uart.h"
 #include "splash.h"
 #include "kscheduler.h"
@@ -100,7 +100,8 @@ kinit()
 
 /**
  * @brief The ancestor of the ancestor.
- * \private
+ *
+ * First process to be launched
  */
 void
 init()
@@ -137,10 +138,7 @@ init()
     else
     {
       if (wait(lspid[i], &st) == OMGROXX)
-      {
-        if (st == lspid[i])
-          print("My child exit :)\n");
-      }
+        print("My child exit :)\n");
       else
         print("My child get lost :(\n");
     }

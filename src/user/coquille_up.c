@@ -17,11 +17,7 @@
 void
 chg_prio(int argc, char *argv[])
 {
-  int             pid = stoi(get_arg(argv, 1));
-  int             prio = stoi(get_arg(argv, 2));
-  //char buf[15];
-
-  print(get_arg(argv, 0));
+  int             pid, prio, res;
 
   if (argc < 3)
   {
@@ -29,14 +25,17 @@ chg_prio(int argc, char *argv[])
     exit(-1);
   }
 
-  /*printi((int)get_arg(argv, 0));
-     printi((int)get_arg(argv, 1));
-     print(get_arg(argv, 0)); */
+  pid = stoi(get_arg(argv, 1));
+  prio = stoi(get_arg(argv, 2));
 
-  //pid  = 7;
-  //prio = 37;
+  res = chg_pri(pid, prio);
 
-  printi(chg_pri(pid, prio));
+  if (res < 0)
+  {
+    print("An error occured! (code:");
+    printi(res);
+    print(")\n");
+  }
   exit(0);
 }
 
@@ -54,9 +53,9 @@ ps(int argc, char *argv[])
 
   len = get_ps(pid);
 
+  print("Process: ");
   printi(len);
   printn();
-
   print("PID\tNAME\tSTATE\n");
   print("_________________________\n");
   for (i = 0; i < len; i++)
@@ -101,7 +100,7 @@ ps(int argc, char *argv[])
   }
   print("_________________________\n");
 
-  exit(47);
+  exit(0);
 }
 
 // params: int pid
@@ -125,21 +124,24 @@ help(int argc, char *argv[])
 {
   print("List of available user programs\n");
   print("-------------------------------\n");
-  print("coquille: Spawn a new shell.\n");
-  print("increment n: Print a sequence from from 1 to n.\n");
-  print("fibonacci n: Print the fibonacci sequence up to n numbers.\n");
+  print("coquille\t\t\tSpawn a new shell.\n");
+  print("increment n\t\t\tPrint a sequence from from 1 to n.\n");
+  print("fibonacci n\t\t\tPrint the fibonacci sequence up to n numbers.\n");
+  print("scroller\t\t\tCreate a process that scroll a predefined\n");
+  print("\t\t\t\tstring of the LCD.\n");
   print
-    ("scroller: Create a process that scroll a predefined string of the LCD.\n");
+    ("ring nb_proc nb_loop\t\tCreate a ring of nb_proc communicating procs.\n");
   print
-    ("ring nb_proc nb_loop: Create a ring of nb_proc communicating processes.\n");
-  print("philosopher nb_philo nb_loop: nb_philo philosophers ");
-  print("try to eat/think nb_loop times.\n");
-  print("supervision: demonstration of process supervision.\n");
-  print("ps: print the list of all the running processes.\n");
-  print("chg_prio p pri: Change the priority of the process of pid p ");
-  print("with the new priority pri.\n");
-  print("tuer p: Kill the process of pid p.\n");
-  print("malta: Allow the user to change the malta LCD message.\n");
+    ("philosopher nb_philo nb_loop:\tnb_philo philosophers try to eat/think\n");
+  print("\t\t\t\tnb_loop times.\n");
+  print
+    ("supervision nb_sup nb_lives:\tDemonstration of process supervision.\n");
+  print("ps\t\t\t\tprint the list of all the running processes.\n");
+  print("chg_prio p pri\t\t\tChange the priority of the process of pid p\n");
+  print("\t\t\t\twith the new priority pri.\n");
+  print("tuer p\t\t\t\tKill the process of pid p.\n");
+  print("malta msg\t\t\tAllow the user to write on the malta LCD.\n");
+  print("-------------------------------\n");
 
   exit(0);
 }
@@ -172,6 +174,14 @@ proc_info(int argc, char *argv[])
     }
     print("\n\tsupervisor process:\t");
     printi(res.supervisor);
+    print("\n\tprocess state:\t\t");
+    printi(res.state);
+    print("\n\ttime to sleep:\t\t");
+    printi(res.sleep);
+    print("\n\twaiting for process:\t");
+    printi(res.waitfor);
+    //print("\n\tlast error:\t\t");
+    //printi(res.error);
     printn();
   }
   else
