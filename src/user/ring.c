@@ -107,7 +107,7 @@ ring(int argc, char *argv[])
       strcat(text, "\n");
       print(text);
       // are you the first child process ?
-      send((void *) i, INT_T, pid[i]);
+      print(itos(send((void *) i, INT_T, pid[i]), tmp));
       // pid of the process to send the message
       send((void *) pid[(i + 1) % nb_proc], INT_T, pid[i]);
       // pid of the process to wait the message
@@ -149,12 +149,15 @@ ring(int argc, char *argv[])
 	print(text);
 */
 
+
     strcpy("Process no_", proctext);
     strcat(proctext, itos(get_pid(), tmp));
     strcat(proctext, ": ");
 
     // params sent by the main process
-    res = recv_from_pid((int *) &first, INT_T, pidmain, 10000);
+    res = recv_from_pid((int *) &first, INT_T, pidmain, 5000);
+	 if(res == NOTFOUND)
+      res = recv_from_pid((int *) &first, INT_T, pidmain, 0);
 	/*if(res != pidmain)
 	{
     strcpy("FAIL1", text);
@@ -163,8 +166,13 @@ ring(int argc, char *argv[])
 		print(text);
 		exit(FAILNOOB);
 	}*/
-    res = recv_from_pid((int *) &pid_prev, INT_T, pidmain, 10000);
-    res = recv_from_pid((int *) &pid_next, INT_T, pidmain, 10000);
+    res = recv_from_pid((int *) &pid_next, INT_T, pidmain, 5000);
+	 if(res == NOTFOUND)
+      res = recv_from_pid((int *) &pid_next, INT_T, pidmain, 0);
+
+    res = recv_from_pid((int *) &pid_prev, INT_T, pidmain, 5000);
+	 if(res == NOTFOUND)
+      res = recv_from_pid((int *) &pid_prev, INT_T, pidmain, 0);
 
     strcpy(proctext, text);
     strcat(text, "first: ");
@@ -193,7 +201,9 @@ ring(int argc, char *argv[])
         print(text);
 
         sleep(TIMER);
-		  res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 10000);
+		  res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 1000);
+	 		if(res == NOTFOUND)
+      		res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 0);
 
         strcpy(proctext, text);
         strcat(text, "received '");
@@ -208,7 +218,9 @@ ring(int argc, char *argv[])
       // if not, receive then send
       else
       {
-        res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 10000);
+        res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 1000);
+	 		if(res == NOTFOUND)
+      		res = recv_from_pid((char *) rcv, CHAR_PTR, pid_prev, 0);
 
         strcpy(proctext, text);
         strcat(text, "received '");

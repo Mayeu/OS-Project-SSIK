@@ -38,7 +38,9 @@ syscall_handler(registers_t * regs)
     {
       // A CHANGER, POUR ENVOYER LE NB D'ARG STOQUE DS regs->a_reg[1]
       // NE PAS OUBLIER DE COPIER LES ARG DS LA STRUCT DU PCB !!
-			res = create_proc(get_arg((char**)regs->a_reg[2], 0), regs->a_reg[0], regs->a_reg[1], (char**)regs->a_reg[2]);
+      res =
+        create_proc(get_arg((char **) regs->a_reg[2], 0), regs->a_reg[0],
+                    regs->a_reg[1], (char **) regs->a_reg[2]);
       break;
     }
   case PRINT:
@@ -74,10 +76,14 @@ syscall_handler(registers_t * regs)
     //kprint(" to process pid = ");
     //kprintln(itos(mres->pid, buf));
     //kprintln((char*)mres->data);
-    res = send_msg(pcb_get_pid(get_current_pcb()), (msg_arg *)regs->a_reg[0]);
+    res =
+      send_msg(pcb_get_pid(get_current_pcb()), (msg_arg *) regs->a_reg[0]);
     break;
   case RECV:
-    res = recv_msg(pcb_get_pid(get_current_pcb()), (msg_arg *)regs->a_reg[0]);
+    res =
+      recv_msg(pcb_get_pid(get_current_pcb()), (msg_arg *) regs->a_reg[0]);
+	if(res == NOTFOUND)
+		go_to_sleep(((msg_arg *)regs->a_reg[0])->timeout);
     break;
   case PERROR:
     kperror((char *) regs->a_reg[0]);
@@ -98,11 +104,11 @@ syscall_handler(registers_t * regs)
     res = get_all_pid((int *) regs->a_reg[0]);
     break;
   case CHGPPRI:
-		{
-		//char buf[3];
-    res = chg_ppri(regs->a_reg[0], regs->a_reg[1]);
-    break;
-		}
+    {
+      //char buf[3];
+      res = chg_ppri(regs->a_reg[0], regs->a_reg[1]);
+      break;
+    }
   case KILL:
     res = kkill(regs->a_reg[0]);
     break;
