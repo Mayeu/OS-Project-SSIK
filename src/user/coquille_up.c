@@ -56,8 +56,8 @@ ps(int argc, char *argv[])
   print("Process: ");
   printi(len);
   printn();
-  print("PID\tNAME\tSTATE\n");
-  print("_________________________\n");
+  print("PID\tNAME\tSTATE\tPRIO\n");
+  print("_______________________________\n");
   for (i = 0; i < len; i++)
   {
     if (pid[i] != -1)
@@ -95,10 +95,12 @@ ps(int argc, char *argv[])
         print("OMG_ZOMBIE");
         break;
       }
+      print("\t");
+      printi(pinf.pri);
       printn();
     }
   }
-  print("_________________________\n");
+  print("_______________________________\n");
 
   exit(0);
 }
