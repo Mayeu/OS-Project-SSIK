@@ -11,6 +11,10 @@
 #include <process.h>
 #include <string.h>
 
+/**
+ * Print the pid of the process and exit
+ * \private
+ */
 void
 quit_main(int argc, char **argv)
 {

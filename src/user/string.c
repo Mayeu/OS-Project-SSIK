@@ -11,6 +11,7 @@
 
  /**
  * Copy the string src to dest.
+ * \private
  */
 int
 strcpy(char *src, char *dst)
@@ -32,6 +33,7 @@ strcpy(char *src, char *dst)
 
  /**
  * Copy the length first characters of the string src to dest.
+ * \private
  */
 int
 strcpyn(char *src, char *dst, int length)
@@ -54,6 +56,7 @@ strcpyn(char *src, char *dst, int length)
  /**
  * Compare the two string str1 and str2 to specify if str1 = str2 of which one of them is the first
 alphabetically.
+ * \private
  */
 int
 strcmp(char *str1, char *str2)
@@ -67,15 +70,13 @@ strcmp(char *str1, char *str2)
     str2++;
   }
 
-  //if (*str1 == '\0')
-  //  return 0;
-
   return *str1 - *str2;
 }
 
  /**
  * Compare the first n characters of the two string str1 and str2 to specify if str1 = str2 of which
 one of them is the first alphabetically.
+ * \private
  */
 int
 strcmpn(char *str1, char *str2, int n)
@@ -100,6 +101,7 @@ strcmpn(char *str1, char *str2, int n)
 
  /**
  * Specify the number of characters of the string str.
+ * \private
  */
 int
 strlen(char *str)
@@ -117,6 +119,7 @@ strlen(char *str)
 
  /**
  * Returns a pointer to the first occurrence of character in the C string str.
+ * \private
  */
 char           *
 strchr(char *str, char c)
@@ -135,6 +138,7 @@ strchr(char *str, char c)
 
  /**
  * Appends a copy of the source string to the destination string.
+ * \private
  */
 char           *
 strcat(char *dst, char *src)
@@ -153,6 +157,7 @@ strcat(char *dst, char *src)
 
  /**
  * Checks if parameter c is a white-space character (SPC, TAB, LF, VT, FF, CR).
+ * \private
  */
 bool
 isspace(char c)
@@ -166,6 +171,7 @@ isspace(char c)
  /**
  * Converts an integer value to a null-terminated string using the specified 
  base and stores the result in the array given by str parameter.
+ * \private
  */
 char           *
 itos(int value, char *str)
@@ -204,6 +210,7 @@ itos(int value, char *str)
  /**
  * Parses the C string str interpreting its content as an integral
  number, which is returned as an int value.
+ * \private
  */
 int
 stoi(char *str)
@@ -227,6 +234,7 @@ stoi(char *str)
 
  /**
  * Remove all the non-usefull spaces
+ * \private
  */
 char           *
 trim(char *str)

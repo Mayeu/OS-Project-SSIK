@@ -11,6 +11,12 @@
 
 #define MAX_SUP 10
 
+/**
+ * Test the supervision mechanisms (exit with a return value
+ * and undersand what happenned).
+ * \param argc the number of arguments
+ * \param argv the arguments
+ */
 void            supervisor(int argc, char *argv[]);
 
 #endif //__SUPERVISOR_H
