@@ -35,14 +35,8 @@ syscall_handler(registers_t * regs)
   switch (syscall)
   {
   case FOURCHETTE:
-    {
-      // A CHANGER, POUR ENVOYER LE NB D'ARG STOQUE DS regs->a_reg[1]
-      // NE PAS OUBLIER DE COPIER LES ARG DS LA STRUCT DU PCB !!
-      res =
-        create_proc(get_arg((char **) regs->a_reg[2], 0), regs->a_reg[0],
-                    regs->a_reg[1], (char **) regs->a_reg[2]);
+			res = create_proc(get_arg((char**)regs->a_reg[2], 0), regs->a_reg[0], regs->a_reg[1], (char**)regs->a_reg[2]);
       break;
-    }
   case PRINT:
     res = print_string((char *) regs->a_reg[0]);
     return;                     /* We save the good return value in the pcb */
@@ -68,16 +62,7 @@ syscall_handler(registers_t * regs)
     res = waitfor(regs->a_reg[0], (int32_t *) regs->a_reg[1]);
     break;
   case SEND:
-    //mres = (msg_arg *) regs->a_reg[0];
-    //kprint("process pid = ");
-    //kprint(itos(prunning.current->pid, buf));
-    //kprint(" is sending datatype ");
-    //kprint(itos(mres->datatype, buf));
-    //kprint(" to process pid = ");
-    //kprintln(itos(mres->pid, buf));
-    //kprintln((char*)mres->data);
-    res =
-      send_msg(pcb_get_pid(get_current_pcb()), (msg_arg *) regs->a_reg[0]);
+    res = send_msg(pcb_get_pid(get_current_pcb()), (msg_arg *)regs->a_reg[0]);
     break;
   case RECV:
     res =
@@ -104,17 +89,12 @@ syscall_handler(registers_t * regs)
     res = get_all_pid((int *) regs->a_reg[0]);
     break;
   case CHGPPRI:
-    {
-      //char buf[3];
-      res = chg_ppri(regs->a_reg[0], regs->a_reg[1]);
-      break;
-    }
+    res = chg_ppri(regs->a_reg[0], regs->a_reg[1]);
+    break;
   case KILL:
     res = kkill(regs->a_reg[0]);
     break;
   case EXIT:
-    // NOTIFY THE SUPERVISOR OF THE EXITING PROCESS !
-    //kprint("proc exiting with value "); kprint(itos(regs->a_reg[0], buf));kprintn();
     kexit(regs->a_reg[0]);
     break;
   default:

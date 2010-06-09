@@ -25,7 +25,7 @@ char            command_arg[MAX_SHELL_ARG][ARG_SIZE];
 void
 coquille(void)
 {
-  int             nb_arg, pid, status;
+  int             nb_arg, pid, status, cexit = 0;
   char            prompt_line[255];
   char            buffer[255];
  // char            ibuf[3];
@@ -33,7 +33,7 @@ coquille(void)
   strcpy("coquille> ", prompt_line);
   print(prompt_line);
 
-  while (1)
+  while (!cexit)
   {
     // waiting for the user to enter a command
     gets(buffer, 255);
@@ -44,16 +44,21 @@ coquille(void)
 
     if (nb_arg != -1)
     {
-			pid = fourchette(command_arg[0], BAS_PRI, nb_arg, (char **) command_arg);
-			if (pid > 0)
-				wait(pid, &status);
+			// if the command is exit, exit the shell
+			if (strcmp("exit", command_arg[0]) == 0) cexit = 1;
+			// otherwise create the desirated process
 			else
-				print(" command not found\n");
-    }
-
+			{
+				pid = fourchette(command_arg[0], BAS_PRI, nb_arg, (char **) command_arg);
+				if (pid > 0)
+					wait(pid, &status);
+				else
+					print(" command not found\n");
+   		}
+		}
 		print("coquille> ");
   }
-
+	exit(0);
 }
 
 int
