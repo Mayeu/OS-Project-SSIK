@@ -21,7 +21,7 @@
  * Define
  */
 
-#define NUM_PROG 15
+#define NUM_PROG 17
 
 /*
  * Global variable
@@ -127,12 +127,28 @@ static prgm     prgm_ls[NUM_PROG] = {
    "The ring program"},
 
   /*
+   * Dining Philosopher
+   */
+  {
+   "philos",
+   (uint32_t) dining_philosopher,
+   "The philosopher problem"},
+
+  /*
    * Philosopher
    */
   {
    "philosopher",
    (uint32_t) philosopher,
-   "The philosopher problem"},
+   "The philosopher processes in the dining_philospher problem"},
+
+  /*
+   * Waiter
+   */
+  {
+   "waiter",
+   (uint32_t) waiter,
+   "The waiter process in the dining_philosopher problem"},
 
   /*
    * Supervisor
