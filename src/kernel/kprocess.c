@@ -432,11 +432,10 @@ get_all_pid(uint32_t * tab)
 }
 
 
-/*
+/**
  * \private
  * add a pid to the supervise list of a process;
  */
-
 uint32_t
 add_psupervised(pcb * p, uint32_t pid)
 {
@@ -455,7 +454,7 @@ add_psupervised(pcb * p, uint32_t pid)
   return pcb_set_supervised(p, pid);
 }
 
-/*
+/**
  * \private
  * remove a pid from the supervised list of a process
  */
@@ -470,7 +469,8 @@ rm_psupervised(pcb * p, uint32_t pid)
   return OMGROXX;
 }
 
-/*
+/**
+ * \private
  * @brief sleep the current_process
  */
 uint32_t
@@ -554,6 +554,7 @@ kblock_pcb(pcb * p, int32_t state)
 }
 
 /**
+ * @private
  * @brief Set the currently used pcb to wait for an other pcb to terminate
  *
  * The waitfor field in the pcb will be get the pid to wait.
@@ -601,6 +602,7 @@ waitfor(uint32_t pid, int32_t * status)
 }
 
 /**
+ * @private
  * @brief Kill the current process
  *
  * The process passed in arg is moved in the terminated list and get the zombie
@@ -618,6 +620,7 @@ kkill(uint32_t pid)
 }
 
 /**
+ * @private
  * @brief Kill the current process
  *
  * The process passed in arg is moved in the terminated list and get the zombie
@@ -685,6 +688,7 @@ pcb            *s, *tmp;
 }
 
 /**
+ * @private
  * @brief exit the current process and set the return value in the register
  *
  * The process caling exit is moved to the terminated list and is return value
@@ -757,6 +761,7 @@ kexit(int32_t return_value)
 }
 
 /**
+ * @private
  * @brief 
  * @param the returned value to set
  */
@@ -773,6 +778,7 @@ kwakeup_pcb(pcb * p)
 }
 
 /**
+ * @private
  * @brief 
  * @param the returned value to set
  */
@@ -809,7 +815,6 @@ init_mem()
  */
 
 /**
- * \private
  * @brief Return the next avaible pid, or an error code
  */
 int32_t
@@ -826,7 +831,6 @@ get_next_pid()
 }
 
 /**
- * \private
  * @brief Return a pointer to a stack. The pointer is set to point at the bottom of the stack
  * since the stack grow from the bottom.
  * We need the pid to mark the stack as used by this pid
@@ -850,7 +854,6 @@ allocate_stack(uint32_t pid)
 }
 
 /**
- * \private
  * @brief Dealloc a stack, in our case consist to change used_stack[pid] to -1
  */
 int32_t
@@ -885,8 +888,7 @@ reset_used_stack()
 }
 
 /**
- * \private
- * reset the next_pid to 0
+ * @brief reset the next_pid to 0
  */
 void
 reset_next_pid()
@@ -894,12 +896,23 @@ reset_next_pid()
   next_pid = 0;
 }
 
+/**
+ * @brief return a pointer to the used stack
+ */
 int32_t        *
 get_used_stack()
 {
   return used_stack;
 }
 
+/**
+ * @brief Allocate a space for a pcb, and reset the pcb
+ *
+ * This function will look for a empty space in the static pcb, reset it
+ * and return a pointer to this space.
+ *
+ * @return a pointer to a pcb
+ */
 pcb            *
 alloc_pcb()
 {
