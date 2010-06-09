@@ -226,9 +226,12 @@ uart_set_mode(int32_t new_mode, char *str, uint32_t len)
 }
 
 /**
- * prints a character from out_buffer and sets the device to interrupt when it is done printing (only if there are remaining characters to print)
+ * @brief Print a string using interupt
+ *
+ * The process will be blocked until the print is over
+ * The string to print is initialized during uart_set_mode
  * \private
- */
+*/
 void
 uart_print(void)
 {
@@ -300,7 +303,10 @@ uart_print(void)
 }
 
 /**
- * ends the use of the device by its current owner by waking it up. It also release the device and put the return value in the PCB 
+ * @brief Terminated the current printing
+ *
+ * The owner of the uart will be wake up
+ *
  * @param an error code to set in the current pcb
  * \private
  */
@@ -326,7 +332,7 @@ end_printing(int32_t code)
 }
 
 /**
- * cleans the uart's receiving buffer of any data that might be left in it
+ * @brief Clean the register of the uart
  * \private
  */
 void
@@ -525,8 +531,8 @@ uart_read()
     end_reading(OMGROXX);
 }
 
-/* 
- * this function is end_printing but adds also a \0 character at the end of input
+/**
+ * @brief Terminate the current reading
  * @param an error code to set in the current pcb
  * \private
  */

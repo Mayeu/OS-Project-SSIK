@@ -106,9 +106,7 @@ kinit()
 void
 init()
 {
-  int             pid, st, lspid[5], status, shell;
-  int             i;
-  //char            c[30] = { '\0' };
+int             pid, status, shell;
   char            scroll_param[3][ARG_SIZE];
   char            arg[3][ARG_SIZE];
 
@@ -121,49 +119,11 @@ init()
 
   if (pid != 0)
     while (1);
+
   /*
    * Print the splash screen
    */
   splash();
-
-  //print("I spawn a quitting program, and wait for it to finish!\n");
-
-
-  for (i = 0; i < 5; i++)
-    lspid[i] = create_proc("quit", BAS_PRI, 0, NULL);
-
-  for (i = 0; i < 5; i++)
-    if (lspid[i] < 1)
-      print("OMG! This child failed :/\n");
-    else
-    {
-      if (wait(lspid[i], &st) == OMGROXX)
-        if (st == lspid[i])
-          print("My child exit :)\n");
-        else
-          print("My child exit badly :/\n");
-      else
-        print("My child get lost :(\n");
-    }
-
-  print("\nGreat :)\n");
-
-
-  // print("Spawn the test_arg process\n");
-  // pid = create_proc("arg_test", BAS_PRI, 3, (char **) arg);
-  // if (pid < 0)
-  // {
-  //   print("FAILNOOB\n");
-  //   while (1);
-  // }
-
-  // /* change the arg */
-  // strcpy("ton cul", arg[1]);
-
-  // //print("Wait for him\n");
-  // wait(pid, &st);
-  // if (st != OMGROXX)
-  //   print("Arg test fail !\n");
 
   strcpy("3", scroll_param[0]);
   strcpy("  SSIK  - The Simply and Stupidly Implemented Kernel",

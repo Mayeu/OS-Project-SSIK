@@ -116,12 +116,17 @@ void            uart_set_mode(int32_t mode, char *str, uint32_t len);
 
 /**
  * @brief Print a string using interupt
- * @param the string to print
+ *
+ * The process will be blocked until the print is over
+ * The string to print is initialized during uart_set_mode
  */
 void            uart_print();
 
 /**
  * @brief Terminated the current printing
+ *
+ * The owner of the uart will be wake up
+ *
  * @param an error code to set in the current pcb
  */
 int32_t         end_printing(int32_t code);
@@ -147,10 +152,12 @@ void            uart_exception();
  * @param a pcb
  */
 void            set_uart_user(pcb * p);
+
 /**
  * @brief Read a string using interupt
  */
 void            uart_read();
+
 /**
  * @brief Terminate the current reading
  * @param an error code to set in the current pcb

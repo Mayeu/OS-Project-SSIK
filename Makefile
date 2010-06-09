@@ -69,7 +69,7 @@ $(BIN)/ssik: $(OBJS_KERNEL) $(OBJS_USER) $(OBJS_TEST)
 	$(LD) $(ARCH) -o $@ $^
 
 # Run the program
-run: indent link
+run: link
 	bash $(PROJECT_DIR)/scripts/run.sh $(BIN)/ssik
 
 # Indent everything
@@ -86,7 +86,7 @@ indent:
 	indent $(IDT_OPT) $(SRC_TEST)/*.c
 	
 # Build the kernel doc and user doc
-doc: doc_kernel doc_user
+doc: doc_kernel doc_user doc_api
 
 doc_kernel:
 	mkdir -p doc/kernel
