@@ -108,7 +108,7 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
   int32_t         pid;
   pcb            *p;
   prgm           *prg;
-	//char buf[15];
+  //char buf[15];
 
   //kdebug_println("Create process in");
 
@@ -178,18 +178,18 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
      * Set the parameters of the function
      */
     //p->registers.a_reg[0] = (params == NULL) ? 0 : stoi(get_arg(params, 0)) + 1;
-		//p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
-    
-		if (params != NULL)
-		{
-			p->registers.a_reg[0] = argc + 1;
-			p->registers.a_reg[1] = (uint32_t) params;
-		}
-		else
-		{
-			p->registers.a_reg[0] = 0;
-			p->registers.a_reg[1] = 0;
-		}
+    //p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
+
+    if (params != NULL)
+    {
+      p->registers.a_reg[0] = argc + 1;
+      p->registers.a_reg[1] = (uint32_t) params;
+    }
+    else
+    {
+      p->registers.a_reg[0] = 0;
+      p->registers.a_reg[1] = 0;
+    }
 
     /*
      * Set the stack pointer
@@ -358,12 +358,12 @@ get_pinfo(uint32_t pid, pcbinfo * pi)
 uint32_t
 get_all_pid(uint32_t * tab)
 {
-	int i;
-	for (i=0; i<MAXPCB; i++)
-	{
-		tab[pmem[i].pid] = pmem[i].pid;
-	}
-	return pcb_counter;
+  int             i;
+  for (i = 0; i < MAXPCB; i++)
+  {
+    tab[pmem[i].pid] = pmem[i].pid;
+  }
+  return pcb_counter;
 }
 
 
@@ -603,7 +603,7 @@ kexit(int32_t return_value)
   pcb            *p, *s, *tmp;
   uint32_t        i;
 
-	//char buf[3];
+  //char buf[3];
   p = get_current_pcb();
 
   pcb_set_v0(p, return_value);
@@ -652,7 +652,7 @@ kexit(int32_t return_value)
     if (tmp != NULL)
       pcb_set_supervisor(p, 0);
   }
-	
+
   /*
    * Reschedule
    */
