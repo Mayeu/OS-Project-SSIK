@@ -7,6 +7,7 @@
  */
 
 #include <message.h>
+#include <errno.h>
 
 #include "../kernel/ksyscall.h"
 
@@ -36,8 +37,12 @@ sendp(void *data, msg_t tdata, int pid, int pri)
 int
 recv(void *data, msg_t tdata, int timeout)
 {
+	int res2;
   msg_arg         res = { data, tdata, 0, 0, timeout, FTYPE };
-  return syscall_one((int32_t) & res, RECV);
+  res2 = syscall_one((int32_t) & res, RECV);
+	if(res2 == NOTFOUND)
+		res2 = syscall_one((int32_t) & res, RECV);
+	return res2;
 }
 
 /**
@@ -46,8 +51,12 @@ recv(void *data, msg_t tdata, int timeout)
 int
 recv_from_pid(void *data, msg_t tdata, int pid, int timeout)
 {
+	int res2;
   msg_arg         res = { data, tdata, pid, 0, timeout, FPID };
-  return syscall_one((int32_t) & res, RECV);
+  res2 = syscall_one((int32_t) & res, RECV);
+	if(res2 == NOTFOUND)
+		res2 = syscall_one((int32_t) & res, RECV);
+	return res2;
 }
 
 /**
@@ -56,6 +65,10 @@ recv_from_pid(void *data, msg_t tdata, int pid, int timeout)
 int
 recv_fromp_pri(void *data, msg_t tdata, int pri, int timeout)
 {
+	int res2;
   msg_arg         res = { data, tdata, 0, pri, timeout, FPRI };
-  return syscall_one((int32_t) & res, RECV);
+  res2 = syscall_one((int32_t) & res, RECV);
+	if(res2 == NOTFOUND)
+		res2 = syscall_one((int32_t) & res, RECV);
+	return res2;
 }
