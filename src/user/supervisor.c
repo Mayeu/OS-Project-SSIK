@@ -203,7 +203,7 @@ supervisor(int argc, char *argv[])
     char            fbuf[100];
 
     r = Rand32() % 5000;
-
+    printi(r);
     strcpy("Fils ", fbuf);
     strcat(fbuf, get_arg(argv, 2));
     strcat(fbuf, " : I'm dyinggg!\n");

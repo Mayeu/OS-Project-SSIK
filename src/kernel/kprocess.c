@@ -428,7 +428,6 @@ get_all_pid(uint32_t * tab)
     i++;
   }
 
-
   return pcb_counter;
 }
 

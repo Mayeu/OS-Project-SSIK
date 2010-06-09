@@ -106,8 +106,8 @@ kinit()
 void
 init()
 {
-  int             pid /*, st , lspid[5] */ , status, shell;
-  //int             i;
+  int             pid, st, lspid[5], status, shell;
+  int             i;
   //char            c[30] = { '\0' };
   char            scroll_param[3][ARG_SIZE];
   char            arg[3][ARG_SIZE];
@@ -128,7 +128,7 @@ init()
 
   //print("I spawn a quitting program, and wait for it to finish!\n");
 
-/*
+
   for (i = 0; i < 5; i++)
     lspid[i] = create_proc("quit", BAS_PRI, 0, NULL);
 
@@ -138,13 +138,16 @@ init()
     else
     {
       if (wait(lspid[i], &st) == OMGROXX)
-        print("My child exit :)\n");
+        if (st == pid)
+          print("My child exit :)\n");
+        else
+          print("My child exit badly :/\n");
       else
         print("My child get lost :(\n");
     }
 
   print("\nGreat :)\n");
-*/
+
 
   // print("Spawn the test_arg process\n");
   // pid = create_proc("arg_test", BAS_PRI, 3, (char **) arg);
