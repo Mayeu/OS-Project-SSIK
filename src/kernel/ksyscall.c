@@ -70,6 +70,7 @@ syscall_handler(registers_t * regs)
   case RECV:
     res =
       recv_msg(pcb_get_pid(get_current_pcb()), (msg_arg *) regs->a_reg[0]);
+		go_to_sleep(((msg_arg *)regs->a_reg[0])->timeout);
     break;
   case PERROR:
     kperror((char *) regs->a_reg[0]);

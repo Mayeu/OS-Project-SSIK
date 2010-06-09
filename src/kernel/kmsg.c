@@ -75,7 +75,7 @@ int32_t
 create_msg(msg * m, uint32_t sdr_pid, uint32_t recv_pid, uint32_t pri,
            void *data, msg_t datatype)
 {
-  if (m == NULL || data == NULL)
+  if (m == NULL)
     return NULLPTR;
 
   m->sdr_pid = sdr_pid;
@@ -119,7 +119,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
   uint32_t        recv_pid = args->pid;
   int32_t         res;
 //  char c[10];
-  if (args->data == NULL)
+  if (args == NULL)
     return NULLPTR;
   if (pri >= MAX_MPRI && pri <= MIN_MPRI)
     return INVPRI;
@@ -128,18 +128,23 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
     return UNKNPID;
   res = create_msg(&m, sdr_pid, recv_pid, pri, args->data, args->datatype);
 
-  res = push_mls(&receiver->messages, &m);
+/*	kprint("SENT");
+	kprint(itos((int)m.data, c));
+	kprint(";");
+*/  res = push_mls(&receiver->messages, &m);
   if (res != OMGROXX)
     return res;
 
-  //kprint(itos(pri, c));
-  //kprint(itos((int)args->data, c));
 
   // Signal the recv_process that the message is arrived (if he wanted this one)
   if ((receiver->messages.status == WAIT_MSG))
   {
-    kprint("wake for ");
-    if ((receiver->messages.filter == FTYPE
+ /*   kprint("wake for ");
+      kprint(itos(receiver->messages.filter, c));
+    kprint(" - ");
+      kprintln(itos(receiver->messages.filtervalue, c));
+	kprint(itos(sdr_pid, c));
+   */ if ((receiver->messages.filter == FTYPE
          && receiver->messages.filtervalue == args->datatype)
         || (receiver->messages.filter == FPRI
             && receiver->messages.filtervalue == pri)
@@ -147,7 +152,7 @@ send_msg(uint32_t sdr_pid, msg_arg * args)
             && receiver->messages.filtervalue == sdr_pid)
         || (receiver->messages.filter == FNONE))
     {
-      kprintln((char *) args->data);
+      receiver->messages.status = NO_WAIT;
       kwakeup_pcb(receiver);
     }
   }
@@ -170,24 +175,15 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   int32_t         res;
   volatile uint32_t status;
   bool            res2;
-  char            c[10];
-  //kprint(itos(filter, c));
+//char c[10];
 
   if (filter == FPRI)
-  {
     filtervalue = args->pri;
-
-  }
   else if (filter == FPID)
-  {                             //kprint("pwet");
     filtervalue = args->pid;
-
-  }
   else
-  {
     filtervalue = (int) args->datatype;
-  }
-  //kprint(itos(filtervalue, c));
+
   p = search_all_list(recv_pid);
   if (p == NULL)
     return UNKNPID;
@@ -220,14 +216,14 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
     p->messages.timeout = (args->timeout >= 0) ? args->timeout : 0;
 
     // WAIT NOW UNTIL THE MESSAGE IS IN THE MAILBOX
-    kprintln("GO TO SLEEP FOR A MSG");
-    kprint(itos(args->timeout, c));
-    go_to_sleep(args->timeout);
+ //   kprintln("GO TO SLEEP FOR A MSG");
 
-    if (pcb_get_sleep(p) <= 0)
-      return FAILNOOB;
-    kprintln("SIGNALED MSG");
-    p->messages.status = NO_WAIT;
+    //go_to_sleep(args->timeout);
+	return NOTFOUND;		// go to sleep
+
+    //if (pcb_get_sleep(p) <= 0)
+    //  return FAILNOOB;
+ //   kprintln("SIGNALED MSG");
     //check apres reveil
     do
     {

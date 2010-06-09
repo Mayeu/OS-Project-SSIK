@@ -112,12 +112,16 @@ Rand32(void)
   return (ul);
 }
 
-void
-supervisor(int argc, char *argv[])
+typedef struct {
+	char args[MAX_ARG][ARG_SIZE];
+} Arguments;
+
+void supervisor(int argc, char *argv[])
 {
-  int             i;
-  int             pid[MAX_SUP];
+	int             i, j;
+	int							pid[MAX_SUP];
   pcbinfo         pcbi;
+	char            args[MAX_SUP][3][ARG_SIZE]; //nb_sup-nb_arg-arg_size
 
   get_proc_info(get_pid(), &pcbi);
   get_proc_info(pcbi.supervisor, &pcbi);
@@ -126,12 +130,11 @@ supervisor(int argc, char *argv[])
   if (strcmp(pcbi.name, "supervisor") != 0)
   {
     int             nb_proc;
-    int             nb_lives;
-    char            buffer[255];
-    char            num[3];
-    int             status;
-    int             lives[MAX_SUP];
-    char            args[3][ARG_SIZE];
+		int							nb_lives;
+		char 						buffer[255];
+		char						num[3];
+		int 						status;
+		int							lives[MAX_SUP];
 
     // number of proc in argv[0]
     nb_proc = stoi(get_arg(argv, 1));
@@ -147,9 +150,8 @@ supervisor(int argc, char *argv[])
     }
 
     // fill the argument array for the childs
-    strcpy("supervisor", args[0]);
-    itos(get_pid(), get_arg(argv, 1));
-    strcpy(get_arg(argv, 2), args[2]);
+    //strcpy("supervisor", args[0]);
+    //itos(get_pid(), args[1]);
 /*
 		pid[0] = fourchette("supervisor", BAS_PRI, 3, (char **) args);
 		wait(pid[0], &status);
@@ -159,55 +161,72 @@ supervisor(int argc, char *argv[])
 
     // creating the children
     for (i = 0; i < nb_proc; i++)
-    {
-      lives[i] = nb_lives;
-      pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args);
-    }
+		{
+   		strcpy("supervisor", args[i][0]);
+    	itos(get_pid(), args[i][1]);
+    	itos(i, args[i][2]);
 
-    // wait for them and restard the dead ones
-    for (i = 0; i < nb_proc; i++)
-    {
-      if (wait(pid[i], &status) == OMGROXX)
-      {
-        strcpy("My child ", buffer);
-        strcat(buffer, itos(i, num));
+			lives[i] = nb_lives;
+      pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
+		}
 
-        if (status < 0)
-          strcat(buffer, " died in a bad way ");
-        else
-          strcat(buffer, " died in a good way ");
+		// wait for them and restard the dead ones
+		for (j = 0; j< nb_lives; j++)
+		{
+		for (i = 0; i < nb_proc; i++)
+		{
+    	if (wait(pid[i], &status) == OMGROXX)
+			{
+				strcpy("My child ", buffer);
+				strcat(buffer, itos(i, num));
 
-        lives[i] = lives[i] - 1;
-        if (lives[i] >= 0)
-        {
-          strcat(buffer, "- Lets make him revive (");
-          strcat(buffer, itos(lives[i], num));
-          strcat(buffer, " lives left)\n");
+				if (status < 0)
+					strcat(buffer, " died in a bad way ");
+				else
+					strcat(buffer, " died in a good way ");
 
-          pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args);
-          i = 0;
-        }
-        else
-        {
-          strcat(buffer, " And doesn't have any life left :(\n");
-        }
-        print(buffer);
-      }
-      //else
-      //  print("My child get lost :(\n");
-    }
+				lives[i] = lives[i] - 1;
+				if (lives[i] >= 0)
+				{
+					strcat(buffer, "- Lets make him revive (");
+					strcat(buffer, itos(lives[i], num));
+					strcat(buffer, " lives left)\n");
 
-    exit(0);
+					pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
+				}
+				else
+				{
+					strcat(buffer, " And doesn't have any life left :(\n");
+				}
+				print(buffer);
+			}
+      else
+			{
+				strcpy("My child ", buffer);
+				strcat(buffer, itos(i, num));
+      	strcpy(buffer, " get lost :(\n");
+				print(buffer);
+			}
+    } }
 
-  }
-  else
-  {
-    int             r;
-    r = Rand32() % 5;
-    printi(r);
-    if (r < 2)
-      exit(-100);
-    else
-      exit(0);
-  }
+		exit(0);
+
+	}
+	else
+	{
+		int r;
+		char fbuf[100];
+		
+		r = Rand32() % 5000;
+
+		strcpy("Fils ", fbuf);
+		strcat(fbuf, get_arg(argv, 2));
+		strcat(fbuf, " : je meuuurs!\n");
+		print(fbuf);
+		//printi(r);
+		if (r < 2)
+			exit(-100);
+		else
+			exit(0);
+	}
 }

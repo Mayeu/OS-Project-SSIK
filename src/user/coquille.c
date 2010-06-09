@@ -44,21 +44,19 @@ coquille(void)
 
     if (nb_arg != -1)
     {
-      // if the command is exit, exit the shell
-      if (strcmp("exit", command_arg[0]) == 0)
-        cexit = 1;
-      // otherwise create the desirated process
-      else
-      {
-        pid =
-          fourchette(command_arg[0], BAS_PRI, nb_arg, (char **) command_arg);
-        if (pid > 0)
-          wait(pid, &status);
-        else
-          print(" command not found\n");
-      }
-    }
-    print("coquille> ");
+			// if the command is exit, exit the shell
+			if (strcmp("exit", command_arg[0]) == 0) cexit = 1;
+			// otherwise create the desirated process
+			else
+			{
+				pid = fourchette(command_arg[0], BAS_PRI, nb_arg, (char **) command_arg);
+				if (pid > 0)
+					wait(pid, &status);
+				else
+					print(" command not found\n");
+   		}
+		}
+		if (!cexit) print("coquille> ");
   }
   exit(0);
 }
