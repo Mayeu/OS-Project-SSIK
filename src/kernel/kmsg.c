@@ -175,7 +175,7 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   int32_t         res;
   volatile uint32_t status;
   bool            res2;
-char c[10];
+  char            c[10];
 
   if (filter == FPRI)
     filtervalue = args->pri;
@@ -252,8 +252,8 @@ char c[10];
 			kprintln(itos((int)args->data, resc));
 		}
 */
-	c[0] = '\0';
-	//kprint(itos((int)args->pid, c));
+    c[0] = '\0';
+    //kprint(itos((int)args->pid, c));
     return m.sdr_pid;
   }
 
