@@ -13,7 +13,7 @@
 #define MAX_PRI 42
 #define BAS_PRI 21
 #define MAX_ARG 4
-#define ARG_SIZE 20
+#define ARG_SIZE 60
 #define MAXPCB 40
 
 #include <stdlib.h>
