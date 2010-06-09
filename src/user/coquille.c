@@ -56,7 +56,7 @@ coquille(void)
 					print(" command not found\n");
    		}
 		}
-		print("coquille> ");
+		if (!cexit) print("coquille> ");
   }
 	exit(0);
 }
