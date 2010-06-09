@@ -177,8 +177,8 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
       pcb_set_supervisor(p, -1);
 
     /*
-<<<<<<< HEAD:src/kernel/kprocess.c
-     * Set the parameters of the function
+       <<<<<<< HEAD:src/kernel/kprocess.c
+       * Set the parameters of the function
      */
     //p->registers.a_reg[0] = (params == NULL) ? 0 : stoi(get_arg(params, 0)) + 1;
     //p->registers.a_reg[1] = (uint32_t) params;   /* the adresse of the first arg */
@@ -195,9 +195,9 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     }
 
     /*
-=======
->>>>>>> 3e4887fd7d8130975ae6c220ed2077f5f2538be9:src/kernel/kprocess.c
-     * Set the stack pointer
+       =======
+       >>>>>>> 3e4887fd7d8130975ae6c220ed2077f5f2538be9:src/kernel/kprocess.c
+       * Set the stack pointer
      */
     i = allocate_stack(pcb_get_pid(p));
 
