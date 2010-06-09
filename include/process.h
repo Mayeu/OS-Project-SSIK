@@ -40,6 +40,21 @@ typedef struct
   int             nb_msg;       /*!< number of messages */
 } pcbinfo;
 
+#ifndef __PROCESS_STATE
+#define __PROCESS_STATE
+enum
+{
+  READY,
+  RUNNING,
+  BLOCKED,
+  SLEEPING,
+  WAITING_IO,
+  DOING_IO,
+  WAITING_PCB,
+  OMG_ZOMBIE
+};
+#endif
+
  /**
  * \fn char* get_arg(char* argv[], int i)
  * \brief Return the argument i from the char* array of arguments.

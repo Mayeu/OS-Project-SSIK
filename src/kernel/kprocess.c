@@ -387,6 +387,47 @@ get_pinfo(uint32_t pid, pcbinfo * pi)
 uint32_t
 get_all_pid(uint32_t * tab)
 {
+  pcb            *p;
+  uint32_t        i;
+
+  p = plsready.start;
+  i = 0;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plsrunning.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plswaiting.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+  p = plsterminate.start;
+
+  while (p != NULL)
+  {
+    tab[i] = pcb_get_pid(p);
+    p = pcb_get_next(p);
+    i++;
+  }
+
+
   return pcb_counter;
 }
 

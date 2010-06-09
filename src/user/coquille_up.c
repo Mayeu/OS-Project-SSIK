@@ -57,8 +57,8 @@ ps(int argc, char *argv[])
   printi(len);
   printn();
 
-  print("PID\tNAME\n");
-  print("________________\n");
+  print("PID\tNAME\tSTATE\n");
+  print("_________________________\n");
   for (i = 0; i < len; i++)
   {
     if (pid[i] != -1)
@@ -67,10 +67,39 @@ ps(int argc, char *argv[])
       printi(pid[i]);
       print("\t");
       print(pinf.name);
+      print("\t");
+
+      switch (pinf.state)
+      {
+      case READY:
+        print("READY");
+        break;
+      case RUNNING:
+        print("RUNNING");
+        break;
+      case BLOCKED:
+        print("BLOCKED");
+        break;
+      case SLEEPING:
+        print("SLEEPING");
+        break;
+      case WAITING_IO:
+        print("WAITING_IO");
+        break;
+      case DOING_IO:
+        print("DOING_IO");
+        break;
+      case WAITING_PCB:
+        print("WAITING_PCB");
+        break;
+      case OMG_ZOMBIE:
+        print("OMG_ZOMBIE");
+        break;
+      }
       printn();
     }
   }
-  print("________________\n");
+  print("_________________________\n");
 
   exit(47);
 }
