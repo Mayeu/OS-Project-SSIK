@@ -630,25 +630,56 @@ kkill(uint32_t pid)
 int32_t
 kkill_pcb(pcb * p)
 {
-  //int i = 0;
-  pcb            *pi = plswaiting.start;
+pcb            *s, *tmp;
+  uint32_t        i;
+
 
   pcb_set_ret(p, KILLED);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
-  while (pi != NULL)
+ /*
+   * Now we can warn the supervisor
+   * (if it's not the kernel)
+   */
+  if (pcb_get_supervisor(p) != -1)
   {
-    /* Check for the supervisor to wake it up */
-    if (pcb_get_state(pi) == WAITING_PCB
-        && pcb_get_waitfor(pi) == pcb_get_pid(p))
+    s = search_all_list(pcb_get_supervisor(p));
+
+    /*
+     * Hey, the supervisor is waiting for me !
+     * Wake it up!
+     */
+    if (pcb_get_state(s) == WAITING_PCB
+        && pcb_get_waitfor(s) == pcb_get_pid(p))
     {
-      kwakeup(pcb_get_pid(pi));
-      return OMGROXX;
+      kwakeup_pcb(s);
     }
   }
 
-  /* TODO : make the child adopted by the init */
+  /*
+   * Init adopt all the supervised process
+   */
+  s = search_all_list(0);
+
+  if (s == NULL)
+  {
+    /*
+     * Ultra fatal error ! Init not here Oo
+     */
+    kprintln
+      ("OMG! No more init process Oo Computer will explode in 5..4..3...");
+    while (1);
+  }
+
+  for (i = 0; i < MAXPCB; i++)
+  {
+    pcb_set_supervised(s, pcb_get_supervised(p)[i]);
+    tmp = search_all_list(pcb_get_supervised(p)[i]);
+
+    if (tmp != NULL)
+      pcb_set_supervisor(p, 0);
+  }
 
   return OMGROXX;
 }

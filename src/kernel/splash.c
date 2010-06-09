@@ -21,5 +21,5 @@ splash(void)
   print("The Simply and Stupidly Implemented Kernel\n");
   //print("Proudly procrastinated by Adrien, Chris & Mayeu\n");
 
-  //print("\nFirst time here? Type help!\n");
+  print("\nFirst time here? Type help!\n");
 }

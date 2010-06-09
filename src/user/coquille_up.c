@@ -44,6 +44,8 @@ void
 ps(int argc, char *argv[])
 {
   int             pid[MAXPCB];
+  //char            buf[255];
+  //char            num[15];
   int             i, len;
   pcbinfo         pinf;
 
@@ -62,11 +64,11 @@ ps(int argc, char *argv[])
   {
     if (pid[i] != -1)
     {
-      get_proc_info(pid[i], &pinf);
+		 get_proc_info(pid[i], &pinf);
       printi(pid[i]);
       print("\t");
       print(pinf.name);
-      print("\t");
+      print("\t");	
 
       switch (pinf.state)
       {
@@ -106,10 +108,10 @@ ps(int argc, char *argv[])
 }
 
 // params: int pid
-int
+void
 tuer(int argc, char *argv[])
 {
-  return kill(stoi(get_arg(argv, 1)));
+  exit(kill(stoi(get_arg(argv, 1))));
 }
 
 // params: char* text
