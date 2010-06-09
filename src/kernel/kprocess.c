@@ -523,7 +523,7 @@ kkill_pcb(pcb * p)
   pcb            *s, *tmp;
   uint32_t        i;
 
-  pcb_set_v0(p, KILLED);
+  pcb_set_ret(p, KILLED);
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
