@@ -135,6 +135,9 @@ supervisor(int argc, char *argv[])
     // number of 'lives' for each process
     nb_lives = stoi(get_arg(argv, 2));
 
+	 if (nb_proc <= 0 || nb_lives <= 0)
+		 exit(0);
+
     if (nb_proc > MAX_SUP)
     {
       print("Error: Number of supervised must be at most ");
@@ -155,7 +158,7 @@ supervisor(int argc, char *argv[])
     }
 
     // wait for them and restard the dead ones
-    for (j = 0; j < nb_lives; j++)
+    for (j = 0; j < nb_lives + 1; j++)
     {
       for (i = 0; i < nb_proc; i++)
       {
@@ -188,9 +191,11 @@ supervisor(int argc, char *argv[])
         {
           strcpy("My child ", buffer);
           strcat(buffer, itos(i, num));
-          strcpy(buffer, " get lost :(\n");
+          strcat(buffer, " get lost :(\n");
           print(buffer);
         }
+
+		  *buffer = '\0' ;
       }
     }
 
@@ -203,12 +208,12 @@ supervisor(int argc, char *argv[])
     char            fbuf[100];
 
     r = Rand32() % 5000;
-    printi(r);
-    strcpy("Fils ", fbuf);
+    //printi(r);
+    strcpy("Son ", fbuf);
     strcat(fbuf, get_arg(argv, 2));
     strcat(fbuf, " : I'm dyinggg!\n");
     print(fbuf);
-    if (r < 4000)
+    if (r < 2500)
       exit(-100);
     else
       exit(0);

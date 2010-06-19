@@ -24,7 +24,7 @@
 /**
  * @brief Size per pcb of the stack. In a number of uint32_t
  */
-#define SIZE_STACK 512
+#define SIZE_STACK 2048
 
 /*
  * Global variable for this module
@@ -585,6 +585,7 @@ waitfor(uint32_t pid, int32_t * status)
     *status = pcb_get_ret(p);
     pcb_rm_supervised(get_current_pcb(), pcb_get_pid(p));
     rm_p(p);
+	 pcb_rm_supervised(get_current_pcb(), pid);
     //kdebug_println("Waitfor: good out");
     return OMGROXX;
   }
