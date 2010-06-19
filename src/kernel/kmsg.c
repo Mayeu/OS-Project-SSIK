@@ -260,7 +260,6 @@ recv_msg(uint32_t recv_pid, msg_arg * args)
   return FAILNOOB;
 }
 
-
 /**
  * Search for the message with a specific filter
  * \private

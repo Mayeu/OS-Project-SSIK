@@ -8,6 +8,7 @@
 
 #include <message.h>
 #include <errno.h>
+#include <process.h>
 
 #include "../kernel/ksyscall.h"
 
@@ -43,8 +44,12 @@ recv(void *data, msg_t tdata, int timeout)
   int             res2;
   msg_arg         res = { data, tdata, 0, 0, timeout, FTYPE };
   res2 = syscall_one((int32_t) & res, RECV);
-  if (res2 == NOTFOUND)
+  while (res2 == NOTFOUND && timeout <= 0)
+  {
+	  sleep(10);
+	  res.timeout = res.timeout - 10;
     res2 = syscall_one((int32_t) & res, RECV);
+  }
   return res2;
 }
 
