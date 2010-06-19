@@ -13,6 +13,10 @@
 
 #include "supervisor.h"
 
+/**
+ * Generate a random number
+ * \private
+ */
 unsigned int
 Rand32(void)
 /****************************************************************************
@@ -104,11 +108,11 @@ Rand32(void)
   return (ul);
 }
 
-typedef struct
-{
-  char            args[MAX_ARG][ARG_SIZE];
-} Arguments;
-
+/**
+ * Test the supervision mechanisms (exit with a return value
+ * and undersand what happenned).
+ * \private
+ */
 void
 supervisor(int argc, char *argv[])
 {
@@ -116,6 +120,8 @@ supervisor(int argc, char *argv[])
   int             pid[MAX_SUP];
   pcbinfo         pcbi;
   char            args[MAX_SUP][3][ARG_SIZE];   //nb_sup-nb_arg-arg_size
+  char            buffer[255];
+  char            num[3];
 
   get_proc_info(get_pid(), &pcbi);
   get_proc_info(pcbi.supervisor, &pcbi);
@@ -125,8 +131,6 @@ supervisor(int argc, char *argv[])
   {
     int             nb_proc;
     int             nb_lives;
-    char            buffer[255];
-    char            num[3];
     int             status;
     int             lives[MAX_SUP];
 
@@ -166,7 +170,6 @@ supervisor(int argc, char *argv[])
         {
           strcpy("My child ", buffer);
           strcat(buffer, itos(i, num));
-
           if (status < 0)
             strcat(buffer, " died in a bad way ");
           else
@@ -178,14 +181,15 @@ supervisor(int argc, char *argv[])
             strcat(buffer, "- Lets make him come alive again (");
             strcat(buffer, itos(lives[i], num));
             strcat(buffer, " lives left)\n");
+            print(buffer);
 
             pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
           }
           else
           {
-            strcat(buffer, " And doesn't have any life left :(\n");
+            strcat(buffer, " and doesn't have any life left :(\n");
+            print(buffer);
           }
-          print(buffer);
         }
         else
         {
@@ -198,9 +202,7 @@ supervisor(int argc, char *argv[])
 		  *buffer = '\0' ;
       }
     }
-
     exit(0);
-
   }
   else
   {

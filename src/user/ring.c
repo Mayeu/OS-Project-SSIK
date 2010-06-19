@@ -21,6 +21,13 @@ int             pid[MAX];
 
 // params: int nb_proc, int loop -> main program
 // params: int pidmain, int loop -> child programs
+
+/**
+ * Program that tests the messages. It creates the specified number of process
+ * that will send a message to the next process (and receive from the previous)
+ * as a ring.
+ * \private
+ */
 void
 ring(int argc, char *argv[])
 {

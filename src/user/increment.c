@@ -13,6 +13,10 @@
 
 #include "increment.h"
 
+/**
+ * Program that prints the number from 1 to the specified N
+ * \private
+ */
 void
 increment(int argc, char *argv[])
 {

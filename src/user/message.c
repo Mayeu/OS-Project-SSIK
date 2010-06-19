@@ -13,6 +13,7 @@
 
 /**
  * Send the data to the process 'pid'.
+ * \private
  */
 int
 send(void *data, msg_t tdata, int pid)
@@ -23,6 +24,7 @@ send(void *data, msg_t tdata, int pid)
 
 /**
  * Send the data to the process 'pid' with priority 'prio'.
+ * \private
  */
 int
 sendp(void *data, msg_t tdata, int pid, int pri)
@@ -33,6 +35,7 @@ sendp(void *data, msg_t tdata, int pid, int pri)
 
 /**
  * Receives a message of type 'tdata'.
+ * \private
  */
 int
 recv(void *data, msg_t tdata, int timeout)
@@ -47,6 +50,7 @@ recv(void *data, msg_t tdata, int timeout)
 
 /**
  * Receives a message of type 'tdata' from the specific process 'pid'.
+ * \private
  */
 int
 recv_from_pid(void *data, msg_t tdata, int pid, int timeout)
@@ -61,6 +65,7 @@ recv_from_pid(void *data, msg_t tdata, int pid, int timeout)
 
 /**
  * Receives a message of type 'tdata' from the specific priority 'pri'.
+ * \private
  */
 int
 recv_fromp_pri(void *data, msg_t tdata, int pri, int timeout)
