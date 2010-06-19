@@ -38,7 +38,6 @@ syscall_handler(registers_t * regs)
     res =
       create_proc(get_arg((char **) regs->a_reg[2], 0), regs->a_reg[0],
                   regs->a_reg[1], (char **) regs->a_reg[2]);
-		if (res < 0) *p_error = res;
     break;
   case PRINT:
     res = print_string((char *) regs->a_reg[0]);
@@ -108,5 +107,6 @@ syscall_handler(registers_t * regs)
 
   // saves the return code
   regs->v_reg[0] = res;
+
   return;
 }

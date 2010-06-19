@@ -37,9 +37,8 @@ kperror(char *error_msg)
 {
   char            res[255];
   char            num[3];
-  int             err_num = (int) *p_error;
+  int             err_num = (int) p_error;
 
-	res[0] = '\0';
   if (error_msg != NULL)
   {
     strcpy(error_msg, res);
@@ -49,7 +48,8 @@ kperror(char *error_msg)
   strcat(res, err_msgs[-err_num]);
   strcat(res, " (");
 
-  strcat(res, itos(err_num, num));
+  itos(err_num, num);
+  strcat(res, num);
 
   strcat(res, ")");
 
