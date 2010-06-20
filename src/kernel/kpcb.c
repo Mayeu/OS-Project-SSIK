@@ -233,9 +233,9 @@ pcb_get_ret(pcb * p)
 void
 pcb_reset(pcb * p)
 {
-  //pcb_set_pid(p, 0);
-  //pcb_set_name(p, "");
-  //pcb_set_pri(p, 0);
+  pcb_set_pid(p, 0);
+  pcb_set_name(p, "");
+  pcb_set_pri(p, 0);
   pcb_reset_supervised(p);
   pcb_set_supervisor(p, -1);
   //pcb_set_state(p, 0);

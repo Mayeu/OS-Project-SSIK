@@ -24,7 +24,7 @@
 /**
  * @brief Size per pcb of the stack. In a number of uint32_t
  */
-#define SIZE_STACK 2048
+#define SIZE_STACK 4096
 
 /*
  * Global variable for this module
@@ -126,7 +126,10 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     p = alloc_pcb();
 
     if (p == NULL)
+	 {
+	  kprint("Outofmem\n");
       return OUTOMEM;
+	 }
 
     /*
      * Reset the pcb
@@ -196,17 +199,15 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     }
 
     /*
-       =======
-       >>>>>>> 3e4887fd7d8130975ae6c220ed2077f5f2538be9:src/kernel/kprocess.c
        * Set the stack pointer
-       =======
-       * Set the stack pointer
-       >>>>>>> ef0b08729fd10e82db039bea92d2ce232b3a027b:src/kernel/kprocess.c
      */
     i = allocate_stack(pcb_get_pid(p));
 
     if (i == NULL)
+	 {
+	  kprint("Outofmem2\n");
       return OUTOMEM;
+	 }
 
     /*
      * We add the arg on the stack
@@ -275,15 +276,16 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     /*
      * Now we can add the pcb to the ready list
      */
-    if (pls_add(&plsready, p) == OUTOMEM)
-    {
+    //if (pls_add(&plsready, p) == OUTOMEM)
+    //{
       /*
        * Adding fail, don't forget to dealloc every allocated stuff
        */
-      deallocate_stack(pcb_get_pid(p));
-      pcb_reset(p);
-      return OUTOMEM;
-    }
+     // deallocate_stack(pcb_get_pid(p));
+      //pcb_reset(p);
+      //return OUTOMEM;
+    //}
+	 pls_add(&plsready, p);
 
     /*
      * Everything goes well, we add one to the pcb_counter
@@ -292,7 +294,9 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
 
   }
   else
+  {
     return OUTOMEM;
+  }
 
   //kdebug_println("Create process out");
 
@@ -342,7 +346,10 @@ rm_p(pcb * p)
   if (p == NULL)
     return NULLPTR;
 
-  //pls_delete_pcb(p);
+	deallocate_stack(pcb_get_pid(p));
+	//pcb_reset(p);
+	//pcb_set_empty(p, TRUE);
+	pls_delete_pcb(p);
 
   pcb_counter--;
 
@@ -615,9 +622,8 @@ waitfor(uint32_t pid, int32_t * status)
   if (pcb_get_head(p) == &plsterminate)
   {
     *status = pcb_get_ret(p);
-    pcb_rm_supervised(get_current_pcb(), pcb_get_pid(p));
+    pcb_rm_supervised(get_current_pcb(), pid);
     rm_p(p);
-	 pcb_rm_supervised(get_current_pcb(), pid);
     //kdebug_println("Waitfor: good out");
     return OMGROXX;
   }
@@ -876,6 +882,9 @@ allocate_stack(uint32_t pid)
   while (used_stack[i] != -1 && i < MAXPCB)
     i++;
 
+  if (i >= MAXPCB )
+	  return NULL;
+
   if (used_stack[i] == -1)
   {
     used_stack[i] = pid;
@@ -897,7 +906,10 @@ deallocate_stack(uint32_t pid)
   while (used_stack[i] != pid && i < MAXPCB)
     i++;
 
-  if (used_stack[i] == 32)
+  if ( i >= MAXPCB)
+	  return NOTFOUND;
+
+  if (used_stack[i] == pid)
   {
     used_stack[i] = -1;
     return OMGROXX;
@@ -957,11 +969,14 @@ alloc_pcb()
   if (i >= MAXPCB)
     return NULL;
 
+  //kprint("Alloc\n");
+
   return &pmem[i];
 }
 
+/*
 char           *
 argn(char **data, int num)
 {
   return (char *) (data + num * (ARG_SIZE / sizeof(char *)));
-}
+}*/

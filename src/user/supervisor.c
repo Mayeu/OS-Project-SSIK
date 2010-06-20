@@ -184,6 +184,12 @@ supervisor(int argc, char *argv[])
             print(buffer);
 
             pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
+
+				if (pid[i] < 1)
+				{
+					print ("ERROR: impossible to create a child\n");
+					exit(-1);
+				}
           }
           else
           {
@@ -195,7 +201,7 @@ supervisor(int argc, char *argv[])
         {
           strcpy("My child ", buffer);
           strcat(buffer, itos(i, num));
-          strcpy(buffer, " get lost :(\n");
+          strcat(buffer, " get lost :(\n");
           print(buffer);
         }
 
