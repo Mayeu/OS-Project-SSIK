@@ -64,11 +64,11 @@ ps(int argc, char *argv[])
   {
     if (pid[i] != -1)
     {
-		 get_proc_info(pid[i], &pinf);
+      get_proc_info(pid[i], &pinf);
       printi(pid[i]);
       print("\t");
       print(pinf.name);
-      print("\t");	
+      print("\t");
 
       switch (pinf.state)
       {
@@ -135,8 +135,7 @@ help(int argc, char *argv[])
   print("\t\t\t\tstring of the LCD.\n");
   print
     ("ring nb_proc nb_loop\t\tCreate a ring of nb_proc communicating procs.\n");
-  print
-    ("philos nb_philo nb_loop:\tnb_philo philosophers try to eat/think\n");
+  print("philos nb_philo nb_loop:\tnb_philo philosophers try to eat/think\n");
   print("\t\t\t\tnb_loop times.\n");
   print
     ("supervisor nb_sup nb_lives:\tDemonstration of process supervision.\n");

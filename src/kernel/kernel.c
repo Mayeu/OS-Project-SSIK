@@ -106,7 +106,7 @@ kinit()
 void
 init()
 {
-int             pid, status, shell;
+  int             pid, status, shell;
   char            scroll_param[3][ARG_SIZE];
   char            arg[3][ARG_SIZE];
 

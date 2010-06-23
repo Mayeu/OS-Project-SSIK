@@ -39,7 +39,7 @@ kperror(char *error_msg)
   char            num[3];
   int             err_num = (int) *p_error;
 
-	res[0] = '\0';
+  res[0] = '\0';
   if (error_msg != NULL)
   {
     strcpy(error_msg, res);

@@ -15,29 +15,21 @@
  * \param argc nombre d'arguments
  * \param argv arguments
  */
-void             waiter(int argc, char *argv[]);
+void            waiter(int argc, char *argv[]);
 
 /**
  * Process used as a philosoopher who wants to take two forks and eat.
  * \param argc nombre d'arguments
  * \param argv arguments
  */
-void             philosopher(int argc, char *argv[]);
+void            philosopher(int argc, char *argv[]);
 
 /**
  * Program that implements the dining philospher problem
  * \param argc nombre d'arguments
  * \param argv arguments
  */
-void             dining_philosopher(int argc, char *argv[]);
-
-/**
- * Specifies whether the process can take its left/right fork or not.
- * \param argc nombre d'arguments
- * \param argv arguments
- */
-bool            can_take_fork(int index, int philo_pid, int *forks,
-                              int *forks_taken, int nb_philo, int rlflag);
+void            dining_philosopher(int argc, char *argv[]);
 
 /**
  * Generate a random number with two numbers
@@ -46,13 +38,26 @@ bool            can_take_fork(int index, int philo_pid, int *forks,
  */
 int             random(int a, int b);
 
-bool left_fork(int index,int philo_pid, int* fork, int* forks_taken, int num_philo);
+/**
+ * Specifies whether the process can take its left fork or not.
+ * \param index index of the philos
+ * \param phio_pid pid of the philo
+ * \param fork pointer to the fork
+ * \param forks_taken
+ * \param num_philo
+ */
+bool            left_fork(int index, int philo_pid, int *fork,
+                          int *forks_taken, int num_philo);
 
-/* check if philo_pid can take its right fork. Returns 1 if he can, 0 otherwise */
-bool right_fork(int index, int philo_pid, int* fork, int* forks_taken);
-
-/* Looks into the philos_pid array in order to find philo_pid. Once found, it returns the index, that is the philo_id */
-int get_philo_id(int philo_pid, int* philos_pid, int num_philo);
-
+/**
+ * Specifies whether the process can take its right fork or not.
+ * \param index index of the philos
+ * \param phio_pid pid of the philo
+ * \param fork pointer to the fork
+ * \param forks_taken
+ * \param num_philo
+ */
+bool            right_fork(int index, int philo_pid, int *fork,
+                           int *forks_taken);
 
 #endif //__PHILOSOPHER_H

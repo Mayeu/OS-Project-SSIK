@@ -46,8 +46,8 @@ recv(void *data, msg_t tdata, int timeout)
   res2 = syscall_one((int32_t) & res, RECV);
   while (res2 == NOTFOUND && timeout <= 0)
   {
-	  sleep(10);
-	  res.timeout = res.timeout - 10;
+    sleep(10);
+    res.timeout = res.timeout - 10;
     res2 = syscall_one((int32_t) & res, RECV);
   }
   return res2;

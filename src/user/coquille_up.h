@@ -13,7 +13,7 @@ void            chg_prio(int argc, char *argv[]);
 
 void            ps(int argc, char *argv[]);
 
-void             tuer(int argc, char *argv[]);
+void            tuer(int argc, char *argv[]);
 
 void            malta(int argc, char *argv[]);
 

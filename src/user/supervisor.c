@@ -139,8 +139,8 @@ supervisor(int argc, char *argv[])
     // number of 'lives' for each process
     nb_lives = stoi(get_arg(argv, 2));
 
-	 if (nb_proc <= 0 || nb_lives <= 0)
-		 exit(0);
+    if (nb_proc <= 0 || nb_lives <= 0)
+      exit(0);
 
     if (nb_proc > MAX_SUP)
     {
@@ -185,11 +185,11 @@ supervisor(int argc, char *argv[])
 
             pid[i] = fourchette("supervisor", BAS_PRI, 3, (char **) args[i]);
 
-				if (pid[i] < 1)
-				{
-					print ("ERROR: impossible to create a child\n");
-					exit(-1);
-				}
+            if (pid[i] < 1)
+            {
+              print("ERROR: impossible to create a child\n");
+              exit(-1);
+            }
           }
           else
           {
@@ -205,7 +205,7 @@ supervisor(int argc, char *argv[])
           print(buffer);
         }
 
-		  *buffer = '\0' ;
+        *buffer = '\0';
       }
     }
     exit(0);

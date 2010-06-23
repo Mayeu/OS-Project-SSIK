@@ -126,10 +126,10 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     p = alloc_pcb();
 
     if (p == NULL)
-	 {
-	  kprint("Outofmem\n");
+    {
+      kprint("Outofmem\n");
       return OUTOMEM;
-	 }
+    }
 
     /*
      * Reset the pcb
@@ -199,15 +199,15 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
     }
 
     /*
-       * Set the stack pointer
+     * Set the stack pointer
      */
     i = allocate_stack(pcb_get_pid(p));
 
     if (i == NULL)
-	 {
-	  kprint("Outofmem2\n");
+    {
+      kprint("Outofmem2\n");
       return OUTOMEM;
-	 }
+    }
 
     /*
      * We add the arg on the stack
@@ -278,14 +278,14 @@ create_proc(char *name, uint32_t prio, uint32_t argc, char **params)
      */
     //if (pls_add(&plsready, p) == OUTOMEM)
     //{
-      /*
-       * Adding fail, don't forget to dealloc every allocated stuff
-       */
-     // deallocate_stack(pcb_get_pid(p));
-      //pcb_reset(p);
-      //return OUTOMEM;
+    /*
+     * Adding fail, don't forget to dealloc every allocated stuff
+     */
+    // deallocate_stack(pcb_get_pid(p));
+    //pcb_reset(p);
+    //return OUTOMEM;
     //}
-	 pls_add(&plsready, p);
+    pls_add(&plsready, p);
 
     /*
      * Everything goes well, we add one to the pcb_counter
@@ -346,10 +346,10 @@ rm_p(pcb * p)
   if (p == NULL)
     return NULLPTR;
 
-	deallocate_stack(pcb_get_pid(p));
-	//pcb_reset(p);
-	//pcb_set_empty(p, TRUE);
-	pls_delete_pcb(p);
+  deallocate_stack(pcb_get_pid(p));
+  //pcb_reset(p);
+  //pcb_set_empty(p, TRUE);
+  pls_delete_pcb(p);
 
   pcb_counter--;
 
@@ -671,7 +671,7 @@ kkill(uint32_t pid)
 int32_t
 kkill_pcb(pcb * p)
 {
-pcb            *s, *tmp;
+  pcb            *s, *tmp;
   uint32_t        i;
 
 
@@ -679,7 +679,7 @@ pcb            *s, *tmp;
   pcb_set_state(p, OMG_ZOMBIE);
   pls_move_pcb(p, &plsterminate);
 
- /*
+  /*
    * Now we can warn the supervisor
    * (if it's not the kernel)
    */
@@ -882,8 +882,8 @@ allocate_stack(uint32_t pid)
   while (used_stack[i] != -1 && i < MAXPCB)
     i++;
 
-  if (i >= MAXPCB )
-	  return NULL;
+  if (i >= MAXPCB)
+    return NULL;
 
   if (used_stack[i] == -1)
   {
@@ -906,8 +906,8 @@ deallocate_stack(uint32_t pid)
   while (used_stack[i] != pid && i < MAXPCB)
     i++;
 
-  if ( i >= MAXPCB)
-	  return NOTFOUND;
+  if (i >= MAXPCB)
+    return NOTFOUND;
 
   if (used_stack[i] == pid)
   {

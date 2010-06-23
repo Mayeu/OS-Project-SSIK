@@ -55,7 +55,7 @@ coquille(void)
         if (pid > 0)
           wait(pid, &status);
         else
-					perror("Error");
+          perror("Error");
       }
     }
     if (!cexit)
