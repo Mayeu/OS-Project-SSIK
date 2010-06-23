@@ -55,7 +55,7 @@ coquille(void)
         if (pid > 0)
           wait(pid, &status);
         else
-          print(" command not found\n");
+					perror("Error");
       }
     }
     if (!cexit)
