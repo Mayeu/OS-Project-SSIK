@@ -136,10 +136,10 @@ help(int argc, char *argv[])
   print
     ("ring nb_proc nb_loop\t\tCreate a ring of nb_proc communicating procs.\n");
   print
-    ("philosopher nb_philo nb_loop:\tnb_philo philosophers try to eat/think\n");
+    ("philos nb_philo nb_loop:\tnb_philo philosophers try to eat/think\n");
   print("\t\t\t\tnb_loop times.\n");
   print
-    ("supervision nb_sup nb_lives:\tDemonstration of process supervision.\n");
+    ("supervisor nb_sup nb_lives:\tDemonstration of process supervision.\n");
   print("ps\t\t\t\tprint the list of all the running processes.\n");
   print("chg_prio p pri\t\t\tChange the priority of the process of pid p\n");
   print("\t\t\t\twith the new priority pri.\n");
