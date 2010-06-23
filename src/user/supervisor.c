@@ -221,7 +221,7 @@ supervisor(int argc, char *argv[])
     strcat(fbuf, get_arg(argv, 2));
     strcat(fbuf, " : I'm dyinggg!\n");
     print(fbuf);
-    if (r < 4000)
+    if (r < 2500)
       exit(-100);
     else
       exit(0);
